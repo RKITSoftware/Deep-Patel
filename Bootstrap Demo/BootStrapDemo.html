@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Demo</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="#Quote">Quote</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Form">Form</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#Images">Images</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#ContactMe">Contact Me</a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container pt-3" id="Quote">
+        <h1 class="display-6 text-secondary text-center">
+            Hello My name is Deep Patel.</h1>
+        <blockquote class="blockquote">
+            <p>Any fool can write code that a computer can understand.
+                Good programmers write code that humans can
+                understand.</p>
+            <footer class="blockquote-footer">Martin Fowler</footer>
+        </blockquote>
+    </div>
+
+    <div class="row mt-4" id="Form">
+        <div class="col-1"></div>
+        <div class="col-4">
+            <form enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="fullName">Name : </label>
+                    <input type="text" class="form-control" placeholder="Enter full name" id="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" placeholder="Enter email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" class="form-control" placeholder="Enter password" id="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="profilePicture">Choose Profile Pic</label>
+                    <input type="file" class="form-control-file" id="profilePicture">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th class="w-25">Profile Pic</th>
+                        <th>Full Name</th>
+                        <th>User Name</th>
+                        <th>City</th>
+                    </tr>
+                </thead>
+                <tr>
+                    <td><img src="/images/profileImg.jpg" class="rounded-circle h-20 w-25 mx-auto d-block"
+                            alt="profile Pic">
+                    </td>
+                    <td>Deep Patel</td>
+                    <td>deep2517</td>
+                    <td>Limbdi</td>
+                </tr>
+                <tr>
+                    <td><img src="/images/profileImg.jpg" class="rounded-circle h-20 w-25 mx-auto d-block"
+                            alt="profile Pic">
+                    </td>
+                    <td>Krinsi Kayada</td>
+                    <td>krinsi2012</td>
+                    <td>Rajkot</td>
+                </tr>
+                <tr>
+                    <td><img src="/images/profileImg.jpg" class="rounded-circle h-20 w-25 mx-auto d-block"
+                            alt="profile Pic">
+                    </td>
+                    <td>Vishal Gohil</td>
+                    <td>vdgohil04</td>
+                    <td>Sihor</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div id="demo" class="carousel slide mx-auto d-flex w-50" data-ride="carousel">
+
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+        </ul>
+
+        <div class="carousel-inner w-25 mx-auto d-block">
+            <div class="carousel-item active">
+                <img class="img-fluid" src="images/la.jpg" alt="Los Angeles">
+            </div>
+            <div class="carousel-item">
+                <img class="img-fluid" src="images/chicago.jpg" alt="Chicago">
+            </div>
+            <div class="carousel-item">
+                <img class="img-fluid" src="images/ny.jpg" alt="New York">
+            </div>
+        </div>
+
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon bg-dark"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon bg-dark"></span>
+        </a>
+    </div>
+
+    <footer id="ContactMe">
+        <div class="row bg-dark mt-2">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <div class="container-fluid text-white p-5">
+                    <h3>Contact us</h3>
+                    <p>HelpLine Number :- 53475687</p>
+                    <button class="btn" style="font-size:24px; color:white">
+                        <a href="#"><i class="fa fa-twitter text-white"></i></a>
+                    </button>
+                    <button class="btn" style="font-size:24px; color:white">
+                        <a href="#"><i class="fa fa-instagram text-white"></i></a>
+                    </button>
+                    <button class="btn" style="font-size:24px; color:white">
+                        <a href="#"><i class="fa fa-linkedin text-white"></i></a>
+                    </button>
+                </div>
+            </div>
+            <div class="col-1"></div>
+            <div class="col-4">
+                <div class="container text-white p-5">
+                    <h3>Address</h3>
+                    <p>12, abc, xyz-265432</p>
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </footer>
+
+    <!-- jQuery library -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js">
+    </script>
+
+    <!-- Popper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js">
+    </script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+</body>
+
+</html>

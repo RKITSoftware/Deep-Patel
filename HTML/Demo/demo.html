@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test HTML</title>
+</head>
+
+<body>
+
+    <div class="anchorLink">
+        <a href="#image">To reach Image</a>
+    </div>
+
+    <div class="registerForm">
+        <h2 id="formHeading">Registration Form</h2>
+        <form target="_self" autocomplete="on" enctype="multipart/form-data" id="registrationForm">
+            <fieldset>
+                <legend>Personal Details</legend>
+
+                <label for="txtFirstName">First Name :- </label>
+                <input type="text" name="txtFirstName" id="txtFirstName" required> <br> <br>
+
+                <label for="txtLastName">Last Name :- </label>
+                <input type="text" name="txtLastName" id="txtLastName"> <br> <br>
+
+                <label for="birthDate">Date of birth :- </label>
+                <input type="date" name="birthDate" id="birthDate" required> <br> <br>
+
+                <label for="profilePhoto">Photo</label>
+                <input type="file" name="profilePhoto" id="profilePhoto" accept="image/*"> <br> <br>
+
+                <label for="homeAddress">Address :- </label>
+                <textarea name="homeAddress" id="homeAddress" cols="30" rows="5" required></textarea> <br> <br>
+
+                <label for="selCity">Which City are you living? </label>
+                <select name="selCity" id="selCity" class="required">
+                    <option value="Rajkot">Rajkot</option>
+                    <option value="Ahmedabad" selected>Ahmedabad</option>
+                    <option value="Vadodara">Vadodara</option>
+                    <option value="Surat">Surat</option>
+                </select> <br> <br>
+
+                <label for="education">Study:- </label>
+
+                <input type="checkbox" name="SSC" id="SSC" value="10th">
+                <label for="SSC">10th</label>
+                <input type="checkbox" name="HSC" id="HSC" value="12th">
+                <label for="HSC">12th</label>
+                <input type="checkbox" name="Diploma" id="Diploma" value="Diploma">
+                <label for="Diploma">Diploma</label> <br> <br>
+
+                <label for="gender">Gender :- </label>
+                <input type="radio" name="gender" id="male" checked value="Male">
+                <label for=" male">Male</label>
+                <input type="radio" name="gender" id="female" value="Female">
+                <label for="female">Female</label>
+                <input type="radio" name="gender" id="other" value="Other">
+                <label for="other">Other.</label> <br> <br>
+
+                <div class="reset-submit">
+                    <input class="btnReset" type="reset" value="Reset">
+                    <input class="btnSubmit" type="submit" value="Submit">
+                </div>
+
+                <!-- <input type="image"
+                    src="https://c4.wallpaperflare.com/wallpaper/172/34/484/code-coding-geek-programmer-wallpaper-preview.jpg"
+                    alt="Image not found" height="50px" width="100px"> -->
+            </fieldset>
+        </form>
+    </div>
+    <hr>
+
+    <section class="forImage">
+        <img src="https://c4.wallpaperflare.com/wallpaper/603/260/908/programmers-programming-motivational-code-text-hd-wallpaper-preview.jpg"
+            id="image" alt="Image Not Found" height="410px" width="728px">
+    </section>
+    <hr>
+
+    <fieldset class="refer">
+        <legend>Refer to this video for learning html</legend>
+        <div class="learning">
+            <iframe width="728" height="410" src="https://www.youtube.com/embed/HcOc7P5BMi4"
+                title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
+    </fieldset>
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+body {
+    background:linear-gradient(#FDE5EC, #FCBAAD, #E48586, #916DB3);
+}
+
+.anchorLink {
+    margin-top: 5px;
+    position: relative;
+    margin-left: 5px;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 1px 1px gray;
+    margin-bottom: 10px;
+}
+
+.anchorLink a {
+    text-transform: capitalize;
+    text-decoration: none;
+    color: black;
+}
+
+.registerForm {
+    width: 30%;
+    margin: auto;
+    position: relative;
+    justify-content: center;
+}
+
+.registerForm h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+fieldset {
+    border-color: gray;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+legend {
+    text-align: left;
+    font-size: 20px;
+}
+
+label {
+    font-size: 15px;
+}
+
+input:autofill {
+    border: 3px solid darkorange;
+}
+
+textarea:autofill {
+    border: 3px solid darkorange;
+}
+
+input:focus {
+    outline: 2px solid blue;
+}
+
+textarea:focus {
+    outline: 2px dashed blue;
+}
+
+a:link {
+    color: forestgreen;
+    text-decoration-color: hotpink;
+}
+
+input[type="file"]::file-selector-button {
+  border: 2px solid #00cec9;
+  padding: 0.2em 0.4em;
+  border-radius: 0.2em;
+  background-color: #a29bfe;
+  transition: 1s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #81ecec;
+  border: 2px solid #00cec9;
+}
+
+.reset-submit {
+    display: relative;
+    padding-left: 20px;
+}
+
+.btnReset {
+    height: 30px;
+    width: 60px;
+    margin-left: 30px;
+}
+
+.btnSubmit {
+    height: 30px;
+    width: 60px;
+}
+
+.btnReset:hover {
+    box-shadow: 3px 2px 5px rgba(255, 0, 0, .8);
+}
+
+input[type="submit"] {
+    margin-left: 10%;
+}
+
+.forImage img {
+    position: relative;
+    left: 25%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.refer {
+    width: 40%;
+    margin: auto;
+    margin-top: 10px;
+}
+
+.forImage img:hover {
+    transition: 1s 2s;
+    transform: rotateZ(180deg);
+}

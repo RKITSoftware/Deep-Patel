@@ -1,6 +1,6 @@
 // Selecting Id from Html
 let incrementSessionButton = document.getElementById('btnIncrementSession');
-let decrementSessionButton = document.getElementById('btndecrementSession');
+let decrementSessionButton = document.getElementById('btnDecrementSession');
 let counterValueSession = document.getElementById('counterValueSession');
 
 // sessionStorage.setItem('counter', 0);
@@ -9,7 +9,7 @@ let counterValueSession = document.getElementById('counterValueSession');
 
 // Adding click event for increment and decrement counter value.
 incrementSessionButton.addEventListener("click", IncrementValueSession);
-decrementSessionButton.addEventListener("click", DecrementValueSession);
+decrementSessionButton.addEventListener("click", DecrementValueSession);    
 
 // If exists counter in session storage then increment the counter value
 // else create counter value with 1 in session storage.

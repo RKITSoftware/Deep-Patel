@@ -24,7 +24,7 @@ $(document).ready(function () {
     $.when(asyncEvent()).then(
         // Attach a Done
         function (success) {
-            console.log(success + ', things are foing well');
+            console.log(success + ', things are going well');
         },
 
         // Fail

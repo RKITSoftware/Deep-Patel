@@ -6,9 +6,11 @@ $(document).ready(function () {
     // Check the user in local storage.
     // if user found then return it's value otherwise return undefined.
     function CheckInLocal() {
+        // Getting values of user email and password
         const userEmail = $('#loginUserEmail').val().trim();
         const userPassword = $('#loginUserPassword').val().trim();
 
+        // finding the user details on localStorage of myRecords.
         const myRecords = JSON.parse(localStorage.getItem('myRecords') || '[]');
         const user = myRecords.find((user) => {
             return userEmail === user['userEmail'] && userPassword === user['userPassword'];
@@ -34,8 +36,10 @@ $(document).ready(function () {
             sessionStorage.setItem('userEmail', userData['userEmail']);
             sessionStorage.setItem('userPassword', userData['userPassword']);
 
+            // Replace the window location with home page.
             window.location.replace('http://127.0.0.1:5500/templates/home.html');
         } else {
+            // Showing error msg and reseting the details.
             $('#dangerMsg').show();
             resetDetails();
         }

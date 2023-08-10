@@ -134,6 +134,7 @@ $(document).ready(function () {
             $('#dangerMsg').show();
         }
 
+        // Clear the details
         resetDetails();
     });
 

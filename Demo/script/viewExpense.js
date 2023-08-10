@@ -1,14 +1,18 @@
 import { CheckUserLogin } from "./checkUserLogin.js";
 
+// check user login
 CheckUserLogin();
 
 $(document).ready(function () {
+    // Getting the values form session storage.
     let userName = sessionStorage.getItem('userName').split(' ')[0];
     let userEmail = sessionStorage.getItem('userEmail').slice(0, 5);
 
+    // creating localname.
     let localName = userName + userEmail;
     const userExpenseData = JSON.parse(localStorage.getItem(localName) || '[]');
 
+    // showing the user expense data to user.
     let totalAmount = 0;
     console.log(totalAmount);
     $.each(userExpenseData, function (index, item) {

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- My CSS -->
+    <link rel="stylesheet" href="/style/login_registartion_page.css">
+
+</head>
+
+<body>
+
+    <!-- Login Page -->
+    <section class="vh-100 border border-dark m-3 loginSection">
+        <div class="container-fluid p-3">
+            <div class="row ">
+                <div class="col-6">
+                    <img src="https://www.stockphotosecrets.com/wp-content/uploads/2021/06/photocase_photo_id_3236595_square-550x550.jpg"
+                        alt="Img not found" class="loginPageImg">
+                </div>
+                <div class="col-6">
+                    <div class="forFont">
+                        <h3 class="display-3 mb-4">Log in</h3>
+
+                        <div class="alert alert-danger alert-dismissible w-75" id="dangerMsg">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            Enter Correct Information.
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="loginUserEmail">Email</label>
+                            <input type="email" id="loginUserEmail" class="form-control form-control-lg w-75" />
+                        </div>
+
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="loginUserPassword">Password</label>
+                            <div class="input-group w-75">
+                                <input type="password" id="loginUserPassword"
+                                    class="form-control form-control-lg w-75" />
+                                <div class="input-group-postpend">
+                                    <div class="input-group-text h-100" id="passwordShower"><i class="fa fa-eye-slash"
+                                            id="eyeIcon"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-1 mb-4">
+                            <button id="btnLogIn" class="btn btn-info btn-lg" type="button">Login</button>
+                        </div>
+
+                        <p class="pb-lg-2"><a class="text-muted" href="" data-toggle="modal"
+                                data-target="#passwordChangeModal">Forgot
+                                password?</a></p>
+                        <p>Don't have an account? <a href="./templates/registrationForm.html" class="link-info">Register
+                                here</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Password Change Modal -->
+
+    <!-- The Modal -->
+    <div class="modal" id="passwordChangeModal">
+        <div class="modal-dialog w-75">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Password Change</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div>
+                        <label class="form-label" for="modalUserName">Name</label>
+                        <input type="text" id="modalUserName" class="form-control form-control-lg w-75"
+                            autocomplete="off" />
+                    </div>
+                    <div>
+                        <label class="form-label" for="modalUserEmail">Email</label>
+                        <input type="email" id="modalUserEmail" class="form-control form-control-lg w-75"
+                            autocomplete="off" />
+                        <button class="btn btn-primary my-2" id="btnCheck">Check</button>
+                    </div>
+
+                    <div id="modalPassword">
+                        <label class="form-label" for="modalUserNewPassword">Enter new password</label>
+                        <input type="text" id="modalUserNewPassword" class="form-control form-control-lg w-75"
+                            autocomplete="off" />
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-info" id="btnChange" data-dismiss="modal">Change</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- My Script -->
+    <script type="module" src="/script/loginScript.js"></script>
+    <script type="module" src="/script/passwordChange.js"></script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

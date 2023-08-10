@@ -1,0 +1,17 @@
+.loginSection, .registerFormSection {
+    border-radius: 10px;
+    margin-bottom: 0;
+}
+
+.loginPageImg, .registrationPageImg {
+    width: 93%;
+    height: 100%;
+}
+
+.forFont {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+label {
+    font-size: 20px;
+}

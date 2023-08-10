@@ -17,9 +17,12 @@ const isEven = (number) => {
 console.log(isEven(3));
 console.log(isEven(4));
 
+
 // input: string
 // output: firstCharacter
 
 const FirstCharacter = (anyString) => {
     return anyString[0];
 }
+
+console.log('First Character of string "deep" is', FirstCharacter('deep'));

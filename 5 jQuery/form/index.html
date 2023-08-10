@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container mt-5 h-100 d-flex align-items-center justify-content-center">
+
+        <div class="col-lg-8 m-auto d-block">
+            <h3>Login form With the help of Local storage.</h3>
+
+            <form target=" _self">
+                <div class="form-group">
+                    <label for="txtUserName">
+                        Username:
+                    </label>
+                    <input type="text" name="txtUserName" id="txtUserName" class="form-control">
+                    <p id="userNameErrorMessage" style="color: red;">
+                        Username is missing </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="emlUserEmail">
+                        Email:
+                    </label>
+                    <input type="email" name="emlUserEmail" id="emlUserEmail" required class="form-control">
+                    <p id="userEmailErrorMessage" style="color: red"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="pwdUserPassword">
+                        Password:
+                    </label>
+                    <div class="input-group">
+                        <input type="password" name="pwdUserPassword" id="pwdUserPassword" class="form-control">
+                        <div class="input-group-postpend">
+                            <div class="input-group-text h-100" id="passwordShower"><i class="fa fa-eye"
+                                    id="eyeIcon"></i></div>
+                        </div>
+                    </div>
+                    <p id="passwordRuleLength" style="color: red;">- Minimum 8 character</p>
+                    <p id="passwordRuleSymbol" style="color: red;">- Special Symbol @ </p>
+                    <p id="passwordRuleWhiteSpace" style="color: green;">- Whitespace </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        Confirm Password:
+                    </label>
+                    <input type="password" name="confirmPassword" id="confirmPassword" class="form-control">
+                    <p id="confirmPasswordErrorMessage" style="color: red;">
+                        Password didn't match
+                    </p>
+                </div>
+
+                <div class="d-flex flex-direction-row justify-content-between">
+                    <input type="submit" id="btnSubmit" value="Submit" class="btn btn-primary">
+                    <a href="loginDetails.html" class="btn btn-primary" id="loginDetailLink">View Details of
+                        Login</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="form.js"></script>
+    <script src="loginDetailShow.js"></script>
+</body>
+
+</html>

@@ -3,10 +3,6 @@ let incrementSessionButton = document.getElementById('btnIncrementSession');
 let decrementSessionButton = document.getElementById('btnDecrementSession');
 let counterValueSession = document.getElementById('counterValueSession');
 
-// sessionStorage.setItem('counter', 0);
-// sessionStorage.getItem('counter');
-// sessionStorage.removeItem('counter');
-
 // Adding click event for increment and decrement counter value.
 incrementSessionButton.addEventListener("click", IncrementValueSession);
 decrementSessionButton.addEventListener("click", DecrementValueSession);    

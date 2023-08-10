@@ -3,10 +3,6 @@ let incrementLocalButton = document.getElementById('btnIncrementLocal');
 let decrementLocalButton = document.getElementById('btnDecrementLocal');
 let counterValueLocal = document.getElementById('counterValueLocal');
 
-// localStorage.setItem('counter', 0);
-// localStorage.getItem('counter');
-// localStorage.removeItem('counter');
-
 // Adding click event for increment and decrement counter value.
 incrementLocalButton.addEventListener("click", IncrementValueLocal);
 decrementLocalButton.addEventListener("click", DecrementValueLocal);

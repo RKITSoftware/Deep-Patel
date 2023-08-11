@@ -1,9 +1,13 @@
 import { CheckUserLogin } from "./checkUserLogin.js";
 
-// check user login
+// Check user login
 CheckUserLogin();
 
 $(document).ready(function () {
+
+    // Defining variables.
+    $viewExpenseTableBody = $('#viewExpenseTableBody');
+
     // Getting the values form session storage.
     let userName = sessionStorage.getItem('userName').split(' ')[0];
     let userEmail = sessionStorage.getItem('userEmail').slice(0, 5);
@@ -14,7 +18,6 @@ $(document).ready(function () {
 
     // showing the user expense data to user.
     let totalAmount = 0;
-    console.log(totalAmount);
     $.each(userExpenseData, function (index, item) {
         let appendString = `<tr>
         <th scope="row">${+index + 1}</th>
@@ -34,6 +37,7 @@ $(document).ready(function () {
         appendString += `<td>${totalAmount}</td>
                         </tr>`;
 
-        $('#viewExpenseTableBody').append(appendString);
+        // Appending the string at viewExpenseTable.
+        $viewExpenseTableBody.append(appendString);
     });
 });

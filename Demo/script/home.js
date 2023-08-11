@@ -1,27 +1,26 @@
 import { CheckUserLogin } from "./checkUserLogin.js";
 
-// Checking user is logged or not.
+// Checking user login
 CheckUserLogin();
 
-// Taking form id.
+// Taking form id
 const addExpenseForm = document.getElementById('addExpenseForm');
 
-// when submit the form it will create it's local Storag name for storing the 
-// data in local storage.
+// Add expenseData to local storage
 addExpenseForm.addEventListener('submit', () => {
 
-    // Getting the userName and userEmail from login
+    // Getting the userName and userEmail from session storgage.
     let userName = sessionStorage.getItem('userName').split(' ')[0];
     let userEmail = sessionStorage.getItem('userEmail').slice(0, 5);
 
     // Created local name for local storage.
     let localName = userName + userEmail;
 
-    // Today Date.
+    // Creating today date in dd-mm-yyyy format.
     const date = new Date();
     const todayDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
 
-    // myObj stores form input data.
+    // myObj object stores form input data.
     const myObj = {
         "itemName": $('#txtItemName').val().trim(),
         "itemValue": $('#numItemVal').val(),
@@ -29,9 +28,7 @@ addExpenseForm.addEventListener('submit', () => {
         'itemAddedDate': todayDate
     }
 
-    // Getting localName from storage if exist.
-    // if it not the create a localStorage for it.
-    // and Adding the myObj data to localStorage.
+    // Getting userExpenseData and adding new data
     const userExpenseData = JSON.parse(localStorage.getItem(localName) || '[]');
     userExpenseData.push(myObj);
     localStorage.setItem(localName, JSON.stringify(userExpenseData));

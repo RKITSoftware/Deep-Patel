@@ -1,25 +1,33 @@
 $(document).ready(function () {
 
-    // It hide password change div if user details verify then it will show to user.
-    $('#modalPassword').hide();
+    // Defining variables.
+    let $btnChange = $('#btnChange');
+    let $btnCheck = $('#btnCheck');
+    let $modalUserName = $('#modalUserName');
+    let $modalUserEmail = $('#modalUserEmail');
+    let $modalPassword = $('#modalPassword');
+    let $modalUserNewPassword = $('#modalUserNewPassword');
 
-    // Variable for checking is User Details verify or not.
+    // Tells user details is correct or not
     let isUserVerified = false;
 
-    // when change button click it will take userName and userEmail values
-    // and find user in local storage and if they found then it will change the 
-    // password and if they don't find the user then we get alert.
-    $('#btnChange').click(function () {
+    // It hide password change field
+    $modalPassword.hide();
+
+    // Change button click event
+    $btnChange.click(function () {
+
+        // User details check
         if (isUserVerified) {
 
-            // taking values from modal
-            const userName = $('#modalUserName').val().trim();
-            const newUserPassword = $('#modalUserNewPassword').val().trim();
+            // Taking values from password modal
+            const userName = $modalUserName.val().trim();
+            const newUserPassword = $modalUserNewPassword.val().trim();
 
-            // parsing data from local storage.
+            // Parsing data from local storage.
             const myRecords = JSON.parse(localStorage.getItem('myRecords') || '[]');
 
-            // find the user with its name
+            // Find the user with it's name
             myRecords.find((user) => {
                 if (userName === user['userName']) {
 
@@ -31,32 +39,34 @@ $(document).ready(function () {
                 }
             });
 
-            // storing data in localstorage after updating the password.
+            // Storing data in localstorage after updating the password.
             localStorage.setItem('myRecords', JSON.stringify(myRecords));
         }
     });
 
-    // Checking the value when user enter name and email if it correct and match with userData then
-    // we show enter new password field.
-    $('#btnCheck').click(function () {
+    // Checking the user value on local storage
+    $btnCheck.click(function () {
+
         // Taking values 
-        const userName = $('#modalUserName').val().trim();
-        const userEmail = $('#modalUserEmail').val().trim();
+        const userName = $modalUserName.val().trim();
+        const userEmail = $modalUserEmail.val().trim();
 
         // Parsing localStorage json object data.
         const myRecords = JSON.parse(localStorage.getItem('myRecords') || '[]');
+
+        // Finding user
         const user = myRecords.find((user) => {
             return userEmail === user['userEmail'] && userName === user['userName'];
         });
 
-        // if user is there in localstorage.
+        // If user is there in localstorage.
         if (user !== undefined) {
             isUserVerified = true;
-            $('#modalPassword').show();
+            $modalPassword.show();
         } else {
             // else it will hide password field and give alert.
             isUserVerified = false;
-            $('#modalPassword').hide(function () {
+            $modalPassword.hide(function () {
                 alert('Enter correct details');
             });
         }

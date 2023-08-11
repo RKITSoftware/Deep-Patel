@@ -43,7 +43,7 @@ class Person {
     }
 }
 
-// Creatinf=g Object of Person Class.
+// Creating Object of Person Class.
 const person1 = new Person('deep', 'patel', 21);
 console.log(person1.eat());
 // console.log(person1.classInfo());

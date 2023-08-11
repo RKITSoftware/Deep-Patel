@@ -1,4 +1,4 @@
-// Check user login if user is login then it don't redirect to login page.
+// Check User Login
 function CheckUserLogin() {
     if (sessionStorage.getItem('userName') === null) {
         alert('Please Login');
@@ -8,5 +8,5 @@ function CheckUserLogin() {
     }
 }
 
-// Exporting userLogin Function for outer usage.
+// Exporting userLogin function for outer usage.
 export { CheckUserLogin };

@@ -48,7 +48,7 @@ $(document).ready(function () {
             sessionStorage.setItem('userPassword', userData['userPassword']);
 
             // Replace the window location with home page.
-            window.location.replace('http://127.0.0.1:5500/templates/home.html');
+            window.location.replace(`${window.location.origin}/templates/home.html`);
         } else {
             // Showing error msg and reseting the details.
             $dangerMsg.show();

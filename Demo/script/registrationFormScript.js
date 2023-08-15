@@ -10,7 +10,7 @@ $(document).ready(function () {
     let $userEmailErrorMessage = $('#userEmailErrorMessage');
     let $passwordRuleLength = $('#passwordRuleLength');
     let $passwordRuleSymbol = $('#passwordRuleSymbol');
-    let $passwordRuleWhiteSpace = $('$passwordRuleWhiteSpace');
+    let $passwordRuleWhiteSpace = $('#passwordRuleWhiteSpace');
     let $btnRegForm = $('#btnRegForm');
     let $eyeIcon = $('#eyeIcon');
     let $passwordShower = $('#passwordShower');

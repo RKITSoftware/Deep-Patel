@@ -2,7 +2,7 @@
 function CheckUserLogin() {
     if (sessionStorage.getItem('userName') === null) {
         alert('Please Login');
-        window.location.replace('http://127.0.0.1:5500/index.html');
+        window.location.replace(`${window.location.origin}/index.html`);
     } else {
         document.getElementById('welcomeText').innerText = sessionStorage.getItem('userName');
     }

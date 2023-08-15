@@ -3,10 +3,9 @@ import { CheckUserLogin } from "./checkUserLogin.js";
 // Check user login
 CheckUserLogin();
 
-$(document).ready(function () {
+console.log('hello');
 
-    // Defining variables.
-    $viewExpenseTableBody = $('#viewExpenseTableBody');
+$(document).ready(function () {
 
     // Getting the values form session storage.
     let userName = sessionStorage.getItem('userName').split(' ')[0];
@@ -38,6 +37,6 @@ $(document).ready(function () {
                         </tr>`;
 
         // Appending the string at viewExpenseTable.
-        $viewExpenseTableBody.append(appendString);
+        $('#viewExpenseTableBody').append(appendString);
     });
 });

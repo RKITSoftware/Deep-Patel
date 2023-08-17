@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Check</title>
+</head>
+
+<body>
+    <button onclick="writeHelloWorld()" id="demoDiv">Click</button>
+
+    <script>
+        function writeHelloWorld() {
+            console.log('hello');
+        }
+
+        const demoDiv = document.getElementById('demoDiv');
+
+        demoDiv.onclick = () => {
+            console.log('using element.event');
+        }
+    </script>
+
+    <!-- Jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js">
+    </script>
+
+    <!-- My Script -->
+    <!-- <script>
+        const demoDiv = document.getElementById('demoDiv');
+
+        demoDiv.onclick = () => {
+            console.log('using element.event');
+        }
+
+        demoDiv.addEventListener('click', () => {
+            console.log('using add event listener.');
+        })
+
+        $(document).ready(function () {
+            $('#demoDiv').click(function () {
+                console.log('using jquery.');
+            });
+        });
+    </script> -->
+</body>
+
+</html>

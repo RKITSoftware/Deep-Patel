@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Event Programatically</title>
+</head>
+
+<body>
+    <input type="file" name="fileUser" id="fileUser" hidden>
+    <button type="button" id="btnGetFile">Get File</button>
+
+    <div style="margin-top: 10px;">
+        <label for="txtUserName">Enter username: </label>
+        <input type="text" name="txtUserName" id="txtUserName">
+    </div>
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            // Defining variables.
+            $fileUser = $('#fileUser');
+            $txtUserName = $('#txtUserName');
+            $btnGetFile = $('#btnGetFile');
+
+            // User click on btn it see file window
+            $btnGetFile.click(function () {
+                $fileUser.click();
+            });
+
+            // User enter correct user name it will see file window.
+            $txtUserName.keyup(function () {
+                if ($txtUserName.val() == 'Deep Patel') {
+                    $fileUser.click();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -8,7 +8,8 @@ $(document).ready(function () {
             <td class="col-4 text-center">${value.userName}</td>
             <td class="col-4 text-center">${value.userEmail}</td>
             </tr>`);
-    })
+    });
+    
     // for (let index in users) {
     //     console.log(index);
     //     $('#loginDetailTable').append(`<tr class="row">

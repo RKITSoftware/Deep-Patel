@@ -39,13 +39,13 @@ $(document).ready(function () {
 
     // First it hide email error message.
     $('#userEmailErrorMessage').hide();
-    let isUserEmailValid = true;
+    let isUserEmailValid = false;
 
     // when user focusout email input tag then it will perform function whether it is correct or not
     // if isUserEmailValid is true then it will don't show error caption.
     // else it will show.
     $('#emlUserEmail').blur(function () {
-        const userEmail = $('#emlUserEmail').val().trim();
+        const userEmail = $('#emlUserEmail').val();
         let regex = /^([_\-\.0-9a-zA-Z]+)@([_\-\.0-9a-zA-Z]+)\.([a-zA-Z]){2,7}$/;
 
         if ($.trim(userEmail).match(regex)) {
@@ -134,12 +134,21 @@ $(document).ready(function () {
         localStorage.setItem('users', JSON.stringify(users));
     }
 
+    // Reset form details when details are correct.
+    function resetDetails() {
+        $('#txtUserName').val("");
+        $('#emlUserEmail').val("");
+        $('#pwdUserPassword').val("");
+        $('#confirmPassword').val("");
+    }
+
     // when user submit the form it will check whether it have all details correct or not.
     $('#btnSubmit').click(function (e) {
         e.preventDefault();
         if (isUserNameValid && isUserEmailValid && isPasswordValid && isSecondPasswordMatch) {
             insertDataOnLocal();
             alert('Your Details are correct');
+            resetDetails();
         } else {
             alert('Details are incorrect');
         }

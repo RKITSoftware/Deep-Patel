@@ -1,5 +1,4 @@
 // async await
-
 const URL = 'https://jsonplaceholder.typicode.com/posts';
 
 // fetch(URL)

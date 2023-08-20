@@ -7,8 +7,7 @@ let counterValueLocal = document.getElementById('counterValueLocal');
 incrementLocalButton.addEventListener("click", IncrementValueLocal);
 decrementLocalButton.addEventListener("click", DecrementValueLocal);
 
-// If exists counter in local storage then inrement the counter value
-// else create counter value with 1 in local storage.
+// Increment counter value on Local
 function IncrementValueLocal() {
     if (localStorage.counter) {
         localStorage.counter = Number(localStorage.getItem('counter')) + 1;
@@ -20,8 +19,7 @@ function IncrementValueLocal() {
     counterValueLocal.textContent = Number(localStorage.counter);
 }
 
-// If exists counter in local storage then decrement the counter value
-// else create counter value with -1 in local storage.
+// Decrement counter value on Local
 function DecrementValueLocal() {
     if (localStorage.counter) {
         localStorage.counter = Number(localStorage.getItem('counter')) - 1;
@@ -29,6 +27,5 @@ function DecrementValueLocal() {
     } else {
         localStorage.counter = -1;
     }
-
     counterValueLocal.textContent = Number(localStorage.counter);
 }

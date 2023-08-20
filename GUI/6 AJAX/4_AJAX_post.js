@@ -4,11 +4,16 @@ const URL = 'https://jsonplaceholder.typicode.com/posts';
 
 fetch(URL, {
     method: 'POST',
-    body: JSON.stringify({
+    body: JSON.stringify([{
         title: 'patel',
         body: 'bar',
         userId: 1,
-    }),
+    },
+    {
+        title: 'patel2',
+        body: 'bar2',
+        userId: 2,
+    }]),
 
     headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -20,7 +25,6 @@ fetch(URL, {
         throw new Error('Something went wrong.');
     }
 }).then(data => {
-    console.log('then2');
     console.log(data);
 }).catch(error => {
     console.log('catch block');

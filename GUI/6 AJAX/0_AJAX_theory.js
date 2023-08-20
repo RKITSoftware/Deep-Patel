@@ -10,7 +10,7 @@ using many web technologies on the 'client-side'
 to create asynchronous web applications.
 
 - with ajax, web applications can send and receive
-data ffrom a server asynchronously (in the background)
+data from a server asynchronously (in the background)
 without interfacing with the display and 
 behaviour of the existing page.
 

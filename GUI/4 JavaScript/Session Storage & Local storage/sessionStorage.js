@@ -5,10 +5,9 @@ let counterValueSession = document.getElementById('counterValueSession');
 
 // Adding click event for increment and decrement counter value.
 incrementSessionButton.addEventListener("click", IncrementValueSession);
-decrementSessionButton.addEventListener("click", DecrementValueSession);    
+decrementSessionButton.addEventListener("click", DecrementValueSession);
 
-// If exists counter in session storage then increment the counter value
-// else create counter value with 1 in session storage.
+// Increment counter value on session storage.
 function IncrementValueSession() {
     if (sessionStorage.counter) {
         sessionStorage.counter = Number(sessionStorage.getItem('counter')) + 1;
@@ -16,12 +15,10 @@ function IncrementValueSession() {
     } else {
         sessionStorage.counter = 1;
     }
-
     counterValueSession.textContent = Number(sessionStorage.counter);
 }
 
-// If exists counter in session storage then decrement the counter value
-// else create counter value with -1 in session storage.
+// Increment counter value on session storage.
 function DecrementValueSession() {
     if (sessionStorage.counter) {
         sessionStorage.counter = Number(sessionStorage.getItem('counter')) - 1;
@@ -29,6 +26,5 @@ function DecrementValueSession() {
     } else {
         sessionStorage.counter = -1;
     }
-
     counterValueSession.textContent = Number(sessionStorage.counter);
 }

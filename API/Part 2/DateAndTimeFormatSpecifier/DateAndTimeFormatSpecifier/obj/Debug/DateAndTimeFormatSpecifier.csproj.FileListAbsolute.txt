@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\bin\Debug\DateAndTimeFormatSpecifier.exe.config
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\bin\Debug\DateAndTimeFormatSpecifier.exe
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\bin\Debug\DateAndTimeFormatSpecifier.pdb
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\obj\Debug\DateAndTimeFormatSpecifier.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\obj\Debug\DateAndTimeFormatSpecifier.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\obj\Debug\DateAndTimeFormatSpecifier.exe
+C:\Users\DEEP\source\repos\DateAndTimeFormatSpecifier\DateAndTimeFormatSpecifier\obj\Debug\DateAndTimeFormatSpecifier.pdb

@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\bin\Debug\ConstantSInCSharp.exe.config
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\bin\Debug\ConstantSInCSharp.exe
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\bin\Debug\ConstantSInCSharp.pdb
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\obj\Debug\ConstantSInCSharp.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\obj\Debug\ConstantSInCSharp.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\obj\Debug\ConstantSInCSharp.exe
+C:\Users\DEEP\source\repos\ConstantSInCSharp\ConstantSInCSharp\obj\Debug\ConstantSInCSharp.pdb

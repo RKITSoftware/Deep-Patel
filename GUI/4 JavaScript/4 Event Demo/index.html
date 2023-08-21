@@ -8,42 +8,14 @@
 </head>
 
 <body>
-    <button onclick="writeHelloWorld()" id="demoDiv">Click</button>
-
-    <script>
-        function writeHelloWorld() {
-            console.log('hello');
-        }
-
-        const demoDiv = document.getElementById('demoDiv');
-
-        demoDiv.onclick = () => {
-            console.log('using element.event');
-        }
-    </script>
+    <button onclick="writeHelloWorld();" id="demoDiv">Click</button>
 
     <!-- Jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js">
     </script>
 
     <!-- My Script -->
-    <!-- <script>
-        const demoDiv = document.getElementById('demoDiv');
-
-        demoDiv.onclick = () => {
-            console.log('using element.event');
-        }
-
-        demoDiv.addEventListener('click', () => {
-            console.log('using add event listener.');
-        })
-
-        $(document).ready(function () {
-            $('#demoDiv').click(function () {
-                console.log('using jquery.');
-            });
-        });
-    </script> -->
+    <script src="script.js"></script>
 </body>
 
 </html>

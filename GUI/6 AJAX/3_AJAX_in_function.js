@@ -28,7 +28,7 @@ sendRequest('GET', URL)
     })
     .then(data => {
         // console.log(data[3].id);
-        return data[3].id;
+        return data[5].id;
     })
     .then(id => {
         const url = `${URL}/${id}`;

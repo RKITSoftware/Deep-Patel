@@ -3,8 +3,6 @@ import { CheckUserLogin } from "./checkUserLogin.js";
 // Check user login
 CheckUserLogin();
 
-console.log('hello');
-
 $(document).ready(function () {
 
     // Getting the values form session storage.

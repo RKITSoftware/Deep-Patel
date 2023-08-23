@@ -16,9 +16,9 @@ addExpenseForm.addEventListener('submit', () => {
     // Created local name for local storage.
     let localName = userName + userEmail;
 
-    // Creating today date in dd-mm-yyyy format.
+    // Creating today date in mm/dd/yyyy format.
     const date = new Date();
-    const todayDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear();
+    const todayDate = date.toLocaleDateString();
 
     // myObj object stores form input data.
     const myObj = {

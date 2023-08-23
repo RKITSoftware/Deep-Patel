@@ -112,15 +112,12 @@ $(document).ready(function () {
 
     // Insert data on local storage.
     function insertDataOnLocal() {
-        const userName = $regFormUserName.val().trim();
-        const userEmail = $regFormUserEmail.val().trim();
-        const userPassword = $regFormUserPassword.val().trim();
 
         // Creating object of user information.
         const myObj = {
-            'userName': userName,
-            'userEmail': userEmail,
-            'userPassword': userPassword,
+            'userName': $regFormUserName.val().trim(),
+            'userEmail': $regFormUserEmail.val().trim(),
+            'userPassword': $regFormUserPassword.val().trim()
         };
 
         // Storing values in arrays og object form.

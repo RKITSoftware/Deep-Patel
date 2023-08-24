@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\bin\Debug\MarkSheetCSharp.exe.config
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\bin\Debug\MarkSheetCSharp.exe
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\bin\Debug\MarkSheetCSharp.pdb
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\obj\Debug\MarkSheetCSharp.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\obj\Debug\MarkSheetCSharp.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\obj\Debug\MarkSheetCSharp.exe
+C:\Users\DEEP\source\repos\MarkSheetCSharp\MarkSheetCSharp\obj\Debug\MarkSheetCSharp.pdb

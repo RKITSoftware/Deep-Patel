@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\bin\Debug\JumpStatements.exe.config
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\bin\Debug\JumpStatements.exe
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\bin\Debug\JumpStatements.pdb
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\obj\Debug\JumpStatements.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\obj\Debug\JumpStatements.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\obj\Debug\JumpStatements.exe
+C:\Users\DEEP\source\repos\JumpStatements\JumpStatements\obj\Debug\JumpStatements.pdb

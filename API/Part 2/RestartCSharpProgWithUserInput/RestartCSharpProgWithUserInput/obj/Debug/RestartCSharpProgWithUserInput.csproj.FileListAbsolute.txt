@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\bin\Debug\RestartCSharpProgWithUserInput.exe.config
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\bin\Debug\RestartCSharpProgWithUserInput.exe
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\bin\Debug\RestartCSharpProgWithUserInput.pdb
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\obj\Debug\RestartCSharpProgWithUserInput.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\obj\Debug\RestartCSharpProgWithUserInput.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\obj\Debug\RestartCSharpProgWithUserInput.exe
+C:\Users\DEEP\source\repos\RestartCSharpProgWithUserInput\RestartCSharpProgWithUserInput\obj\Debug\RestartCSharpProgWithUserInput.pdb

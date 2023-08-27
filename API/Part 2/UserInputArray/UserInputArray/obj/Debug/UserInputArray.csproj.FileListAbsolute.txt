@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\bin\Debug\UserInputArray.exe.config
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\bin\Debug\UserInputArray.exe
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\bin\Debug\UserInputArray.pdb
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\obj\Debug\UserInputArray.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\obj\Debug\UserInputArray.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\obj\Debug\UserInputArray.exe
+C:\Users\DEEP\source\repos\UserInputArray\UserInputArray\obj\Debug\UserInputArray.pdb

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Operator
 {
@@ -25,18 +21,25 @@ namespace Operator
             // Logical or Conditional Operator
             // And (&&)
             // Or (||)
+            Console.WriteLine(true && false);
+            Console.WriteLine(true || false);
 
             // Assignment Operator
             // - Simple => =
             // - Compound => +=, -=, *=, /=, %=
+            int e = 10;
+            e += 2;
+            Console.WriteLine(e);
 
             // Increment && Decrement Operators
             // a++, ++a, --a, a--
+            e++;
+            Console.WriteLine(e);
 
             // Ternary Operator
             // Boolean Expression ? First Statement : Second Statement
-            int e = a > b ? 10 : 20;
-            Console.WriteLine(e);
+            int f = a > b ? 10 : 20;
+            Console.WriteLine(f);
 
             // Precedence of Operator
             // Highest Level -> (), /, *, +, -

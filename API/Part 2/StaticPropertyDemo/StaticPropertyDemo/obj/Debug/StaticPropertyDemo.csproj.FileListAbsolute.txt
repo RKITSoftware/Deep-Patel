@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\bin\Debug\StaticPropertyDemo.exe.config
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\bin\Debug\StaticPropertyDemo.exe
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\bin\Debug\StaticPropertyDemo.pdb
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\obj\Debug\StaticPropertyDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\obj\Debug\StaticPropertyDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\obj\Debug\StaticPropertyDemo.exe
+C:\Users\DEEP\source\repos\StaticPropertyDemo\StaticPropertyDemo\obj\Debug\StaticPropertyDemo.pdb

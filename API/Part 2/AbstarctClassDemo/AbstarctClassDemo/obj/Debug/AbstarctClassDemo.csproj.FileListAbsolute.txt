@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\obj\Debug\AbstarctClassDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\obj\Debug\AbstarctClassDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\bin\Debug\AbstarctClassDemo.exe.config
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\bin\Debug\AbstarctClassDemo.exe
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\bin\Debug\AbstarctClassDemo.pdb
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\obj\Debug\AbstarctClassDemo.exe
+C:\Users\DEEP\source\repos\AbstarctClassDemo\AbstarctClassDemo\obj\Debug\AbstarctClassDemo.pdb

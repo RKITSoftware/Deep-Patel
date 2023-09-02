@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\bin\Debug\OperatorOverloadingDemo.exe.config
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\bin\Debug\OperatorOverloadingDemo.exe
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\bin\Debug\OperatorOverloadingDemo.pdb
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\obj\Debug\OperatorOverloadingDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\obj\Debug\OperatorOverloadingDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\obj\Debug\OperatorOverloadingDemo.exe
+C:\Users\DEEP\source\repos\OperatorOverloadingDemo\OperatorOverloadingDemo\obj\Debug\OperatorOverloadingDemo.pdb

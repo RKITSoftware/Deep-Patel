@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ClassDemo
+namespace ClassDemoStudent
 {
     internal class Student
     {
@@ -9,6 +9,18 @@ namespace ClassDemo
         int age;
         int standard;
 
+        public static string schoolName;
+        public static int fees;
+
+        // Static Constructor
+        static Student()
+        {
+            schoolName = "Nilkanth Vidhyalay";
+            fees = 5000;
+            Console.WriteLine("Static Constructor Invoked");
+        }
+
+        // Default Constructor
         public Student()
         {
             this.rollNo = 0;
@@ -18,6 +30,7 @@ namespace ClassDemo
             Console.WriteLine("Default Constructor Called");
         }
 
+        // Parameterized Constructor
         public Student(string name)
         {
             this.rollNo = 0;
@@ -34,6 +47,21 @@ namespace ClassDemo
             this.age = age;
             this.standard = standard;
             Console.WriteLine("Multiple parameter constructor called");
+        }
+
+        // Copy Constructor
+        public Student(Student stu)
+        {
+            this.rollNo = stu.rollNo;
+            this.name = stu.name;
+            this.age = stu.age;
+            this.standard = stu.standard;
+            Console.WriteLine("Copy Constructor called");
+        }
+
+        ~Student()
+        {
+            Console.WriteLine("Destructor has been invoked");
         }
 
         public void setRollno(int rollNo)
@@ -60,6 +88,16 @@ namespace ClassDemo
             Console.WriteLine("Student name is :- {0}", this.name);
             Console.WriteLine("Student age is :- {0}", this.age);
             Console.WriteLine("Student standard is :- {0}\n", this.standard);
+        }
+
+        public static int getFees()
+        {
+            return fees;
+        }
+
+        public static int getFeesAnnualIncrement(int fee)
+        {
+            return fee / 10;
         }
     }
 }

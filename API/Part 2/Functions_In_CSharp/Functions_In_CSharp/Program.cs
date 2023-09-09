@@ -10,11 +10,16 @@ namespace Functions_In_CSharp
         //      Method Body
         // }
 
+        #region Non-static methods
         // non-static / instance method
         public void PrintHelloWorld() // Declare a method
         {
             Console.WriteLine("Hello World");
         }
+
+        #endregion
+
+        #region Static Methods
 
         public static void PrintHelloWorld2() // Declare a method
         {
@@ -37,6 +42,8 @@ namespace Functions_In_CSharp
             Console.WriteLine("Your name is " + name);
             Console.WriteLine("Your age is " + age);
         }
+
+        #endregion
 
         static void Main(string[] args)
         {

@@ -4,13 +4,23 @@ namespace ClassDemoStudent
 {
     internal class Student
     {
+        #region Private Members
+
         int rollNo;
         string name;
         int age;
         int standard;
 
+        #endregion
+
+        #region Static Members
+
         public static string schoolName;
         public static int fees;
+
+        #endregion
+
+        #region Constuctor
 
         // Static Constructor
         static Student()
@@ -59,11 +69,18 @@ namespace ClassDemoStudent
             Console.WriteLine("Copy Constructor called");
         }
 
+        #endregion
+
+        #region Destructor
+
         ~Student()
         {
             Console.WriteLine("Destructor has been invoked");
         }
 
+        #endregion
+
+        #region Public Methods
         public void setRollno(int rollNo)
         {
             this.rollNo = rollNo;
@@ -90,6 +107,9 @@ namespace ClassDemoStudent
             Console.WriteLine("Student standard is :- {0}\n", this.standard);
         }
 
+        #endregion
+
+        #region Static Methods
         public static int getFees()
         {
             return fees;
@@ -99,5 +119,7 @@ namespace ClassDemoStudent
         {
             return fee / 10;
         }
+
+        #endregion
     }
 }

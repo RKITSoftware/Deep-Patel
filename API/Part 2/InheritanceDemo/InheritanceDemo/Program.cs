@@ -6,16 +6,16 @@ namespace InheritanceDemo
     {
         static void Main(string[] args)
         {
-            PermanentEmployee Deep = new PermanentEmployee();
-            Deep.empId = 101;
+            PermanentEmployee deep = new PermanentEmployee();
+            deep.empId = 101;
 
-            VisitingEmployee Vishal = new VisitingEmployee();
-            Vishal.empId = 201;
+            VisitingEmployee vishal = new VisitingEmployee();
+            vishal.empId = 201;
 
-            Console.WriteLine(Deep.empId);
-            Console.WriteLine(Vishal.empId);
+            Console.WriteLine(deep.empId);
+            Console.WriteLine(vishal.empId);
 
-            Deep.show();
+            deep.show();
 
             // 4 Types of Inheritance
             // - Single

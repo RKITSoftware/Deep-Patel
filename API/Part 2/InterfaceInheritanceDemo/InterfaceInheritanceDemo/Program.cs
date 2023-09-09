@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InterfaceInheritanceDemo
 {
@@ -10,21 +6,31 @@ namespace InterfaceInheritanceDemo
 
     interface I1
     {
+        #region Public Methods
         void Print1();
+        
+        #endregion
     }
 
     interface I2
     {
+        #region Public Methods
         void Print2();
+
+        #endregion
     }
 
     interface I3 : I1, I2
     {
+        #region Public Methods
         void Print3();
+
+        #endregion
     }
 
     internal class Program : I3
     {
+        #region Public Methods
         public void Print1()
         {
             Console.WriteLine("Method of Interface 1");
@@ -39,6 +45,8 @@ namespace InterfaceInheritanceDemo
         {
             Console.WriteLine("Method of Interface 3");
         }
+
+        #endregion
 
         static void Main(string[] args)
         {

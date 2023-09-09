@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\bin\Debug\SealedClass.exe.config
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\bin\Debug\SealedClass.exe
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\bin\Debug\SealedClass.pdb
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\obj\Debug\SealedClass.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\obj\Debug\SealedClass.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\obj\Debug\SealedClass.exe
+C:\Users\DEEP\source\repos\SealedClass\SealedClass\obj\Debug\SealedClass.pdb

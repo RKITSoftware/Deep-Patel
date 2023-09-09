@@ -1,26 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MultipleInheritanceDemo
 {
     class Person
     {
+        #region Public methods
         public void Show()
         {
             Console.WriteLine("This is a method of person class");
         }
+
+        #endregion
     }
 
     interface Employee
     {
+        #region Public methods
         void Show();
+
+        #endregion
     }
 
     class Teacher : Person, Employee
     {
+        #region Public methods
+
         public new void Show()
         {
             Console.WriteLine("This is a method of person class.");
@@ -30,6 +34,8 @@ namespace MultipleInheritanceDemo
         {
             Console.WriteLine("This is a method of employee interface");
         }
+
+        #endregion
     }
 
     internal class Program

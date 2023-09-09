@@ -1,27 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbstarctClassDemo
 {
     abstract class Person
     {
-        public abstract int Id { get; set; }
+        #region Public members
+        
         public string firstName;
         public string lastName;
         public int age;
         public string phoneNumber;
 
+        #endregion
+
+        #region Public Properties
+        public abstract int Id { get; set; }
+
+        #endregion
+
+        #region Public Methods
         public abstract void PrintDetails();
+
+        #endregion
     }
 
     class Student : Person
     {
+        #region Public members
+
         public int rollNo;
         public int fees;
 
+        #endregion
+
+        #region Public Properties
         public override int Id
         {
             set
@@ -34,6 +46,9 @@ namespace AbstarctClassDemo
             }
         }
 
+        #endregion
+
+        #region Public Methods
         public override void PrintDetails()
         {
             string name = this.firstName + " " + this.lastName;
@@ -43,13 +58,20 @@ namespace AbstarctClassDemo
             Console.WriteLine("Student roll number is {0}", this.rollNo);
             Console.WriteLine("Student fee is {0}", this.fees);
         }
+
+        #endregion
     }
 
     class Teacher : Person
     {
+        #region Public members
+
         public string qualificaation;
         public int salary;
 
+        #endregion
+
+        #region Public Properties
         public override int Id
         {
             set
@@ -62,6 +84,9 @@ namespace AbstarctClassDemo
             }
         }
 
+        #endregion
+
+        #region Public Methods
         public override void PrintDetails()
         {
             string name = this.firstName + " " + this.lastName;
@@ -71,32 +96,34 @@ namespace AbstarctClassDemo
             Console.WriteLine("Teacher qualification number is {0}", this.qualificaation);
             Console.WriteLine("Teacher salary is {0}", this.salary);
         }
+
+        #endregion
     }
 
     internal class Program
     {
         static void Main(string[] args)
         {
-            Student Deep = new Student();
-            Deep.firstName = "Deep";
-            Deep.lastName = "Patel";
-            Deep.age = 21;
-            Deep.phoneNumber = "9909583015";
-            Deep.rollNo = 25;
-            Deep.fees = 100000;
+            Student deep = new Student();
+            deep.firstName = "Deep";
+            deep.lastName = "Patel";
+            deep.age = 21;
+            deep.phoneNumber = "9909583015";
+            deep.rollNo = 25;
+            deep.fees = 100000;
 
-            Deep.PrintDetails();
+            deep.PrintDetails();
             Console.WriteLine();
 
-            Teacher Shyam = new Teacher();
-            Shyam.firstName = "Shyam";
-            Shyam.lastName = "Kotecha";
-            Shyam.age = 35;
-            Shyam.phoneNumber = "7757528684";
-            Shyam.qualificaation = "Master in Computer Science";
-            Shyam.salary = 80000;
+            Teacher shyam = new Teacher();
+            shyam.firstName = "Shyam";
+            shyam.lastName = "Kotecha";
+            shyam.age = 35;
+            shyam.phoneNumber = "7757528684";
+            shyam.qualificaation = "Master in Computer Science";
+            shyam.salary = 80000;
 
-            Shyam.PrintDetails();
+            shyam.PrintDetails();
         }
     }
 }

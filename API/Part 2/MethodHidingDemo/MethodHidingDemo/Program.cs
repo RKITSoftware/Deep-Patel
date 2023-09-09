@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MethodHidingDemo
 {
     class Parent
     {
+        #region Public methods
         public void Show()
         {
             Console.WriteLine("Parent Class Method");
         }
+
+        #endregion
     }
 
     class Child : Parent
     {
+        #region Public methods
         public new void Show()
         {
             // base.Show();
             Console.WriteLine("Child Class Method");
         }
+
+        #endregion
     }
 
     internal class Program

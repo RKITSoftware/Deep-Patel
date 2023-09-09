@@ -107,7 +107,11 @@ namespace IntroductionToCSharp
             string x = @"C:\Deep\Tutorials\CSharp";
             Console.WriteLine(x);
             */
-            Console.ReadLine();
+
+            string name = null;
+            string result = name ?? "Anonymous";
+
+            Console.WriteLine(result);
         }
     }
 }

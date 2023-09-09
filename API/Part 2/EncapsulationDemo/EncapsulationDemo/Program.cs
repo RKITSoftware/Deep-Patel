@@ -1,15 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EncapsulationDemo
 {
     class Person
     {
+        #region Private Members
+
         private string personName;
         private int personAge;
+
+        #endregion
+
+        #region Public Methods
 
         public void setName(string personName)
         {
@@ -50,6 +52,8 @@ namespace EncapsulationDemo
                 Console.WriteLine("Your age is {0}", this.personAge);
             }
         }
+
+        #endregion
     }
 
     internal class Program

@@ -1,26 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MEthodOverRidingDemo
 {
     class Parent
     {
+        #region Public methods
+
         public virtual void Print()
         {
             Console.WriteLine("This is a Method of Parent Class.");
         }
+
+        #endregion
     }
 
     class Child : Parent
     {
+        #region Public methods
+
         public override void Print()
         {
-            base.Print();
-            // Console.WriteLine("This is a Method of Child Class.");
+            // base.Print();
+            Console.WriteLine("This is a Method of Child Class.");
         }
+
+        #endregion
     }
 
     internal class Program

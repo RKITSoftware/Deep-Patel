@@ -4,8 +4,14 @@ namespace StaticPropertyDemo
 {
     class University
     {
-        private static string universityName;
-        private static string departmentName;
+        #region Private members
+
+        private static string UniversityName;
+        private static string DepartmentName;
+
+        #endregion
+
+        #region Public Properties
 
         public static string _universityName
         {
@@ -17,12 +23,12 @@ namespace StaticPropertyDemo
                 }
                 else
                 {
-                    universityName = value;
+                    UniversityName = value;
                 }
             }
             get
             {
-                return universityName;
+                return UniversityName;
             }
         }
 
@@ -36,14 +42,16 @@ namespace StaticPropertyDemo
                 }
                 else
                 {
-                    departmentName = value;
+                    DepartmentName = value;
                 }
             }
             get
             {
-                return departmentName;
+                return DepartmentName;
             }
         }
+
+        #endregion
     }
 
     internal class Program

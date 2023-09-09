@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace CollectionsDemo
 {
@@ -8,7 +9,6 @@ namespace CollectionsDemo
         static void Main(string[] args)
         {
             /*
-            
             int[] myArray = new int[3] {10, 20, 30};
             
             // Changing the array size using Array Class Resize Method
@@ -18,7 +18,7 @@ namespace CollectionsDemo
             Console.WriteLine(myArray[3]);
             */
 
-            /*
+            
             
             // ArrayList
             ArrayList myList = new ArrayList();
@@ -61,9 +61,9 @@ namespace CollectionsDemo
                 Console.Write(obj + " ");
             }
             Console.WriteLine();
-            */
+            
 
-            /*
+            
             // Stack
             Stack myStack = new Stack();
 
@@ -91,8 +91,9 @@ namespace CollectionsDemo
             // Clearing stack elements.
             myStack.Clear();
             Console.WriteLine("After clearing the stack element Size is :- {0}\n", myStack.Count);
-            */
+            
 
+            
             // Queue
             Queue myQueue = new Queue();
 
@@ -125,6 +126,104 @@ namespace CollectionsDemo
             {
                 Console.WriteLine("Queue Element is :- {0}", element);
             }
+
+            
+            //Hash-Table
+            Hashtable myHT = new Hashtable
+            {
+                { "Id", 1 },
+                { "Name", "Deep Patel" },
+                { "Salary", 50000.00f },
+                { "Designation", "Full Stack Developer" }
+            };
+
+            // add item in hashtable
+            myHT.Add("isMarried", false);
+
+            Console.WriteLine(myHT["Id"]);
+            Console.WriteLine(myHT["Salary"]);
+            Console.WriteLine();
+
+            // remove item from hashtable
+            myHT.Remove("Designation");
+
+            // Print hashtable
+            foreach(object key in myHT.Keys)
+            {
+                Console.WriteLine("{0} : {1}", key, myHT[key]);
+            }
+
+            // Contains
+            Console.WriteLine(myHT.ContainsKey("Name"));
+            Console.WriteLine(myHT.ContainsValue("Deep Patel"));
+
+            // GetHashCode
+            Console.WriteLine("Hashcode of name is :- {0}", "Name".GetHashCode());
+            
+
+            // Generic Collection
+
+            
+            // List
+            List<int> myNumbers = new List<int>
+            {
+                1,
+                4,
+                7
+            };
+
+            myNumbers.Add(5);
+
+            List<int> myList2 = new List<int>()
+            {
+                6, 5, 3
+            };
+
+            // Insert
+            myNumbers.Insert(3, 50);
+            myNumbers.InsertRange(4, myList2);
+
+            // Remove
+            myNumbers.Remove(50);
+            myNumbers.RemoveAt(1);
+            myNumbers.RemoveRange(3, 2);
+            myNumbers.RemoveAll(item => item < 5);
+
+            // AddRange
+            myNumbers.AddRange(myList2);
+
+            // Capacity of list
+            Console.WriteLine("Capacity of list {0}", myNumbers.Capacity);
+
+            // Sort the list
+            myNumbers.Sort();
+
+            // Contains
+            Console.WriteLine("44 contains :- {0}", myNumbers.Contains(44));
+
+            // Printing the list
+            foreach(int item in myNumbers)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
+
+            // Reverse the list
+            myNumbers.Reverse();
+
+            // Printing the list
+            foreach (int item in myNumbers)
+            {
+                Console.Write(item + " ");
+            }
+            Console.WriteLine();
+
+            // IndexOf
+            Console.WriteLine("Index of 3 is :- {0}", myNumbers.IndexOf(3));
+
+            // Find
+            Console.WriteLine("Find  :- {0}", myNumbers.Find(ele => ele == 10));
+            
         }
     }
 }

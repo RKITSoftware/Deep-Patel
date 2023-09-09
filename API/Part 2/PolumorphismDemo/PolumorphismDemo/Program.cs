@@ -8,6 +8,7 @@ namespace PolumorphismDemo
 {
     internal class Program
     {
+        #region Public methods
         public static void Add()
         {
             int a = 20;
@@ -27,6 +28,8 @@ namespace PolumorphismDemo
             string c = a + " " + b;
             Console.WriteLine(c);
         }
+
+        #endregion
 
         static void Main(string[] args)
         {

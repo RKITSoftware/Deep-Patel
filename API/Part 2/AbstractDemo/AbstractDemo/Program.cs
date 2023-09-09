@@ -1,19 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbstractDemo
 {
     class Employee
     {
-        public int empId;
-        public string empName;
-        public double grossPay;
+        #region Private Member
+
         double taxDeduction = 0.1;
         double netSalary;
 
+        #endregion
+
+        #region Public Members
+
+        public int empId;
+        public string empName;
+        public double grossPay;
+
+        #endregion
+
+        #region Constructors
         public Employee(int empId, string empName, double grossPay)
         {
             this.empId = empId;
@@ -21,6 +27,19 @@ namespace AbstractDemo
             this.grossPay = grossPay;
         }
 
+        #endregion
+
+        #region Public Methods
+        public void ShowEmployeeDetails()
+        {
+            Console.WriteLine("Employee Id is {0}", this.empId);
+            Console.WriteLine("Employee name is {0}", this.empName);
+            this.CalculateSalary();
+        }
+
+        #endregion
+
+        #region Private Methods
         private void CalculateSalary()
         {
             if (this.grossPay >= 30000)
@@ -35,12 +54,7 @@ namespace AbstractDemo
             Console.WriteLine("Your salary is {0}", this.netSalary);
         }
 
-        public void ShowEmployeeDetails()
-        {
-            Console.WriteLine("Employee Id is {0}", this.empId);
-            Console.WriteLine("Employee name is {0}", this.empName);
-            this.CalculateSalary();
-        }
+        #endregion
     }
 
     internal class Program

@@ -8,10 +8,16 @@ namespace PropertiesDemo
 {
     class Student
     {
+        #region Private members
+
         private int _stdId;
         private string _studentName;
         private string _fatherName;
         private int _subjectTotalMarks = 100;
+
+        #endregion
+
+        #region Public properties
         public int percentage { get; private set; }
 
         public int stdId
@@ -79,6 +85,8 @@ namespace PropertiesDemo
                 return this._subjectTotalMarks;
             }
         }
+
+        #endregion
     }
 
     internal class Program

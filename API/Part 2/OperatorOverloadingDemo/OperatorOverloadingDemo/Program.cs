@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OperatorOverloadingDemo
 {
     class NewClass
     {
+        #region Public members
+
         public string str;
         public int num;
 
+        #endregion
+
+        #region Constructors
         public NewClass()
         {
 
@@ -22,6 +23,9 @@ namespace OperatorOverloadingDemo
             this.num = num;
         }
 
+        #endregion
+
+        #region Operator overloading
         public static NewClass operator +(NewClass obj1, NewClass obj2)
         {
             NewClass obj3 = new NewClass();
@@ -30,6 +34,8 @@ namespace OperatorOverloadingDemo
 
             return obj3;
         }
+
+        #endregion
     }
 
     internal class Program

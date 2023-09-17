@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\bin\Debug\DataTableDemo.exe.config
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\bin\Debug\DataTableDemo.exe
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\bin\Debug\DataTableDemo.pdb
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\obj\Debug\DataTableDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\obj\Debug\DataTableDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\obj\Debug\DataTableDemo.exe
+C:\Users\DEEP\source\repos\DataTableDemo\DataTableDemo\obj\Debug\DataTableDemo.pdb

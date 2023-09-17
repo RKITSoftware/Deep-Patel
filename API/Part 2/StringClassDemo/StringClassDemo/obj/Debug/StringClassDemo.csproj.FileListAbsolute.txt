@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\bin\Debug\StringClassDemo.exe.config
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\bin\Debug\StringClassDemo.exe
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\bin\Debug\StringClassDemo.pdb
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\obj\Debug\StringClassDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\obj\Debug\StringClassDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\obj\Debug\StringClassDemo.exe
+C:\Users\DEEP\source\repos\StringClassDemo\StringClassDemo\obj\Debug\StringClassDemo.pdb

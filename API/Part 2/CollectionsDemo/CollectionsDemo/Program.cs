@@ -18,11 +18,11 @@ namespace CollectionsDemo
             Console.WriteLine(myArray[3]);
             */
 
-            
-            
+
+
             // ArrayList
             ArrayList myList = new ArrayList();
-            
+
             // Default Capacity
             // ArrayList myList = new ArrayList(10);
 
@@ -61,9 +61,9 @@ namespace CollectionsDemo
                 Console.Write(obj + " ");
             }
             Console.WriteLine();
-            
 
-            
+
+
             // Stack
             Stack myStack = new Stack();
 
@@ -77,13 +77,13 @@ namespace CollectionsDemo
             Console.WriteLine("Stack Size is :- {0}\n", myStack.Count);
 
             // Printing the stack elements
-            foreach(object element in myStack)
+            foreach (object element in myStack)
             {
                 Console.WriteLine("Element is :- {0}", element);
             }
 
             // Popping the element
-            Console.WriteLine("\nPopped elements is :- {0}" ,myStack.Pop());
+            Console.WriteLine("\nPopped elements is :- {0}", myStack.Pop());
 
             // Peek element of stack
             Console.WriteLine("\nPeek element is :- {0}", myStack.Peek());
@@ -91,9 +91,9 @@ namespace CollectionsDemo
             // Clearing stack elements.
             myStack.Clear();
             Console.WriteLine("After clearing the stack element Size is :- {0}\n", myStack.Count);
-            
 
-            
+
+
             // Queue
             Queue myQueue = new Queue();
 
@@ -104,7 +104,7 @@ namespace CollectionsDemo
             myQueue.Enqueue(40);
 
             // Printing myQueue Elements
-            foreach(object element in myQueue)
+            foreach (object element in myQueue)
             {
                 Console.WriteLine("Queue Element is :- {0}", element);
             }
@@ -120,14 +120,14 @@ namespace CollectionsDemo
 
             // clear queue elements
             myQueue.Clear();
-            
+
             // Printing myQueue Elements
             foreach (object element in myQueue)
             {
                 Console.WriteLine("Queue Element is :- {0}", element);
             }
 
-            
+
             //Hash-Table
             Hashtable myHT = new Hashtable
             {
@@ -148,7 +148,7 @@ namespace CollectionsDemo
             myHT.Remove("Designation");
 
             // Print hashtable
-            foreach(object key in myHT.Keys)
+            foreach (object key in myHT.Keys)
             {
                 Console.WriteLine("{0} : {1}", key, myHT[key]);
             }
@@ -159,11 +159,11 @@ namespace CollectionsDemo
 
             // GetHashCode
             Console.WriteLine("Hashcode of name is :- {0}", "Name".GetHashCode());
-            
+
 
             // Generic Collection
 
-            
+
             // List
             List<int> myNumbers = new List<int>
             {
@@ -202,7 +202,7 @@ namespace CollectionsDemo
             Console.WriteLine("44 contains :- {0}", myNumbers.Contains(44));
 
             // Printing the list
-            foreach(int item in myNumbers)
+            foreach (int item in myNumbers)
             {
                 Console.Write(item + " ");
             }
@@ -223,7 +223,33 @@ namespace CollectionsDemo
 
             // Find
             Console.WriteLine("Find  :- {0}", myNumbers.Find(ele => ele == 10));
-            
+
+
+            // Dictionary
+            Dictionary<string, string> myDict = new Dictionary<string, string>();
+            myDict.Add(key: "username", value: "Deep Patel");
+            myDict.Add(key: "password", value: "Deep2513");
+
+            Console.WriteLine(myDict[key: "username"]);
+
+            //foreach (KeyValuePair<string, string> item in myDict)
+            //{
+            //    Console.WriteLine($"Key is {item.Key} and value is {item.Value}.");
+            //}
+
+            //foreach(string key in myDict.Keys)
+            //{
+            //    Console.WriteLine(key);
+            //}
+
+            foreach (var value in myDict.Values)
+            {
+                Console.WriteLine(value);
+            }
+
+            string val;
+            myDict.TryGetValue("username", out val);
+            Console.WriteLine(val);
         }
     }
 }

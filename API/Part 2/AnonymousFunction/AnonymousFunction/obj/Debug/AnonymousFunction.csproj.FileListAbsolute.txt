@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\bin\Debug\AnonymousFunction.exe.config
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\bin\Debug\AnonymousFunction.exe
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\bin\Debug\AnonymousFunction.pdb
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\obj\Debug\AnonymousFunction.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\obj\Debug\AnonymousFunction.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\obj\Debug\AnonymousFunction.exe
+C:\Users\DEEP\source\repos\AnonymousFunction\AnonymousFunction\obj\Debug\AnonymousFunction.pdb

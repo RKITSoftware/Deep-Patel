@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\bin\Debug\SerializationDemo.exe.config
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\bin\Debug\SerializationDemo.exe
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\bin\Debug\SerializationDemo.pdb
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\obj\Debug\SerializationDemo.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\obj\Debug\SerializationDemo.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\obj\Debug\SerializationDemo.exe
+C:\Users\DEEP\source\repos\SerializationDemo\SerializationDemo\obj\Debug\SerializationDemo.pdb

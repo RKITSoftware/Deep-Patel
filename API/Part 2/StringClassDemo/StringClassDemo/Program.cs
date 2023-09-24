@@ -26,7 +26,7 @@ namespace StringClassDemo
             string str4 = new string(chars);
             Console.WriteLine(str4);
 
-            // Create a string that consists of a character repeated 20 times.
+            // Create a string that consists of a character repeated 10 times.
             string str5 = new string('d', 10);
             Console.WriteLine(str5);
 

@@ -1,0 +1,7 @@
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\bin\Debug\ConstructorInjection.exe.config
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\bin\Debug\ConstructorInjection.exe
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\bin\Debug\ConstructorInjection.pdb
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\obj\Debug\ConstructorInjection.csproj.AssemblyReference.cache
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\obj\Debug\ConstructorInjection.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\obj\Debug\ConstructorInjection.exe
+C:\Users\DEEP\source\repos\ConstructorInjection\ConstructorInjection\obj\Debug\ConstructorInjection.pdb

@@ -1,0 +1,7 @@
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\bin\Debug\ParkingManagementSystem.exe.config
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\bin\Debug\ParkingManagementSystem.exe
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\bin\Debug\ParkingManagementSystem.pdb
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\obj\Debug\ParkingManagementSystem.csproj.AssemblyReference.cache
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\obj\Debug\ParkingManagementSystem.csproj.CoreCompileInputs.cache
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\obj\Debug\ParkingManagementSystem.exe
+C:\Users\DEEP\Desktop\ASP.Net Core\ParkingManagementSystem\ParkingManagementSystem\obj\Debug\ParkingManagementSystem.pdb

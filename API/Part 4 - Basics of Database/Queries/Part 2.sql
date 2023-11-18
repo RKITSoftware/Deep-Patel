@@ -36,7 +36,6 @@ INSERT INTO temp1 VALUES (1), (2);
 SELECT * FROM temp1;
 
 -- How to add primary key
-
 CREATE TABLE temp2 (
 	id INT,
     name VARCHAR(30),

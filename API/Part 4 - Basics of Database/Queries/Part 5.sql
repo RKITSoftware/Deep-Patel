@@ -1,5 +1,7 @@
 -- Part 5
 
+USE college;
+
 CREATE TABLE dept (
 	id INT PRIMARY KEY,
     name VARCHAR(50)
@@ -19,6 +21,9 @@ SET
 	id = 103
 WHERE 
 	id = 102;
+
+DELETE FROM dept
+WHERE id = 101;
 
 SELECT * FROM dept;
     

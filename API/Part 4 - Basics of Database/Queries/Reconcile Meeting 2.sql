@@ -137,6 +137,7 @@ VALUES
 	("farah", 3);
     
 -- Inner join
+EXPLAIN ANALYZE
 SELECT
 	Student.U02F01 AS 'Student Id',
 	Student.U02F02 AS 'Student Name',
@@ -147,6 +148,13 @@ INNER JOIN
 	COU01 AS Course
 ON
 	Student.U02F03 = Course.U01F01;
+    
+/* 
+-> Inner hash join (student.U02F03 = course.U01F01)  (cost=2.6 rows=6) (actual time=0.256..0.264 rows=6 loops=1)
+     -> Table scan on Student  (cost=0.15 rows=6) (actual time=0.018..0.0231 rows=6 loops=1)
+     -> Hash
+         -> Table scan on Course  (cos...
+*/
     
 -- Left Join
 SELECT

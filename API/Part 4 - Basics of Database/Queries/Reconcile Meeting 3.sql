@@ -79,3 +79,5 @@ EXPLAIN ANALYZE
             
 -- -> Table scan on STU01  (cost=1.05 rows=8) (actual time=0.0577..0.0688 rows=8 loops=1)
 -- -> Table scan on STU02  (cost=0.85 rows=6) (actual time=0.337..0.349 rows=6 loops=1)
+
+-- '-> Table scan on STU01  (cost=1.05 rows=8) (actual time=0.0616..0.0741 rows=8 loops=1)\n'

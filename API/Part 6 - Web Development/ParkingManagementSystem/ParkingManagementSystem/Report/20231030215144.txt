@@ -1,0 +1,3 @@
+﻿Parking Slot  Number Plate     Checkin time  Checkout time  Charges  Category
+-----------------------------------------------------------------------------
+A-1           gj-10-dd-3456            7:00           9:00  Rs.  50        NR

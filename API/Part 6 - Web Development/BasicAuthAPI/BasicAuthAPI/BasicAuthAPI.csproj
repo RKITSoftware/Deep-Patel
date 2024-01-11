@@ -87,11 +87,13 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Authentication\ValidateUser.cs" />
     <Compile Include="BasicAuth\BasicAuthenticationAttribute.cs" />
+    <Compile Include="BasicAuth\BasicAuthorizationAttribute.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Employee.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

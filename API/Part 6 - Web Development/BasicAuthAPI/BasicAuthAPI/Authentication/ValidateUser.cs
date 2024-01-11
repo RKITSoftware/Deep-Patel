@@ -1,4 +1,7 @@
-﻿namespace BasicAuthAPI.Authentication
+﻿using BasicAuthAPI.Models;
+using System.Linq;
+
+namespace BasicAuthAPI.Authentication
 {
     /// <summary>
     /// ValidateUser class provides a simple method for user authentication.
@@ -14,12 +17,13 @@
         /// <returns>True is user is valid else false</returns>
         public static bool LogIn(string userName, string password)
         {
-            // Check if the provided username and password match the predefined values.
-            if (userName == "admin" && password == "password")
-                return true;
+            return User.GetUsers().Any(user => user.UserName.Equals(userName) && user.Password.Equals(password));
+        }
 
-            // If not, return false indicating authentication failure.
-            return false;
+        // Get the user details
+        public static User GetUserDetails(string userName, string password)
+        {
+            return User.GetUsers().FirstOrDefault(user => user.UserName.Equals(userName) && user.Password.Equals(password));
         }
     }
 }

@@ -54,7 +54,9 @@ namespace BasicAuthAPI.Models
             {
                 new Employee { Id = 1, FirstName = "Deep", LastName = "Patel", Gender = "Male", City = "Limbdi", IsActive = true},
                 new Employee { Id = 2, FirstName = "Prajval", LastName = "Gahine", Gender = "Male", City = "Surat", IsActive = true},
-                new Employee { Id = 3, FirstName = "Vishal", LastName = "Gohil", Gender = "Male", City = "Bhavnagar", IsActive = true}
+                new Employee { Id = 3, FirstName = "Vishal", LastName = "Gohil", Gender = "Male", City = "Bhavnagar", IsActive = true},
+                new Employee { Id = 4, FirstName = "Krinsi", LastName = "Kayada", Gender = "Female", City = "Rajkot", IsActive = true},
+                new Employee { Id = 5, FirstName = "Jeet", LastName = "Sorathiya", Gender = "Male", City = "Tankara", IsActive = true},
             };
 
             // Return the list of employees.

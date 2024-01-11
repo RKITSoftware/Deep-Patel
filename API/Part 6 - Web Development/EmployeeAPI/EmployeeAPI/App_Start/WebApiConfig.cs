@@ -8,6 +8,10 @@ namespace EmployeeAPI
         {
             // Web API configuration and services
 
+            // Add a custom exception filter (NotImplExceptionFilterAttribute) to the global filters collection.
+            config.Filters.Add(new EmployeeAPI.Filter.NotImplExceptionFilterAttribute());
+
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 

@@ -1,6 +1,8 @@
 ﻿using EmployeeAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Http;
+using EmployeeAPI.Filter;
 
 namespace EmployeeAPI.Controllers
 {
@@ -46,6 +48,23 @@ namespace EmployeeAPI.Controllers
         public IHttpActionResult GetData()
         {
             return Ok(empList);
+        }
+
+        /// <summary>
+        /// This action is decorated with HttpGet attribute, indicating it should handle HTTP GET requests.
+        /// The route specifies the endpoint for this action: "/api/get/data"
+        /// </summary>
+        /// <param name="id">For Searching in Employee</param>
+        /// <returns>Employee Detais</returns>
+        /// <exception cref="NotImplementedException">Method is not implement</exception>
+        [HttpGet]
+        [Route("api/get/data")]
+        // This custom exception filter is applied to handle the NotImplementedException and return a specific response.
+        [NotImplExceptionFilter]
+        public IHttpActionResult GetData(int id)
+        {
+            // Throw a NotImplementedException with a message indicating that this method is not implemented.
+            throw new NotImplementedException("This method is not implemented");
         }
 
         /// <summary>

@@ -8,6 +8,8 @@ namespace BasicAuthAPI.Authentication
     /// </summary>
     public class ValidateUser
     {
+        #region Public Methods
+
         /// <summary>
         /// LogIn method checks if the provided username and password are valid for authentication.
         /// For demonstration purposes, it currently allows access only for the username "admin" with the password "password".
@@ -25,5 +27,7 @@ namespace BasicAuthAPI.Authentication
         {
             return User.GetUsers().FirstOrDefault(user => user.UserName.Equals(userName) && user.Password.Equals(password));
         }
+
+        #endregion
     }
 }

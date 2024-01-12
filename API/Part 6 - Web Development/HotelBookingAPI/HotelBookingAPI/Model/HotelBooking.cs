@@ -5,6 +5,8 @@
     /// </summary>
     public class HotelBooking
     {
+        #region Public Properties
+
         /// <summary>
         /// Unique identifier for each booking.
         /// </summary>
@@ -19,5 +21,7 @@
         /// Client's name who made the booking (nullable).
         /// </summary>
         public string? ClientName { get; set; }
+
+        #endregion
     }
 }

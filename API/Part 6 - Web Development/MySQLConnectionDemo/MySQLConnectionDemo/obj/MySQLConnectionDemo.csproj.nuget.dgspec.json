@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj": {}
+    "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj": {}
   },
   "projects": {
-    "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj": {
+    "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj",
+        "projectUniqueName": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj",
         "projectName": "MySQLConnectionDemo",
-        "projectPath": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj",
-        "packagesPath": "C:\\Users\\DEEP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\MySQLConnectionDemo\\MySQLConnectionDemo\\obj\\",
+        "projectPath": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\MySQLConnectionDemo\\MySQLConnectionDemo\\MySQLConnectionDemo.csproj",
+        "packagesPath": "C:\\Users\\Deep.P\\.nuget\\packages\\",
+        "outputPath": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\MySQLConnectionDemo\\MySQLConnectionDemo\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\DEEP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Deep.P\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,16 +39,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "MySql.Data": {
-              "target": "Package",
-              "version": "[8.2.0, )"
-            },
-            "Swashbuckle.AspNetCore": {
-              "target": "Package",
-              "version": "[6.4.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -60,15 +50,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.AspNetCore.App": {
-              "privateAssets": "none"
-            },
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

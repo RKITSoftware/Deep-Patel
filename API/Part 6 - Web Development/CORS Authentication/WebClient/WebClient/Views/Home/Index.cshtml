@@ -1,31 +1,44 @@
 ﻿@{
+    // Set the title of the page
     ViewBag.Title = "Home Page";
 }
 
+<!-- HTML content for the home page -->
 <div>
+    <!-- Dropdown to select HTTP method (GET, POST, PUT) -->
     <select id="method">
         <option value="get">GET</option>
         <option value="post">POST</option>
         <option value="put">PUT</option>
     </select>
+
+    <!-- Button to trigger the sendRequest function -->
     <input type="button" value="Try it" onclick="sendRequest()" />
+
+    <!-- Display area for the result -->
     <span id='value1'>(Result)</span>
 </div>
 
+<!-- Section for scripts, including JavaScript -->
 @section scripts {
     <script>
         // TODO: Replace with the URL of your WebService app
         var serviceUrl = 'https://localhost:44350/api/Test';
 
+        // JavaScript function to send an AJAX request
         function sendRequest() {
+            // Get the selected HTTP method from the dropdown
             var method = $('#method').val();
 
+            // Send an AJAX request to the specified URL with the selected method
             $.ajax({
                 type: method,
                 url: serviceUrl
             }).done(function (data) {
+                // Update the result display with the returned data
                 $('#value1').text(data);
             }).fail(function (jqXHR, textStatus, errorThrown) {
+                // Handle failure by displaying an error message
                 $('#value1').text(jqXHR.responseText || textStatus);
             });
         }

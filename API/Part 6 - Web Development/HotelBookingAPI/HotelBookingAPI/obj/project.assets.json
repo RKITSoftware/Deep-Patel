@@ -2759,19 +2759,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DEEP\\.nuget\\packages\\": {}
+    "C:\\Users\\Deep.P\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\HotelBookingAPI\\HotelBookingAPI\\HotelBookingAPI.csproj",
+      "projectUniqueName": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\HotelBookingAPI\\HotelBookingAPI\\HotelBookingAPI.csproj",
       "projectName": "HotelBookingAPI",
-      "projectPath": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\HotelBookingAPI\\HotelBookingAPI\\HotelBookingAPI.csproj",
-      "packagesPath": "C:\\Users\\DEEP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DEEP\\Desktop\\ASP.Net Core\\HotelBookingAPI\\HotelBookingAPI\\obj\\",
+      "projectPath": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\HotelBookingAPI\\HotelBookingAPI\\HotelBookingAPI.csproj",
+      "packagesPath": "C:\\Users\\Deep.P\\.nuget\\packages\\",
+      "outputPath": "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\HotelBookingAPI\\HotelBookingAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\DEEP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Deep.P\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2833,7 +2833,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
       }
     }
   }

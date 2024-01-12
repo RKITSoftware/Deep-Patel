@@ -36,11 +36,10 @@ CREATE TABLE PRT01 (
 	CONSTRAINT LENGTH_CHECK_OF_PWD_PRT CHECK (LENGTH(T01F05) >= 8),
 
     T01F06 DATE NOT NULL COMMENT 'DOB',
-    
     T01F07 VARCHAR(10) NOT NULL UNIQUE COMMENT 'Mobile_Number',
     CONSTRAINT LENGTH_CHECK CHECK (LENGTH(T01F07) = 10),
     
-    T01F08 INT NOT NULL DEFAULT 2 COMMENT 'User_Id',
+    T01F08 INT NOT NULL DEFAULT 2 COMMENT 'FK_User_Id',
 	FOREIGN KEY (T01F08) REFERENCES USE01(E01F01)
 );
 
@@ -52,6 +51,7 @@ VALUES
     
 -- Day 2 of Working on Project
 
+-- Inserting Data on Parent Table
 INSERT INTO
 	PRT01
     (T01F02, T01F03, T01F04, T01F05, T01F06, T01F07)
@@ -59,6 +59,7 @@ VALUES
 	('Hasmukhbhai', 'Patel', 'hasmukh123@gmail.com', '@Hasmukh1234', '1971-01-01', '9998458045'),
 	('Jayeshbhai', 'Oganja', 'jayesh711@gmail.com', '@Jayesh711', '1973-11-07', '8780492926');
 
+-- Creating a Teacher Table
 CREATE TABLE TCR01 (
 	R01F01 INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Teacher_Id',
     R01F02 VARCHAR(20) NOT NULL COMMENT 'First_Name',
@@ -75,6 +76,7 @@ CREATE TABLE TCR01 (
 	FOREIGN KEY (R01F08) REFERENCES USE01(E01F01)
 );
 
+-- Inserting data into teacher table
 INSERT INTO
 	TCR01
     (R01F02, R01F03, R01F04, R01F05, R01F06, R01F07)
@@ -83,6 +85,7 @@ VALUES
 	('Nirali', 'Madhak', 'nirali.gec@gmail.com', '@nirali6', '1985-04-14', '9173308953'),
 	('Shyam', 'Kotecha', 'shyamkotecha@gmail.com', '@shyam15', '1982-05-17', '9879655821');
     
+-- Creating a Student Table
 CREATE TABLE STU01 (
 	U01F01 INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Student_Id',
     U01F02 VARCHAR(20) NOT NULL COMMENT 'First_Name',
@@ -104,6 +107,7 @@ CREATE TABLE STU01 (
 	FOREIGN KEY (U01F10) REFERENCES USE01(E01F01)
 );
 
+-- Adding Student Information
 INSERT INTO
 	STU01
     (U01F02, U01F03, U01F04, U01F05, U01F06, U01F07, U01F08, U01F09)
@@ -114,15 +118,16 @@ VALUES
 	('Karan', 'Oganja', 'kp10@gmail.com', '@Kjpatel10', '2009-07-10', 'Male', '8000813563', 3),
 	('Pooja', 'Oganja', 'pooja17@gmail.com', '@Pooja1211', '2002-11-12', 'Female', '8785452563', 3);
     
+-- Creating a Attendance table
 CREATE TABLE ATD01(
 	D01F01 DATE NOT NULL COMMENT 'Date',
-    
     D01F02 INT NOT NULL COMMENT 'FK_Student_Id',
     FOREIGN KEY (D01F02) REFERENCES STU01(U01F01),
     
     D01F03 VARCHAR(1) NOT NULL COMMENT 'Status'
 );
 
+-- Adding Attendance of Students According to Date
 INSERT INTO
 	ATD01
 VALUES
@@ -160,7 +165,7 @@ SELECT
 FROM
 	TCR01;
     
--- Showing all the gmail id and password of users.alter
+-- Showing all the gmail id and password of users.
 SELECT
 	U01F04 AS 'Gmail'
 FROM
@@ -202,6 +207,7 @@ AS
 		PRT01 AS Parent
 	ON Student.U01F09 = Parent.T01F01;
 
+-- ViE01 Data
 SELECT 
 	* 
 FROM 
@@ -228,6 +234,7 @@ CREATE TABLE COU01 (
     U01F02 VARCHAR(15) NOT NULL UNIQUE COMMENT 'Course Name'
 );
 
+-- Insering course information
 INSERT INTO
 	COU01
 VALUES
@@ -235,12 +242,14 @@ VALUES
 	(2, 'Commerce'),
 	(3, 'Arts');
     
+-- Adding Couse Column on Students Table
 ALTER TABLE
 	STU01
 ADD COLUMN
 	U01F11 INT NOT NULL DEFAULT 1,
 ADD CONSTRAINT FK_COURSE FOREIGN KEY (U01F11) REFERENCES COU01(U01F01);
 
+-- Updating Student Information
 UPDATE
 	STU01
 SET
@@ -330,7 +339,7 @@ GROUP BY
 	Student.U01F02
 HAVING count(Attendance.D01F03) > 2;
 
--- Subjects and Exam Result
+-- Subject Table
 CREATE TABLE SUB01(
 	B01F01 INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Subject_Id',
     B01F02 VARCHAR(20) NOT NULL COMMENT 'Subject_Name',
@@ -339,6 +348,7 @@ CREATE TABLE SUB01(
     FOREIGN KEY (B01F03) REFERENCES COU01(U01F01)
 );
 
+-- Subjects According to Course
 INSERT INTO
 	SUB01
     (B01F02, B01F03)
@@ -352,6 +362,7 @@ VALUES
 	('Accounts', 2),
     ('Ecomonics', 2);
     
+-- Exam Result Table
 CREATE TABLE EXR01(
 	R01F01 INT PRIMARY KEY AUTO_INCREMENT COMMENT 'Exam Result Id',
     
@@ -365,10 +376,12 @@ CREATE TABLE EXR01(
     R01F05 INT DEFAULT 100 COMMENT 'Exam Marks'
 );
 
+-- Updating Auto_Increment on subjects table
 ALTER TABLE
 	SUB01
 		AUTO_INCREMENT=101;
         
+-- Inserting Students Results Subect wise
 INSERT INTO
 	EXR01
 	(R01F02, R01F03, R01F04)

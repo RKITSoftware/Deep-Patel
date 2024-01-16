@@ -7,6 +7,8 @@ namespace SchoolManagementAPI.Models
     /// </summary>
     public class STU01
     {
+        #region Public Properties
+
         /// <summary>
         /// Student's ID
         /// </summary>
@@ -41,5 +43,7 @@ namespace SchoolManagementAPI.Models
         /// Student's Mobile Number
         /// </summary>
         public string U01F07 { get; set; }
+
+        #endregion
     }
 }

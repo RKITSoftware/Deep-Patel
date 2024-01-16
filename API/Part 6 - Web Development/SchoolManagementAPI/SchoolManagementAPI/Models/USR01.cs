@@ -5,6 +5,8 @@
     /// </summary>
     public class USR01
     {
+        #region Public Properties
+
         /// <summary>
         /// User Id
         /// </summary>
@@ -24,5 +26,7 @@
         /// User's Role
         /// </summary>
         public string R01F04 { get; set; }
+
+        #endregion
     }
 }

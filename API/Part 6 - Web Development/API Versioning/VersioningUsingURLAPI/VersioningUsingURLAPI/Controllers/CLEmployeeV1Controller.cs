@@ -21,15 +21,20 @@ namespace VersioningUsingURLAPI.Controllers
 
         #region API Endpoints
 
-        // GET api/v1/employee
-        // Returns all employees for version 1
+        /// <summary>
+        /// GET api/v1/employee
+        /// </summary>
+        /// <returns>Returns all employees for version 1</returns>
         public IEnumerable<EMP01> Get()
         {
             return empList;
         }
 
-        // GET api/v1/employee/{id}
-        // Returns a specific employee by id for version 1
+        /// <summary>
+        /// GET api/v1/employee/{id}
+        /// </summary>
+        /// <param name="id">Employee ID</param>
+        /// <returns>Returns a specific employee by id for version 1</returns>
         public EMP01 Get(int id)
         {
             return empList.FirstOrDefault(e => e.P01F01 == id);

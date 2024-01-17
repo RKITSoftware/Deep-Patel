@@ -2,10 +2,10 @@
 
 namespace VersioningWithQueryStringAPI.Models
 {
-    #region Public Properties
-
     public class EMP02
     {
+        #region Public Properties
+
         /// <summary>
         /// Employee Id
         /// </summary>
@@ -40,7 +40,7 @@ namespace VersioningWithQueryStringAPI.Models
         /// Employee Country
         /// </summary>
         public string P02F07 { get; set; }
-    }
 
-    #endregion
+        #endregion
+    }
 }

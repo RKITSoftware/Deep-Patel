@@ -26,7 +26,7 @@ namespace BasicAuthAPI.Controllers
         public HttpResponseMessage GetFewEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
-            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 3));
+            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 2));
         }
 
         // GetMoreEmployees
@@ -35,7 +35,7 @@ namespace BasicAuthAPI.Controllers
         public HttpResponseMessage GetMoreEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
-            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 5));
+            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 4));
         }
 
         // GetAllEmployees

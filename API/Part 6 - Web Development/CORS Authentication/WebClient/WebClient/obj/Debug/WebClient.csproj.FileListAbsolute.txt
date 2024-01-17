@@ -77,3 +77,33 @@ C:\Users\DEEP\Desktop\RKIT Full Stack Github Upload\API\Part 6 - Web Development
 C:\Users\DEEP\Desktop\RKIT Full Stack Github Upload\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.csproj.CopyComplete
 C:\Users\DEEP\Desktop\RKIT Full Stack Github Upload\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.dll
 C:\Users\DEEP\Desktop\RKIT Full Stack Github Upload\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.pdb
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\WebClient.dll.config
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\WebClient.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\WebClient.pdb
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Antlr3.Runtime.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Microsoft.Web.Infrastructure.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Newtonsoft.Json.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Helpers.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Mvc.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Optimization.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Razor.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.Deployment.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.Razor.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\WebGrease.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Helpers.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Mvc.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Optimization.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.Razor.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.Deployment.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\System.Web.WebPages.Razor.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Newtonsoft.Json.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Antlr3.Runtime.pdb
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.csproj.CopyComplete
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CORS Authentication\WebClient\WebClient\obj\Debug\WebClient.pdb

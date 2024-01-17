@@ -127,7 +127,7 @@ namespace SchoolManagementAPI.Controllers
         public IHttpActionResult GetStudentData(int studentId)
         {
             // Retrieve a student by ID and return it.
-            var student = studentList.FirstOrDefault(stu => stu.U01F01 == studentId);
+            STU01 student = studentList.FirstOrDefault(stu => stu.U01F01 == studentId);
 
             if (student == null)
                 return NotFound();

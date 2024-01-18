@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Filters;
 using SchoolManagementAPI.Models;
 using System.Collections.Generic;
@@ -16,47 +17,6 @@ namespace SchoolManagementAPI.Controllers
     // [CacheFilter(TimeDuration = 100)] // Apply caching filter to cache responses for a specified duration.
     public class CLStudentController : ApiController
     {
-        #region Private Fields
-
-        /// <summary>
-        /// File Path for storing Student Data
-        /// </summary>
-        private static string filePath = "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\SchoolManagementAPI\\SchoolManagementAPI\\Data\\studentData.json";
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Student List for Operation of API Endpoints
-        /// </summary>
-        public static List<STU01> studentList { get; set; }
-
-        /// <summary>
-        /// Student id for creating new student's studentId. 
-        /// </summary>
-        public static int noOfNextStudentId { get; set; }
-
-        #endregion
-
-        #region Constructor
-
-        public CLStudentController()
-        {
-            // Constructor logic can be added if needed.
-        }
-
-        static CLStudentController()
-        {
-            // Initialize studentList and noOfNextStudentId when the controller is first accessed.
-            string jsonContent = File.ReadAllText(filePath);
-
-            studentList = JsonConvert.DeserializeObject<List<STU01>>(jsonContent);
-            noOfNextStudentId = studentList.OrderByDescending(stu => stu.U01F01).FirstOrDefault().U01F01;
-        }
-
-        #endregion
-
         #region API Endpoints
 
         /// <summary>
@@ -69,22 +29,7 @@ namespace SchoolManagementAPI.Controllers
         [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to add a student.
         public IHttpActionResult AddStudent([FromBody] STU01 student)
         {
-            // Add a new student and create a corresponding user.
-            student.U01F01 = ++noOfNextStudentId;
-            studentList.Add(student);
-
-            USR01 user = new USR01()
-            {
-                R01F01 = ++CLUserController.noOfNextUserId,
-                R01F02 = student.U01F03.Split('@')[0],
-                R01F03 = student.U01F04,
-                R01F04 = "Student"
-            };
-
-            // Adding a user to userList
-            CLUserController.userList.Add(user);
-
-            return Ok(student);
+            return Ok(BLStudent.AddData(student));
         }
 
         /// <summary>
@@ -96,10 +41,7 @@ namespace SchoolManagementAPI.Controllers
         [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to update student data.
         public IHttpActionResult WriteStudentDataToFile()
         {
-            // Serialize the student list to JSON and write it to the file.
-            string jsonContent = JsonConvert.SerializeObject(studentList, Formatting.Indented);
-            File.WriteAllText(filePath, jsonContent);
-
+            BLStudent.UpdateStudentDataFile();
             return Ok("Data Written Successfully.");
         }
 
@@ -113,7 +55,7 @@ namespace SchoolManagementAPI.Controllers
         public IHttpActionResult GetAllStudentData()
         {
             // Return the list of all students.
-            return Ok(studentList);
+            return Ok(BLStudent.GetAllStudentData());
         }
 
         /// <summary>
@@ -127,7 +69,7 @@ namespace SchoolManagementAPI.Controllers
         public IHttpActionResult GetStudentData(int studentId)
         {
             // Retrieve a student by ID and return it.
-            STU01 student = studentList.FirstOrDefault(stu => stu.U01F01 == studentId);
+            STU01 student = BLStudent.GetStudentById(studentId);
 
             if (student == null)
                 return NotFound();
@@ -146,14 +88,7 @@ namespace SchoolManagementAPI.Controllers
         [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to delete a student.
         public IHttpActionResult DeleteStudentData(int delId)
         {
-            // Delete a student by ID.
-            var studentDetail = studentList.Find(stu => stu.U01F01 == delId);
-            var userDetail = CLUserController.userList
-                .Find(usr => usr.R01F02.Equals(studentDetail.U01F03.Split('@')[0]));
-            
-            CLUserController.userList.Remove(userDetail);
-            studentList.Remove(studentDetail);
-
+            BLStudent.DeleteStudent(delId);
             return Ok("Student Deleted");
         }
 
@@ -168,18 +103,7 @@ namespace SchoolManagementAPI.Controllers
         [AuthorizationAttribute(Roles = "Student")] // Allow only users with the "Student" role to update their own data.
         public IHttpActionResult UpdateStudentInfo(int studentId, [FromBody] STU01 updateData)
         {
-            // Update student information based on ID.
-            var oldData = studentList.FirstOrDefault(stu => stu.U01F01 == studentId);
-
-            if (oldData == null)
-                return NotFound();
-
-            oldData.U01F02 = updateData.U01F02;
-            oldData.U01F05 = updateData.U01F05;
-            oldData.U01F06 = updateData.U01F06;
-            oldData.U01F07 = updateData.U01F07;
-
-            return Ok(oldData);
+            return Ok(BLStudent.UpdateStudentData(studentId, updateData));
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using SchoolManagementAPI.Controllers;
+﻿using SchoolManagementAPI.Business_Logic;
+using SchoolManagementAPI.Controllers;
 using SchoolManagementAPI.Models;
 using System.Linq;
 
@@ -20,7 +21,7 @@ namespace SchoolManagementAPI.Validation
         internal static bool CheckUser(string username, string password)
         {
             // Using LINQ to check if there's any user with the provided username and password.
-            return CLUserController.userList.Any(user => user.R01F02.Equals(username) &&
+            return BLUser.lstUser.Any(user => user.R01F02.Equals(username) &&
                 user.R01F03.Equals(password));
         }
 
@@ -33,7 +34,7 @@ namespace SchoolManagementAPI.Validation
         internal static USR01 GetUserDetail(string username, string password)
         {
             // Using LINQ to find the user with the provided username and password.
-            return CLUserController.userList.Find(user => user.R01F02.Equals(username) &&
+            return BLUser.lstUser.Find(user => user.R01F02.Equals(username) &&
                 user.R01F03.Equals(password));
         }
 

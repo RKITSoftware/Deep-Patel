@@ -5,7 +5,7 @@ using System.Web.Http.Cors;
 namespace WebService.Controllers
 {
     // Controller for handling test operations with CORS enabled
-    [EnableCors(origins: "https://localhost:44315,https://www.google.com", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://localhost:44315", headers: "*", methods: "*")]
     public class TestController : ApiController
     {
         #region TestController Endpoints
@@ -40,6 +40,7 @@ namespace WebService.Controllers
         /// Action method for handling HTTP PUT requests
         /// </summary>
         /// <returns></returns>
+        [DisableCors]
         public HttpResponseMessage Put()
         {
             // Return a response with a message for HTTP PUT requests

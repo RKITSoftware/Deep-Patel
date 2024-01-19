@@ -88,12 +88,14 @@
     <Compile Include="Authentication\ValidateUser.cs" />
     <Compile Include="BasicAuth\BasicAuthenticationAttribute.cs" />
     <Compile Include="BasicAuth\BasicAuthorizationAttribute.cs" />
-    <Compile Include="Controllers\EmployeesController.cs" />
+    <Compile Include="Business Logic\BLEmployee.cs" />
+    <Compile Include="Business Logic\BLUser.cs" />
+    <Compile Include="Controllers\CLEmployeesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\EMP01.cs" />
+    <Compile Include="Models\USR01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

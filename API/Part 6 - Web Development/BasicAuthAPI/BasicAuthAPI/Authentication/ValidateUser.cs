@@ -1,4 +1,5 @@
-﻿using BasicAuthAPI.Models;
+﻿using BasicAuthAPI.Business_Logic;
+using BasicAuthAPI.Models;
 using System.Linq;
 
 namespace BasicAuthAPI.Authentication
@@ -19,13 +20,13 @@ namespace BasicAuthAPI.Authentication
         /// <returns>True is user is valid else false</returns>
         public static bool LogIn(string userName, string password)
         {
-            return User.GetUsers().Any(user => user.UserName.Equals(userName) && user.Password.Equals(password));
+            return BLUser.GetUsers().Any(user => user.UserName.Equals(userName) && user.Password.Equals(password));
         }
 
         // Get the user details
-        public static User GetUserDetails(string userName, string password)
+        public static USR01 GetUserDetails(string userName, string password)
         {
-            return User.GetUsers().FirstOrDefault(user => user.UserName.Equals(userName) && user.Password.Equals(password));
+            return BLUser.GetUsers().FirstOrDefault(user => user.UserName.Equals(userName) && user.Password.Equals(password));
         }
 
         #endregion

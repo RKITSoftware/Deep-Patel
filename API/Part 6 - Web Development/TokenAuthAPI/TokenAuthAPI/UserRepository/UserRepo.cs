@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TokenAuthAPI.Business_Logic;
 using TokenAuthAPI.Models;
 
 namespace TokenAuthAPI.UserRepository
@@ -13,7 +14,7 @@ namespace TokenAuthAPI.UserRepository
         #region Public Properties
 
         // Static list to store user data (initialized with sample users)
-        public static List<User> userList = User.GetUsers();
+        public static List<USR01> userList = BLUser.GetUsers();
 
         #endregion
 
@@ -25,7 +26,7 @@ namespace TokenAuthAPI.UserRepository
         /// <param name="username">User's username</param>
         /// <param name="password">User's password</param>
         /// <returns></returns>
-        public User ValidateUser(string username, string password)
+        public USR01 ValidateUser(string username, string password)
         {
             // Find the user in the list whose username and password match the provided credentials
             return userList.FirstOrDefault(user =>

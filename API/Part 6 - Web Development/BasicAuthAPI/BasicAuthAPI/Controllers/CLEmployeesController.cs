@@ -1,6 +1,5 @@
 ﻿using BasicAuthAPI.BasicAuth;
-using BasicAuthAPI.Models;
-using System.Linq;
+using BasicAuthAPI.Business_Logic;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -12,7 +11,7 @@ namespace BasicAuthAPI.Controllers
     /// </summary>
     [RoutePrefix("api/Employees")]
     [BasicAuthenticationAttribute] // Apply basic authentication to the entire controller.
-    public class EmployeesController : ApiController
+    public class CLEmployeesController : ApiController
     {
         #region Public Methods
 
@@ -26,7 +25,7 @@ namespace BasicAuthAPI.Controllers
         public HttpResponseMessage GetFewEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
-            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 2));
+            return Request.CreateResponse(HttpStatusCode.OK, BLEmployee.GetFewEmployee());
         }
 
         // GetMoreEmployees
@@ -35,7 +34,7 @@ namespace BasicAuthAPI.Controllers
         public HttpResponseMessage GetMoreEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
-            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees().Where(e => e.Id < 4));
+            return Request.CreateResponse(HttpStatusCode.OK, BLEmployee.GetMoreEmployee());
         }
 
         // GetAllEmployees
@@ -44,7 +43,7 @@ namespace BasicAuthAPI.Controllers
         public HttpResponseMessage GetAllEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
-            return Request.CreateResponse(HttpStatusCode.OK, Employee.GetEmployees());
+            return Request.CreateResponse(HttpStatusCode.OK, BLEmployee.GetAllEmployee());
         }
 
         #endregion

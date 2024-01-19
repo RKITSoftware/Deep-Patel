@@ -1,0 +1,17 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\DataSerializationDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\DataSerializationDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\DataSerializationDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\DataSerializationDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\DataSerializationDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\bin\Debug\net6.0\Newtonsoft.Json.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.csproj.CopyComplete
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\refint\DataSerializationDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\DataSerializationDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DataSerializationDemo\DataSerializationDemo\obj\Debug\net6.0\ref\DataSerializationDemo.dll

@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\bin\Debug\net6.0\LambdaExpressionDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\bin\Debug\net6.0\LambdaExpressionDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\bin\Debug\net6.0\LambdaExpressionDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\bin\Debug\net6.0\LambdaExpressionDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\bin\Debug\net6.0\LambdaExpressionDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\refint\LambdaExpressionDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\LambdaExpressionDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LambdaExpressionDemo\LambdaExpressionDemo\obj\Debug\net6.0\ref\LambdaExpressionDemo.dll

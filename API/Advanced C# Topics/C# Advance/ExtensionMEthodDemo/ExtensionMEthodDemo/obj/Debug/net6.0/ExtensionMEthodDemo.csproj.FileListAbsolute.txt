@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\bin\Debug\net6.0\ExtensionMEthodDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\bin\Debug\net6.0\ExtensionMEthodDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\bin\Debug\net6.0\ExtensionMEthodDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\bin\Debug\net6.0\ExtensionMEthodDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\bin\Debug\net6.0\ExtensionMEthodDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\refint\ExtensionMEthodDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ExtensionMEthodDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\ExtensionMEthodDemo\ExtensionMEthodDemo\obj\Debug\net6.0\ref\ExtensionMEthodDemo.dll

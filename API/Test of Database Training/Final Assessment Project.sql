@@ -2,7 +2,7 @@
 
 CREATE DATABASE IF NOT EXISTS
 	SQL_FINAL_TEST;
-    
+
 USE
 	SQL_FINAL_TEST;
 
@@ -217,16 +217,16 @@ FROM
 SELECT
 	U01.U01F01 AS 'Student ID',
 	CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'U01 Name',
-    Attendance.D01F01 AS 'Attendance Date',
-    Attendance.D01F03 AS 'Present/Absent'
+    D01.D01F01 AS 'Attendance Date',
+    D01.D01F03 AS 'Present/Absent'
 FROM
 	STU01 AS U01
 JOIN
-	ATD01 AS Attendance
+	ATD01 AS D01
 ON 
-	U01.U01F01 = Attendance.D01F02
+	U01.U01F01 = D01.D01F02
 ORDER BY
-	Attendance.D01F01;
+	D01.D01F01;
     
 -- Creating a Course Table
 CREATE TABLE COU01 (
@@ -328,18 +328,18 @@ WHERE
 -- Aggerate Functions
 SELECT
 	U01.U01F02 AS 'Student Name',
-    COUNT(Attendance.D01F03) AS 'Present Days'
+    COUNT(D01.D01F03) AS 'Present Days'
 FROM
 	STU01 AS U01
 JOIN
-	ATD01 AS Attendance
+	ATD01 AS D01
 ON 
-	U01.U01F01 = Attendance.D01F02
+	U01.U01F01 = D01.D01F02
 WHERE
-	Attendance.D01F03 = 'P'
+	D01.D01F03 = 'P'
 GROUP BY
 	U01.U01F02
-HAVING count(Attendance.D01F03) > 1;
+HAVING count(D01.D01F03) > 1;
 
 -- Subject Table
 CREATE TABLE SUB01(
@@ -407,21 +407,21 @@ SELECT
 	CONCAT(U01.U01f02, ' ', U01.U01F03) AS 'Student Name',
     U01.U01F07 AS 'Gender',
     U01.U01f08 AS 'Mobile Number',
-    ExamResult.R01F03 AS 'Subject Id',
-    ExamResult.R01F04 AS 'Obtained Marks',
-    ExamResult.R01F05 AS 'Subject Marks'
+    R01.R01F03 AS 'Subject Id',
+    R01.R01F04 AS 'Obtained Marks',
+    R01.R01F05 AS 'Subject Marks'
 FROM
 	STU01 AS U01
 JOIN
-	EXR01 AS ExamResult
+	EXR01 AS R01
 ON
-	U01.U01F01 = ExamResult.R01F02;
+	U01.U01F01 = R01.R01F02;
 
 SELECT
 	B.Student_Name AS 'Student Name',
     B.Gender AS 'Gender',
     B.Mobile_Number AS 'Mobile Number',
-    Subject.B01f02 AS 'Subject',
+    B01.B01f02 AS 'Subject',
     B.Obtained_Marks AS 'Obtained Marks',
     B.Subject_Marks AS 'Subject Marks'
 FROM
@@ -431,17 +431,17 @@ JOIN
 		CONCAT(U01.U01f02, ' ', U01.U01F03) AS 'Student_Name',
 		U01.U01F07 AS 'Gender',
 		U01.U01f08 AS 'Mobile_Number',
-		ExamResult.R01F03 AS 'Subject_Id',
-		ExamResult.R01F04 AS 'Obtained_Marks',
-		ExamResult.R01F05 AS 'Subject_Marks'
+		R01.R01F03 AS 'Subject_Id',
+		R01.R01F04 AS 'Obtained_Marks',
+		R01.R01F05 AS 'Subject_Marks'
 	FROM
 		STU01 AS U01
 	JOIN
-		EXR01 AS ExamResult
+		EXR01 AS R01
 	ON
-		U01.U01F01 = ExamResult.R01F02) AS B
+		U01.U01F01 = R01.R01F02) AS B
 ON
-	Subject.B01F01 = B.Subject_Id;
+	B01.B01F01 = B.Subject_Id;
     
 CREATE INDEX 
 	IDX_EMAIL_STU01

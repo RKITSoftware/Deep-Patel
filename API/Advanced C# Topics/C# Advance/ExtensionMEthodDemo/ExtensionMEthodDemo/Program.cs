@@ -12,6 +12,13 @@
 
             DemoCheck objDemoCheck = new DemoCheck();
             objDemoCheck.M5("Deep Patel");
+
+            List<int> lstNumbers = new List<int>()
+            {
+                1, 2, 3, 4, 5, 6, 7, 8
+            };
+
+            Console.WriteLine(lstNumbers.M6());
         }
     }
 }

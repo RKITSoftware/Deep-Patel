@@ -183,29 +183,29 @@ UNION
         
 -- Student Parent Relation
 SELECT 
-	Student.U01F02 AS 'Student Name',
-	Parent.T01F02 AS 'Parent Name'
+	U01.U01F02 AS 'Student Name',
+	T01.T01F02 AS 'Parent Name'
 FROM 
-	STU01 AS Student
+	STU01 AS U01
 JOIN 
-	PRT01 AS Parent
-ON Student.U01F09 = Parent.T01F01;
+	PRT01 AS T01
+ON U01.U01F09 = T01.T01F01;
 
 -- View Containing Student Parent Relation
 CREATE VIEW 
-	VIE01
+	VWS_STU01
 AS
 	SELECT 
-		Student.U01F01 AS 'Student ID',
-        CONCAT(Student.U01F02, ' ', Student.U01F03) AS 'Student Name',
-        CONCAT(Parent.T01F02, ' ', Parent.T01F03) AS 'Parent Name',
-        Student.U01F08 AS 'Student Mobile Number',
-        Parent.T01f07 AS 'Parent Mobile Number'
+		U01.U01F01 AS 'Student ID',
+        CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'Student Name',
+        CONCAT(T01.T01F02, ' ', T01.T01F03) AS 'Parent Name',
+        U01.U01F08 AS 'Student Mobile Number',
+        T01.T01f07 AS 'Parent Mobile Number'
 	FROM 
-		STU01 AS Student
+		STU01 AS U01
 	JOIN 
-		PRT01 AS Parent
-	ON Student.U01F09 = Parent.T01F01;
+		PRT01 AS T01
+	ON U01.U01F09 = T01.T01F01;
 
 -- ViE01 Data
 SELECT 
@@ -215,16 +215,16 @@ FROM
 
 -- Attendance Report
 SELECT
-	Student.U01F01 AS 'Student ID',
-	CONCAT(Student.U01F02, ' ', Student.U01F03) AS 'Student Name',
+	U01.U01F01 AS 'Student ID',
+	CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'U01 Name',
     Attendance.D01F01 AS 'Attendance Date',
     Attendance.D01F03 AS 'Present/Absent'
 FROM
-	STU01 AS Student
+	STU01 AS U01
 JOIN
 	ATD01 AS Attendance
 ON 
-	Student.U01F01 = Attendance.D01F02
+	U01.U01F01 = Attendance.D01F02
 ORDER BY
 	Attendance.D01F01;
     
@@ -265,58 +265,60 @@ WHERE
 	U01F01 BETWEEN 4 AND 5;
     
 -- Show the students which are doing science.
-SELECT
-	Student.U01F01 AS 'Student ID',
-	CONCAT(Student.U01F02, ' ', Student.U01F03) AS 'Student Name',
-    Student.U01F04 AS 'Email Id',
-    Student.U01F06 AS 'Date of Birth',
-    Student.U01F07 AS 'Gender',
+-- '-> Index lookup on U01 using FK_COURSE (U01F11=\'1\')  (cost=0.70 rows=2) (actual time=0.053..0.056 rows=2 loops=1)\n'
+EXPLAIN ANALYZE SELECT
+	U01.U01F01 AS 'Student ID',
+	CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'Student Name',
+    U01.U01F04 AS 'Email Id',
+    U01.U01F06 AS 'Date of Birth',
+    U01.U01F07 AS 'Gender',
     Course.U01F02 AS 'Course'
 FROM
-	STU01 AS Student
+	STU01 AS U01
 JOIN
 	COU01 AS Course
 ON 
-	Student.U01F11 = Course.U01F01
+	U01.U01F11 = Course.U01F01
 WHERE
 	Course.U01F02 = 'Science';
     
 -- Show the students which are doing commerce.
 SELECT
-	Student.U01F01 AS 'Student ID',
-	CONCAT(Student.U01F02, ' ', Student.U01F03) AS 'Student Name',
-    Student.U01F04 AS 'Email Id',
-    Student.U01F06 AS 'Date of Birth',
-    Student.U01F07 AS 'Gender',
+	U01.U01F01 AS 'Student ID',
+	CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'Student Name',
+    U01.U01F04 AS 'Email Id',
+    U01.U01F06 AS 'Date of Birth',
+    U01.U01F07 AS 'Gender',
     Course.U01F02 AS 'Course'
 FROM
-	STU01 AS Student
+	STU01 AS U01
 JOIN
 	COU01 AS Course
 ON 
-	Student.U01F11 = Course.U01F01
+	U01.U01F11 = Course.U01F01
 WHERE
 	Course.U01F02 = 'Commerce';
     
 -- View For Student Course Relation
 CREATE VIEW 
-	VIE02
+	VWS_COU01
 AS
 	SELECT
-		Student.U01F01 AS 'Student ID',
-		CONCAT(Student.U01F02, ' ', Student.U01F03) AS 'Student Name',
-		Student.U01F04 AS 'Email Id',
-		Student.U01F06 AS 'Date of Birth',
-		Student.U01F07 AS 'Gender',
+		U01.U01F01 AS 'Student ID',
+		CONCAT(U01.U01F02, ' ', U01.U01F03) AS 'Student Name',
+		U01.U01F04 AS 'Email Id',
+		U01.U01F06 AS 'Date of Birth',
+		U01.U01F07 AS 'Gender',
 		Course.U01F02 AS 'Course'
 	FROM
-		STU01 AS Student
+		STU01 AS U01
 	JOIN
 		COU01 AS Course
 	ON 
 		Student.U01F11 = Course.U01F01;
-        
-SELECT
+
+-- '-> Index lookup on student using FK_COURSE (U01F11=\'1\')  (cost=0.70 rows=2) (actual time=0.019..0.022 rows=2 loops=1)\n'        
+EXPLAIN ANALYZE SELECT
 	*
 FROM 
 	VIE02
@@ -325,19 +327,19 @@ WHERE
     
 -- Aggerate Functions
 SELECT
-	Student.U01F02 AS 'Student Name',
+	U01.U01F02 AS 'Student Name',
     COUNT(Attendance.D01F03) AS 'Present Days'
 FROM
-	STU01 AS Student
+	STU01 AS U01
 JOIN
 	ATD01 AS Attendance
 ON 
-	Student.U01F01 = Attendance.D01F02
+	U01.U01F01 = Attendance.D01F02
 WHERE
 	Attendance.D01F03 = 'P'
 GROUP BY
-	Student.U01F02
-HAVING count(Attendance.D01F03) > 2;
+	U01.U01F02
+HAVING count(Attendance.D01F03) > 1;
 
 -- Subject Table
 CREATE TABLE SUB01(
@@ -399,21 +401,21 @@ VALUES
     (4, 8, 64),
     (5, 7, 63),
     (5, 8, 75);
-
+    
 -- Joining of Student, Exam Result, Course, and Subject Table
 SELECT
-	CONCAT(Student.U01f02, ' ', Student.U01F03) AS 'Student Name',
-    Student.U01F07 AS 'Gender',
-    Student.U01f08 AS 'Mobile Number',
+	CONCAT(U01.U01f02, ' ', U01.U01F03) AS 'Student Name',
+    U01.U01F07 AS 'Gender',
+    U01.U01f08 AS 'Mobile Number',
     ExamResult.R01F03 AS 'Subject Id',
     ExamResult.R01F04 AS 'Obtained Marks',
     ExamResult.R01F05 AS 'Subject Marks'
 FROM
-	STU01 AS Student
+	STU01 AS U01
 JOIN
 	EXR01 AS ExamResult
 ON
-	Student.U01F01 = ExamResult.R01F02;
+	U01.U01F01 = ExamResult.R01F02;
 
 SELECT
 	B.Student_Name AS 'Student Name',
@@ -426,17 +428,36 @@ FROM
 	SUB01 AS Subject
 JOIN
 	(SELECT
-		CONCAT(Student.U01f02, ' ', Student.U01F03) AS 'Student_Name',
-		Student.U01F07 AS 'Gender',
-		Student.U01f08 AS 'Mobile_Number',
+		CONCAT(U01.U01f02, ' ', U01.U01F03) AS 'Student_Name',
+		U01.U01F07 AS 'Gender',
+		U01.U01f08 AS 'Mobile_Number',
 		ExamResult.R01F03 AS 'Subject_Id',
 		ExamResult.R01F04 AS 'Obtained_Marks',
 		ExamResult.R01F05 AS 'Subject_Marks'
 	FROM
-		STU01 AS Student
+		STU01 AS U01
 	JOIN
 		EXR01 AS ExamResult
 	ON
-		Student.U01F01 = ExamResult.R01F02) AS B
+		U01.U01F01 = ExamResult.R01F02) AS B
 ON
 	Subject.B01F01 = B.Subject_Id;
+    
+CREATE INDEX 
+	IDX_EMAIL_STU01
+ON 
+	STU01(U01F04);
+    
+SELECT
+	U01F02
+FROM
+	STU01
+WHERE
+	U01F01 = 1;
+    
+EXPLAIN SELECT
+	U01F02
+FROM
+	STU01
+WHERE
+	U01F04 = "dp3676991@gmail.com";

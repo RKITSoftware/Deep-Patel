@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\bin\Debug\net6.0\LinqListDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\bin\Debug\net6.0\LinqListDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\bin\Debug\net6.0\LinqListDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\bin\Debug\net6.0\LinqListDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\bin\Debug\net6.0\LinqListDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\refint\LinqListDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\LinqListDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqListDemo\LinqListDemo\obj\Debug\net6.0\ref\LinqListDemo.dll

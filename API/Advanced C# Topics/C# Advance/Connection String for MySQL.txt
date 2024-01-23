@@ -1,0 +1,3 @@
+<connectionStrings>
+	<add name="MyConnectionString" connectionString="Server=127.0.0.1;Port=3306;Database=deeppatel380;User Id=Admin;Password=gs@123;" providerName="MySql.Data.MySqlClient" />
+</connectionStrings>

@@ -20,5 +20,10 @@
         {
             Console.WriteLine(str);
         }
+
+        public static int M6(this List<int> lst)
+        {
+            return lst.Count;
+        }
     }
 }

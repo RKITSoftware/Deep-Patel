@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\bin\Debug\net6.0\LinqDataTableDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\bin\Debug\net6.0\LinqDataTableDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\bin\Debug\net6.0\LinqDataTableDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\bin\Debug\net6.0\LinqDataTableDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\bin\Debug\net6.0\LinqDataTableDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\refint\LinqDataTableDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\LinqDataTableDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\LinqDataTableDemo\LinqDataTableDemo\obj\Debug\net6.0\ref\LinqDataTableDemo.dll

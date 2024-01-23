@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\bin\Debug\net6.0\AESCryptographyDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\bin\Debug\net6.0\AESCryptographyDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\bin\Debug\net6.0\AESCryptographyDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\bin\Debug\net6.0\AESCryptographyDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\bin\Debug\net6.0\AESCryptographyDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\refint\AESCryptographyDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\AESCryptographyDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\AESCryptographyDemo\AESCryptographyDemo\obj\Debug\net6.0\ref\AESCryptographyDemo.dll

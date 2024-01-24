@@ -1,0 +1,6 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\bin\Debug\MyExtension.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\bin\Debug\MyExtension.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\obj\Debug\MyExtension.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\obj\Debug\MyExtension.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\obj\Debug\MyExtension.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\MyExtension\obj\Debug\MyExtension.pdb

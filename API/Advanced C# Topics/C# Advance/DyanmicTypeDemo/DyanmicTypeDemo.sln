@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DyanmicTypeDemo", "DyanmicTypeDemo\DyanmicTypeDemo.csproj", "{14C07F09-40A4-4132-8203-2178E27A324D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{14C07F09-40A4-4132-8203-2178E27A324D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14C07F09-40A4-4132-8203-2178E27A324D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14C07F09-40A4-4132-8203-2178E27A324D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14C07F09-40A4-4132-8203-2178E27A324D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F4EB6CF-4C10-4181-BD34-D41FF7C89AFA}
+	EndGlobalSection
+EndGlobal

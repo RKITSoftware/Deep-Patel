@@ -134,8 +134,8 @@ namespace PokemonReviewApp.Controllers
         }
 
         [HttpDelete("{categoryId}")]
-        [ProducesResponseType(400)]
         [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public IActionResult DeleteCategory(int categoryId)
         {

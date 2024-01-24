@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\bin\Debug\net6.0\DyanmicTypeDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\bin\Debug\net6.0\DyanmicTypeDemo.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\bin\Debug\net6.0\DyanmicTypeDemo.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\bin\Debug\net6.0\DyanmicTypeDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\bin\Debug\net6.0\DyanmicTypeDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\refint\DyanmicTypeDemo.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\DyanmicTypeDemo.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\DyanmicTypeDemo\DyanmicTypeDemo\obj\Debug\net6.0\ref\DyanmicTypeDemo.dll

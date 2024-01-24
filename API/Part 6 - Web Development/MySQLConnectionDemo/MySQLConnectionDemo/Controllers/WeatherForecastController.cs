@@ -52,7 +52,6 @@ namespace MySQLConnectionDemo.Controllers
                 MySqlCommand cmd = new MySqlCommand(sql, con);
 
                 // Execute the query and read the data using a MySqlDataReader.
-                Console.WriteLine("Hello");
                 MySqlDataReader dataReader = cmd.ExecuteReader();
 
                 // Check if there is data to read.

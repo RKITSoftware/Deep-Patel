@@ -31,3 +31,4 @@ AS
 		COU01 AS Course
 	ON 
 		Student.U01F11 = Course.U01F01;
+	

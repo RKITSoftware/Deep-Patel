@@ -1,11 +1,13 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
+    [BasicAuth]
     [RoutePrefix("api/CLCustomer")]
     public class CLCustomerController : ApiController
     {

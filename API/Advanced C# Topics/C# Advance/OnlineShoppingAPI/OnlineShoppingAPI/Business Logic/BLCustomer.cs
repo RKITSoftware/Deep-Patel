@@ -1,11 +1,11 @@
-﻿using ServiceStack.Data;
-using System.Web;
-using System;
-using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.Models;
+using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System.Net.Http;
-using System.Net;
+using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
@@ -126,5 +126,21 @@ namespace OnlineShoppingAPI.Business_Logic
                 };
             }
         }
-    }
+
+        public static bool LogIn(string username, string password)
+        {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                return db.Exists<CUS01>(c => c.S01F03.StartsWith(username) && c.S01F05 == password);
+            }
+        }
+
+        public static CUS01 GetCustomer(string username)
+        {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                return db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
+            }
+        }
+    } 
 }

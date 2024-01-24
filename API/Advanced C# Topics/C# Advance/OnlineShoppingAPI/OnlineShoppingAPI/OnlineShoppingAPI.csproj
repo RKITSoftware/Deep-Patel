@@ -171,6 +171,8 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Business Logic\BLCustomer.cs" />
+    <Compile Include="Business Logic\BLProduct.cs" />
     <Compile Include="Controllers\CLCustomerController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
     <Compile Include="Global.asax.cs">

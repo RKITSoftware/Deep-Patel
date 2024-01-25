@@ -1,5 +1,6 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
@@ -7,6 +8,8 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/CLProduct")]
+    [BasicAuth]
+    [Authorize(Roles = "Customer")]
     public class CLProductController : ApiController
     {
         /// <summary>>
@@ -31,7 +34,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetProducts")]
         public IHttpActionResult GetProducts()
         {
-            return Ok(BLProduct.GetData());
+            return Ok(BLProduct.GetAll());
         }
 
         /// <summary>
@@ -57,7 +60,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("DeleteProduct/{id}")]
         public HttpResponseMessage DeleteProduct(int id)
         {
-            return BLProduct.DeleteData(id);
+            return BLProduct.Delete(id);
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("UpdateProduct")]
         public HttpResponseMessage UpdateProduct(PRO01 objUpdatedProduct)
         {
-            return BLProduct.UpdateData(objUpdatedProduct);
+            return BLProduct.Update(objUpdatedProduct);
         }
     }
 }

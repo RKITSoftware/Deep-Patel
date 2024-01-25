@@ -35,5 +35,11 @@ namespace OnlineShoppingAPI.Models
         /// Product Image
         /// </summary>
         public string O01F05 { get; set; }
+
+        /// <summary>
+        /// Foreign Key of Admin Table
+        /// </summary>
+        [References(typeof(ADM01))]
+        public int O01F06 { get; set; }
     }
 }

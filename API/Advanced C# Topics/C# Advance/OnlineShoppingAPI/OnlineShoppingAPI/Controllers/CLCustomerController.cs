@@ -7,8 +7,9 @@ using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
-    [BasicAuth]
     [RoutePrefix("api/CLCustomer")]
+    [BasicAuth]
+    [Authorize(Roles = "Admin")]
     public class CLCustomerController : ApiController
     {
         /// <summary>
@@ -31,9 +32,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Customer details</returns>
         [HttpGet]
         [Route("GetCustomers")]
+        [Authorize(Roles = "Customer")]
         public IHttpActionResult GetCustomers()
         {
-            return Ok(BLCustomers.GetData());
+            return Ok(BLCustomers.GetAll());
         }
 
         /// <summary>
@@ -58,7 +60,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("DeleteCustomer/{id}")]
         public HttpResponseMessage DeleteCustomer(int id)
         {
-            return BLCustomers.DeleteData(id);
+            return BLCustomers.Delete(id);
         }
 
         /// <summary>
@@ -71,7 +73,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("UpdateCustomer")]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
         {
-            return BLCustomers.UpdateData(objUpdatedCustomer);
+            return BLCustomers.Update(objUpdatedCustomer);
         }
     }
 }

@@ -32,7 +32,14 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (!tableExists)
                     db.CreateTable<CUS01>();
 
-                db.Insert<CUS01>(objNewCustomer);
+                db.Insert(objNewCustomer);
+                db.Insert(new USR01
+                {
+                    R01F02 = objNewCustomer.S01F03.Split('@')[0],
+                    R01F03 = objNewCustomer.S01F04,
+                    R01F04 = "Customer"
+                });
+
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Customer created successfully.")
@@ -40,7 +47,7 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static List<CUS01> GetData()
+        public static List<CUS01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -64,20 +71,25 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<CUS01>();
+                db.InsertAll(lstNewCustomers);
+                foreach(var item in lstNewCustomers)
+                {
+                    db.Insert(new USR01
+                    {
+                        R01F02 = item.S01F03.Split('@')[0],
+                        R01F03 = item.S01F04,
+                        R01F04 = "Customer"
+                    });
+                }
 
-                if (!tableExists)
-                    db.CreateTable<CUS01>();
-
-                db.InsertAll<CUS01>(lstNewCustomers);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent("Data is empty")
+                    Content = new StringContent("Customers Created successfully.")
                 };
             }
         }
 
-        public static HttpResponseMessage DeleteData(int id)
+        public static HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -92,7 +104,10 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (customer == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-                db.Delete<CUS01>(id);
+                string username = customer.S01F03.Split('@')[0];
+                db.DeleteById<CUS01>(id);
+                db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
+
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Customer deleted successfully.")
@@ -100,7 +115,7 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage UpdateData(CUS01 objUpdatedCustomer)
+        public static HttpResponseMessage Update(CUS01 objUpdatedCustomer)
         {
             if (objUpdatedCustomer.S01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -116,30 +131,14 @@ namespace OnlineShoppingAPI.Business_Logic
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
 
                 existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
-                existingCustomer.S01F03 = objUpdatedCustomer.S01F03;
-                existingCustomer.S01F04 = objUpdatedCustomer.S01F04;
                 existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
+                existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
 
+                db.Update(existingCustomer);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Customer updated successfully.")
                 };
-            }
-        }
-
-        public static bool LogIn(string username, string password)
-        {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                return db.Exists<CUS01>(c => c.S01F03.StartsWith(username) && c.S01F05 == password);
-            }
-        }
-
-        public static CUS01 GetCustomer(string username)
-        {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                return db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
             }
         }
     } 

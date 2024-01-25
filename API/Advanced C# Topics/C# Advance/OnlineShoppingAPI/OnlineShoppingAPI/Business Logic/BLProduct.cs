@@ -32,7 +32,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (!tableExists)
                     db.CreateTable<PRO01>();
 
-                db.Insert<PRO01>(objNewProduct);
+                db.Insert(objNewProduct);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Product created successfully.")
@@ -40,7 +40,7 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static List<PRO01> GetData()
+        public static List<PRO01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -69,7 +69,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (!tableExists)
                     db.CreateTable<PRO01>();
 
-                db.InsertAll<PRO01>(lstNewProducts);
+                db.InsertAll(lstNewProducts);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Products created successfully.")
@@ -77,7 +77,7 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage DeleteData(int id)
+        public static HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -100,7 +100,7 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage UpdateData(PRO01 objUpdatedProduct)
+        public static HttpResponseMessage Update(PRO01 objUpdatedProduct)
         {
             if (objUpdatedProduct.O01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -120,6 +120,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 existingProduct.O01F04 = objUpdatedProduct.O01F04;
                 existingProduct.O01F05 = objUpdatedProduct.O01F05;
 
+                db.Update(existingProduct);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Product updated successfully.")

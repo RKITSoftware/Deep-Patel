@@ -114,3 +114,10 @@ F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\Onlin
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\obj\Debug\OnlineShoppingAPI.csproj.CopyComplete
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\obj\Debug\OnlineShoppingAPI.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\obj\Debug\OnlineShoppingAPI.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\EPPlus.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\EPPlus.Interfaces.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\EPPlus.System.Drawing.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Microsoft.IO.RecyclableMemoryStream.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.ComponentModel.Annotations.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\EPPlus.xml
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Microsoft.IO.RecyclableMemoryStream.xml

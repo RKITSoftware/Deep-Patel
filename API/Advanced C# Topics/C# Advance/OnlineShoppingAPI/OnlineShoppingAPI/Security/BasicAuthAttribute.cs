@@ -36,16 +36,15 @@ namespace OnlineShoppingAPI.Security
                     string password = usernamePassword[1];
 
                     // Validate user credentials using the ValidateUser class.
-                    if (BLCustomers.LogIn(username, password))
+                    if (BLUser.IsExist(username, password))
                     {
-                        var userDetail = BLCustomers.GetCustomer(username);
+                        var userDetail = BLUser.GetUser(username);
                         var identity = new GenericIdentity(username);
 
-                        identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.S01F02));
-                        identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.S01F03));
-                        identity.AddClaim(new Claim("Id", Convert.ToString(userDetail.S01F01)));
+                        identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
+                        identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.R01F02 + "@gmail.com"));
 
-                        IPrincipal principal = new GenericPrincipal(identity, "Customer".Split(','));
+                        IPrincipal principal = new GenericPrincipal(identity, userDetail.R01F04.Split(','));
 
                         Thread.CurrentPrincipal = principal;
 

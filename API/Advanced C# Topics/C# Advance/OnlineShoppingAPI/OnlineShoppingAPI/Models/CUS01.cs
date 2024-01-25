@@ -27,17 +27,23 @@ namespace OnlineShoppingAPI.Models
         public string S01F03 { get; set; }
 
         /// <summary>
+        /// Customer Password
+        /// </summary>
+        [Required]
+        [StringLength(minimumLength: 8, maximumLength: 16)]
+        public string S01F04 { get; set; }
+
+        /// <summary>
         /// Customer Mobile Number
         /// </summary>
         [Required]
         [StringLength(minimumLength: 10, maximumLength: 10)]
-        public string S01F04 { get; set; }
+        public string S01F05 { get; set; }
 
         /// <summary>
-        /// Customer password
+        /// Customer Address
         /// </summary>
         [Required]
-        [StringLength(minimumLength: 8, maximumLength: 16)]
-        public string S01F05 { get; set; }
+        public string S01F06 { get; set; }
     }
 }

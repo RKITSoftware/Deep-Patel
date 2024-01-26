@@ -9,6 +9,7 @@ using System.Web.Http.Dispatcher;
 namespace VersioningWithQueryStringAPI
 {
     // Custom controller selector that extends the default HTTP controller selector
+    [RoutePrefix("api/{controller}")]
     public class CustomSelectorController : DefaultHttpControllerSelector
     {
         #region Private Fields
@@ -62,11 +63,11 @@ namespace VersioningWithQueryStringAPI
             }
 
             // Get version information from the query string in the URI
-            var versionQueryString = HttpUtility.ParseQueryString(request.RequestUri.Query);
-            if (versionQueryString["version"] != null)
-            {
-                apiVersion = Convert.ToString(versionQueryString["version"]);
-            }
+            //var versionQueryString = HttpUtility.ParseQueryString(request.RequestUri.Query);
+            //if (versionQueryString["version"] != null)
+            //{
+            //    apiVersion = Convert.ToString(versionQueryString["version"]);
+            //}
 
             // Append the version to the controller name
             if (apiVersion == "1")

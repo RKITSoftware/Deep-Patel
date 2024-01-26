@@ -25,14 +25,14 @@ namespace VersioningWithQueryStringAPI.Controllers
 
         // GET: api/CLEmployeeV1
         // Retrieve all employees in the version 1 API
-        public IEnumerable<EMP01> Get()
+        public IEnumerable<EMP01> GetEmployee()
         {
             return empList;
         }
 
         // GET: api/CLEmployeeV1/5
         // Retrieve a specific employee by ID in the version 1 API
-        public EMP01 Get(int id)
+        public EMP01 GetEmployee(int id)
         {
             // Use LINQ to find the employee with the specified ID
             return empList.FirstOrDefault(e => e.P01F01 == id);

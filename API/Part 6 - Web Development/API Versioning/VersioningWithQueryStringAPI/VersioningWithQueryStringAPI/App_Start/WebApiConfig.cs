@@ -15,13 +15,14 @@ namespace VersioningWithQueryStringAPI
             // Configure the default Web API route
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                routeTemplate: "api/{controller}/{action}/{id}",
+                defaults: new { id = RouteParameter.Optional, action = RouteParameter.Optional }
             );
 
             // Replace the default controller selector with a custom implementation
             // This allows customizing controller selection logic, as demonstrated by CustomSelectorController
             config.Services.Replace(typeof(IHttpControllerSelector), new CustomSelectorController(config));
+            //config.Services.Add(typeof(IHttpControllerSelector), new CustomSelectorController(config));
         }
     }
 }

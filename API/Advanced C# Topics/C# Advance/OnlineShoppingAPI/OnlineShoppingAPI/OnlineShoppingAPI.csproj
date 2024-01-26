@@ -202,7 +202,6 @@
     </Compile>
     <Compile Include="Models\ADM01.cs" />
     <Compile Include="Models\CUS01.cs" />
-    <Compile Include="Models\OrderDetailViewModel.cs" />
     <Compile Include="Models\RCD01.cs" />
     <Compile Include="Models\PRO01.cs" />
     <Compile Include="Models\USR01.cs" />

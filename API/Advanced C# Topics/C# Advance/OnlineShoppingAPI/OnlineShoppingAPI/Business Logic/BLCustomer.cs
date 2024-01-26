@@ -11,8 +11,15 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLCustomers
     {
+        /// <summary>
+        /// _dbFactory is used to store the reference of database connection.
+        /// </summary>
         private static readonly IDbConnectionFactory _dbFactory;
 
+        /// <summary>
+        /// Static constructor is used to initialize _dbfactory for future reference.
+        /// </summary>
+        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
         static BLCustomers()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
@@ -23,7 +30,41 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage Create(CUS01 objNewCustomer)
+        /// <summary>
+        /// Changing the customer password using the Customer username
+        /// </summary>
+        /// <param name="username">Customer username</param>
+        /// <param name="newPassword">Customer new password</param>
+        /// <returns>Change response</returns>
+        internal static HttpResponseMessage ChangePassword(string username, string newPassword)
+        {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                CUS01 existingCustomer = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
+                USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
+
+                if (existingCustomer == null && existingCustomer == null)
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                existingCustomer.S01F04 = newPassword;
+                existingUser.R01F03 = newPassword;
+
+                db.Update(existingCustomer);
+                db.Update(existingUser);
+
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("Password changed successfully.")
+                };
+            }
+        }
+
+        /// <summary>
+        /// Create a customer and adding that customer details into the customer and user table.
+        /// </summary>
+        /// <param name="objNewCustomer">Customer data</param>
+        /// <returns>Create response message</returns>
+        internal static HttpResponseMessage Create(CUS01 objNewCustomer)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -40,14 +81,18 @@ namespace OnlineShoppingAPI.Business_Logic
                     R01F04 = "Customer"
                 });
 
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Customer created successfully.")
                 };
             }
         }
 
-        public static List<CUS01> GetAll()
+        /// <summary>
+        /// Getting all customer details from database
+        /// </summary>
+        /// <returns>List of Customer data</returns>
+        internal static List<CUS01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -61,7 +106,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage CreateFromList(List<CUS01> lstNewCustomers)
+        /// <summary>
+        /// Creating customers from list
+        /// </summary>
+        /// <param name="lstNewCustomers">List of customer data to added into database.</param>
+        /// <returns>Create response message</returns>
+        internal static HttpResponseMessage CreateFromList(List<CUS01> lstNewCustomers)
         {
             if (lstNewCustomers.Count == 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -72,7 +122,7 @@ namespace OnlineShoppingAPI.Business_Logic
             using (var db = _dbFactory.OpenDbConnection())
             {
                 db.InsertAll(lstNewCustomers);
-                foreach(var item in lstNewCustomers)
+                foreach (var item in lstNewCustomers)
                 {
                     db.Insert(new USR01
                     {
@@ -82,14 +132,19 @@ namespace OnlineShoppingAPI.Business_Logic
                     });
                 }
 
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Customers Created successfully.")
                 };
             }
         }
 
-        public static HttpResponseMessage Delete(int id)
+        /// <summary>
+        /// Deleting customer data
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns>Delete response message</returns>
+        internal static HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -115,7 +170,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage Update(CUS01 objUpdatedCustomer)
+        /// <summary>
+        /// Updating customer information
+        /// </summary>
+        /// <param name="objUpdatedCustomer">Updated information of customer</param>
+        /// <returns>Update response message</returns>
+        internal static HttpResponseMessage Update(CUS01 objUpdatedCustomer)
         {
             if (objUpdatedCustomer.S01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -141,5 +201,5 @@ namespace OnlineShoppingAPI.Business_Logic
                 };
             }
         }
-    } 
+    }
 }

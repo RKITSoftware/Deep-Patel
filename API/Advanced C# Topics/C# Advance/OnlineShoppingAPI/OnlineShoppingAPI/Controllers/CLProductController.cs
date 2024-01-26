@@ -7,18 +7,20 @@ using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
+    /// <summary>
+    /// Product controller for handling product api endpoints
+    /// </summary>
     [RoutePrefix("api/CLProduct")]
     [BasicAuth]
-    [Authorize(Roles = "Customer")]
     public class CLProductController : ApiController
     {
         /// <summary>>
         /// Endpoint :- api/CLProduct/AddProduct
-        /// Adding new product to the Products table
         /// </summary>
-        /// <param name="objNewProduct"></param>
+        /// <param name="objNewProduct">Product information</param>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [Route("AddProduct")]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {
@@ -27,10 +29,10 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLProduct/GetProducts
-        /// Getting all the products of online shopping app
         /// </summary>
-        /// <returns>Products</returns>
+        /// <returns>List of products</returns>
         [HttpGet]
+        [Authorize(Roles = "Customer")]
         [Route("GetProducts")]
         public IHttpActionResult GetProducts()
         {
@@ -39,11 +41,11 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLProduct/CreateProduct/List
-        /// Creating products using a list of products data.
         /// </summary>
-        /// <param name="lstNewProducts">New products list</param>
-        /// <returns>Ok or BadRequest response</returns>
+        /// <param name="lstNewProducts">New products list for create</param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [Route("CreateProducts/List")]
         public HttpResponseMessage CreateProductsFromList(List<PRO01> lstNewProducts)
         {
@@ -51,12 +53,12 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint :- api/CLProducts/DeleteProduct/1
-        /// Deleting a product
+        /// Endpoint :- api/CLProducts/DeleteProduct/{id}
         /// </summary>
         /// <param name="id">Product id</param>
-        /// <returns>Ok or BadRequest response</returns>
+        /// <returns></returns>
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         [Route("DeleteProduct/{id}")]
         public HttpResponseMessage DeleteProduct(int id)
         {
@@ -65,11 +67,11 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLProduct/UpdateCustomer
-        /// For updating product details of product
         /// </summary>
-        /// <param name="objUpdatedProduct">updated product data</param>
-        /// <returns>Ok or BadRequest or NotFound response</returns>
+        /// <param name="objUpdatedProduct">Updated product data</param>
+        /// <returns></returns>
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         [Route("UpdateProduct")]
         public HttpResponseMessage UpdateProduct(PRO01 objUpdatedProduct)
         {

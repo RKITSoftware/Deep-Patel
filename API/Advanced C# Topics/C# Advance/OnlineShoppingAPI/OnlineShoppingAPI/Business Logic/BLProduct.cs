@@ -11,8 +11,15 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLProduct
     {
+        /// <summary>
+        /// _dbFactory is used to store the reference of database connection.
+        /// </summary>
         private static readonly IDbConnectionFactory _dbFactory;
 
+        /// <summary>
+        /// Static constructor is used to initialize _dbfactory for future reference.
+        /// </summary>
+        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
         static BLProduct()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
@@ -23,7 +30,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage Create(PRO01 objNewProduct)
+        /// <summary>
+        /// Creating a product 
+        /// </summary>
+        /// <param name="objNewProduct">Product information</param>
+        /// <returns>Create response message</returns>
+        internal static HttpResponseMessage Create(PRO01 objNewProduct)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -33,14 +45,18 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.CreateTable<PRO01>();
 
                 db.Insert(objNewProduct);
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Product created successfully.")
                 };
             }
         }
 
-        public static List<PRO01> GetAll()
+        /// <summary>
+        /// Getting all the products information
+        /// </summary>
+        /// <returns>List of Products</returns>
+        internal static List<PRO01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -54,6 +70,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Creating products from the list of products data
+        /// </summary>
+        /// <param name="lstNewProducts">New products list</param>
+        /// <returns>Create response message</returns>
         public static HttpResponseMessage CreateFromList(List<PRO01> lstNewProducts)
         {
             if (lstNewProducts.Count == 0)
@@ -70,14 +91,19 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.CreateTable<PRO01>();
 
                 db.InsertAll(lstNewProducts);
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Products created successfully.")
                 };
             }
         }
 
-        public static HttpResponseMessage Delete(int id)
+        /// <summary>
+        /// Deleting products from the database using product id
+        /// </summary>
+        /// <param name="id">Product id</param>
+        /// <returns>Delete resposne message</returns>
+        internal static HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -100,7 +126,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage Update(PRO01 objUpdatedProduct)
+        /// <summary>
+        /// Updating product information
+        /// </summary>
+        /// <param name="objUpdatedProduct">Products updated response</param>
+        /// <returns>Update response message</returns>
+        internal static HttpResponseMessage Update(PRO01 objUpdatedProduct)
         {
             if (objUpdatedProduct.O01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)

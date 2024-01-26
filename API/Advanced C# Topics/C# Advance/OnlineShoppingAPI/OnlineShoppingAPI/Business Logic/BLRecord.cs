@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using MySql.Data.MySqlClient;
+using Newtonsoft.Json;
 using OfficeOpenXml;
 using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
@@ -15,8 +16,15 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLRecord
     {
+        /// <summary>
+        /// _dbFactory is used to store the reference of database connection.
+        /// </summary>
         private static readonly IDbConnectionFactory _dbFactory;
 
+        /// <summary>
+        /// Static constructor is used to initialize _dbfactory for future reference.
+        /// </summary>
+        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
         static BLRecord()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
@@ -27,7 +35,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static HttpResponseMessage Create(RCD01 objRecord)
+        /// <summary>
+        /// Creating a record of which customer buys which products.
+        /// </summary>
+        /// <param name="objRecord">Order Record</param>
+        /// <returns>Create response message</returns>
+        internal static HttpResponseMessage Create(RCD01 objRecord)
         {
             if (objRecord == null)
             {
@@ -49,15 +62,20 @@ namespace OnlineShoppingAPI.Business_Logic
                     objRecord.D01F06 = Guid.NewGuid();
                 }
 
-                db.Insert<RCD01>(objRecord);
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                db.Insert(objRecord);
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Record added successfully")
                 };
             }
         }
 
-        public static HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
+        /// <summary>
+        /// Creating records of orders from the list of records.
+        /// </summary>
+        /// <param name="lstNewRecords">List of records</param>
+        /// <returns>Create response message</returns>
+        internal static HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
         {
             if (lstNewRecords.Count == 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -72,15 +90,20 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (!tableExists)
                     db.CreateTable<RCD01>();
 
-                db.InsertAll<RCD01>(lstNewRecords);
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                db.InsertAll(lstNewRecords);
+                return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Records added successfully.")
                 };
             }
         }
 
-        public static HttpResponseMessage Delete(int id)
+        /// <summary>
+        /// Deleting a record information from the database.
+        /// </summary>
+        /// <param name="id">Record id</param>
+        /// <returns>Delete response message</returns>
+        internal static HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -103,20 +126,56 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static List<RCD01> GetAll()
+        /// <summary>
+        /// Getting all record details.
+        /// </summary>
+        /// <returns>List of records</returns>
+        internal static List<RCD01> GetAll()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;");
+            List<RCD01> lstRecords = new List<RCD01>();
+
+            try
             {
-                bool tableExists = db.TableExists<RCD01>();
+                using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM RCD01;", _connection))
+                {
+                    _connection.Open();
 
-                if (!tableExists)
-                    return null;
-
-                return db.Select<RCD01>();
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lstRecords.Add(new RCD01()
+                            {
+                                D01F01 = (int)reader[0],
+                                D01F02 = (int)reader[1],
+                                D01F03 = (int)reader[2],
+                                D01F04 = (int)reader[3],
+                                D01F05 = (int)reader[4],
+                                D01F06 = (Guid)reader[5]
+                            });
+                        }
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+                return null;
+            }
+            finally
+            {
+                _connection.Close();
+            }
+
+            return lstRecords;
         }
 
-        public static HttpResponseMessage Update(RCD01 objUpdateRecord)
+        /// <summary>
+        /// Updating record information in database.
+        /// </summary>
+        /// <param name="objUpdateRecord">Updated information</param>
+        /// <returns>Update response message</returns>
+        internal static HttpResponseMessage Update(RCD01 objUpdateRecord)
         {
             if (objUpdateRecord.D01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -142,7 +201,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        private static List<OrderDetailViewModel> GetOrderDetail(int id)
+        /// <summary>
+        /// Creating a json respose for view model which contains the information of order detail of specific customer
+        /// </summary>
+        /// <param name="result">Order detail list</param>
+        /// <returns>Json attachment response</returns>
+        private static HttpResponseMessage JSONResponse(int id)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -152,7 +216,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
                     .Where((r) => r.Item1.D01F02 == id)
-                    .Select((r) => new OrderDetailViewModel
+                    .Select((r) => new 
                     {
                         OrderId = r.Item1.D01F01,
                         CustomerName = r.Item3.S01F02,
@@ -163,86 +227,109 @@ namespace OnlineShoppingAPI.Business_Logic
                     })
                     .ToList();
 
-                return result;
-            }
-        }
+                string jsonData = JsonConvert.SerializeObject(result, Formatting.Indented);
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
 
-        private static HttpResponseMessage JSONResponse(List<OrderDetailViewModel> result)
-        {
-            string jsonData = JsonConvert.SerializeObject(result, Formatting.Indented);
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-
-            response.Content = new StringContent(jsonData);
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-            {
-                FileName = result[0].CustomerName + " Order Data.json"
-            };
-
-            return response;
-        }
-
-        private static HttpResponseMessage ExcelResponse(List<OrderDetailViewModel> result)
-        {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            using (var package = new ExcelPackage())
-            {
-                var worksheet = package.Workbook.Worksheets.Add("DataSheet");
-
-                worksheet.Cells["A1"].Value = "Order Id";
-                worksheet.Cells["B1"].Value = "Customer Name";
-                worksheet.Cells["C1"].Value = "Product Name";
-                worksheet.Cells["D1"].Value = "Price";
-                worksheet.Cells["E1"].Value = "Quantity";
-                worksheet.Cells["F1"].Value = "Invoice Id";
-
-                int row = 2;
-                foreach (var item in result)
-                {
-                    worksheet.Cells[row, 1].Value = item.OrderId;
-                    worksheet.Cells[row, 2].Value = item.CustomerName;
-                    worksheet.Cells[row, 3].Value = item.ProductName;
-                    worksheet.Cells[row, 4].Value = item.Price;
-                    worksheet.Cells[row, 5].Value = item.Quantity;
-                    worksheet.Cells[row, 6].Value = item.InvoiceId;
-
-                    row++;
-                }
-
-                var content = package.GetAsByteArray();
-                var response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new ByteArrayContent(content)
-                };
-
+                response.Content = new StringContent(jsonData);
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
                 {
-                    FileName = result[0].CustomerName + ".xlsx"
+                    FileName = result[0].CustomerName + " Order Data.json"
                 };
-
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
                 return response;
             }
         }
 
+        /// <summary>
+        /// Creating a excel respose for view model which contains the information of order detail of specific customer
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns>Excel attachment response</returns>
+        private static HttpResponseMessage ExcelResponse(int id)
+        {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                var joinSql = db.From<RCD01>()
+                    .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
+                    .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
+
+                var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
+                    .Where((r) => r.Item1.D01F02 == id)
+                    .Select((r) => new
+                    {
+                        OrderId = r.Item1.D01F01,
+                        CustomerName = r.Item3.S01F02,
+                        ProductName = r.Item2.O01F02,
+                        Price = r.Item1.D01F05,
+                        Quantity = r.Item1.D01F04,
+                        InvoiceId = r.Item1.D01F06
+                    })
+                    .ToList();
+
+              
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                using (var package = new ExcelPackage())
+                {
+                    var worksheet = package.Workbook.Worksheets.Add("DataSheet");
+
+                    worksheet.Cells["A1"].Value = "Order Id";
+                    worksheet.Cells["B1"].Value = "Customer Name";
+                    worksheet.Cells["C1"].Value = "Product Name";
+                    worksheet.Cells["D1"].Value = "Price";
+                    worksheet.Cells["E1"].Value = "Quantity";
+                    worksheet.Cells["F1"].Value = "Invoice Id";
+
+                    int row = 2;
+                    foreach (var item in result)
+                    {
+                        worksheet.Cells[row, 1].Value = item.OrderId;
+                        worksheet.Cells[row, 2].Value = item.CustomerName;
+                        worksheet.Cells[row, 3].Value = item.ProductName;
+                        worksheet.Cells[row, 4].Value = item.Price;
+                        worksheet.Cells[row, 5].Value = item.Quantity;
+                        worksheet.Cells[row, 6].Value = item.InvoiceId;
+
+                        row++;
+                    }
+
+                    var content = package.GetAsByteArray();
+                    var response = new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new ByteArrayContent(content)
+                    };
+
+                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = result[0].CustomerName + ".xlsx"
+                    };
+
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    return response;
+                }
+            }
+        }
+
+        /// <summary>
+        /// For downloading a customer order information using id and giving functionality of 2 types of files.
+        /// Json and Excel
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <param name="filetype">File type to download</param>
+        /// <returns>Customer order data</returns>
         public static HttpResponseMessage Download(int id, string filetype)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var result = GetOrderDetail(id);
-
-                if (result == null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                if(filetype.Equals("Json"))
-            
-                    return JSONResponse(result);
-                
-                else if(filetype.Equals("Excel"))
+                if (filetype.Equals("Json"))
                 {
-                    return ExcelResponse(result);
+                    return JSONResponse(id);
                 }
+                else if (filetype.Equals("Excel"))
+                {
+                    return ExcelResponse(id);
+                }
+
                 return new HttpResponseMessage(HttpStatusCode.BadRequest);
             }
         }

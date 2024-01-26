@@ -35,7 +35,7 @@ namespace OnlineShoppingAPI.Security
                     string username = usernamePassword[0];
                     string password = usernamePassword[1];
 
-                    // Validate user credentials using the ValidateUser class.
+                    // Validate user credentials using the BLUser class.
                     if (BLUser.IsExist(username, password))
                     {
                         var userDetail = BLUser.GetUser(username);

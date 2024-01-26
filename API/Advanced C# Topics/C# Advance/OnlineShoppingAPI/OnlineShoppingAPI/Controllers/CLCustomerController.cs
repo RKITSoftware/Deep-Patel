@@ -7,19 +7,21 @@ using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
+    /// <summary>
+    /// Customer controller for handling customer api endpoints
+    /// </summary>
     [RoutePrefix("api/CLCustomer")]
     [BasicAuth]
-    [Authorize(Roles = "Admin")]
     public class CLCustomerController : ApiController
     {
         /// <summary>
         /// Endpoint :- api/CLCustomer/CreateCustomer
-        /// Adding new customer to the customer table
         /// </summary>
         /// <param name="objNewCustomer">Customer data</param>
-        /// <returns>Customer created successfully.</returns>
+        /// <returns></returns>
         [HttpPost]
         [Route("CreateCustomer")]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
         {
             return BLCustomers.Create(objNewCustomer);
@@ -27,12 +29,11 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLCustomer/GetCustomers
-        /// Getting all the customer details of online shopping app
         /// </summary>
-        /// <returns>Customer details</returns>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetCustomers")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
             return Ok(BLCustomers.GetAll());
@@ -40,24 +41,25 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLCustomer/CreateCustomer/List
-        /// Creating customers using a list of customer data.
         /// </summary>
         /// <param name="lstNewCustomers">New customer list</param>
-        /// <returns>Ok or BadRequest response</returns>
+        /// <returns></returns>
         [HttpPost]
         [Route("CreateCustomer/List")]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
         {
             return BLCustomers.CreateFromList(lstNewCustomers);
         }
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/DeleteCustomer/1
+        /// Endpoint :- api/CLCustomer/DeleteCustomer/{id}
         /// </summary>
         /// <param name="id">Customer id</param>
-        /// <returns>Ok or BadRequest response</returns>
+        /// <returns></returns>
         [HttpDelete]
         [Route("DeleteCustomer/{id}")]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteCustomer(int id)
         {
             return BLCustomers.Delete(id);
@@ -65,15 +67,29 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Endpoint :- api/CLCustomer/UpdateCustomer
-        /// For updating customer details of customer
         /// </summary>
         /// <param name="objUpdatedCustomer">updated customer data</param>
-        /// <returns>Ok or BadRequest or NotFound repsonse</returns>
+        /// <returns></returns>
         [HttpPut]
         [Route("UpdateCustomer")]
+        [Authorize(Roles = "Customer")]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
         {
             return BLCustomers.Update(objUpdatedCustomer);
+        }
+
+        /// <summary>
+        /// Endpoint :- api/CLCustomer/ChangePassword
+        /// </summary>
+        /// <param name="username">User name of user</param>
+        /// <param name="newPassword">New password of user</param>
+        /// <returns></returns>
+        [HttpPatch]
+        [Route("ChangePassword")]
+        [Authorize(Roles = "Customer")]
+        public HttpResponseMessage ChangePassword(string username, string newPassword)
+        {
+            return BLCustomers.ChangePassword(username, newPassword);
         }
     }
 }

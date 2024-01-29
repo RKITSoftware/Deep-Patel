@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyExtension", "MyExtension\MyExtension.csproj", "{BFF86CD3-BAFC-4025-BC10-E01412602888}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLFeature", "BLFeature\BLFeature.csproj", "{7C3DD3F2-89BC-451C-BFA7-06A17458411D}"
 EndProject
 Global
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BFF86CD3-BAFC-4025-BC10-E01412602888}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BFF86CD3-BAFC-4025-BC10-E01412602888}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BFF86CD3-BAFC-4025-BC10-E01412602888}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BFF86CD3-BAFC-4025-BC10-E01412602888}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7C3DD3F2-89BC-451C-BFA7-06A17458411D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7C3DD3F2-89BC-451C-BFA7-06A17458411D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C3DD3F2-89BC-451C-BFA7-06A17458411D}.Release|Any CPU.ActiveCfg = Release|Any CPU

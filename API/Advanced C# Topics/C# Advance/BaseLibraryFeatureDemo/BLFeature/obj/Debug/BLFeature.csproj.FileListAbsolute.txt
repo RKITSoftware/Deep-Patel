@@ -1,11 +1,8 @@
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\bin\Debug\BLFeature.exe.config
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\bin\Debug\BLFeature.exe
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\bin\Debug\BLFeature.pdb
-F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\bin\Debug\MyExtension.dll
-F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\bin\Debug\MyExtension.pdb
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.csproj.AssemblyReference.cache
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.csproj.SuggestedBindingRedirects.cache
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.csproj.CoreCompileInputs.cache
-F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.csproj.CopyComplete
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.exe
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\BaseLibraryFeatureDemo\BLFeature\obj\Debug\BLFeature.pdb

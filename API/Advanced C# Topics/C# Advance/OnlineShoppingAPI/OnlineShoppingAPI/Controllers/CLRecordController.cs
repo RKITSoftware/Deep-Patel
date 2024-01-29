@@ -84,6 +84,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLRecord/UpdateRecord
         /// Updating record information
         /// </summary>
         /// <param name="objRecord">Updated information of record</param>

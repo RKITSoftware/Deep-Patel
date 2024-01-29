@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Xml.XPath;
@@ -81,11 +82,32 @@ namespace DataSerializationDemo
             Console.WriteLine(objStudent2.Age);
         }
 
+        public static void BinaryConvertDemo()
+        {
+            STU02 objstudent = new STU02();
+            objstudent.U02F01 = 1;
+            objstudent.U02F02 = "Deep";
+
+            // Serialization
+            FileStream fs = new FileStream("F:\\Deep - 380\\Training\\API\\Advanced C# Topics\\C# Advance\\DataSerializationDemo\\DataSerializationDemo\\demo.dat", FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+            formatter.Serialize(fs, objstudent);
+            fs.Close();
+           
+            // Deserialization
+            FileStream fs1 = new FileStream("F:\\Deep - 380\\Training\\API\\Advanced C# Topics\\C# Advance\\DataSerializationDemo\\DataSerializationDemo\\demo.dat", FileMode.Open);
+            STU02 derializeObj = (STU02)formatter.Deserialize(fs1);
+            Console.WriteLine(derializeObj.U02F02);
+
+            fs1.Close();
+        }
+
         static void Main(string[] args)
         {
             // Program.JsonConvertDemoOfClass();
             // Program.JsonConvertDemoOfList();
-            Program.XmlConvertDemoOfClass();
+            // Program.XmlConvertDemoOfClass();
+            BinaryConvertDemo();
         }
     }
 }

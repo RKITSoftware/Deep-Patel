@@ -1,0 +1,8 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\bin\Debug\GenericClassDemo.exe.config
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\bin\Debug\GenericClassDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\bin\Debug\GenericClassDemo.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\obj\Debug\GenericClassDemo.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\obj\Debug\GenericClassDemo.csproj.SuggestedBindingRedirects.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\obj\Debug\GenericClassDemo.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\obj\Debug\GenericClassDemo.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\GenericClassDemo\GenericClassDemo\obj\Debug\GenericClassDemo.pdb

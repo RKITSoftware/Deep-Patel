@@ -49,17 +49,19 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExist = db.TableExists<RCD01>();
-
-                if (!tableExist)
-                    db.CreateTable<RCD01>();
-
                 var sourceProduct = db.SingleById<PRO01>(objRecord.D01F03);
 
                 if (sourceProduct != null)
                 {
                     objRecord.D01F05 = sourceProduct.O01F03 * objRecord.D01F04;
                     objRecord.D01F06 = Guid.NewGuid();
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("Product not found.")
+                    };
                 }
 
                 db.Insert(objRecord);
@@ -85,12 +87,15 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<RCD01>();
+                foreach (var item in lstNewRecords)
+                {
+                    var sourceProduct = db.SingleById<PRO01>(item.D01F03);
 
-                if (!tableExists)
-                    db.CreateTable<RCD01>();
+                    item.D01F05 = sourceProduct.O01F03 * item.D01F04;
+                    item.D01F06 = Guid.NewGuid();
 
-                db.InsertAll(lstNewRecords);
+                    db.Insert(item);
+                }
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Records added successfully.")
@@ -158,7 +163,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -216,7 +221,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
                     .Where((r) => r.Item1.D01F02 == id)
-                    .Select((r) => new 
+                    .Select((r) => new
                     {
                         OrderId = r.Item1.D01F01,
                         CustomerName = r.Item3.S01F02,
@@ -267,8 +272,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     })
                     .ToList();
 
-              
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (var package = new ExcelPackage())
                 {
                     var worksheet = package.Workbook.Worksheets.Add("DataSheet");

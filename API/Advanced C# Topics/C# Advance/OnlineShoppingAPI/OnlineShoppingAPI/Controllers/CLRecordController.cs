@@ -15,6 +15,7 @@ namespace OnlineShoppingAPI.Controllers
     public class CLRecordController : ApiController
     {
         /// <summary>
+        /// Endpoint :- api/CLRecord/AddOrderDetail
         /// Adding order information of product which customer buys it which product
         /// </summary>
         /// <param name="objOrder">Oreder record of customer</param>
@@ -28,6 +29,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLRecord/CreateRecords/List
         /// Adding order information of products which customers buys it which product.
         /// </summary>
         /// <param name="lstNewOrders">Order records of customers</param>
@@ -41,6 +43,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLRecord/DeleteRecord/1
         /// Deleting a record of Order Detail
         /// </summary>
         /// <param name="id">Record id</param>
@@ -54,6 +57,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLRecord/DownloadCustomerRecords/{id}/{filetype}
         /// Downloading a customer information in Excel and Json format.
         /// </summary>
         /// <param name="id">Customer id</param>
@@ -61,7 +65,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DownloadCustomerRecords/{id}/{filetype}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Customer")]
         public HttpResponseMessage DownloadCustomerRecord(int id, string filetype)
         {
             return BLRecord.Download(id, filetype);
@@ -73,7 +77,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>List of records</returns>
         [HttpGet]
         [Route("GetAllRecordsDetail")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetOrders()
         {
             return Ok(BLRecord.GetAll());

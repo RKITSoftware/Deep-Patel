@@ -17,7 +17,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <summary>
         /// POST :- api/CLAdmin/Add
         /// </summary>
-        /// <param name="objAdmin">New admin informatioin to create</param>
+        /// <param name="objAdmin">New admin information to create</param>
         /// <returns></returns>
         [HttpPost]
         [Route("Add")]
@@ -45,8 +45,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="newPassword">Admin new password</param>
         /// <returns></returns>
         [HttpPatch]
-        [Route("Password/Change/{username}/{newPassword}")]
-        public HttpResponseMessage ChangePassword(string username, string newPassword)
+        [Route("Password/Change")]
+        public HttpResponseMessage ChangePassword([FromUri] string username, [FromUri] string newPassword)
         {
             return BLAdmin.ChangePassword(username, newPassword);
         }

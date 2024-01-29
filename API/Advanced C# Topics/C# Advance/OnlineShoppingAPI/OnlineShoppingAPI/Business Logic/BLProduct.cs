@@ -118,7 +118,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (product == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-                db.Delete<PRO01>(id);
+                db.DeleteById<PRO01>(id);
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Product deleted successfully.")

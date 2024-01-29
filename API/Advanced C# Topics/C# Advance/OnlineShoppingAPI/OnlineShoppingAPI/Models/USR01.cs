@@ -27,5 +27,10 @@ namespace OnlineShoppingAPI.Models
         /// User Role
         /// </summary>
         public string R01F04 { get; set; }
+
+        /// <summary>
+        /// Encrypt Password
+        /// </summary>
+        public string R01F05 { get; set; }
     }
 }

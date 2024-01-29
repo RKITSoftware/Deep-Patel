@@ -1,11 +1,11 @@
-﻿using ServiceStack.Data;
-using System.Web;
-using System;
-using System.Net.Http;
-using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.Models;
+using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System.Net;
+using System;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
@@ -56,6 +56,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Updating password
                 objAdmin.M01F04 = newPassword;
                 objUser.R01F03 = newPassword;
+                objUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
 
                 db.Update(objAdmin);
                 db.Update(objUser);
@@ -76,18 +77,13 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                // Checking table exist
-                bool tableExists = db.TableExists<ADM01>();
-
-                if (!tableExists)
-                    db.CreateTable<ADM01>();
-
                 db.Insert(objAdmin);
                 db.Insert(new USR01
                 {
                     R01F02 = objAdmin.M01F03.Split('@')[0],
                     R01F03 = objAdmin.M01F04,
-                    R01F04 = "Admin"
+                    R01F04 = "Admin",
+                    R01F05 = BLUser.GetEncryptPassword(objAdmin.M01F04)
                 });
 
                 return new HttpResponseMessage(HttpStatusCode.Created)

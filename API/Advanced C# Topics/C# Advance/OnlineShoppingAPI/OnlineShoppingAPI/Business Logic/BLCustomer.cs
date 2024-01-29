@@ -48,6 +48,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 existingCustomer.S01F04 = newPassword;
                 existingUser.R01F03 = newPassword;
+                existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
 
                 db.Update(existingCustomer);
                 db.Update(existingUser);
@@ -68,17 +69,13 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<CUS01>();
-
-                if (!tableExists)
-                    db.CreateTable<CUS01>();
-
                 db.Insert(objNewCustomer);
                 db.Insert(new USR01
                 {
                     R01F02 = objNewCustomer.S01F03.Split('@')[0],
                     R01F03 = objNewCustomer.S01F04,
-                    R01F04 = "Customer"
+                    R01F04 = "Customer",
+                    R01F05 = BLUser.GetEncryptPassword(objNewCustomer.S01F04)
                 });
 
                 return new HttpResponseMessage(HttpStatusCode.Created)
@@ -96,11 +93,6 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<CUS01>();
-
-                if (!tableExists)
-                    return null;
-
                 var customers = db.Select<CUS01>();
                 return customers;
             }
@@ -128,7 +120,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     {
                         R01F02 = item.S01F03.Split('@')[0],
                         R01F03 = item.S01F04,
-                        R01F04 = "Customer"
+                        R01F04 = "Customer",
+                        R01F05 = BLUser.GetEncryptPassword(item.S01F04)
                     });
                 }
 

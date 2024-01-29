@@ -53,7 +53,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint :- api/CLProducts/DeleteProduct/{id}
+        /// Endpoint :- api/CLProduct /DeleteProduct/{id}
         /// </summary>
         /// <param name="id">Product id</param>
         /// <returns></returns>
@@ -66,7 +66,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint :- api/CLProduct/UpdateCustomer
+        /// Endpoint :- api/CLProduct/UpdateProduct
         /// </summary>
         /// <param name="objUpdatedProduct">Updated product data</param>
         /// <returns></returns>

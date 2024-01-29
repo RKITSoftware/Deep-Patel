@@ -87,7 +87,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPatch]
         [Route("ChangePassword")]
         [Authorize(Roles = "Customer")]
-        public HttpResponseMessage ChangePassword(string username, string newPassword)
+        public HttpResponseMessage ChangePassword([FromUri] string username, [FromUri] string newPassword)
         {
             return BLCustomers.ChangePassword(username, newPassword);
         }

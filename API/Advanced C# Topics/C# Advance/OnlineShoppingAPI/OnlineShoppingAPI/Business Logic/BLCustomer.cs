@@ -36,7 +36,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="username">Customer username</param>
         /// <param name="newPassword">Customer new password</param>
         /// <returns>Change response</returns>
-        internal static HttpResponseMessage ChangePassword(string username, string newPassword)
+        internal HttpResponseMessage ChangePassword(string username, string newPassword)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -65,7 +65,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objNewCustomer">Customer data</param>
         /// <returns>Create response message</returns>
-        internal static HttpResponseMessage Create(CUS01 objNewCustomer)
+        internal HttpResponseMessage Create(CUS01 objNewCustomer)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -89,7 +89,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// Getting all customer details from database
         /// </summary>
         /// <returns>List of Customer data</returns>
-        internal static List<CUS01> GetAll()
+        internal List<CUS01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -103,7 +103,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstNewCustomers">List of customer data to added into database.</param>
         /// <returns>Create response message</returns>
-        internal static HttpResponseMessage CreateFromList(List<CUS01> lstNewCustomers)
+        internal HttpResponseMessage CreateFromList(List<CUS01> lstNewCustomers)
         {
             if (lstNewCustomers.Count == 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -137,7 +137,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Customer id</param>
         /// <returns>Delete response message</returns>
-        internal static HttpResponseMessage Delete(int id)
+        internal HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -168,7 +168,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objUpdatedCustomer">Updated information of customer</param>
         /// <returns>Update response message</returns>
-        internal static HttpResponseMessage Update(CUS01 objUpdatedCustomer)
+        internal HttpResponseMessage Update(CUS01 objUpdatedCustomer)
         {
             if (objUpdatedCustomer.S01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)

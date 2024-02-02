@@ -8,7 +8,7 @@ namespace AESCryptographyDemo
         /// <summary>
         /// Symmetric algorithm AES Implementation using System.Security.Cryptography class
         /// </summary>
-        static void AESDemo()
+        internal void AESDemo()
         {
             // Create an instance of the class
             Aes objAes = Aes.Create();
@@ -50,7 +50,7 @@ namespace AESCryptographyDemo
         /// <summary>
         /// DES Encryption & Decryption Demo
         /// </summary>
-        static void DESDemo()
+        internal void DESDemo()
         {
             // Creating a des instance od DES Class
             DES objDes = DES.Create();
@@ -85,7 +85,7 @@ namespace AESCryptographyDemo
             Console.WriteLine($"Decrypted text :- {decryptedText}");
         }
 
-        static void RSADemo()
+        internal void RSADemo()
         {
             UnicodeEncoding ByteConverter = new UnicodeEncoding();
             RSACryptoServiceProvider RSA = new RSACryptoServiceProvider();
@@ -158,7 +158,11 @@ namespace AESCryptographyDemo
 
         static void Main(string[] args)
         {
-        
+            Program objProgram = new Program();
+           
+            objProgram.AESDemo();
+            objProgram.DESDemo();
+            objProgram.RSADemo();
         }
     }
 }

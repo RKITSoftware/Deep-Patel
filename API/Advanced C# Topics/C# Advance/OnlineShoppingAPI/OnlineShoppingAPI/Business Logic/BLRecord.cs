@@ -40,7 +40,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objRecord">Order Record</param>
         /// <returns>Create response message</returns>
-        internal static HttpResponseMessage Create(RCD01 objRecord)
+        internal HttpResponseMessage Create(RCD01 objRecord)
         {
             if (objRecord == null)
             {
@@ -77,7 +77,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstNewRecords">List of records</param>
         /// <returns>Create response message</returns>
-        internal static HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
+        internal HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
         {
             if (lstNewRecords.Count == 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -108,7 +108,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Record id</param>
         /// <returns>Delete response message</returns>
-        internal static HttpResponseMessage Delete(int id)
+        internal HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -135,7 +135,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// Getting all record details.
         /// </summary>
         /// <returns>List of records</returns>
-        internal static List<RCD01> GetAll()
+        internal List<RCD01> GetAll()
         {
             MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;");
             List<RCD01> lstRecords = new List<RCD01>();
@@ -180,7 +180,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objUpdateRecord">Updated information</param>
         /// <returns>Update response message</returns>
-        internal static HttpResponseMessage Update(RCD01 objUpdateRecord)
+        internal HttpResponseMessage Update(RCD01 objUpdateRecord)
         {
             if (objUpdateRecord.D01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -211,7 +211,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="result">Order detail list</param>
         /// <returns>Json attachment response</returns>
-        private static HttpResponseMessage JSONResponse(int id)
+        private HttpResponseMessage JSONResponse(int id)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -251,7 +251,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="result"></param>
         /// <returns>Excel attachment response</returns>
-        private static HttpResponseMessage ExcelResponse(int id)
+        private HttpResponseMessage ExcelResponse(int id)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -322,7 +322,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="id">Customer id</param>
         /// <param name="filetype">File type to download</param>
         /// <returns>Customer order data</returns>
-        public static HttpResponseMessage Download(int id, string filetype)
+        public HttpResponseMessage Download(int id, string filetype)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {

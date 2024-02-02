@@ -21,6 +21,11 @@
             Console.WriteLine(str);
         }
 
+        /// <summary>
+        /// Returns the count of list
+        /// </summary>
+        /// <param name="lst">List reference</param>
+        /// <returns></returns>
         public static int M6(this List<int> lst)
         {
             return lst.Count;

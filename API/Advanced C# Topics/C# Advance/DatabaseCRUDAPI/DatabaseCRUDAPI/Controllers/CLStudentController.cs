@@ -11,6 +11,8 @@ namespace DatabaseCRUDAPI.Controllers
     [RoutePrefix("api/CLStudent")]
     public class CLStudentController : ApiController
     {
+        private BLStudent bLStudent;
+
         /// <summary>
         /// Creating a student in database 
         /// </summary>
@@ -20,7 +22,8 @@ namespace DatabaseCRUDAPI.Controllers
         [Route("Create")]
         public HttpResponseMessage CreateStudent(STU01 objStudent)
         {
-            return BLStudent.InsertData(objStudent);
+            bLStudent = new BLStudent();
+            return bLStudent.InsertData(objStudent);
         }
 
         /// <summary>
@@ -31,7 +34,8 @@ namespace DatabaseCRUDAPI.Controllers
         [Route("GetStudnetsData")]
         public IHttpActionResult GetStudentsData()
         {
-            return Ok(BLStudent.ReadData());
+            bLStudent = new BLStudent();
+            return Ok(bLStudent.ReadData());
         }
 
         /// <summary>
@@ -43,7 +47,8 @@ namespace DatabaseCRUDAPI.Controllers
         [Route("UpdateStudent")]
         public HttpResponseMessage UpdateData(STU01 objStudent)
         {
-            return BLStudent.UpdateStudent(objStudent);
+            bLStudent = new BLStudent();
+            return bLStudent.UpdateStudent(objStudent);
         }
 
         /// <summary>
@@ -55,7 +60,8 @@ namespace DatabaseCRUDAPI.Controllers
         [Route("DeleteStudent/{id}")]
         public HttpResponseMessage DeleteData(int id)
         {
-            return BLStudent.DeleteStudent(id);
+            bLStudent = new BLStudent();
+            return bLStudent.DeleteStudent(id);
         }
     }
 }

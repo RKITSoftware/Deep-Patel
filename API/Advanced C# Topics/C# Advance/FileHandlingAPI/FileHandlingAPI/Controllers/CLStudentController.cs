@@ -15,13 +15,19 @@ namespace FileHandlingAPI.Controllers
     [RoutePrefix("api/CLStudent")]
     public class CLStudentController : ApiController
     {
+        private BLStudent _blStudent;
+
         /// <summary>
         /// GET :- api/CLStudent/GetAllStudentData
         /// </summary>
         /// <returns>All Student Data with Ok Response</returns>
         [HttpGet]
         [Route("GetAllStudentData")]
-        public IHttpActionResult GetAllStudentData() => Ok(BLStudent.GetAllStudent());
+        public IHttpActionResult GetAllStudentData()
+        {
+            _blStudent = new BLStudent();
+            return Ok(_blStudent.GetAllStudent());
+        }
 
         /// <summary>
         /// GET :- api/CLStudent/GetStudentById/1
@@ -30,7 +36,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns>Student specific by Id</returns>
         [HttpGet]
         [Route("GetStudentById/{id}")]
-        public IHttpActionResult GetStudentById([FromUri] int id) => Ok(BLStudent.GetStudentById(id));
+        public IHttpActionResult GetStudentById([FromUri] int id)
+        {
+            _blStudent = new BLStudent();
+            return Ok(_blStudent.GetStudentById(id));
+        }
 
         /// <summary>
         /// POST :- api/CLStudent/AddStudent
@@ -39,7 +49,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns>Ok response</returns>
         [HttpPost]
         [Route("AddStudent")]
-        public IHttpActionResult Addstudent([FromBody] STU01 objStudent) => Ok(BLStudent.CreateStudent(objStudent));
+        public IHttpActionResult Addstudent([FromBody] STU01 objStudent)
+        {
+            _blStudent = new BLStudent();
+            return Ok(_blStudent.CreateStudent(objStudent));
+        }
 
         /// <summary>
         /// DELETE :- api/CLStudent/DeleteStudent/1
@@ -48,7 +62,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteStudent/{id}")]
-        public IHttpActionResult DeleteStudent(int id) => Ok(BLStudent.DeleteStudent(id));
+        public IHttpActionResult DeleteStudent(int id)
+        {
+            _blStudent = new BLStudent();
+            return Ok(_blStudent.DeleteStudent(id));
+        }
 
         /// <summary>
         /// GET :- api/CLStudent/FileWrite
@@ -57,7 +75,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("FileWrite")]
-        public IHttpActionResult WriteStudentDataIntoFile() => Ok(BLStudent.WriteData());
+        public IHttpActionResult WriteStudentDataIntoFile()
+        {
+            _blStudent = new BLStudent();
+            return Ok(_blStudent.WriteData());
+        }
 
         /// <summary>
         /// GET :- api/CLStudent/download
@@ -66,7 +88,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns>bakcup File</returns>
         [HttpGet]
         [Route("download")]
-        public HttpResponseMessage DownloadFile() => BLStudent.DownloadFile();
+        public HttpResponseMessage DownloadFile()
+        {
+            _blStudent = new BLStudent();
+            return _blStudent.DownloadFile();
+        }
 
         /// <summary>
         /// POST :- api/CLStudent/upload
@@ -114,7 +140,11 @@ namespace FileHandlingAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("FillData")]
-        public HttpResponseMessage FillStudentDataToList(string day, string month, string year) => BLStudent.FillData(day, month, year);
+        public HttpResponseMessage FillStudentDataToList(string day, string month, string year)
+        {
+            _blStudent = new BLStudent();
+            return _blStudent.FillData(day, month, year);
+        }
 
         /// <summary>
         /// GET :- api/CLStudent/GetDirectoryInfo

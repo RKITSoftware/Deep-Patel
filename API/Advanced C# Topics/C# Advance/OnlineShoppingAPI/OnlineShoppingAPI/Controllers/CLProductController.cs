@@ -14,6 +14,8 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLProductController : ApiController
     {
+        private BLProduct _blProduct;
+
         /// <summary>>
         /// Endpoint :- api/CLProduct/AddProduct
         /// </summary>
@@ -24,7 +26,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("AddProduct")]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {
-            return BLProduct.Create(objNewProduct);
+            _blProduct = new BLProduct();
+            return _blProduct.Create(objNewProduct);
         }
 
         /// <summary>
@@ -36,7 +39,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetProducts")]
         public IHttpActionResult GetProducts()
         {
-            return Ok(BLProduct.GetAll());
+            _blProduct = new BLProduct();
+            return Ok(_blProduct.GetAll());
         }
 
         /// <summary>
@@ -49,7 +53,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("CreateProducts/List")]
         public HttpResponseMessage CreateProductsFromList(List<PRO01> lstNewProducts)
         {
-            return BLProduct.CreateFromList(lstNewProducts);
+            _blProduct = new BLProduct();
+            return _blProduct.CreateFromList(lstNewProducts);
         }
 
         /// <summary>
@@ -62,7 +67,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("DeleteProduct/{id}")]
         public HttpResponseMessage DeleteProduct(int id)
         {
-            return BLProduct.Delete(id);
+            _blProduct = new BLProduct();
+            return _blProduct.Delete(id);
         }
 
         /// <summary>
@@ -75,7 +81,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("UpdateProduct")]
         public HttpResponseMessage UpdateProduct(PRO01 objUpdatedProduct)
         {
-            return BLProduct.Update(objUpdatedProduct);
+            _blProduct = new BLProduct();
+            return _blProduct.Update(objUpdatedProduct);
         }
     }
 }

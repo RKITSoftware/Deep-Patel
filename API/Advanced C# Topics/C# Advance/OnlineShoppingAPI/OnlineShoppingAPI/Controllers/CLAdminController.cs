@@ -14,6 +14,8 @@ namespace OnlineShoppingAPI.Controllers
     [Authorize(Roles = "Admin")]
     public class CLAdminController : ApiController
     {
+        private BLAdmin _blAdmin;
+
         /// <summary>
         /// POST :- api/CLAdmin/Add
         /// </summary>
@@ -23,7 +25,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Add")]
         public HttpResponseMessage CreateAdmin(ADM01 objAdmin)
         {
-            return BLAdmin.Create(objAdmin);
+            _blAdmin = new BLAdmin();
+            return _blAdmin.Create(objAdmin);
         }
 
         /// <summary>
@@ -35,7 +38,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public HttpResponseMessage DeleteAdmin(int id)
         {
-            return BLAdmin.Delete(id);
+            _blAdmin = new BLAdmin();
+            return _blAdmin.Delete(id);
         }
 
         /// <summary>
@@ -48,7 +52,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Password/Change")]
         public HttpResponseMessage ChangePassword([FromUri] string username, [FromUri] string newPassword)
         {
-            return BLAdmin.ChangePassword(username, newPassword);
+            _blAdmin = new BLAdmin();
+            return _blAdmin.ChangePassword(username, newPassword);
         }
     }
 }

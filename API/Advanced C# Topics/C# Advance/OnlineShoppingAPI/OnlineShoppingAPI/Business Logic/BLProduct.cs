@@ -1,11 +1,11 @@
 ﻿using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net;
-using System.Web;
-using System;
 using ServiceStack.OrmLite;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Web;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
@@ -35,7 +35,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objNewProduct">Product information</param>
         /// <returns>Create response message</returns>
-        internal static HttpResponseMessage Create(PRO01 objNewProduct)
+        internal HttpResponseMessage Create(PRO01 objNewProduct)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -56,7 +56,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// Getting all the products information
         /// </summary>
         /// <returns>List of Products</returns>
-        internal static List<PRO01> GetAll()
+        internal List<PRO01> GetAll()
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -75,7 +75,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstNewProducts">New products list</param>
         /// <returns>Create response message</returns>
-        public static HttpResponseMessage CreateFromList(List<PRO01> lstNewProducts)
+        public HttpResponseMessage CreateFromList(List<PRO01> lstNewProducts)
         {
             if (lstNewProducts.Count == 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -103,7 +103,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Product id</param>
         /// <returns>Delete resposne message</returns>
-        internal static HttpResponseMessage Delete(int id)
+        internal HttpResponseMessage Delete(int id)
         {
             if (id <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -131,7 +131,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objUpdatedProduct">Products updated response</param>
         /// <returns>Update response message</returns>
-        internal static HttpResponseMessage Update(PRO01 objUpdatedProduct)
+        internal HttpResponseMessage Update(PRO01 objUpdatedProduct)
         {
             if (objUpdatedProduct.O01F01 <= 0)
                 return new HttpResponseMessage(HttpStatusCode.BadRequest)

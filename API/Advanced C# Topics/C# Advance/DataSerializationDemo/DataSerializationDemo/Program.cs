@@ -11,7 +11,7 @@ namespace DataSerializationDemo
         /// <summary>
         /// Convert operation on class object
         /// </summary>
-        public static void JsonConvertDemoOfClass()
+        public void JsonConvertDemoOfClass()
         {
             STU01 objStudent = new STU01()
             {
@@ -32,7 +32,7 @@ namespace DataSerializationDemo
         /// <summary>
         /// Convert operation of list of student object
         /// </summary>
-        public static void JsonConvertDemoOfList()
+        public void JsonConvertDemoOfList()
         {
             List<STU01> lstStudent = new List<STU01>()
             {
@@ -56,7 +56,7 @@ namespace DataSerializationDemo
         /// <summary>
         /// Convert operation on class object
         /// </summary>
-        public static void XmlConvertDemoOfClass()
+        public void XmlConvertDemoOfClass()
         {
             XmlDocument objXmlDocument = new XmlDocument();
             XPathNavigator xNav = objXmlDocument.CreateNavigator();
@@ -82,7 +82,10 @@ namespace DataSerializationDemo
             Console.WriteLine(objStudent2.Age);
         }
 
-        public static void BinaryConvertDemo()
+        /// <summary>
+        /// Binary Serialization Deserialization Demo
+        /// </summary>
+        public void BinaryConvertDemo()
         {
             STU02 objstudent = new STU02();
             objstudent.U02F01 = 1;
@@ -104,10 +107,12 @@ namespace DataSerializationDemo
 
         static void Main(string[] args)
         {
-            // Program.JsonConvertDemoOfClass();
-            // Program.JsonConvertDemoOfList();
-            // Program.XmlConvertDemoOfClass();
-            BinaryConvertDemo();
+            Program objProgram = new Program();
+
+            // objProgram.JsonConvertDemoOfClass();
+            // objProgram.JsonConvertDemoOfList();
+            // objProgram.XmlConvertDemoOfClass();
+            objProgram.BinaryConvertDemo();
         }
     }
 }

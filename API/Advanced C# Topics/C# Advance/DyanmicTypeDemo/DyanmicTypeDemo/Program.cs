@@ -2,6 +2,11 @@
 {
     internal class Program
     {
+        /// <summary>
+        /// Add two parameters
+        /// </summary>
+        /// <param name="temp1"></param>
+        /// <param name="temp2"></param>
         static void Add(dynamic temp1, dynamic temp2)
         {
             Console.WriteLine(temp1 + temp2);

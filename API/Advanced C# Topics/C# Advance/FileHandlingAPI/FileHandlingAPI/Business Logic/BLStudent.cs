@@ -29,21 +29,21 @@ namespace FileHandlingAPI.Business_Logic
         /// For getting all student data
         /// </summary>
         /// <returns>All student data</returns>
-        public static List<STU01> GetAllStudent() => lstStudent;
+        public List<STU01> GetAllStudent() => lstStudent;
 
         /// <summary>
         /// For getting student using student id
         /// </summary>
         /// <param name="id">Student id</param>
         /// <returns>Student</returns>
-        public static STU01 GetStudentById(int id) => lstStudent.FirstOrDefault(s => s.U01F01 == id);
+        public STU01 GetStudentById(int id) => lstStudent.FirstOrDefault(s => s.U01F01 == id);
 
         /// <summary>
         /// For cretaing a student
         /// </summary>
         /// <param name="objStudent">Student data</param>
         /// <returns>string data</returns>
-        public static string CreateStudent(STU01 objStudent)
+        public string CreateStudent(STU01 objStudent)
         {
             STU01 objSTU01 = lstStudent.FirstOrDefault(s => s.U01F01 == objStudent.U01F01);
 
@@ -61,7 +61,7 @@ namespace FileHandlingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Student delete id</param>
         /// <returns>Delete response</returns>
-        public static string DeleteStudent(int id)
+        public string DeleteStudent(int id)
         {
             lstStudent.RemoveAll(s => s.U01F01 == id);
             return "Student deleted successfully.";
@@ -70,7 +70,7 @@ namespace FileHandlingAPI.Business_Logic
         /// <summary>
         /// Create a file with today date
         /// </summary>
-        public static void CreateFile()
+        public void CreateFile()
         {
             if (!File.Exists(filePath))
             {
@@ -82,7 +82,7 @@ namespace FileHandlingAPI.Business_Logic
         /// Writing data into a file
         /// </summary>
         /// <returns>File written response</returns>
-        public static string WriteData()
+        public string WriteData()
         {
             CreateFile();
 
@@ -100,7 +100,7 @@ namespace FileHandlingAPI.Business_Logic
         /// Download backup file of student data
         /// </summary>
         /// <returns></returns>
-        public static HttpResponseMessage DownloadFile()
+        public HttpResponseMessage DownloadFile()
         {
             if (File.Exists(filePath))
             {
@@ -131,7 +131,7 @@ namespace FileHandlingAPI.Business_Logic
         /// <param name="month">Month of data</param>
         /// <param name="year">Year of data</param>
         /// <returns>HttpResponseMEssage if files writes then Ok Else NotFound</returns>
-        public static HttpResponseMessage FillData(string day, string month, string year)
+        public HttpResponseMessage FillData(string day, string month, string year)
         {
             string readFilePath = $"{HttpContext.Current.Server.MapPath("~/Data")}\\Student Data {day}-{month}-{year}.txt";
             if (File.Exists(readFilePath))

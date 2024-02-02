@@ -14,6 +14,8 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLRecordController : ApiController
     {
+        private BLRecord _blRecord;
+
         /// <summary>
         /// Endpoint :- api/CLRecord/AddOrderDetail
         /// Adding order information of product which customer buys it which product
@@ -25,7 +27,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage AddOrder(RCD01 objOrder)
         {
-            return BLRecord.Create(objOrder);
+            _blRecord = new BLRecord();
+            return _blRecord.Create(objOrder);
         }
 
         /// <summary>
@@ -39,7 +42,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage CreateOrdersFromList(List<RCD01> lstNewOrders)
         {
-            return BLRecord.CreateFromList(lstNewOrders);
+            _blRecord = new BLRecord();
+            return _blRecord.CreateFromList(lstNewOrders);
         }
 
         /// <summary>
@@ -53,7 +57,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage DeleteRecord(int id)
         {
-            return BLRecord.Delete(id);
+            _blRecord = new BLRecord();
+            return _blRecord.Delete(id);
         }
 
         /// <summary>
@@ -68,7 +73,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage DownloadCustomerRecord(int id, string filetype)
         {
-            return BLRecord.Download(id, filetype);
+            _blRecord = new BLRecord();
+            return _blRecord.Download(id, filetype);
         }
 
         /// <summary>
@@ -80,7 +86,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetOrders()
         {
-            return Ok(BLRecord.GetAll());
+            _blRecord = new BLRecord();
+            return Ok(_blRecord.GetAll());
         }
 
         /// <summary>
@@ -94,7 +101,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage UpdateRecord(RCD01 objRecord)
         {
-            return BLRecord.Update(objRecord);
+            _blRecord = new BLRecord();
+            return _blRecord.Update(objRecord);
         }
     }
 }

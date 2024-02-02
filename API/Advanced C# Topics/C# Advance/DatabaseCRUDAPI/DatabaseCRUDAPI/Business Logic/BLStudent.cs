@@ -18,7 +18,7 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// </summary>
         /// <param name="objStudent">Student data to insert</param>
         /// <returns>Create response</returns>
-        public static HttpResponseMessage InsertData(STU01 objStudent)
+        public HttpResponseMessage InsertData(STU01 objStudent)
         {
             MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
 
@@ -59,7 +59,7 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// Reading the data from college database and add it to list of students.
         /// </summary>
         /// <returns>List of students</returns>
-        public static List<STU01> ReadData()
+        public List<STU01> ReadData()
         {
             MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
             List<STU01> lstStudent = new List<STU01>();
@@ -103,7 +103,7 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// </summary>
         /// <param name="objStudent">Student information</param>
         /// <returns>Update response</returns>
-        public static HttpResponseMessage UpdateStudent(STU01 objStudent)
+        public HttpResponseMessage UpdateStudent(STU01 objStudent)
         {
             MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
 
@@ -149,7 +149,7 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// </summary>
         /// <param name="id">Student id</param>
         /// <returns>Delete response</returns>
-        public static HttpResponseMessage DeleteStudent(int id)
+        public HttpResponseMessage DeleteStudent(int id)
         {
             MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
 

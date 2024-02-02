@@ -41,7 +41,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="username">Admin username</param>
         /// <param name="newPassword">New password</param>
         /// <returns>Ok response</returns>
-        internal static HttpResponseMessage ChangePassword(string username, string newPassword)
+        internal HttpResponseMessage ChangePassword(string username, string newPassword)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -73,7 +73,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objAdmin">Admin data</param>
         /// <returns>Create response</returns>
-        internal static HttpResponseMessage Create(ADM01 objAdmin)
+        internal HttpResponseMessage Create(ADM01 objAdmin)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -99,7 +99,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Admin id</param>
         /// <returns>Delete response message</returns>
-        internal static HttpResponseMessage Delete(int id)
+        internal HttpResponseMessage Delete(int id)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {

@@ -14,6 +14,8 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLCustomerController : ApiController
     {
+        private BLCustomers _blCustomer;
+
         /// <summary>
         /// Endpoint :- api/CLCustomer/CreateCustomer
         /// </summary>
@@ -24,7 +26,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
         {
-            return BLCustomers.Create(objNewCustomer);
+            _blCustomer = new BLCustomers();
+            return _blCustomer.Create(objNewCustomer);
         }
 
         /// <summary>
@@ -36,7 +39,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
-            return Ok(BLCustomers.GetAll());
+            _blCustomer = new BLCustomers();
+            return Ok(_blCustomer.GetAll());
         }
 
         /// <summary>
@@ -49,7 +53,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
         {
-            return BLCustomers.CreateFromList(lstNewCustomers);
+            _blCustomer = new BLCustomers();
+            return _blCustomer.CreateFromList(lstNewCustomers);
         }
 
         /// <summary>
@@ -62,7 +67,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteCustomer(int id)
         {
-            return BLCustomers.Delete(id);
+            _blCustomer = new BLCustomers();
+            return _blCustomer.Delete(id);
         }
 
         /// <summary>
@@ -75,7 +81,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
         {
-            return BLCustomers.Update(objUpdatedCustomer);
+            _blCustomer = new BLCustomers();
+            return _blCustomer.Update(objUpdatedCustomer);
         }
 
         /// <summary>
@@ -89,7 +96,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage ChangePassword([FromUri] string username, [FromUri] string newPassword)
         {
-            return BLCustomers.ChangePassword(username, newPassword);
+            _blCustomer = new BLCustomers();
+            return _blCustomer.ChangePassword(username, newPassword);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace JsonPCorsAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // webapiconfig.formatting.jsonp
+            // webapicontrib.formatting.jsonp
             var jsonformatter = new JsonpMediaTypeFormatter(config.Formatters.JsonFormatter);
             config.Formatters.Add(jsonformatter);
         }

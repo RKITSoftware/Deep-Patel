@@ -5,6 +5,8 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeAPI", "EmployeeAPI\EmployeeAPI.csproj", "{EA63FA7B-B342-491C-A5B2-8E9FE83D1827}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyExtensions", "..\..\Advanced C# Topics\C# Advance\MyAPISolution\MyExtensions\MyExtensions.csproj", "{FFE03815-08CA-48D3-A623-7979E322F3D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{EA63FA7B-B342-491C-A5B2-8E9FE83D1827}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA63FA7B-B342-491C-A5B2-8E9FE83D1827}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA63FA7B-B342-491C-A5B2-8E9FE83D1827}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFE03815-08CA-48D3-A623-7979E322F3D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE03815-08CA-48D3-A623-7979E322F3D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE03815-08CA-48D3-A623-7979E322F3D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE03815-08CA-48D3-A623-7979E322F3D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -19,7 +19,7 @@ namespace EmployeeAPI.Filter
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             // Check if the exception is of type NotImplementedException.
-            if (actionExecutedContext.Exception is NotImplementedException)
+            if (actionExecutedContext.Exception is Exception)
             {
                 // Set the HTTP response with a status code of NotImplemented and a custom message.
                 actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.NotImplemented)
@@ -28,7 +28,6 @@ namespace EmployeeAPI.Filter
                 };
             }
         }
-
         #endregion
     }
 }

@@ -10,7 +10,7 @@ namespace BasicAuthAPI.Controllers
     /// EmployeesController is a Web API controller for managing employee data.
     /// </summary>
     [RoutePrefix("api/Employees")]
-    [BasicAuthenticationAttribute] // Apply basic authentication to the entire controller.
+    [BasicAuthentication] // Apply basic authentication to the entire controller.
     public class CLEmployeesController : ApiController
     {
         #region Public Methods
@@ -21,7 +21,7 @@ namespace BasicAuthAPI.Controllers
         /// </summary>
         /// <returns>List of employee</returns>
         [Route("GetFewEmployees")]
-        [BasicAuthorizationAttribute(Roles = "User")]
+        [Authorize(Roles = "User")]
         public HttpResponseMessage GetFewEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
@@ -30,7 +30,7 @@ namespace BasicAuthAPI.Controllers
 
         // GetMoreEmployees
         [Route("GetMoreEmployees")]
-        [BasicAuthorizationAttribute(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage GetMoreEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.
@@ -39,7 +39,7 @@ namespace BasicAuthAPI.Controllers
 
         // GetAllEmployees
         [Route("GetAllEmployees")]
-        [BasicAuthorizationAttribute(Roles = "SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         public HttpResponseMessage GetAllEmployees()
         {
             // Call the GetEmployees method from the Employee class to retrieve the list of employees.

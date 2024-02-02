@@ -27,32 +27,32 @@ namespace TokenAuthAPI.Provider
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             // Create an instance of the UserRepo to interact with the user repository
-            using (UserRepo repo = new UserRepo())
+
+
+            // Validate the user credentials
+            var user = UserRepo.ValidateUser(context.UserName, context.Password);
+
+            // If the user is not found, return an error response
+            if (user == null)
             {
-                // Validate the user credentials
-                var user = repo.ValidateUser(context.UserName, context.Password);
-
-                // If the user is not found, return an error response
-                if (user == null)
-                {
-                    context.SetError("invalid_grant", "Username or Password is incorrect.");
-                    return;
-                }
-
-                // Create a ClaimsIdentity for the authenticated user
-                var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-                identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
-                identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
-
-                // Add user roles as claims
-                foreach (var role in user.Roles.Split(','))
-                {
-                    identity.AddClaim(new Claim(ClaimTypes.Role, role.Trim()));
-                }
-
-                // Validate and authenticate the user by issuing an authentication ticket
-                context.Validated(identity);
+                context.SetError("invalid_grant", "Username or Password is incorrect.");
+                return;
             }
+
+            // Create a ClaimsIdentity for the authenticated user
+            var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
+
+            // Add user roles as claims
+            foreach (var role in user.Roles.Split(','))
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, role.Trim()));
+            }
+
+            // Validate and authenticate the user by issuing an authentication ticket
+            context.Validated(identity);
+
         }
 
         #endregion

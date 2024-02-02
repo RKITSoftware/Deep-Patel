@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TokenAuthAPI.Business_Logic;
 using TokenAuthAPI.Models;
 
 namespace TokenAuthAPI.UserRepository
@@ -9,14 +8,15 @@ namespace TokenAuthAPI.UserRepository
     /// <summary>
     /// Repository class for managing user-related operations
     /// </summary>
-    public class UserRepo : IDisposable
+    public class UserRepo
     {
-        #region Public Properties
-
-        // Static list to store user data (initialized with sample users)
-        public static List<USR01> userList = BLUser.GetUsers();
-
-        #endregion
+        public static List<USR01> lstUsers = new List<USR01>
+            {
+                new USR01 { UserId = 1, UserName ="deep", Password = "1234", Roles = "Admin,SuperAdmin", Email = "deeppatel@gmail.com"},
+                new USR01 { UserId = 2, UserName ="jeet", Password = "1234", Roles = "Admin", Email = "jeetsorathiya@gmail.com"},
+                new USR01 { UserId = 3, UserName = "prajval", Password = "1234", Roles = "User", Email = "prajvalgahine@gmail.com" },
+                new USR01 { UserId = 4, UserName = "krinsi", Password = "1234", Roles = "User", Email = "krinsikayada@gmail.com" }
+            };
 
         #region Public Methods
 
@@ -26,23 +26,10 @@ namespace TokenAuthAPI.UserRepository
         /// <param name="username">User's username</param>
         /// <param name="password">User's password</param>
         /// <returns></returns>
-        public USR01 ValidateUser(string username, string password)
+        public static USR01 ValidateUser(string username, string password)
         {
             // Find the user in the list whose username and password match the provided credentials
-            return userList.FirstOrDefault(user =>
-                user.UserName.Equals(username) && user.Password.Equals(password));
-        }
-
-        #endregion
-
-        #region Code Cleanup
-
-        /// <summary>
-        /// Dispose method to clear the user list when the repository is disposed
-        /// </summary>
-        public void Dispose()
-        {
-            userList.Clear();
+            return lstUsers.Find(user => user.UserName.Equals(username, StringComparison.OrdinalIgnoreCase) && user.Password == password); ;
         }
 
         #endregion

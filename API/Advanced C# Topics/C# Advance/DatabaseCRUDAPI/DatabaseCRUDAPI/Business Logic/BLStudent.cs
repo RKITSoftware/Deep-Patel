@@ -82,11 +82,9 @@ namespace DatabaseCRUDAPI.Business_Logic
                             });
                         }
                     }
-
-                    _connection.Clone();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -114,8 +112,8 @@ namespace DatabaseCRUDAPI.Business_Logic
                     cmd.Connection = _connection;
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "UPDATE STU01 " +
-                                        "SET U01F02=@Name, U01F03=@Age W" +
-                                        "HERE U01F01=@Id";
+                                        "SET U01F02=@Name, U01F03=@Age " +
+                                        "WHERE U01F01=@Id";
 
                     cmd.Parameters.AddWithValue("@Id", objStudent.U01F01);
                     cmd.Parameters.AddWithValue("@Name", objStudent.U01F02);
@@ -123,7 +121,6 @@ namespace DatabaseCRUDAPI.Business_Logic
 
                     _connection.Open();
                     cmd.ExecuteNonQuery();
-                    _connection.Clone();
                 }
             }
             catch (Exception ex)
@@ -160,13 +157,12 @@ namespace DatabaseCRUDAPI.Business_Logic
                     cmd.Connection = _connection;
                     cmd.CommandType = CommandType.Text;
                     cmd.CommandText = "DELETE FROM STU01 " +
-                                        "WHERE U01F01=@Id";
+                                        "WHERE U01F01 = @Id";
 
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     _connection.Open();
                     cmd.ExecuteNonQuery();
-                    _connection.Clone();
                 }
             }
             catch (Exception ex)

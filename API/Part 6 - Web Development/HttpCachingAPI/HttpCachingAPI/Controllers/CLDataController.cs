@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Http;
+using WebApi.OutputCache.V2;
 
 namespace HttpCachingAPI.Controllers
 {
@@ -18,7 +19,8 @@ namespace HttpCachingAPI.Controllers
         /// <returns>Dictionary of States with Id</returns>
         [AllowAnonymous]
         [Route("GetData")]
-        [CacheFilter(TimeDuration = 100)] // Apply the custom CacheFilter attribute with a caching duration of 100 seconds
+        // [CacheFilter(TimeDuration = 100)] // Apply the custom CacheFilter attribute with a caching duration of 100 seconds
+        [CacheOutput(ClientTimeSpan = 10)]
         public async Task<IHttpActionResult> GetData()
         {
             // Sample data to be returned

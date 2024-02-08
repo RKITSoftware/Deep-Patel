@@ -37,9 +37,9 @@ namespace OnlineShoppingAPI.Models
         public string O01F05 { get; set; }
 
         /// <summary>
-        /// Foreign Key of Admin Table
+        /// Foreign Key of Suplier Table
         /// </summary>
-        [References(typeof(ADM01))]
+        [References(typeof(SUP01))]
         public int O01F06 { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="username">Customer username</param>
         /// <param name="newPassword">Customer new password</param>
         /// <returns>Change response</returns>
-        internal HttpResponseMessage ChangePassword(string username, string newPassword)
+        internal HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -46,9 +46,19 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (existingCustomer == null && existingCustomer == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
 
-                existingCustomer.S01F04 = newPassword;
-                existingUser.R01F03 = newPassword;
-                existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+                if (existingCustomer.S01F04.Equals(oldPassword))
+                {
+                    existingCustomer.S01F04 = newPassword;
+                    existingUser.R01F03 = newPassword;
+                    existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
+                    {
+                        Content = new StringContent("Password is incorrect.")
+                    };
+                }
 
                 db.Update(existingCustomer);
                 db.Update(existingUser);

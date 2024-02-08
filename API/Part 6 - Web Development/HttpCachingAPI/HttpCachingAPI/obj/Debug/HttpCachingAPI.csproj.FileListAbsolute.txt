@@ -68,3 +68,6 @@ F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAP
 F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\obj\Debug\HttpCachingAPI.csproj.CopyComplete
 F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\obj\Debug\HttpCachingAPI.dll
 F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\obj\Debug\HttpCachingAPI.pdb
+F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\bin\WebApi.OutputCache.Core.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\bin\WebApi.OutputCache.V2.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\HttpCachingAPI\HttpCachingAPI\bin\WebApi.OutputCache.V2.xml

@@ -53,8 +53,19 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 if (sourceProduct != null)
                 {
-                    objRecord.D01F05 = sourceProduct.O01F03 * objRecord.D01F04;
-                    objRecord.D01F06 = Guid.NewGuid();
+                    if (sourceProduct.O01F04 >= objRecord.D01F04)
+                    {
+                        sourceProduct.O01F04 -= objRecord.D01F04;
+                        objRecord.D01F05 = sourceProduct.O01F03 * objRecord.D01F04;
+                        objRecord.D01F06 = Guid.NewGuid();
+                    }
+                    else
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
+                        {
+                            Content = new StringContent("Product can't be buy because quantity can't be satisfied.")
+                        };
+                    }
                 }
                 else
                 {
@@ -65,6 +76,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 }
 
                 db.Insert(objRecord);
+                db.Update(sourceProduct);
+
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {
                     Content = new StringContent("Record added successfully")
@@ -91,10 +104,18 @@ namespace OnlineShoppingAPI.Business_Logic
                 {
                     var sourceProduct = db.SingleById<PRO01>(item.D01F03);
 
+                    if(sourceProduct == null)
+                        continue;
+
+                    if (sourceProduct.O01F04 < item.D01F04)
+                        continue;
+
+                    sourceProduct.O01F04 -= item.D01F04;
                     item.D01F05 = sourceProduct.O01F03 * item.D01F04;
                     item.D01F06 = Guid.NewGuid();
 
                     db.Insert(item);
+                    db.Update(sourceProduct);
                 }
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {

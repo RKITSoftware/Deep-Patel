@@ -41,12 +41,12 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="username">Admin username</param>
         /// <param name="newPassword">New password</param>
         /// <returns>Ok response</returns>
-        internal HttpResponseMessage ChangePassword(string username, string newPassword)
+        internal HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
                 // Getting admin details.
-                var objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username)));
+                var objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
                 var objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
                 
                 // If admin doesn't exist then not found statuscode return.
@@ -77,6 +77,13 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
+                // db.CreateTable<ADM01>();
+                // db.CreateTable<USR01>();
+                // db.CreateTable<CUS01>();
+                // db.CreateTable<SUP01>();
+                // db.CreateTable<PRO01>();
+                // db.CreateTable<RCD01>();
+
                 db.Insert(objAdmin);
                 db.Insert(new USR01
                 {

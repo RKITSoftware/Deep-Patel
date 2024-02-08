@@ -11,7 +11,6 @@ namespace OnlineShoppingAPI.Controllers
     /// </summary>
     [RoutePrefix("api/CLAdmin")]
     [BasicAuth]
-    [Authorize(Roles = "Admin")]
     public class CLAdminController : ApiController
     {
         private BLAdmin _blAdmin;
@@ -50,10 +49,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPatch]
         [Route("Password/Change")]
-        public HttpResponseMessage ChangePassword([FromUri] string username, [FromUri] string newPassword)
+        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
             _blAdmin = new BLAdmin();
-            return _blAdmin.ChangePassword(username, newPassword);
+            return _blAdmin.ChangePassword(username, oldPassword, newPassword);
         }
     }
 }

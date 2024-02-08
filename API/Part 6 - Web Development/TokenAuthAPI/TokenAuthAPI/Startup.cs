@@ -21,7 +21,7 @@ namespace TokenAuthAPI
                 // Http and Https
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/token"), //https://localhost:1000/token
-                AccessTokenExpireTimeSpan = TimeSpan.FromSeconds(30),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new AppAuthorizationServerProvider()
             };
 

@@ -35,7 +35,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <returns>List of products</returns>
         [HttpGet]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin,Customer")]
         [Route("GetProducts")]
         public IHttpActionResult GetProducts()
         {
@@ -44,7 +44,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint :- api/CLProduct/CreateProduct/List
+        /// Endpoint :- api/CLProduct/CreateProducts/List
         /// </summary>
         /// <param name="lstNewProducts">New products list for create</param>
         /// <returns></returns>
@@ -58,7 +58,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Endpoint :- api/CLProduct /DeleteProduct/{id}
+        /// Endpoint :- api/CLProduct/DeleteProduct/{id}
         /// </summary>
         /// <param name="id">Product id</param>
         /// <returns></returns>

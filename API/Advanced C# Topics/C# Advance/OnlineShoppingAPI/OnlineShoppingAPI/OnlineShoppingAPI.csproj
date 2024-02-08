@@ -189,14 +189,18 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business Logic\BLAdmin.cs" />
+    <Compile Include="Business Logic\BLAuthentication.cs" />
     <Compile Include="Business Logic\BLCustomer.cs" />
     <Compile Include="Business Logic\BLProduct.cs" />
     <Compile Include="Business Logic\BLRecord.cs" />
+    <Compile Include="Business Logic\BLSuplier.cs" />
     <Compile Include="Business Logic\BLUser.cs" />
     <Compile Include="Controllers\CLAdminController.cs" />
+    <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCustomerController.cs" />
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
+    <Compile Include="Controllers\CLSuplierController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,6 +208,7 @@
     <Compile Include="Models\CUS01.cs" />
     <Compile Include="Models\RCD01.cs" />
     <Compile Include="Models\PRO01.cs" />
+    <Compile Include="Models\SUP01.cs" />
     <Compile Include="Models\USR01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\BasicAuthAttribute.cs" />

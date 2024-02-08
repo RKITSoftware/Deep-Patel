@@ -54,7 +54,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteRecord/{id}")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteRecord(int id)
         {
             _blRecord = new BLRecord();
@@ -96,13 +96,13 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="objRecord">Updated information of record</param>
         /// <returns></returns>
-        [HttpPut]
-        [Route("UpdateRecord")]
-        [Authorize(Roles = "Customer")]
-        public HttpResponseMessage UpdateRecord(RCD01 objRecord)
-        {
-            _blRecord = new BLRecord();
-            return _blRecord.Update(objRecord);
-        }
+        //[HttpPut]
+        //[Route("UpdateRecord")]
+        //[Authorize(Roles = "Admin")]
+        //public HttpResponseMessage UpdateRecord(RCD01 objRecord)
+        //{
+        //    _blRecord = new BLRecord();
+        //    return _blRecord.Update(objRecord);
+        //}
     }
 }

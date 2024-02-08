@@ -60,11 +60,6 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<PRO01>();
-
-                if (!tableExists)
-                    return null;
-
                 var products = db.Select<PRO01>();
                 return products;
             }
@@ -85,11 +80,6 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                bool tableExists = db.TableExists<PRO01>();
-
-                if (!tableExists)
-                    db.CreateTable<PRO01>();
-
                 db.InsertAll(lstNewProducts);
                 return new HttpResponseMessage(HttpStatusCode.Created)
                 {

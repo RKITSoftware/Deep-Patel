@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Title 1</title>
+  </head>
+  <body>
+    <h1>Hello from first page</h1>
+
+    <button onclick="ChangeURL()">Change URL</button>
+
+    <script>
+      function ChangeURL() {
+        const nextURL = "http://127.0.0.1:5500/secondPage.html";
+        const nextTitle = "My new page title";
+        const nextState = { additionalInformation: "Updated the URL with JS" };
+
+        // This will create a new entry in the browser's history, without reloading
+        window.history.pushState(nextState, nextTitle, nextURL);
+
+        // This will replace the current entry in the browser's history, without reloading
+        window.history.replaceState(nextState, nextTitle, nextURL);
+
+        // Current URL: https://my-website.com/page_a
+        // const nextURL = "http://127.0.0.1:5500/secondPage.html";
+
+        // // This will create a new entry in the browser's history, reloading afterwards
+        // window.location.href = nextURL;
+
+        // // This will replace the current entry in the browser's history, reloading afterwards
+        // window.location.assign(nextURL);
+
+        // // This will replace the current entry in the browser's history, reloading afterwards
+        // window.location.replace(nextURL);
+      }
+    </script>
+  </body>
+</html>

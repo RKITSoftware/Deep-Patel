@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Models;
 using System;
 using System.Linq;
 using System.Net;
@@ -34,8 +35,8 @@ namespace OnlineShoppingAPI.Security
                 // Validate user credentials using the BLUser class.
                 if (BLUser.IsExist(username, password))
                 {
-                    var userDetail = BLUser.GetUser(username);
-                    var identity = new GenericIdentity(username);
+                    USR01 userDetail = BLUser.GetUser(username);
+                    GenericIdentity identity = new GenericIdentity(username);
 
                     identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
                     identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.R01F02 + "@gmail.com"));

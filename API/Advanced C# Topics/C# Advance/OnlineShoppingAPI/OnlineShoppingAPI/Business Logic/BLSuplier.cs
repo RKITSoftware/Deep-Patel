@@ -95,7 +95,7 @@ namespace OnlineShoppingAPI.Business_Logic
             using (var db = _dbFactory.OpenDbConnection())
             {
                 db.InsertAll(lstNewSupliers);
-                foreach (var item in lstNewSupliers)
+                foreach (SUP01 item in lstNewSupliers)
                 {
                     db.Insert(new USR01
                     {
@@ -123,7 +123,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var suplier = db.SingleById<SUP01>(id);
+                SUP01 suplier = db.SingleById<SUP01>(id);
 
                 if (suplier == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -143,7 +143,7 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var supliers = db.Select<SUP01>();
+                List<SUP01> supliers = db.Select<SUP01>();
                 return supliers;
             }
         }

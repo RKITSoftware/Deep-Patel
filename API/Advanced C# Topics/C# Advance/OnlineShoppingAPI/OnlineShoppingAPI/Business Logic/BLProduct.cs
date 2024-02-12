@@ -60,7 +60,7 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var products = db.Select<PRO01>();
+                List<PRO01> products = db.Select<PRO01>();
                 return products;
             }
         }
@@ -103,7 +103,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var product = db.SingleById<PRO01>(id);
+                PRO01 product = db.SingleById<PRO01>(id);
 
                 if (product == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);

@@ -49,7 +49,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var sourceProduct = db.SingleById<PRO01>(objRecord.D01F03);
+                PRO01 sourceProduct = db.SingleById<PRO01>(objRecord.D01F03);
 
                 if (sourceProduct != null)
                 {
@@ -100,9 +100,9 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                foreach (var item in lstNewRecords)
+                foreach (RCD01 item in lstNewRecords)
                 {
-                    var sourceProduct = db.SingleById<PRO01>(item.D01F03);
+                    PRO01 sourceProduct = db.SingleById<PRO01>(item.D01F03);
 
                     if(sourceProduct == null)
                         continue;
@@ -139,7 +139,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var order = db.SingleById<RCD01>(id);
+                RCD01 order = db.SingleById<RCD01>(id);
 
                 if (order == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -236,7 +236,7 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var joinSql = db.From<RCD01>()
+                SqlExpression<RCD01> joinSql = db.From<RCD01>()
                     .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
                     .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
 
@@ -276,7 +276,7 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var joinSql = db.From<RCD01>()
+                SqlExpression<RCD01> joinSql = db.From<RCD01>()
                     .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
                     .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
 
@@ -297,7 +297,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                 using (var package = new ExcelPackage())
                 {
-                    var worksheet = package.Workbook.Worksheets.Add("DataSheet");
+                    ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DataSheet");
 
                     worksheet.Cells["A1"].Value = "Order Id";
                     worksheet.Cells["B1"].Value = "Customer Name";
@@ -319,8 +319,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         row++;
                     }
 
-                    var content = package.GetAsByteArray();
-                    var response = new HttpResponseMessage(HttpStatusCode.OK)
+                    byte[] content = package.GetAsByteArray();
+                    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new ByteArrayContent(content)
                     };

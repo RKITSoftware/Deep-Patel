@@ -2,6 +2,7 @@
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -46,8 +47,8 @@ namespace OnlineShoppingAPI.Business_Logic
             using (var db = _dbFactory.OpenDbConnection())
             {
                 // Getting admin details.
-                var objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
-                var objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
+                ADM01 objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
+                USR01 objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
                 
                 // If admin doesn't exist then not found statuscode return.
                 if (objAdmin == null)
@@ -110,7 +111,7 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
-                var lstAdmin = db.Select<ADM01>();
+                List<ADM01> lstAdmin = db.Select<ADM01>();
 
                 if (lstAdmin.Count == 1)
                     return new HttpResponseMessage(HttpStatusCode.Forbidden)

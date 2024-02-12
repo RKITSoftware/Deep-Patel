@@ -81,7 +81,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    var customer = db.SingleById<CUS01>(id);
+                    CUS01 customer = db.SingleById<CUS01>(id);
 
                     if (customer == null)
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -161,7 +161,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     db.InsertAll(lstNewCustomers);
-                    foreach (var item in lstNewCustomers)
+                    foreach (CUS01 item in lstNewCustomers)
                     {
                         db.Insert(new USR01
                         {
@@ -195,7 +195,7 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    var customers = db.Select<CUS01>();
+                    List<CUS01> customers = db.Select<CUS01>();
                     return customers;
                 }
             }

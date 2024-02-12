@@ -1,5 +1,4 @@
 ﻿using SchoolManagementAPI.Business_Logic;
-using SchoolManagementAPI.Controllers;
 using SchoolManagementAPI.Models;
 using System.Linq;
 

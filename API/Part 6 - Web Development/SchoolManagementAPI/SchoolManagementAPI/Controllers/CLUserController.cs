@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using SchoolManagementAPI.Business_Logic;
+﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Filters;
 using SchoolManagementAPI.Models;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web.Http;
 
 namespace SchoolManagementAPI.Controllers
@@ -12,16 +8,16 @@ namespace SchoolManagementAPI.Controllers
     /// <summary>
     /// Controller for managing user-related operations.
     /// </summary>
-    [RoutePrefix("user")] // All user routes starts with user
-    [AuthenticationAttribute] // Apply authentication filter to ensure only authenticated users can access the controller.
-    [AuthorizationAttribute(Roles = "Admin")] // Apply authorization filter to restrict access to users with the "Admin" role.
+    [RoutePrefix("api/CLUser")] // All user routes starts with user
+    [Authentication] // Apply authentication filter to ensure only authenticated users can access the controller.
+    [Authorization(Roles = "Admin")] // Apply authorization filter to restrict access to users with the "Admin" role.
     [CacheFilter(TimeDuration = 100)] // Apply caching filter to cache responses for a specified duration.
     public class CLUserController : ApiController
     { 
         #region API Endpoints
 
         [HttpPost]
-        [Route("post")] // POST Endpoint :- user/post
+        [Route("post")] // POST Endpoint :- api/CLUser/post
         public IHttpActionResult CreateUser([FromBody] USR01 objUSR01)
         {
             BLUser.AddUser(objUSR01);
@@ -29,7 +25,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getAllUser")] // GET Endpoint :- user/getAllUser
+        [Route("getAllUser")] // GET Endpoint :- api/CLUser/getAllUser
         public IHttpActionResult GetAllUser()
         {
             // Return the list of all users.
@@ -37,7 +33,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         [HttpGet]
-        [Route("getUser/{id}")] // GET Endpoint :- user/getUser/1
+        [Route("getUser/{id}")] // GET Endpoint :- api/CLUser/getUser/1
         public IHttpActionResult GetUserById(int id)
         {
             // Retrieve a user by ID and return it.
@@ -51,7 +47,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         [HttpPost]
-        [Route("update")] // POST Endpoint :- user/update
+        [Route("update")] // POST Endpoint :- api/CLUser/update
         public IHttpActionResult UpdateFileData()
         {
             BLUser.UpdateFileData();
@@ -59,17 +55,17 @@ namespace SchoolManagementAPI.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{delId}")] // DELETE Endpoint :- user/delete/1
+        [Route("delete/{delId}")] // DELETE Endpoint :- api/CLUser/delete/1
         public IHttpActionResult DeleteUser(int delId)
         {
             return Ok(BLUser.DeleteUser(delId));
         }
 
         [HttpPut]
-        [Route("put/{id}")] // PUT Endpoint :- user/put/1
-        public IHttpActionResult UpdateUser(int id, [FromBody] USR01 userDataFromBody)
+        [Route("put")] // PUT Endpoint :- api/CLUser/put
+        public IHttpActionResult UpdateUser([FromBody] USR01 userDataFromBody)
         {
-            return Ok(BLUser.UpdateUserData(id, userDataFromBody));
+            return Ok(BLUser.UpdateUserData(userDataFromBody));
         }
 
         #endregion

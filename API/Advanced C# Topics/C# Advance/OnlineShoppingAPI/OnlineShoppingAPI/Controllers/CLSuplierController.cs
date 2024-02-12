@@ -13,6 +13,11 @@ namespace OnlineShoppingAPI.Controllers
     {
         private BLSuplier _blSuplier;
 
+        public CLSuplierController()
+        {
+            _blSuplier = new BLSuplier();
+        }
+
         /// <summary>
         /// Endpoint :- api/CLSuplier/CreateSuplier
         /// </summary>
@@ -23,7 +28,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateSuplier(SUP01 objNewSuplier)
         {
-            _blSuplier = new BLSuplier();
             return _blSuplier.Create(objNewSuplier);
         }
 
@@ -36,7 +40,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetSupliers()
         {
-            _blSuplier = new BLSuplier();
             return Ok(_blSuplier.GetAll());
         }
 
@@ -50,7 +53,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateSuplierFromList(List<SUP01> lstNewSupliers)
         {
-            _blSuplier = new BLSuplier();
             return _blSuplier.CreateFromList(lstNewSupliers);
         }
 
@@ -64,7 +66,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteSuplier(int id)
         {
-            _blSuplier = new BLSuplier();
             return _blSuplier.Delete(id);
         }
 
@@ -78,7 +79,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin,Suplier")]
         public HttpResponseMessage UpdateCustomer(SUP01 objUpdatedSuplier)
         {
-            _blSuplier = new BLSuplier();
             return _blSuplier.Update(objUpdatedSuplier);
         }
 
@@ -93,7 +93,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Suplier")]
         public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
-            _blSuplier = new BLSuplier();
             return _blSuplier.ChangePassword(username, oldPassword, newPassword);
         }
     }

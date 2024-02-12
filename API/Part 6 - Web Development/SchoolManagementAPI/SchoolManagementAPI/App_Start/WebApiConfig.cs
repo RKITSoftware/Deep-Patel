@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using SchoolManagementAPI.Business_Logic;
+using System.Web.Http;
 
 namespace SchoolManagementAPI
 {
@@ -16,6 +17,9 @@ namespace SchoolManagementAPI
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            // BLHelper objHelper = new BLHelper();
+            // objHelper.StartUpdate();
         }
     }
 }

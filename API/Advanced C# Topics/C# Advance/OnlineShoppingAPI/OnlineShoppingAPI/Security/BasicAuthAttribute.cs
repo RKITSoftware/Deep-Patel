@@ -18,21 +18,17 @@ namespace OnlineShoppingAPI.Security
     {
         public override void OnAuthorization(HttpActionContext actionContext)
         {
-            //if (actionContext.Request.Headers.Authorization == null)
-            //{
-            //    actionContext.Response = actionContext.Request
-            //        .CreateErrorResponse(HttpStatusCode.Unauthorized, "Login Failed");
-            //}
-            //else
-            //{
+            if (actionContext.Request.Headers.Authorization == null)
+            {
+                actionContext.Response = actionContext.Request
+                    .CreateErrorResponse(HttpStatusCode.Unauthorized, "Login Failed");
+            }
+            else
+            {
                 try
                 {
                     // Extract the base64-encoded credentials from the Authorization header.
-                    // string authToken = actionContext.Request.Headers.Authorization.Parameter;
-
-                    // Getting Cookie Value
-                    CookieHeaderValue cookie = actionContext.Request.Headers.GetCookies("MyAuth").FirstOrDefault();
-                    string authToken = cookie["MyAuth"].Value;
+                    string authToken = actionContext.Request.Headers.Authorization.Parameter;
 
                     // Decode the base64-encoded credentials to get the username and password.
                     string decodedAuthToken = Encoding.UTF8.GetString(Convert.FromBase64String(authToken));
@@ -78,7 +74,7 @@ namespace OnlineShoppingAPI.Security
                         .CreateErrorResponse(HttpStatusCode.InternalServerError,
                             "Internal Server Error - Please Try After Some Time");
                 }
-            //}
+            }
         }
     }
 }

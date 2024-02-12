@@ -47,7 +47,7 @@ namespace CacheDemoUsingCacheClass.Business_Logic
             // Simulate a delay (e.g., database query) to emphasize the caching benefit.
             Thread.Sleep(5000);
 
-            // Set cache expiration time to 10 seconds.
+            // Set cache slidingExpiration time to 10 seconds.
             TimeSpan ts = new TimeSpan(0, 0, 10);
 
             // Add the list of users to cache with a specified expiration time.

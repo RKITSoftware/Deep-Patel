@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Interface;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
@@ -14,7 +15,12 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLCustomerController : ApiController
     {
-        private BLCustomers _blCustomer;
+        private readonly IBasicAPIService<CUS01> _customerService;
+
+        public CLCustomerController()
+        {
+            _customerService = new BLCustomers();
+        }
 
         /// <summary>
         /// Endpoint :- api/CLCustomer/CreateCustomer
@@ -26,8 +32,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
         {
-            _blCustomer = new BLCustomers();
-            return _blCustomer.Create(objNewCustomer);
+            return _customerService.Create(objNewCustomer);
         }
 
         /// <summary>
@@ -39,8 +44,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
-            _blCustomer = new BLCustomers();
-            return Ok(_blCustomer.GetAll());
+            return Ok(_customerService.GetAll());
         }
 
         /// <summary>
@@ -53,8 +57,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
         {
-            _blCustomer = new BLCustomers();
-            return _blCustomer.CreateFromList(lstNewCustomers);
+            return _customerService.CreateFromList(lstNewCustomers);
         }
 
         /// <summary>
@@ -67,8 +70,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteCustomer(int id)
         {
-            _blCustomer = new BLCustomers();
-            return _blCustomer.Delete(id);
+            return _customerService.Delete(id);
         }
 
         /// <summary>
@@ -81,8 +83,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
         {
-            _blCustomer = new BLCustomers();
-            return _blCustomer.Update(objUpdatedCustomer);
+            return _customerService.Update(objUpdatedCustomer);
         }
 
         /// <summary>
@@ -96,8 +97,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
-            _blCustomer = new BLCustomers();
-            return _blCustomer.ChangePassword(username, oldPassword, newPassword);
+            return _customerService.ChangePassword(username, oldPassword, newPassword);
         }
     }
 }

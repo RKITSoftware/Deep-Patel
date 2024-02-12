@@ -11,11 +11,11 @@ namespace MyLibrary.Filter
         /// <summary>
         /// Path to Log folder of web api
         /// </summary>
-        private readonly string Path;
+        private readonly string _path;
 
-        public ExceptionLogFilter(string Path)
+        public ExceptionLogFilter(string path)
         {
-            this.Path = Path;
+            _path = path;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace MyLibrary.Filter
         /// <param name="actionExecutedContext">Contains the information about exceptions.</param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            ExceptionLogging.SendErrorToTxt(actionExecutedContext.Exception, this.Path);
+            ExceptionLogging.SendErrorToTxt(actionExecutedContext.Exception, _path);
         }
     }
 }

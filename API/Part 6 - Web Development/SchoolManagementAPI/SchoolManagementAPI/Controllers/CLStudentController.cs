@@ -1,10 +1,6 @@
-﻿using Newtonsoft.Json;
-using SchoolManagementAPI.Business_Logic;
+﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Filters;
 using SchoolManagementAPI.Models;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Web.Http;
 
 namespace SchoolManagementAPI.Controllers
@@ -12,8 +8,8 @@ namespace SchoolManagementAPI.Controllers
     /// <summary>
     /// Controller for managing student-related operations.
     /// </summary>
-    [RoutePrefix("student")] // All user routes starts with student
-    [AuthenticationAttribute] // Apply authentication filter to ensure only authenticated users can access the controller.
+    [RoutePrefix("api/CLStudent")] // All user routes starts with student
+    [Authentication] // Apply authentication filter to ensure only authenticated users can access the controller.
     // [CacheFilter(TimeDuration = 100)] // Apply caching filter to cache responses for a specified duration.
     public class CLStudentController : ApiController
     {
@@ -25,8 +21,8 @@ namespace SchoolManagementAPI.Controllers
         /// <param name="student">Get student model from api body</param>
         /// <returns>200 Response if user created</returns>
         [HttpPost]
-        [Route("add")] // POST Endpoint :- student/add
-        [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to add a student.
+        [Route("add")] // POST Endpoint :- api/CLStudent/add
+        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to add a student.
         public IHttpActionResult AddStudent([FromBody] STU01 student)
         {
             return Ok(BLStudent.AddData(student));
@@ -37,8 +33,8 @@ namespace SchoolManagementAPI.Controllers
         /// </summary>
         /// <returns>Ok Response for data successfully written.</returns>
         [HttpPost]
-        [Route("update")] // POST Endpoint  :- student/update
-        [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to update student data.
+        [Route("update")] // POST Endpoint  :- api/CLStudent/update
+        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to update student data.
         public IHttpActionResult WriteStudentDataToFile()
         {
             BLStudent.UpdateStudentDataFile();
@@ -50,8 +46,8 @@ namespace SchoolManagementAPI.Controllers
         /// </summary>
         /// <returns>All Student Data</returns>
         [HttpGet]
-        [Route("get/allData")] // GET Endpoint :- student/get/allData
-        [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to get all student data.
+        [Route("get/allData")] // GET Endpoint :- api/CLStudent/get/allData
+        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to get all student data.
         public IHttpActionResult GetAllStudentData()
         {
             // Return the list of all students.
@@ -64,8 +60,8 @@ namespace SchoolManagementAPI.Controllers
         /// <param name="studentId">For Retrieving Student Data</param>
         /// <returns>Student Data</returns>
         [HttpGet]
-        [Route("get/{studentId}")] // Get Endpoint :- student/get/1
-        [AuthorizationAttribute(Roles = "Student")] // Allow only users with the "Student" role to get individual student data.
+        [Route("get/{studentId}")] // Get Endpoint :- api/CLStudent/get/1
+        [Authorization(Roles = "Student")] // Allow only users with the "Student" role to get individual student data.
         public IHttpActionResult GetStudentData(int studentId)
         {
             // Retrieve a student by ID and return it.
@@ -84,8 +80,8 @@ namespace SchoolManagementAPI.Controllers
         /// <param name="delId">For find ftudent</param>
         /// <returns>200 Response With student delete message</returns>
         [HttpDelete]
-        [Route("delete/{delId}")] // Delete Endpoint :- student/delete/1
-        [AuthorizationAttribute(Roles = "Admin")] // Allow only users with the "Admin" role to delete a student.
+        [Route("delete/{delId}")] // Delete Endpoint :- api/CLStudent/delete/1
+        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to delete a student.
         public IHttpActionResult DeleteStudentData(int delId)
         {
             BLStudent.DeleteStudent(delId);
@@ -99,11 +95,11 @@ namespace SchoolManagementAPI.Controllers
         /// <param name="updateData">New updated student data</param>
         /// <returns>Updated data</returns>
         [HttpPut]
-        [Route("put/studentData/{studentId}")] // Put Endpoint :- student/put/studentData/1
-        [AuthorizationAttribute(Roles = "Student")] // Allow only users with the "Student" role to update their own data.
-        public IHttpActionResult UpdateStudentInfo(int studentId, [FromBody] STU01 updateData)
+        [Route("put/studentData")] // Put Endpoint :- student/put/studentData/1
+        [Authorization(Roles = "Student")] // Allow only users with the "Student" role to update their own data.
+        public IHttpActionResult UpdateStudentInfo(STU01 updateData)
         {
-            return Ok(BLStudent.UpdateStudentData(studentId, updateData));
+            return Ok(BLStudent.UpdateStudentData(updateData));
         }
 
         #endregion

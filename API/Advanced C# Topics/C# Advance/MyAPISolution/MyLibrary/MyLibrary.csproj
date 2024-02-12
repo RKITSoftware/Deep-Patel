@@ -70,10 +70,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authorization\BasicAuthorization.cs" />
     <Compile Include="Business Logic\ExceptionLogging.cs" />
-    <Compile Include="Filter\CacheFilter.cs" />
     <Compile Include="Filter\ExceptionLogFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

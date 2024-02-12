@@ -95,6 +95,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Business Logic\BLHelper.cs" />
     <Compile Include="Business Logic\BLStudent.cs" />
     <Compile Include="Business Logic\BLUser.cs" />
     <Compile Include="Controllers\CLStudentController.cs" />

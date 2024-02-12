@@ -1,0 +1,5 @@
+Time :- 15:50:37
+Error Message :- DivideByZeroException
+Exception Type :- System.DivideByZeroException
+Error Stack Trace :-    at OnlineShoppingAPI.Business_Logic.BLCustomers.OnlineShoppingAPI.Interface.IBasicAPIService<OnlineShoppingAPI.Models.CUS01>.GetAll() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLCustomer.cs:line 167
+

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SchoolManagementAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +8,9 @@ using System.Web.Http;
 
 namespace SchoolManagementAPI.Business_Logic
 {
+    /// <summary>
+    /// Business logic class for managing student-related operations.
+    /// </summary>
     public class BLStudent
     {
         #region Private Fields
@@ -30,8 +34,14 @@ namespace SchoolManagementAPI.Business_Logic
 
         #region Constructor
 
+        /// <summary>
+        /// Default constructor for BLStudent.
+        /// </summary>
         public BLStudent() { }
 
+        /// <summary>
+        /// Static constructor to initialize static fields when the class is first accessed.
+        /// </summary>
         static BLStudent()
         {
             // Initialize studentList and noOfNextStudentId when the controller is first accessed.
@@ -45,6 +55,11 @@ namespace SchoolManagementAPI.Business_Logic
 
         #region Public Methods
 
+        /// <summary>
+        /// Adds a new student to the list and updates associated user information.
+        /// </summary>
+        /// <param name="objSTU01">Student object to be added.</param>
+        /// <returns>Success message upon student creation.</returns>
         public static string AddData(STU01 objSTU01)
         {
             objSTU01.U01F01 = ++noOfNextStudentId;
@@ -61,6 +76,9 @@ namespace SchoolManagementAPI.Business_Logic
             return "Student Created Successfully";
         }
 
+        /// <summary>
+        /// Updates the student data file with the current student list.
+        /// </summary>
         public static void UpdateStudentDataFile()
         {
             // Serialize the student list to JSON and write it to the file.
@@ -68,16 +86,29 @@ namespace SchoolManagementAPI.Business_Logic
             File.WriteAllText(filePath, jsonContent);
         }
 
+        /// <summary>
+        /// Retrieves the list of all students.
+        /// </summary>
+        /// <returns>List of all students.</returns>
         public static List<STU01> GetAllStudentData()
         {
             return lstStudent;
         }
 
+        /// <summary>
+        /// Retrieves a specific student by their ID.
+        /// </summary>
+        /// <param name="id">Student ID.</param>
+        /// <returns>Student object corresponding to the provided ID.</returns>
         public static STU01 GetStudentById(int id)
         {
             return lstStudent.FirstOrDefault(stu => stu.U01F01 == id);
         }
 
+        /// <summary>
+        /// Deletes a student along with their associated user information.
+        /// </summary>
+        /// <param name="delId">ID of the student to be deleted.</param>
         public static void DeleteStudent(int delId)
         {
             STU01 objStudent = lstStudent.Find(stu => stu.U01F01 == delId);
@@ -88,13 +119,19 @@ namespace SchoolManagementAPI.Business_Logic
             lstStudent.Remove(objStudent);
         }
 
-        public static string UpdateStudentData(int studentId, [FromBody] STU01 objNewStudentData)
+        /// <summary>
+        /// Updates the data of an existing student.
+        /// </summary>
+        /// <param name="studentId">ID of the student to be updated.</param>
+        /// <param name="objNewStudentData">New student data.</param>
+        /// <returns>Success message upon data update.</returns>
+        public static string UpdateStudentData(STU01 objNewStudentData)
         {
-            STU01 objStudent = lstStudent.Find(stu => stu.U01F01 == studentId);
+            STU01 objStudent = lstStudent.Find(stu => stu.U01F01 == objNewStudentData.U01F01);
 
             if (objStudent == null)
                 return "Not Found";
-            
+
             objStudent.U01F02 = objNewStudentData.U01F02;
             objStudent.U01F05 = objNewStudentData.U01F05;
             objStudent.U01F06 = objNewStudentData.U01F06;

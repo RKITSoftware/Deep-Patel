@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.Interface;
+using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -9,7 +10,7 @@ using System.Web;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
-    public class BLCustomers
+    public class BLCustomers : IBasicAPIService<CUS01>
     {
         /// <summary>
         /// _dbFactory is used to store the reference of database connection.
@@ -31,114 +32,35 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Changing the customer password using the Customer username
-        /// </summary>
-        /// <param name="username">Customer username</param>
-        /// <param name="newPassword">Customer new password</param>
-        /// <returns>Change response</returns>
-        internal HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
-        {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                CUS01 existingCustomer = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
-                USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
-
-                if (existingCustomer == null && existingCustomer == null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                if (existingCustomer.S01F04.Equals(oldPassword))
-                {
-                    existingCustomer.S01F04 = newPassword;
-                    existingUser.R01F03 = newPassword;
-                    existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
-                }
-                else
-                {
-                    return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                    {
-                        Content = new StringContent("Password is incorrect.")
-                    };
-                }
-
-                db.Update(existingCustomer);
-                db.Update(existingUser);
-
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("Password changed successfully.")
-                };
-            }
-        }
-
-        /// <summary>
         /// Create a customer and adding that customer details into the customer and user table.
         /// </summary>
         /// <param name="objNewCustomer">Customer data</param>
-        /// <returns>Create response message</returns>
-        internal HttpResponseMessage Create(CUS01 objNewCustomer)
+        /// <returns>Create customer</returns>
+        HttpResponseMessage IBasicAPIService<CUS01>.Create(CUS01 objNewCustomer)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            try
             {
-                db.Insert(objNewCustomer);
-                db.Insert(new USR01
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    R01F02 = objNewCustomer.S01F03.Split('@')[0],
-                    R01F03 = objNewCustomer.S01F04,
-                    R01F04 = "Customer",
-                    R01F05 = BLUser.GetEncryptPassword(objNewCustomer.S01F04)
-                });
-
-                return new HttpResponseMessage(HttpStatusCode.Created)
-                {
-                    Content = new StringContent("Customer created successfully.")
-                };
-            }
-        }
-
-        /// <summary>
-        /// Getting all customer details from database
-        /// </summary>
-        /// <returns>List of Customer data</returns>
-        internal List<CUS01> GetAll()
-        {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                var customers = db.Select<CUS01>();
-                return customers;
-            }
-        }
-
-        /// <summary>
-        /// Creating customers from list
-        /// </summary>
-        /// <param name="lstNewCustomers">List of customer data to added into database.</param>
-        /// <returns>Create response message</returns>
-        internal HttpResponseMessage CreateFromList(List<CUS01> lstNewCustomers)
-        {
-            if (lstNewCustomers.Count == 0)
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent("Data is empty")
-                };
-
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                db.InsertAll(lstNewCustomers);
-                foreach (var item in lstNewCustomers)
-                {
+                    db.Insert(objNewCustomer);
                     db.Insert(new USR01
                     {
-                        R01F02 = item.S01F03.Split('@')[0],
-                        R01F03 = item.S01F04,
+                        R01F02 = objNewCustomer.S01F03.Split('@')[0],
+                        R01F03 = objNewCustomer.S01F04,
                         R01F04 = "Customer",
-                        R01F05 = BLUser.GetEncryptPassword(item.S01F04)
+                        R01F05 = BLUser.GetEncryptPassword(objNewCustomer.S01F04)
                     });
-                }
 
-                return new HttpResponseMessage(HttpStatusCode.Created)
-                {
-                    Content = new StringContent("Customers Created successfully.")
-                };
+                    return new HttpResponseMessage(HttpStatusCode.Created)
+                    {
+                        Content = new StringContent("Customer created successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
             }
         }
 
@@ -147,29 +69,37 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="id">Customer id</param>
         /// <returns>Delete response message</returns>
-        internal HttpResponseMessage Delete(int id)
+        HttpResponseMessage IBasicAPIService<CUS01>.Delete(int id)
         {
-            if (id <= 0)
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent("Id can't be zero or negative.")
-                };
-
-            using (var db = _dbFactory.OpenDbConnection())
+            try
             {
-                var customer = db.SingleById<CUS01>(id);
+                if (id <= 0)
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        Content = new StringContent("Id can't be zero or negative.")
+                    };
 
-                if (customer == null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                string username = customer.S01F03.Split('@')[0];
-                db.DeleteById<CUS01>(id);
-                db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
-
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    Content = new StringContent("Customer deleted successfully.")
-                };
+                    var customer = db.SingleById<CUS01>(id);
+
+                    if (customer == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    string username = customer.S01F03.Split('@')[0];
+                    db.DeleteById<CUS01>(id);
+                    db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Customer deleted successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
             }
         }
 
@@ -178,30 +108,149 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objUpdatedCustomer">Updated information of customer</param>
         /// <returns>Update response message</returns>
-        internal HttpResponseMessage Update(CUS01 objUpdatedCustomer)
+        HttpResponseMessage IBasicAPIService<CUS01>.Update(CUS01 objUpdatedCustomer)
         {
-            if (objUpdatedCustomer.S01F01 <= 0)
-                return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                {
-                    Content = new StringContent("Id can't be zero or negative.")
-                };
-
-            using (var db = _dbFactory.OpenDbConnection())
+            try
             {
-                CUS01 existingCustomer = db.SingleById<CUS01>(objUpdatedCustomer.S01F01);
+                if (objUpdatedCustomer.S01F01 <= 0)
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        Content = new StringContent("Id can't be zero or negative.")
+                    };
 
-                if (existingCustomer == null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
-                existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
-                existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
-
-                db.Update(existingCustomer);
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    Content = new StringContent("Customer updated successfully.")
-                };
+                    CUS01 existingCustomer = db.SingleById<CUS01>(objUpdatedCustomer.S01F01);
+
+                    if (existingCustomer == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
+                    existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
+                    existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
+
+                    db.Update(existingCustomer);
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Customer updated successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Creating customers from list
+        /// </summary>
+        /// <param name="lstNewCustomers">List of customer data to added into database.</param>
+        /// <returns>Create response message</returns>
+        HttpResponseMessage IBasicAPIService<CUS01>.CreateFromList(List<CUS01> lstNewCustomers)
+        {
+            try
+            {
+                if (lstNewCustomers.Count == 0)
+                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                    {
+                        Content = new StringContent("Data is empty")
+                    };
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    db.InsertAll(lstNewCustomers);
+                    foreach (var item in lstNewCustomers)
+                    {
+                        db.Insert(new USR01
+                        {
+                            R01F02 = item.S01F03.Split('@')[0],
+                            R01F03 = item.S01F04,
+                            R01F04 = "Customer",
+                            R01F05 = BLUser.GetEncryptPassword(item.S01F04)
+                        });
+                    }
+
+                    return new HttpResponseMessage(HttpStatusCode.Created)
+                    {
+                        Content = new StringContent("Customers Created successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Getting all customer details from database
+        /// </summary>
+        /// <returns>List of Customer data</returns>
+        List<CUS01> IBasicAPIService<CUS01>.GetAll()
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    var customers = db.Select<CUS01>();
+                    return customers;
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Changing the customer password using the Customer username
+        /// </summary>
+        /// <param name="username">Customer username</param>
+        /// <param name="newPassword">Customer new password</param>
+        /// <returns>Change response</returns>
+        HttpResponseMessage IBasicAPIService<CUS01>.ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CUS01 existingCustomer = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
+                    USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
+
+                    if (existingCustomer == null && existingCustomer == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    if (existingCustomer.S01F04.Equals(oldPassword))
+                    {
+                        existingCustomer.S01F04 = newPassword;
+                        existingUser.R01F03 = newPassword;
+                        existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+                    }
+                    else
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
+                        {
+                            Content = new StringContent("Password is incorrect.")
+                        };
+                    }
+
+                    db.Update(existingCustomer);
+                    db.Update(existingUser);
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Password changed successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                return null;
             }
         }
     }

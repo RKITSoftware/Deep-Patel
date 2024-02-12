@@ -6,12 +6,26 @@ using System.Text;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
+    /// <summary>
+    /// Business Logic class handling user authentication operations.
+    /// </summary>
     public class BLAuthentication
     {
+        /// <summary>
+        /// Validates user credentials and generates an authentication token on successful login.
+        /// </summary>
+        /// <param name="username">The username for login.</param>
+        /// <param name="password">The password for login.</param>
+        /// <returns>
+        /// HttpResponseMessage indicating the success or failure of the login attempt,
+        /// including an authentication token in the response headers on success.
+        /// </returns>
         internal HttpResponseMessage LogIn(string username, string password)
         {
+            // Validate user credentials using the IsExist method from BLUser.
             if (BLUser.IsExist(username, password))
             {
+                // Generate an authentication token and set it as a cookie in the response.
                 string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password));
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
                 CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
@@ -24,11 +38,20 @@ namespace OnlineShoppingAPI.Business_Logic
                 return response;
             }
 
+            // Return a NotFound response if the user credentials are not valid.
             return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
+        /// <summary>
+        /// Handles user logout by expiring the authentication token.
+        /// </summary>
+        /// <returns>
+        /// HttpResponseMessage indicating the success of the logout attempt,
+        /// including an expired authentication token in the response headers.
+        /// </returns>
         internal HttpResponseMessage LogOut()
         {
+            // Generate a response for logout by expiring the authentication token cookie.
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", "")
             {

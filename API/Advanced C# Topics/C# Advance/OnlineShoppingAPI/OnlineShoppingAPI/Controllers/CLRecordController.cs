@@ -16,6 +16,11 @@ namespace OnlineShoppingAPI.Controllers
     {
         private BLRecord _blRecord;
 
+        public CLRecordController()
+        {
+            _blRecord = new BLRecord();
+        }
+
         /// <summary>
         /// Endpoint :- api/CLRecord/AddOrderDetail
         /// Adding order information of product which customer buys it which product
@@ -27,7 +32,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage AddOrder(RCD01 objOrder)
         {
-            _blRecord = new BLRecord();
             return _blRecord.Create(objOrder);
         }
 
@@ -42,7 +46,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage CreateOrdersFromList(List<RCD01> lstNewOrders)
         {
-            _blRecord = new BLRecord();
             return _blRecord.CreateFromList(lstNewOrders);
         }
 
@@ -57,7 +60,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteRecord(int id)
         {
-            _blRecord = new BLRecord();
             return _blRecord.Delete(id);
         }
 
@@ -73,7 +75,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public HttpResponseMessage DownloadCustomerRecord(int id, string filetype)
         {
-            _blRecord = new BLRecord();
             return _blRecord.Download(id, filetype);
         }
 
@@ -86,7 +87,6 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetOrders()
         {
-            _blRecord = new BLRecord();
             return Ok(_blRecord.GetAll());
         }
 

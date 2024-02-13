@@ -16,6 +16,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// _dbFactory is used to store the reference of database connection.
         /// </summary>
         private static readonly IDbConnectionFactory _dbFactory;
+        private static string _logFolderPath;
 
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
@@ -24,6 +25,7 @@ namespace OnlineShoppingAPI.Business_Logic
         static BLCustomers()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
+            _logFolderPath = HttpContext.Current.Application["LogFolderPath"] as string;
 
             if (_dbFactory == null)
             {
@@ -42,13 +44,21 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Inserting new customer
                     db.Insert(objNewCustomer);
+
+                    // Extracting information for USR01
+                    var emailParts = objNewCustomer.S01F03.Split('@');
+                    var username = emailParts[0];
+                    var newPassword = objNewCustomer.S01F04;
+
+                    // Inserting related USR01 record
                     db.Insert(new USR01
                     {
-                        R01F02 = objNewCustomer.S01F03.Split('@')[0],
-                        R01F03 = objNewCustomer.S01F04,
+                        R01F02 = username,
+                        R01F03 = newPassword,
                         R01F04 = "Customer",
-                        R01F05 = BLUser.GetEncryptPassword(objNewCustomer.S01F04)
+                        R01F05 = BLUser.GetEncryptPassword(newPassword)
                     });
 
                     return new HttpResponseMessage(HttpStatusCode.Created)
@@ -59,9 +69,14 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
-                return null;
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while creating the customer.")
+                };
             }
+
         }
 
         /// <summary>
@@ -74,21 +89,33 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 if (id <= 0)
+                {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new StringContent("Id can't be zero or negative.")
                     };
+                }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Retrieve customer by id
                     CUS01 customer = db.SingleById<CUS01>(id);
 
+                    // Check if the customer exists
                     if (customer == null)
-                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound)
+                        {
+                            Content = new StringContent($"Customer with ID {id} not found.")
+                        };
+                    }
 
+                    // Extracting information for USR01
                     string username = customer.S01F03.Split('@')[0];
+
+                    // Delete customer and related USR01 record
                     db.DeleteById<CUS01>(id);
-                    db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
+                    db.Delete<USR01>(u => u.R01F02 == username);
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
@@ -98,9 +125,14 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
-                return null;
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while deleting the customer.")
+                };
             }
+
         }
 
         /// <summary>
@@ -113,23 +145,35 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 if (objUpdatedCustomer.S01F01 <= 0)
+                {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new StringContent("Id can't be zero or negative.")
                     };
+                }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Retrieve existing customer by id
                     CUS01 existingCustomer = db.SingleById<CUS01>(objUpdatedCustomer.S01F01);
 
+                    // Check if the customer exists
                     if (existingCustomer == null)
-                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound)
+                        {
+                            Content = new StringContent($"Customer with ID {objUpdatedCustomer.S01F01} not found.")
+                        };
+                    }
 
+                    // Update customer properties
                     existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
                     existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
                     existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
 
+                    // Perform the database update
                     db.Update(existingCustomer);
+
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent("Customer updated successfully.")
@@ -138,9 +182,14 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
-                return null;
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while updating the customer.")
+                };
             }
+
         }
 
         /// <summary>
@@ -153,14 +202,19 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 if (lstNewCustomers.Count == 0)
+                {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
                         Content = new StringContent("Data is empty")
                     };
+                }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Insert all new customers
                     db.InsertAll(lstNewCustomers);
+
+                    // Insert related USR01 records for each new customer
                     foreach (CUS01 item in lstNewCustomers)
                     {
                         db.Insert(new USR01
@@ -174,15 +228,20 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     return new HttpResponseMessage(HttpStatusCode.Created)
                     {
-                        Content = new StringContent("Customers Created successfully.")
+                        Content = new StringContent("Customers created successfully.")
                     };
                 }
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
-                return null;
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while creating customers.")
+                };
             }
+
         }
 
         /// <summary>
@@ -196,12 +255,13 @@ namespace OnlineShoppingAPI.Business_Logic
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     List<CUS01> customers = db.Select<CUS01>();
-                    return customers;
+                    return customers ?? new List<CUS01>(); // Return an empty list if customers is null
                 }
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
                 return null;
             }
         }
@@ -221,14 +281,24 @@ namespace OnlineShoppingAPI.Business_Logic
                     CUS01 existingCustomer = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
                     USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
 
-                    if (existingCustomer == null && existingCustomer == null)
+                    if (existingCustomer == null && existingUser == null)
+                    {
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
 
                     if (existingCustomer.S01F04.Equals(oldPassword))
                     {
                         existingCustomer.S01F04 = newPassword;
                         existingUser.R01F03 = newPassword;
                         existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+
+                        db.Update(existingCustomer);
+                        db.Update(existingUser);
+
+                        return new HttpResponseMessage(HttpStatusCode.OK)
+                        {
+                            Content = new StringContent("Password changed successfully.")
+                        };
                     }
                     else
                     {
@@ -237,21 +307,18 @@ namespace OnlineShoppingAPI.Business_Logic
                             Content = new StringContent("Password is incorrect.")
                         };
                     }
-
-                    db.Update(existingCustomer);
-                    db.Update(existingUser);
-
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Password changed successfully.")
-                    };
                 }
             }
             catch (Exception ex)
             {
-                BLException.SendErrorToTxt(ex, HttpContext.Current.Application["LogFolderPath"] as string);
-                return null;
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while changing the password.")
+                };
             }
+
         }
     }
 }

@@ -26,9 +26,10 @@ namespace OnlineShoppingAPI.Business_Logic
             if (BLUser.IsExist(username, password))
             {
                 // Generate an authentication token and set it as a cookie in the response.
-                string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(username + ":" + password));
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
+                string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
+
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                var cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
                     Path = "/"
@@ -52,14 +53,14 @@ namespace OnlineShoppingAPI.Business_Logic
         internal HttpResponseMessage LogOut()
         {
             // Generate a response for logout by expiring the authentication token cookie.
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-            CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", "")
+            var response = new HttpResponseMessage(HttpStatusCode.OK);
+            var expiredCookie = new CookieHeaderValue("MyAuth", "")
             {
                 Expires = DateTime.Now.AddMinutes(-1),
                 Path = "/"
             };
 
-            response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+            response.Headers.AddCookies(new CookieHeaderValue[] { expiredCookie });
             return response;
         }
     }

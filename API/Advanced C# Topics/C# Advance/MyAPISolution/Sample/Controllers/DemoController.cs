@@ -1,14 +1,12 @@
-﻿using MyLibrary.Filter;
+﻿using System;
 using System.Net.Http;
-using System;
-using System.Web.Http;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace Sample.Controllers
 {
     public class DemoController : ApiController
     {
-        [CacheFilter(TimeDuration = 10)]
         public IHttpActionResult Get()
         {
             int a = 1;

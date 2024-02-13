@@ -15,28 +15,31 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="directoryPath">Log directory path</param>
         internal static void SendErrorToTxt(Exception exception, string directoryPath)
         {
-            string line = Environment.NewLine;
-
-            string _errorMsg = exception.GetType().Name.ToString();
-            string _exType = exception.GetType().ToString();
-
             try
             {
                 if (!Directory.Exists(directoryPath))
+                {
                     Directory.CreateDirectory(directoryPath);
+                }
 
-                string filePath = directoryPath + "\\" + DateTime.Today.ToString("dd-MM-yy") + ".txt";
+                string filePath = Path.Combine(directoryPath, $"{DateTime.Today:dd-MM-yy}.txt");
 
                 if (!File.Exists(filePath))
+                {
                     File.Create(filePath).Dispose();
+                }
+
+                string line = Environment.NewLine;
+                string _errorMsg = exception.GetType().Name;
+                string _exType = exception.GetType().ToString();
 
                 using (StreamWriter writer = File.AppendText(filePath))
                 {
-                    // Error message create
-                    string error = "Time :- " + DateTime.Now.ToString("HH:mm:ss") + line +
-                    "Error Message :- " + _errorMsg + line +
-                    "Exception Type :- " + _exType + line +
-                    "Error Stack Trace :- " + exception.StackTrace.ToString() + line;
+                    // Error message creation
+                    string error = $"Time :- {DateTime.Now:HH:mm:ss}{line}" +
+                                   $"Error Message :- {_errorMsg}{line}" +
+                                   $"Exception Type :- {_exType}{line}" +
+                                   $"Error Stack Trace :- {exception.StackTrace}{line}";
 
                     writer.WriteLine(error);
                     writer.Flush();
@@ -44,7 +47,8 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                // Log the exception, e.g., print to console or use a dedicated logging framework
+                Console.WriteLine($"An error occurred while logging: {ex}");
             }
         }
     }

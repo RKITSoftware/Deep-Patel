@@ -62,9 +62,10 @@ namespace OnlineShoppingAPI.Security
                         .CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid Credentials");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // Handle unexpected errors and return Internal Server Error response.
+                BLException.SendErrorToTxt(ex, HttpContext.Current.Server.MapPath("~/Logs"));
                 actionContext.Response = actionContext.Request
                     .CreateErrorResponse(HttpStatusCode.InternalServerError,
                         "Internal Server Error - Please Try After Some Time");

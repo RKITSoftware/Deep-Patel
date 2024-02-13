@@ -85,13 +85,21 @@ namespace OnlineShoppingAPI.Business_Logic
                 // db.CreateTable<PRO01>();
                 // db.CreateTable<RCD01>();
 
+                // Inserting admin details
                 db.Insert(objAdmin);
+
+                // Extracting information for USR01
+                var emailParts = objAdmin.M01F03.Split('@');
+                var username = emailParts[0];
+                var newPassword = objAdmin.M01F04;
+
+                // Inserting related USR01 record
                 db.Insert(new USR01
                 {
-                    R01F02 = objAdmin.M01F03.Split('@')[0],
-                    R01F03 = objAdmin.M01F04,
+                    R01F02 = username,
+                    R01F03 = newPassword,
                     R01F04 = "Admin",
-                    R01F05 = BLUser.GetEncryptPassword(objAdmin.M01F04)
+                    R01F05 = BLUser.GetEncryptPassword(newPassword)
                 });
 
                 return new HttpResponseMessage(HttpStatusCode.Created)
@@ -114,14 +122,31 @@ namespace OnlineShoppingAPI.Business_Logic
                 List<ADM01> lstAdmin = db.Select<ADM01>();
 
                 if (lstAdmin.Count == 1)
+                {
                     return new HttpResponseMessage(HttpStatusCode.Forbidden)
                     {
-                        Content = new StringContent("Server can't fullfill request because there is only one admin.")
+                        Content = new StringContent("Server can't fulfill the request because there is only one admin.")
                     };
+                }
 
-                string username = lstAdmin.FirstOrDefault(a => a.M01F01 == id).M01F03.Split('@')[0];
+                // Find the admin by id
+                ADM01 adminToDelete = lstAdmin.FirstOrDefault(a => a.M01F01 == id);
+
+                // If the admin with the given id is not found, return Not Found status
+                if (adminToDelete == null)
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NotFound)
+                    {
+                        Content = new StringContent("Admin not found.")
+                    };
+                }
+
+                // Extracting information for USR01
+                string username = adminToDelete.M01F03.Split('@')[0];
+
+                // Delete admin and related USR01 record
                 db.DeleteById<ADM01>(id);
-                db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
+                db.Delete<USR01>(u => u.R01F02 == username);
 
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {

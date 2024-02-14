@@ -76,7 +76,6 @@ namespace OnlineShoppingAPI.Business_Logic
                     Content = new StringContent("An error occurred while creating the customer.")
                 };
             }
-
         }
 
         /// <summary>

@@ -190,6 +190,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business Logic\BLAdmin.cs" />
     <Compile Include="Business Logic\BLAuthentication.cs" />
+    <Compile Include="Business Logic\BLCart.cs" />
     <Compile Include="Business Logic\BLCustomer.cs" />
     <Compile Include="Business Logic\BLException.cs" />
     <Compile Include="Business Logic\BLProduct.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Business Logic\BLUser.cs" />
     <Compile Include="Controllers\CLAdminController.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
+    <Compile Include="Controllers\CLCartController.cs" />
     <Compile Include="Controllers\CLCustomerController.cs" />
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
@@ -208,6 +210,7 @@
     </Compile>
     <Compile Include="Interface\IBasicAPIService.cs" />
     <Compile Include="Models\ADM01.cs" />
+    <Compile Include="Models\CRT01.cs" />
     <Compile Include="Models\CUS01.cs" />
     <Compile Include="Models\RCD01.cs" />
     <Compile Include="Models\PRO01.cs" />

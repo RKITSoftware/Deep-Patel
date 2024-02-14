@@ -1,6 +1,7 @@
 ﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Filters;
 using SchoolManagementAPI.Models;
+using SchoolManagementAPI.Security;
 using System.Web.Http;
 
 namespace SchoolManagementAPI.Controllers
@@ -9,7 +10,7 @@ namespace SchoolManagementAPI.Controllers
     /// Controller for managing student-related operations.
     /// </summary>
     [RoutePrefix("api/CLStudent")] // All user routes starts with student
-    [Authentication] // Apply authentication filter to ensure only authenticated users can access the controller.
+    [CookieBasedAuthentication]
     // [CacheFilter(TimeDuration = 100)] // Apply caching filter to cache responses for a specified duration.
     public class CLStudentController : ApiController
     {

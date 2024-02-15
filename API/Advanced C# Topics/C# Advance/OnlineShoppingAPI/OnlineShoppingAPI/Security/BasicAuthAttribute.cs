@@ -69,7 +69,7 @@ namespace OnlineShoppingAPI.Security
                 catch (Exception ex)
                 {
                     // Handle unexpected errors and return Internal Server Error response.
-                    BLHelper.SendErrorToTxt(ex, HttpContext.Current.Server.MapPath("~/Logs"));
+                    BLHelper.LogError(ex);
 
                     actionContext.Response = actionContext.Request
                         .CreateErrorResponse(HttpStatusCode.InternalServerError,

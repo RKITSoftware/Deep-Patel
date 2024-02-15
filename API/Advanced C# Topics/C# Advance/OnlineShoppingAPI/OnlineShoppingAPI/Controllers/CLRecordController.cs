@@ -13,8 +13,14 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLRecordController : ApiController
     {
+        /// <summary>
+        /// Business logic class instance for handling record endpoints.
+        /// </summary>
         private BLRecord _blRecord;
 
+        /// <summary>
+        /// Constructor to initialize the Business Logic instance.
+        /// </summary>
         public CLRecordController()
         {
             _blRecord = new BLRecord();

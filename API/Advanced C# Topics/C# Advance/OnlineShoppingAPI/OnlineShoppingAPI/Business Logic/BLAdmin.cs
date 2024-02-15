@@ -15,16 +15,22 @@ namespace OnlineShoppingAPI.Business_Logic
     /// </summary>
     public class BLAdmin
     {
+        #region Private Fields
+
         /// <summary>
         /// _dbFactory is used to store the reference of database connection.
         /// </summary>
-        private static readonly IDbConnectionFactory _dbFactory;
+        private readonly IDbConnectionFactory _dbFactory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
         /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
-        static BLAdmin()
+        public BLAdmin()
         {
             // Getting data connection from Application state
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
@@ -36,123 +42,167 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Changing the admin password using username.
+        /// Changes the password for an admin using the username.
         /// </summary>
         /// <param name="username">Admin username</param>
+        /// <param name="oldPassword">Old password</param>
         /// <param name="newPassword">New password</param>
         /// <returns>Ok response</returns>
-        internal HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
+        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            try
             {
-                // Getting admin details.
-                ADM01 objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
-                USR01 objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
-
-                // If admin doesn't exist then not found statuscode return.
-                if (objAdmin == null)
-                    return new HttpResponseMessage(HttpStatusCode.NotFound);
-
-                // Updating password
-                objAdmin.M01F04 = newPassword;
-                objUser.R01F03 = newPassword;
-                objUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
-
-                db.Update(objAdmin);
-                db.Update(objUser);
-
-                return new HttpResponseMessage(HttpStatusCode.OK)
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    Content = new StringContent("Password changed successfully.")
+                    // Retrieve admin details.
+                    ADM01 objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
+                    USR01 objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
+
+                    // If admin doesn't exist, return Not Found status code.
+                    if (objAdmin == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    // Update passwords
+                    objAdmin.M01F04 = newPassword;
+                    objUser.R01F03 = newPassword;
+                    objUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
+
+                    // Update data in the database.
+                    db.Update(objAdmin);
+                    db.Update(objUser);
+
+                    // Return success response
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Password changed successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent($"An error occurred while processing the request: {ex.Message}")
                 };
             }
         }
 
+
         /// <summary>
-        /// Creating a admin
+        /// Creates a new admin along with the associated user record.
         /// </summary>
         /// <param name="objAdmin">Admin data</param>
         /// <returns>Create response</returns>
-        internal HttpResponseMessage Create(ADM01 objAdmin)
+        public HttpResponseMessage Create(ADM01 objAdmin)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            try
             {
-                // db.CreateTable<ADM01>();
-                // db.CreateTable<USR01>();
-                // db.CreateTable<CUS01>();
-                // db.CreateTable<SUP01>();
-                // db.CreateTable<PRO01>();
-                // db.CreateTable<RCD01>();
-
-                // Inserting admin details
-                db.Insert(objAdmin);
-
-                // Extracting information for USR01
-                var emailParts = objAdmin.M01F03.Split('@');
-                var username = emailParts[0];
-                var newPassword = objAdmin.M01F04;
-
-                // Inserting related USR01 record
-                db.Insert(new USR01
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    R01F02 = username,
-                    R01F03 = newPassword,
-                    R01F04 = "Admin",
-                    R01F05 = BLHelper.GetEncryptPassword(newPassword)
-                });
+                    // Inserting admin details
+                    db.Insert(objAdmin);
 
-                return new HttpResponseMessage(HttpStatusCode.Created)
+                    // Extracting information for USR01
+                    var emailParts = objAdmin.M01F03.Split('@');
+                    var username = emailParts[0];
+                    var newPassword = objAdmin.M01F04;
+
+                    // Inserting related USR01 record
+                    db.Insert(new USR01
+                    {
+                        R01F02 = username,
+                        R01F03 = newPassword,
+                        R01F04 = "Admin",
+                        R01F05 = BLHelper.GetEncryptPassword(newPassword)
+                    });
+
+                    // Return success response
+                    return new HttpResponseMessage(HttpStatusCode.Created)
+                    {
+                        Content = new StringContent("Admin created successfully.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    Content = new StringContent("Admin created successfully.")
+                    Content = new StringContent("An error occurred while processing the create request.")
                 };
             }
         }
 
+
         /// <summary>
-        /// Delete admin details using admin id
-        /// If only one admin exist then it don't delete admin.
+        /// Deletes admin details using admin id. If only one admin exists, it won't delete the admin.
         /// </summary>
         /// <param name="id">Admin id</param>
         /// <returns>Delete response message</returns>
-        internal HttpResponseMessage Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            // Using a try-catch block to handle any potential exceptions
+            try
             {
-                List<ADM01> lstAdmin = db.Select<ADM01>();
-
-                if (lstAdmin.Count == 1)
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    return new HttpResponseMessage(HttpStatusCode.Forbidden)
+                    // Retrieve the list of admins
+                    List<ADM01> lstAdmin = db.Select<ADM01>();
+
+                    // Check if there is only one admin, in which case, deny deletion
+                    if (lstAdmin.Count == 1)
                     {
-                        Content = new StringContent("Server can't fulfill the request because there is only one admin.")
+                        return new HttpResponseMessage(HttpStatusCode.Forbidden)
+                        {
+                            Content = new StringContent("Server can't fulfill the request because there is only one admin.")
+                        };
+                    }
+
+                    // Find the admin by id
+                    ADM01 adminToDelete = lstAdmin.FirstOrDefault(a => a.M01F01 == id);
+
+                    // If the admin with the given id is not found, return Not Found status
+                    if (adminToDelete == null)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound)
+                        {
+                            Content = new StringContent("Admin not found.")
+                        };
+                    }
+
+                    // Extracting information for USR01
+                    string username = adminToDelete.M01F03.Split('@')[0];
+
+                    // Delete admin and related USR01 record
+                    db.DeleteById<ADM01>(id);
+                    db.Delete<USR01>(u => u.R01F02 == username);
+
+                    // Return success response
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Admin deleted successfully.")
                     };
                 }
-
-                // Find the admin by id
-                ADM01 adminToDelete = lstAdmin.FirstOrDefault(a => a.M01F01 == id);
-
-                // If the admin with the given id is not found, return Not Found status
-                if (adminToDelete == null)
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.NotFound)
-                    {
-                        Content = new StringContent("Admin not found.")
-                    };
-                }
-
-                // Extracting information for USR01
-                string username = adminToDelete.M01F03.Split('@')[0];
-
-                // Delete admin and related USR01 record
-                db.DeleteById<ADM01>(id);
-                db.Delete<USR01>(u => u.R01F02 == username);
-
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("Admin deleted successfully.")
+                    Content = new StringContent("An error occurred while processing the delete request.")
                 };
             }
         }
+
+        #endregion
     }
 }

@@ -68,7 +68,6 @@ F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\Onlin
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\ServiceStack.OrmLite.MySql.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\ServiceStack.OrmLite.MySqlConnector.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\ServiceStack.Text.dll
-F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Swashbuckle.Core.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Buffers.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Configuration.ConfigurationManager.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Diagnostics.DiagnosticSource.dll
@@ -121,3 +120,4 @@ F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\Onlin
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.ComponentModel.Annotations.dll
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\EPPlus.xml
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Microsoft.IO.RecyclableMemoryStream.xml
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Swashbuckle.Core.dll

@@ -23,6 +23,7 @@ namespace CacheDemoUsingCacheClass.Controllers
         /// Handles HTTP GET request to retrieve all users.
         /// </summary>
         /// <returns>HTTP response containing the list of users or an error status.</returns>
+        [Route("getData")]
         public IHttpActionResult GetAllUsers()
         {
             // Call the Business Logic layer to get the list of users.

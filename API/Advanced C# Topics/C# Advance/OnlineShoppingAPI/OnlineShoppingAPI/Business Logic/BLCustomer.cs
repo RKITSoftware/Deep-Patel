@@ -12,47 +12,59 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLCustomers : IBasicAPIService<CUS01>
     {
+        #region Private Fields
+
         /// <summary>
         /// _dbFactory is used to store the reference of database connection.
         /// </summary>
-        private static readonly IDbConnectionFactory _dbFactory;
-        private static string _logFolderPath;
+        private readonly IDbConnectionFactory _dbFactory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
         /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
-        static BLCustomers()
+        public BLCustomers()
         {
+            // Getting data connection from Application state
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-            _logFolderPath = HttpContext.Current.Application["LogFolderPath"] as string;
 
+            // If database can't be connect.
             if (_dbFactory == null)
             {
                 throw new ApplicationException("IDbConnectionFactory not found in Application state.");
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Create a customer and adding that customer details into the customer and user table.
+        /// Creates a new customer and adds the customer details to the customer and user tables.
         /// </summary>
-        /// <param name="objNewCustomer">Customer data</param>
-        /// <returns>Create customer</returns>
+        /// <param name="objNewCustomer">Customer data.</param>
+        /// <returns>
+        /// HttpResponseMessage indicating the success or failure of the customer creation process.
+        /// </returns>
         HttpResponseMessage IBasicAPIService<CUS01>.Create(CUS01 objNewCustomer)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Inserting new customer
+                    // Insert the new customer into the CUS01 table.
                     db.Insert(objNewCustomer);
 
-                    // Extracting information for USR01
+                    // Extract information for USR01.
                     var emailParts = objNewCustomer.S01F03.Split('@');
                     var username = emailParts[0];
                     var newPassword = objNewCustomer.S01F04;
 
-                    // Inserting related USR01 record
+                    // Insert the related USR01 record.
                     db.Insert(new USR01
                     {
                         R01F02 = username,
@@ -61,6 +73,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         R01F05 = BLHelper.GetEncryptPassword(newPassword)
                     });
 
+                    // Return a success response.
                     return new HttpResponseMessage(HttpStatusCode.Created)
                     {
                         Content = new StringContent("Customer created successfully.")
@@ -70,7 +83,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the customer.")
@@ -79,14 +92,17 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Deleting customer data
+        /// Deletes customer data based on the specified customer id.
         /// </summary>
-        /// <param name="id">Customer id</param>
-        /// <returns>Delete response message</returns>
+        /// <param name="id">Customer id.</param>
+        /// <returns>
+        /// HttpResponseMessage indicating the success or failure of the customer deletion process.
+        /// </returns>
         HttpResponseMessage IBasicAPIService<CUS01>.Delete(int id)
         {
             try
             {
+                // Check if the provided id is invalid (zero or negative).
                 if (id <= 0)
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -97,10 +113,10 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve customer by id
+                    // Retrieve the customer by id.
                     CUS01 customer = db.SingleById<CUS01>(id);
 
-                    // Check if the customer exists
+                    // Check if the customer exists.
                     if (customer == null)
                     {
                         return new HttpResponseMessage(HttpStatusCode.NotFound)
@@ -109,13 +125,14 @@ namespace OnlineShoppingAPI.Business_Logic
                         };
                     }
 
-                    // Extracting information for USR01
+                    // Extract information for USR01.
                     string username = customer.S01F03.Split('@')[0];
 
-                    // Delete customer and related USR01 record
+                    // Delete the customer and the related USR01 record.
                     db.DeleteById<CUS01>(id);
                     db.Delete<USR01>(u => u.R01F02 == username);
 
+                    // Return a success response.
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent("Customer deleted successfully.")
@@ -124,25 +141,27 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                // Log the exception and return an appropriate response.
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while deleting the customer.")
                 };
             }
-
         }
 
         /// <summary>
-        /// Updating customer information
+        /// Updates customer information based on the provided updated customer data.
         /// </summary>
-        /// <param name="objUpdatedCustomer">Updated information of customer</param>
-        /// <returns>Update response message</returns>
+        /// <param name="objUpdatedCustomer">Updated information of the customer.</param>
+        /// <returns>
+        /// HttpResponseMessage indicating the success or failure of the customer update process.
+        /// </returns>
         HttpResponseMessage IBasicAPIService<CUS01>.Update(CUS01 objUpdatedCustomer)
         {
             try
             {
+                // Check if the provided customer id is invalid (zero or negative).
                 if (objUpdatedCustomer.S01F01 <= 0)
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
@@ -153,10 +172,10 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve existing customer by id
+                    // Retrieve the existing customer by id.
                     CUS01 existingCustomer = db.SingleById<CUS01>(objUpdatedCustomer.S01F01);
 
-                    // Check if the customer exists
+                    // Check if the customer exists.
                     if (existingCustomer == null)
                     {
                         return new HttpResponseMessage(HttpStatusCode.NotFound)
@@ -165,14 +184,15 @@ namespace OnlineShoppingAPI.Business_Logic
                         };
                     }
 
-                    // Update customer properties
+                    // Update customer properties with the provided data.
                     existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
                     existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
                     existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
 
-                    // Perform the database update
+                    // Perform the database update.
                     db.Update(existingCustomer);
 
+                    // Return a success response.
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
                         Content = new StringContent("Customer updated successfully.")
@@ -181,39 +201,41 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                // Log the exception and return an appropriate response.
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the customer.")
                 };
             }
-
         }
 
         /// <summary>
-        /// Creating customers from list
+        /// Creates customers from a list and adds the customer data to the database.
         /// </summary>
-        /// <param name="lstNewCustomers">List of customer data to added into database.</param>
-        /// <returns>Create response message</returns>
+        /// <param name="lstNewCustomers">List of customer data to be added into the database.</param>
+        /// <returns>
+        /// HttpResponseMessage indicating the success or failure of the customer creation process.
+        /// </returns>
         HttpResponseMessage IBasicAPIService<CUS01>.CreateFromList(List<CUS01> lstNewCustomers)
         {
             try
             {
+                // Check if the provided list of customers is empty.
                 if (lstNewCustomers.Count == 0)
                 {
                     return new HttpResponseMessage(HttpStatusCode.BadRequest)
                     {
-                        Content = new StringContent("Data is empty")
+                        Content = new StringContent("Data is empty.")
                     };
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Insert all new customers
+                    // Insert all new customers into the CUS01 table.
                     db.InsertAll(lstNewCustomers);
 
-                    // Insert related USR01 records for each new customer
+                    // Insert related USR01 records for each new customer.
                     foreach (CUS01 item in lstNewCustomers)
                     {
                         db.Insert(new USR01
@@ -225,6 +247,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         });
                     }
 
+                    // Return a success response.
                     return new HttpResponseMessage(HttpStatusCode.Created)
                     {
                         Content = new StringContent("Customers created successfully.")
@@ -233,91 +256,100 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                // Log the exception and return an appropriate response.
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating customers.")
                 };
             }
-
         }
 
         /// <summary>
-        /// Getting all customer details from database
+        /// Retrieves all customer details from the database.
         /// </summary>
-        /// <returns>List of Customer data</returns>
+        /// <returns>List of customer data.</returns>
         List<CUS01> IBasicAPIService<CUS01>.GetAll()
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Retrieve all customer details from the CUS01 table.
                     List<CUS01> customers = db.Select<CUS01>();
-                    return customers ?? new List<CUS01>(); // Return an empty list if customers is null
+
+                    // Return an empty list if 'customers' is null.
+                    return customers ?? new List<CUS01>();
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                // Log the exception and return an appropriate response.
+                BLHelper.LogError(ex);
                 return null;
             }
         }
 
         /// <summary>
-        /// Changing the customer password using the Customer username
+        /// Changes the customer password using the customer username.
         /// </summary>
-        /// <param name="username">Customer username</param>
-        /// <param name="newPassword">Customer new password</param>
-        /// <returns>Change response</returns>
+        /// <param name="username">Customer username.</param>
+        /// <param name="oldPassword">Customer old password.</param>
+        /// <param name="newPassword">Customer new password.</param>
+        /// <returns>Change response.</returns>
         HttpResponseMessage IBasicAPIService<CUS01>.ChangePassword(string username, string oldPassword, string newPassword)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    // Retrieve existing customer and user by username.
                     CUS01 existingCustomer = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
                     USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
 
+                    // Check if the customer and user exist.
                     if (existingCustomer == null && existingUser == null)
                     {
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
                     }
 
-                    if (existingCustomer.S01F04.Equals(oldPassword))
+                    // Check if the provided old password matches the existing customer password.
+                    if (!existingCustomer.S01F04.Equals(oldPassword))
                     {
-                        existingCustomer.S01F04 = newPassword;
-                        existingUser.R01F03 = newPassword;
-                        existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
-
-                        db.Update(existingCustomer);
-                        db.Update(existingUser);
-
-                        return new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new StringContent("Password changed successfully.")
-                        };
-                    }
-                    else
-                    {
+                        // Return a precondition failed response if the old password is incorrect.
                         return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
                         {
                             Content = new StringContent("Password is incorrect.")
                         };
                     }
+
+                    // Update customer and user passwords with the new password.
+                    existingCustomer.S01F04 = newPassword;
+                    existingUser.R01F03 = newPassword;
+                    existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
+
+                    // Perform the database updates.
+                    db.Update(existingCustomer);
+                    db.Update(existingUser);
+
+                    // Return a success response.
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Password changed successfully.")
+                    };
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                // Log the exception and return an appropriate response.
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while changing the password.")
                 };
             }
-
         }
+
+        #endregion
     }
 }

@@ -11,8 +11,14 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLSuplierController : ApiController
     {
+        /// <summary>
+        /// Business logic class instance for handling suplier endpoints.
+        /// </summary>
         private BLSuplier _blSuplier;
 
+        /// <summary>
+        /// Constructor to initialize the Business Logic instance.
+        /// </summary>
         public CLSuplierController()
         {
             _blSuplier = new BLSuplier();

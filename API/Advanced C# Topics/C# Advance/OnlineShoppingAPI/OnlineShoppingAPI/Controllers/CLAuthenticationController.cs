@@ -9,7 +9,9 @@ namespace OnlineShoppingAPI.Controllers
     /// </summary>
     public class CLAuthenticationController : ApiController
     {
-        // Business Logic instance for handling authentication operations.
+        /// <summary>
+        /// Business logic class instance for handling authentication endpoints.
+        /// </summary>
         private BLAuthentication _authentication;
 
         /// <summary>

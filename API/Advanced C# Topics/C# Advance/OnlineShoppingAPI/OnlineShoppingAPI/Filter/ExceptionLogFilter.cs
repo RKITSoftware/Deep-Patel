@@ -9,22 +9,12 @@ namespace OnlineShoppingAPI.Filter
     public class ExceptionLogFilter : ExceptionFilterAttribute
     {
         /// <summary>
-        /// Path to Log folder of web api
-        /// </summary>
-        private readonly string _path;
-
-        public ExceptionLogFilter(string path)
-        {
-            _path = path;
-        }
-
-        /// <summary>
         /// Method run when exception occurs
         /// </summary>
         /// <param name="actionExecutedContext">Contains the information about exceptions.</param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            BLHelper.SendErrorToTxt(actionExecutedContext.Exception, _path);
+            BLHelper.LogError(actionExecutedContext.Exception);
         }
     }
 }

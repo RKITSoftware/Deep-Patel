@@ -11,6 +11,8 @@ namespace OnlineShoppingAPI.Business_Logic
     /// </summary>
     public class BLAuthentication
     {
+        #region Public Methods
+
         /// <summary>
         /// Validates user credentials and generates an authentication token on successful login.
         /// </summary>
@@ -20,27 +22,39 @@ namespace OnlineShoppingAPI.Business_Logic
         /// HttpResponseMessage indicating the success or failure of the login attempt,
         /// including an authentication token in the response headers on success.
         /// </returns>
-        internal HttpResponseMessage LogIn(string username, string password)
+        public HttpResponseMessage LogIn(string username, string password)
         {
-            // Validate user credentials using the IsExist method from BLUser.
-            if (BLHelper.IsExist(username, password))
+            try
             {
-                // Generate an authentication token and set it as a cookie in the response.
-                string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
-
-                var response = new HttpResponseMessage(HttpStatusCode.OK);
-                var cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
+                // Validate user credentials using the IsExist method from BLUser.
+                if (BLHelper.IsExist(username, password))
                 {
-                    Expires = DateTime.Now.AddMinutes(20),
-                    Path = "/"
-                };
+                    // Generate an authentication token and set it as a cookie in the response.
+                    string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
 
-                response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
-                return response;
+                    var response = new HttpResponseMessage(HttpStatusCode.OK);
+                    var cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
+                    {
+                        Expires = DateTime.Now.AddMinutes(20),
+                        Path = "/"
+                    };
+
+                    response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+                    return response;
+                }
+
+                // Return a NotFound response if the user credentials are not valid.
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
-
-            // Return a NotFound response if the user credentials are not valid.
-            return new HttpResponseMessage(HttpStatusCode.NotFound);
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred during login.")
+                };
+            }
         }
 
         /// <summary>
@@ -50,18 +64,32 @@ namespace OnlineShoppingAPI.Business_Logic
         /// HttpResponseMessage indicating the success of the logout attempt,
         /// including an expired authentication token in the response headers.
         /// </returns>
-        internal HttpResponseMessage LogOut()
+        public HttpResponseMessage LogOut()
         {
-            // Generate a response for logout by expiring the authentication token cookie.
-            var response = new HttpResponseMessage(HttpStatusCode.OK);
-            var expiredCookie = new CookieHeaderValue("MyAuth", "")
+            try
             {
-                Expires = DateTime.Now.AddMinutes(-1),
-                Path = "/"
-            };
+                // Generate a response for logout by expiring the authentication token cookie.
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                var expiredCookie = new CookieHeaderValue("MyAuth", "")
+                {
+                    Expires = DateTime.Now.AddMinutes(-1),
+                    Path = "/"
+                };
 
-            response.Headers.AddCookies(new CookieHeaderValue[] { expiredCookie });
-            return response;
+                response.Headers.AddCookies(new CookieHeaderValue[] { expiredCookie });
+                return response;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred during logout.")
+                };
+            }
         }
+
+        #endregion
     }
 }

@@ -15,89 +15,78 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLCustomerController : ApiController
     {
+        /// <summary>
+        /// Business logic class instance for handling customer endpoints.
+        /// </summary>
         private readonly IBasicAPIService<CUS01> _customerService;
 
+        /// <summary>
+        /// Constructor to initialize the Business Logic instance.
+        /// </summary>
         public CLCustomerController()
         {
             _customerService = new BLCustomers();
         }
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/CreateCustomer
+        /// Creates a new customer.
         /// </summary>
         /// <param name="objNewCustomer">Customer data</param>
-        /// <returns></returns>
+        /// <returns>HTTP response message</returns>
         [HttpPost]
         [Route("CreateCustomer")]
         [Authorize(Roles = "Admin")]
-        public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
-        {
-            return _customerService.Create(objNewCustomer);
-        }
+        public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer) => _customerService.Create(objNewCustomer);
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/GetCustomers
+        /// Retrieves a list of customers.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>HTTP response with customer data</returns>
         [HttpGet]
         [Route("GetCustomers")]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetCustomers()
-        {
-            return Ok(_customerService.GetAll());
-        }
+        public IHttpActionResult GetCustomers() => Ok(_customerService.GetAll());
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/CreateCustomer/List
+        /// Creates multiple customers.
         /// </summary>
-        /// <param name="lstNewCustomers">New customer list</param>
-        /// <returns></returns>
+        /// <param name="lstNewCustomers">List of new customers</param>
+        /// <returns>HTTP response message</returns>
         [HttpPost]
         [Route("CreateCustomer/List")]
         [Authorize(Roles = "Admin")]
-        public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
-        {
-            return _customerService.CreateFromList(lstNewCustomers);
-        }
+        public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers) => _customerService.CreateFromList(lstNewCustomers);
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/DeleteCustomer/{id}
+        /// Deletes a customer by ID.
         /// </summary>
-        /// <param name="id">Customer id</param>
-        /// <returns></returns>
+        /// <param name="id">Customer ID</param>
+        /// <returns>HTTP response message</returns>
         [HttpDelete]
         [Route("DeleteCustomer/{id}")]
         [Authorize(Roles = "Admin")]
-        public HttpResponseMessage DeleteCustomer(int id)
-        {
-            return _customerService.Delete(id);
-        }
+        public HttpResponseMessage DeleteCustomer(int id) => _customerService.Delete(id);
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/UpdateCustomer
+        /// Updates customer information.
         /// </summary>
-        /// <param name="objUpdatedCustomer">updated customer data</param>
-        /// <returns></returns>
+        /// <param name="objUpdatedCustomer">Updated customer data</param>
+        /// <returns>HTTP response message</returns>
         [HttpPut]
         [Route("UpdateCustomer")]
         [Authorize(Roles = "Customer")]
-        public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
-        {
-            return _customerService.Update(objUpdatedCustomer);
-        }
+        public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer) => _customerService.Update(objUpdatedCustomer);
 
         /// <summary>
-        /// Endpoint :- api/CLCustomer/ChangePassword
+        /// Changes the password of a customer.
         /// </summary>
-        /// <param name="username">User name of user</param>
-        /// <param name="newPassword">New password of user</param>
-        /// <returns></returns>
+        /// <param name="username">Username of the customer</param>
+        /// <param name="oldPassword">Old password</param>
+        /// <param name="newPassword">New password</param>
+        /// <returns>HTTP response message</returns>
         [HttpPatch]
         [Route("ChangePassword")]
         [Authorize(Roles = "Customer")]
-        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
-        {
-            return _customerService.ChangePassword(username, oldPassword, newPassword);
-        }
+        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword) => _customerService.ChangePassword(username, oldPassword, newPassword);
     }
 }

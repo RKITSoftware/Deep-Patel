@@ -11,33 +11,43 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLProduct
     {
+        #region Private Fields
+
         /// <summary>
         /// _dbFactory is used to store the reference of database connection.
         /// </summary>
-        private static readonly IDbConnectionFactory _dbFactory;
-        private static string _logFolderPath;
+        private readonly IDbConnectionFactory _dbFactory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
         /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
-        static BLProduct()
+        public BLProduct()
         {
+            // Getting data connection from Application state
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-            _logFolderPath = HttpContext.Current.Application["LogFolderPath"] as string;
 
+            // If database can't be connect.
             if (_dbFactory == null)
             {
                 throw new ApplicationException("IDbConnectionFactory not found in Application state.");
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Creating a product 
+        /// Creates a new product.
         /// </summary>
-        /// <param name="objNewProduct">Product information</param>
-        /// <returns>Create response message</returns>
-        internal HttpResponseMessage Create(PRO01 objNewProduct)
+        /// <param name="objNewProduct">Product information.</param>
+        /// <returns>Create response message.</returns>
+        public HttpResponseMessage Create(PRO01 objNewProduct)
         {
             try
             {
@@ -54,20 +64,19 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the product.")
                 };
             }
-
         }
 
         /// <summary>
-        /// Getting all the products information
+        /// Retrieves information for all products.
         /// </summary>
-        /// <returns>List of Products</returns>
-        internal List<PRO01> GetAll()
+        /// <returns>List of products.</returns>
+        public List<PRO01> GetAll()
         {
             try
             {
@@ -80,16 +89,16 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new List<PRO01>(); // Return an empty list in case of an exception
             }
         }
 
         /// <summary>
-        /// Creating products from the list of products data
+        /// Creates products from a list of product data.
         /// </summary>
-        /// <param name="lstNewProducts">New products list</param>
-        /// <returns>Create response message</returns>
+        /// <param name="lstNewProducts">List of new products.</param>
+        /// <returns>Create response message.</returns>
         public HttpResponseMessage CreateFromList(List<PRO01> lstNewProducts)
         {
             try
@@ -114,7 +123,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the products.")
@@ -123,11 +132,11 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Deleting products from the database using product id
+        /// Deletes products from the database using the product ID.
         /// </summary>
-        /// <param name="id">Product id</param>
-        /// <returns>Delete resposne message</returns>
-        internal HttpResponseMessage Delete(int id)
+        /// <param name="id">Product ID.</param>
+        /// <returns>Delete response message.</returns>
+        public HttpResponseMessage Delete(int id)
         {
             try
             {
@@ -160,7 +169,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while deleting the product.")
@@ -169,11 +178,11 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Updating product information
+        /// Updates product information.
         /// </summary>
-        /// <param name="objUpdatedProduct">Products updated response</param>
-        /// <returns>Update response message</returns>
-        internal HttpResponseMessage Update(PRO01 objUpdatedProduct)
+        /// <param name="objUpdatedProduct">Updated product information.</param>
+        /// <returns>Update response message.</returns>
+        public HttpResponseMessage Update(PRO01 objUpdatedProduct)
         {
             try
             {
@@ -215,7 +224,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the product.")
@@ -223,7 +232,13 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        internal HttpResponseMessage UpdateQuantity(int productId, int quantity)
+        /// <summary>
+        /// Updates the quantity of a product.
+        /// </summary>
+        /// <param name="productId">The ID of the product to update.</param>
+        /// <param name="quantity">The quantity to be added to the product.</param>
+        /// <returns>Update response message.</returns>
+        public HttpResponseMessage UpdateQuantity(int productId, int quantity)
         {
             if (productId <= 0)
             {
@@ -243,10 +258,11 @@ namespace OnlineShoppingAPI.Business_Logic
                     {
                         return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
                         {
-                            Content = new StringContent("Product is not avilable.")
+                            Content = new StringContent("Product is not available.")
                         };
                     }
 
+                    // Update product quantity
                     objProduct.O01F04 += quantity;
                     db.Update(objProduct);
 
@@ -259,12 +275,14 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the product.")
                 };
             }
         }
+
+        #endregion
     }
 }

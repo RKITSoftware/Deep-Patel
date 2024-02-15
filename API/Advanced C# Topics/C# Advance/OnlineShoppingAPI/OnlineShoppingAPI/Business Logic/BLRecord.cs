@@ -16,33 +16,43 @@ namespace OnlineShoppingAPI.Business_Logic
 {
     public class BLRecord
     {
+        #region Private Fields
+
         /// <summary>
         /// _dbFactory is used to store the reference of database connection.
         /// </summary>
-        private static readonly IDbConnectionFactory _dbFactory;
-        private static string _logFolderPath;
+        private readonly IDbConnectionFactory _dbFactory;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
         /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
-        static BLRecord()
+        public BLRecord()
         {
+            // Getting data connection from Application state
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-            _logFolderPath = HttpContext.Current.Application["LogFolderPath"] as string;
 
+            // If database can't be connect.
             if (_dbFactory == null)
             {
                 throw new ApplicationException("IDbConnectionFactory not found in Application state.");
             }
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Creating a record of which customer buys which products.
+        /// Creates a record of a customer buying products.
         /// </summary>
-        /// <param name="objRecord">Order Record</param>
-        /// <returns>Create response message</returns>
-        internal HttpResponseMessage Create(RCD01 objRecord)
+        /// <param name="objRecord">Order Record containing details of the purchase.</param>
+        /// <returns>Create response message.</returns>
+        public HttpResponseMessage Create(RCD01 objRecord)
         {
             try
             {
@@ -71,10 +81,12 @@ namespace OnlineShoppingAPI.Business_Logic
                         };
                     }
 
+                    // Update source product quantity and calculate total cost
                     sourceProduct.O01F04 -= objRecord.D01F04;
                     objRecord.D01F05 = sourceProduct.O01F03 * objRecord.D01F04;
                     objRecord.D01F06 = Guid.NewGuid();
 
+                    // Insert order record and update source product
                     db.Insert(objRecord);
                     db.Update(sourceProduct);
 
@@ -87,13 +99,12 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
                 };
             }
-
         }
 
         /// <summary>
@@ -101,7 +112,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstNewRecords">List of records</param>
         /// <returns>Create response message</returns>
-        //internal HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
+        //public HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
         //{
         //    try
         //    {
@@ -139,7 +150,7 @@ namespace OnlineShoppingAPI.Business_Logic
         //    catch (Exception ex)
         //    {
         //        // Log the exception and return an appropriate response
-        //        BLHelper.SendErrorToTxt(ex, _logFolderPath);
+        //        BLHelper.LogError(ex);
         //        return new HttpResponseMessage(HttpStatusCode.InternalServerError)
         //        {
         //            Content = new StringContent("An error occurred while processing the request.")
@@ -148,11 +159,11 @@ namespace OnlineShoppingAPI.Business_Logic
         //}
 
         /// <summary>
-        /// Deleting a record information from the database.
+        /// Deletes a record from the database.
         /// </summary>
-        /// <param name="id">Record id</param>
-        /// <returns>Delete response message</returns>
-        internal HttpResponseMessage Delete(int id)
+        /// <param name="id">Record id to be deleted.</param>
+        /// <returns>Delete response message.</returns>
+        public HttpResponseMessage Delete(int id)
         {
             try
             {
@@ -173,6 +184,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
                     }
 
+                    // Delete the record by id
                     db.DeleteById<RCD01>(id);
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
@@ -184,35 +196,38 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
                 };
             }
-
         }
 
         /// <summary>
-        /// Getting all record details.
+        /// Gets all record details from the database.
         /// </summary>
-        /// <returns>List of records</returns>
-        internal List<RCD01> GetAll()
+        /// <returns>List of records.</returns>
+        public List<RCD01> GetAll()
         {
             List<RCD01> lstRecords = new List<RCD01>();
 
             try
             {
+                // Creating a MySqlConnection to connect to the database
                 using (MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;"))
                 {
+                    // Using MySqlCommand to execute SQL command
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM RCD01;", _connection))
                     {
                         _connection.Open();
 
+                        // Using MySqlDataReader to read data from the executed command
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
                             while (reader.Read())
                             {
+                                // Mapping the data from reader to RCD01 object and adding it to the list
                                 lstRecords.Add(new RCD01()
                                 {
                                     D01F01 = (int)reader[0],
@@ -230,7 +245,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return null;
             }
 
@@ -238,11 +253,11 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Updating record information in database.
+        /// Updates record information in the database.
         /// </summary>
-        /// <param name="objUpdateRecord">Updated information</param>
-        /// <returns>Update response message</returns>
-        internal HttpResponseMessage Update(RCD01 objUpdateRecord)
+        /// <param name="objUpdateRecord">Updated information.</param>
+        /// <returns>Update response message.</returns>
+        public HttpResponseMessage Update(RCD01 objUpdateRecord)
         {
             try
             {
@@ -263,9 +278,11 @@ namespace OnlineShoppingAPI.Business_Logic
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
                     }
 
+                    // Update record properties
                     existingRecord.D01F05 = (existingRecord.D01F05 / existingRecord.D01F04) * objUpdateRecord.D01F04;
                     existingRecord.D01F04 = objUpdateRecord.D01F04;
 
+                    // Perform the database update
                     db.Update(existingRecord);
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
@@ -277,163 +294,12 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
                 };
             }
-
-        }
-
-        /// <summary>
-        /// Creating a json respose for view model which contains the information of order detail of specific customer
-        /// </summary>
-        /// <param name="result">Order detail list</param>
-        /// <returns>Json attachment response</returns>
-        private HttpResponseMessage JSONResponse(int id)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
-                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
-                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
-
-                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
-                        .Where((r) => r.Item1.D01F02 == id)
-                        .Select((r) => new
-                        {
-                            OrderId = r.Item1.D01F01,
-                            CustomerName = r.Item3.S01F02,
-                            ProductName = r.Item2.O01F02,
-                            Price = r.Item1.D01F05,
-                            Quantity = r.Item1.D01F04,
-                            InvoiceId = r.Item1.D01F06
-                        })
-                        .ToList();
-
-                    if (result.Count == 0)
-                    {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("No data found for the specified criteria.")
-                        };
-                    }
-
-                    string jsonData = JsonConvert.SerializeObject(result, Formatting.Indented);
-                    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-
-                    response.Content = new StringContent(jsonData);
-                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                    {
-                        FileName = result[0].CustomerName + " Order Data.json"
-                    };
-
-                    return response;
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
-            }
-
-        }
-
-        /// <summary>
-        /// Creating a excel respose for view model which contains the information of order detail of specific customer
-        /// </summary>
-        /// <param name="result"></param>
-        /// <returns>Excel attachment response</returns>
-        private HttpResponseMessage ExcelResponse(int id)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
-                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
-                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
-
-                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
-                        .Where((r) => r.Item1.D01F02 == id)
-                        .Select((r) => new
-                        {
-                            OrderId = r.Item1.D01F01,
-                            CustomerName = r.Item3.S01F02,
-                            ProductName = r.Item2.O01F02,
-                            Price = r.Item1.D01F05,
-                            Quantity = r.Item1.D01F04,
-                            InvoiceId = r.Item1.D01F06
-                        })
-                        .ToList();
-
-                    if (result.Count == 0)
-                    {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("No data found for the specified criteria.")
-                        };
-                    }
-
-                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                    using (var package = new ExcelPackage())
-                    {
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DataSheet");
-
-                        worksheet.Cells["A1"].Value = "Order Id";
-                        worksheet.Cells["B1"].Value = "Customer Name";
-                        worksheet.Cells["C1"].Value = "Product Name";
-                        worksheet.Cells["D1"].Value = "Price";
-                        worksheet.Cells["E1"].Value = "Quantity";
-                        worksheet.Cells["F1"].Value = "Invoice Id";
-
-                        int row = 2;
-                        foreach (var item in result)
-                        {
-                            worksheet.Cells[row, 1].Value = item.OrderId;
-                            worksheet.Cells[row, 2].Value = item.CustomerName;
-                            worksheet.Cells[row, 3].Value = item.ProductName;
-                            worksheet.Cells[row, 4].Value = item.Price;
-                            worksheet.Cells[row, 5].Value = item.Quantity;
-                            worksheet.Cells[row, 6].Value = item.InvoiceId;
-
-                            row++;
-                        }
-
-                        byte[] content = package.GetAsByteArray();
-                        HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new ByteArrayContent(content)
-                        };
-
-                        response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                        {
-                            FileName = result[0].CustomerName + ".xlsx"
-                        };
-
-                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                        return response;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
-            }
-
         }
 
         /// <summary>
@@ -451,16 +317,20 @@ namespace OnlineShoppingAPI.Business_Logic
                 {
                     HttpResponseMessage response;
 
+                    // Check the requested file type
                     if (filetype.Equals("Json"))
                     {
+                        // Call the JSONResponse method to handle JSON file generation
                         response = JSONResponse(id);
                     }
                     else if (filetype.Equals("Excel"))
                     {
+                        // Call the ExcelResponse method to handle Excel file generation
                         response = ExcelResponse(id);
                     }
                     else
                     {
+                        // Return a BadRequest response for unsupported file types
                         response = new HttpResponseMessage(HttpStatusCode.BadRequest)
                         {
                             Content = new StringContent("Invalid file type. Supported types are 'Json' and 'Excel'.")
@@ -473,18 +343,24 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
 
-                // Return a meaningful response for the client
+                // Return a meaningful response for the client in case of an error
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
                 };
             }
-
         }
 
-        internal HttpResponseMessage AddRecords(List<CRT01> lstItems)
+        /// <summary>
+        /// Adds records to the database based on the provided list of items. 
+        /// Each item in the list represents a purchase attempt, and if the product is in stock,
+        /// a corresponding order record is created, and the product stock is updated accordingly.
+        /// </summary>
+        /// <param name="lstItems">List of items representing purchase attempts</param>
+        /// <returns>Response indicating the success or failure of the purchase operation</returns>
+        public HttpResponseMessage AddRecords(List<CRT01> lstItems)
         {
             try
             {
@@ -492,10 +368,12 @@ namespace OnlineShoppingAPI.Business_Logic
                 {
                     foreach (CRT01 item in lstItems)
                     {
+                        // Check if the product is in stock
                         PRO01 sourceProduct = db.SingleById<PRO01>(item.T01F03);
 
                         if (sourceProduct != null && sourceProduct.O01F04 >= item.T01F04)
                         {
+                            // Create a new order record
                             db.Insert(new RCD01()
                             {
                                 D01F02 = item.T01F02,
@@ -505,14 +383,18 @@ namespace OnlineShoppingAPI.Business_Logic
                                 D01F06 = new Guid()
                             });
 
+                            // Update the product stock
                             sourceProduct.O01F04 -= item.T01F04;
 
                             db.Update(sourceProduct);
+
+                            // Remove the processed purchase item
                             db.DeleteById<CRT01>(item.T01F01);
                         }
                     }
                 }
 
+                // Return a successful response
                 return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Items bought successfully which are in stock.")
@@ -521,14 +403,191 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLHelper.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.LogError(ex);
 
-                // Return a meaningful response for the client
+                // Return a meaningful response for the client in case of an error
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
                 };
             }
         }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Creates a JSON response for a view model containing order details of a specific customer.
+        /// </summary>
+        /// <param name="id">Customer ID.</param>
+        /// <returns>JSON attachment response.</returns>
+        private HttpResponseMessage JSONResponse(int id)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Define SQL expression for joining tables (RCD01, PRO01, CUS01)
+                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
+                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
+                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
+
+                    // Execute the SQL query to retrieve order details for the specified customer ID
+                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
+                        .Where((r) => r.Item1.D01F02 == id)
+                        .Select((r) => new
+                        {
+                            OrderId = r.Item1.D01F01,
+                            CustomerName = r.Item3.S01F02,
+                            ProductName = r.Item2.O01F02,
+                            Price = r.Item1.D01F05,
+                            Quantity = r.Item1.D01F04,
+                            InvoiceId = r.Item1.D01F06
+                        })
+                        .ToList();
+
+                    // Check if any data is found for the specified criteria
+                    if (result.Count == 0)
+                    {
+                        // Return a NotFound response if no data is found
+                        return new HttpResponseMessage(HttpStatusCode.NotFound)
+                        {
+                            Content = new StringContent("No data found for the specified criteria.")
+                        };
+                    }
+
+                    // Serialize the result to JSON format
+                    string jsonData = JsonConvert.SerializeObject(result, Formatting.Indented);
+
+                    // Create an HTTP response with JSON content
+                    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+                    response.Content = new StringContent(jsonData);
+                    response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+                    // Set content disposition for attachment with a filename based on the customer name
+                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                    {
+                        FileName = result[0].CustomerName + " Order Data.json"
+                    };
+
+                    return response;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an InternalServerError response
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while processing the request.")
+                };
+            }
+        }
+
+        /// <summary>
+        /// Creates an Excel response for a view model containing order details of a specific customer.
+        /// </summary>
+        /// <param name="id">Customer ID.</param>
+        /// <returns>Excel attachment response.</returns>
+        private HttpResponseMessage ExcelResponse(int id)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Join tables to get order details along with customer and product information
+                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
+                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
+                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
+
+                    // Retrieve data from the database based on the specified customer ID
+                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
+                        .Where((r) => r.Item1.D01F02 == id)
+                        .Select((r) => new
+                        {
+                            OrderId = r.Item1.D01F01,
+                            CustomerName = r.Item3.S01F02,
+                            ProductName = r.Item2.O01F02,
+                            Price = r.Item1.D01F05,
+                            Quantity = r.Item1.D01F04,
+                            InvoiceId = r.Item1.D01F06
+                        })
+                        .ToList();
+
+                    // Check if any data is found for the specified criteria
+                    if (result.Count == 0)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound)
+                        {
+                            Content = new StringContent("No data found for the specified criteria.")
+                        };
+                    }
+
+                    // Set the license context for EPPlus (ExcelPackage)
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+                    // Create an Excel package
+                    using (var package = new ExcelPackage())
+                    {
+                        // Add a worksheet named "DataSheet"
+                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DataSheet");
+
+                        // Set column headers
+                        worksheet.Cells["A1"].Value = "Order Id";
+                        worksheet.Cells["B1"].Value = "Customer Name";
+                        worksheet.Cells["C1"].Value = "Product Name";
+                        worksheet.Cells["D1"].Value = "Price";
+                        worksheet.Cells["E1"].Value = "Quantity";
+                        worksheet.Cells["F1"].Value = "Invoice Id";
+
+                        // Populate the worksheet with data
+                        int row = 2;
+                        foreach (var item in result)
+                        {
+                            worksheet.Cells[row, 1].Value = item.OrderId;
+                            worksheet.Cells[row, 2].Value = item.CustomerName;
+                            worksheet.Cells[row, 3].Value = item.ProductName;
+                            worksheet.Cells[row, 4].Value = item.Price;
+                            worksheet.Cells[row, 5].Value = item.Quantity;
+                            worksheet.Cells[row, 6].Value = item.InvoiceId;
+
+                            row++;
+                        }
+
+                        // Get the Excel content as a byte array
+                        byte[] content = package.GetAsByteArray();
+
+                        // Create an HTTP response with the Excel content
+                        HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
+                        {
+                            Content = new ByteArrayContent(content)
+                        };
+
+                        // Set content disposition for attachment
+                        response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+                        {
+                            FileName = result[0].CustomerName + ".xlsx"
+                        };
+
+                        // Set content type for Excel file
+                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                        return response;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response
+                BLHelper.LogError(ex);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while processing the request.")
+                };
+            }
+        }
+
+        #endregion
     }
 }

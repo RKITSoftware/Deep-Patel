@@ -14,8 +14,14 @@ namespace OnlineShoppingAPI.Controllers
     [BasicAuth]
     public class CLProductController : ApiController
     {
+        /// <summary>
+        /// Business logic class instance for handling product endpoints.
+        /// </summary>
         private BLProduct _blProduct;
 
+        /// <summary>
+        /// Constructor to initialize the Business Logic instance.
+        /// </summary>
         public CLProductController()
         {
             _blProduct = new BLProduct();
@@ -25,7 +31,6 @@ namespace OnlineShoppingAPI.Controllers
         /// Endpoint :- api/CLProduct/AddProduct
         /// </summary>
         /// <param name="objNewProduct">Product information</param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("AddProduct")]
@@ -50,7 +55,6 @@ namespace OnlineShoppingAPI.Controllers
         /// Endpoint :- api/CLProduct/CreateProducts/List
         /// </summary>
         /// <param name="lstNewProducts">New products list for create</param>
-        /// <returns></returns>
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("CreateProducts/List")]
@@ -63,7 +67,6 @@ namespace OnlineShoppingAPI.Controllers
         /// Endpoint :- api/CLProduct/DeleteProduct/{id}
         /// </summary>
         /// <param name="id">Product id</param>
-        /// <returns></returns>
         [HttpDelete]
         [Authorize(Roles = "Admin")]
         [Route("DeleteProduct/{id}")]
@@ -76,7 +79,6 @@ namespace OnlineShoppingAPI.Controllers
         /// Endpoint :- api/CLProduct/UpdateProduct
         /// </summary>
         /// <param name="objUpdatedProduct">Updated product data</param>
-        /// <returns></returns>
         [HttpPut]
         [Authorize(Roles = "Admin")]
         [Route("UpdateProduct")]
@@ -85,6 +87,11 @@ namespace OnlineShoppingAPI.Controllers
             return _blProduct.Update(objUpdatedProduct);
         }
 
+        /// <summary>
+        /// Endpoint :- api/CLProduct/UpdateQuantity/1
+        /// </summary>
+        /// <param name="productId">Product id for finding product.</param>
+        /// <param name="quantity">Quantity that you want to add.</param>
         [HttpPatch]
         [Route("UpdateQuantity/{productId}")]
         public HttpResponseMessage UpdateProductQuantity(int productId, int quantity)

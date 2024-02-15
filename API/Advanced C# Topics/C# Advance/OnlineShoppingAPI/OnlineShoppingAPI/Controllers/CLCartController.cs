@@ -35,5 +35,30 @@ namespace OnlineShoppingAPI.Controllers
         {
             return Ok(_cart.Get(customerId));
         }
+
+        [HttpGet]
+        [Route("GenerateOtp")]
+        public HttpResponseMessage GenerateOtpForBuying(int customerId)
+        {
+            return _cart.Generate(customerId);
+        }
+
+        [HttpPost]
+        [Route("VerifyOTP/{customerId}")]
+        public HttpResponseMessage VerifyAndBuyItems(int customerId, string otp)
+        {
+            return _cart.VerifyAndBuy(customerId, otp);
+        }
+
+        #region Unused endpoints
+
+        //[HttpGet]
+        //[Route("BuyItems/{customerId}")]
+        //public HttpResponseMessage BuyItemsOfCart(int customerId)
+        //{
+        //    return _cart.BuyAllItems(customerId);
+        //}
+
+        #endregion
     }
 }

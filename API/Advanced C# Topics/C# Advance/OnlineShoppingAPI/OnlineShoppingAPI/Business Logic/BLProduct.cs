@@ -222,5 +222,49 @@ namespace OnlineShoppingAPI.Business_Logic
                 };
             }
         }
+
+        internal HttpResponseMessage UpdateQuantity(int productId, int quantity)
+        {
+            if (productId <= 0)
+            {
+                return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
+                {
+                    Content = new StringContent("Product Id can't be negative nor zero.")
+                };
+            }
+
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    PRO01 objProduct = db.SingleById<PRO01>(productId);
+
+                    if (objProduct == null)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
+                        {
+                            Content = new StringContent("Product is not avilable.")
+                        };
+                    }
+
+                    objProduct.O01F04 += quantity;
+                    db.Update(objProduct);
+
+                    return new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent("Product quantity successfully updated.")
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while updating the product.")
+                };
+            }
+        }
     }
 }

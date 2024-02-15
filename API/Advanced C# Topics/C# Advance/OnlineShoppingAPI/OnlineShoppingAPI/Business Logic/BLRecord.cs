@@ -101,51 +101,51 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstNewRecords">List of records</param>
         /// <returns>Create response message</returns>
-        internal HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
-        {
-            try
-            {
-                if (lstNewRecords.Count == 0)
-                {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Data is empty")
-                    };
-                }
+        //internal HttpResponseMessage CreateFromList(List<RCD01> lstNewRecords)
+        //{
+        //    try
+        //    {
+        //        if (lstNewRecords.Count == 0)
+        //        {
+        //            return new HttpResponseMessage(HttpStatusCode.BadRequest)
+        //            {
+        //                Content = new StringContent("Data is empty")
+        //            };
+        //        }
 
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    foreach (RCD01 item in lstNewRecords)
-                    {
-                        PRO01 sourceProduct = db.SingleById<PRO01>(item.D01F03);
+        //        using (var db = _dbFactory.OpenDbConnection())
+        //        {
+        //            foreach (RCD01 item in lstNewRecords)
+        //            {
+        //                PRO01 sourceProduct = db.SingleById<PRO01>(item.D01F03);
 
-                        if (sourceProduct != null && sourceProduct.O01F04 >= item.D01F04)
-                        {
-                            sourceProduct.O01F04 -= item.D01F04;
-                            item.D01F05 = sourceProduct.O01F03 * item.D01F04;
-                            item.D01F06 = Guid.NewGuid();
+        //                if (sourceProduct != null && sourceProduct.O01F04 >= item.D01F04)
+        //                {
+        //                    sourceProduct.O01F04 -= item.D01F04;
+        //                    item.D01F05 = sourceProduct.O01F03 * item.D01F04;
+        //                    item.D01F06 = Guid.NewGuid();
 
-                            db.Insert(item);
-                            db.Update(sourceProduct);
-                        }
-                    }
+        //                    db.Insert(item);
+        //                    db.Update(sourceProduct);
+        //                }
+        //            }
 
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Records added successfully.")
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
-            }
-        }
+        //            return new HttpResponseMessage(HttpStatusCode.Created)
+        //            {
+        //                Content = new StringContent("Records added successfully.")
+        //            };
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception and return an appropriate response
+        //        BLException.SendErrorToTxt(ex, _logFolderPath);
+        //        return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+        //        {
+        //            Content = new StringContent("An error occurred while processing the request.")
+        //        };
+        //    }
+        //}
 
         /// <summary>
         /// Deleting a record information from the database.
@@ -482,6 +482,53 @@ namespace OnlineShoppingAPI.Business_Logic
                 };
             }
 
+        }
+
+        internal HttpResponseMessage AddRecords(List<CRT01> lstItems)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    foreach (CRT01 item in lstItems)
+                    {
+                        PRO01 sourceProduct = db.SingleById<PRO01>(item.T01F03);
+
+                        if (sourceProduct != null && sourceProduct.O01F04 >= item.T01F04)
+                        {
+                            db.Insert(new RCD01()
+                            {
+                                D01F02 = item.T01F02,
+                                D01F03 = item.T01F03,
+                                D01F04 = item.T01F04,
+                                D01F05 = item.T01F05,
+                                D01F06 = new Guid()
+                            });
+
+                            sourceProduct.O01F04 -= item.T01F04;
+
+                            db.Update(sourceProduct);
+                            db.DeleteById<CRT01>(item.T01F01);
+                        }
+                    }
+                }
+
+                return new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("Items bought successfully which are in stock.")
+                };
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response
+                BLException.SendErrorToTxt(ex, _logFolderPath);
+
+                // Return a meaningful response for the client
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                {
+                    Content = new StringContent("An error occurred while processing the request.")
+                };
+            }
         }
     }
 }

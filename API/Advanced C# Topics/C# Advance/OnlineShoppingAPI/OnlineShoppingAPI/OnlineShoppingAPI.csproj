@@ -190,9 +190,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Business Logic\BLAdmin.cs" />
     <Compile Include="Business Logic\BLAuthentication.cs" />
+    <Compile Include="Business Logic\BLCaching.cs" />
     <Compile Include="Business Logic\BLCart.cs" />
     <Compile Include="Business Logic\BLCustomer.cs" />
     <Compile Include="Business Logic\BLException.cs" />
+    <Compile Include="Business Logic\BLHelper.cs" />
     <Compile Include="Business Logic\BLProduct.cs" />
     <Compile Include="Business Logic\BLRecord.cs" />
     <Compile Include="Business Logic\BLSuplier.cs" />

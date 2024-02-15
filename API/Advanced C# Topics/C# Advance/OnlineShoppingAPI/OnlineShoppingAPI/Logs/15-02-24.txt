@@ -1,0 +1,10 @@
+Time :- 09:50:00
+Error Message :- NullReferenceException
+Exception Type :- System.NullReferenceException
+Error Stack Trace :-    at OnlineShoppingAPI.Business_Logic.BLCart.VerifyAndBuy(Int32 customerId, String otp) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLCart.cs:line 252
+
+Time :- 09:51:11
+Error Message :- NullReferenceException
+Exception Type :- System.NullReferenceException
+Error Stack Trace :-    at OnlineShoppingAPI.Business_Logic.BLCart.VerifyAndBuy(Int32 customerId, String otp) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLCart.cs:line 252
+

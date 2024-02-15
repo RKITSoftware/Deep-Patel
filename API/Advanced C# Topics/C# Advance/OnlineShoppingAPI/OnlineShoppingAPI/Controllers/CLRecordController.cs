@@ -1,7 +1,6 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -41,13 +40,13 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="lstNewOrders">Order records of customers</param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("CreateRecords/List")]
-        [Authorize(Roles = "Customer")]
-        public HttpResponseMessage CreateOrdersFromList(List<RCD01> lstNewOrders)
-        {
-            return _blRecord.CreateFromList(lstNewOrders);
-        }
+        //[HttpPost]
+        //[Route("CreateRecords/List")]
+        //[Authorize(Roles = "Customer")]
+        //public HttpResponseMessage CreateOrdersFromList(List<RCD01> lstNewOrders)
+        //{
+        //    return _blRecord.CreateFromList(lstNewOrders);
+        //}
 
         /// <summary>
         /// Endpoint :- api/CLRecord/DeleteRecord/1

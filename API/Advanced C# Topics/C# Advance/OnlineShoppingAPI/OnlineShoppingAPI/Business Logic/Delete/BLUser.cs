@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.Business_Logic.Delete
 {
     public class BLUser
     {
@@ -59,7 +59,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <returns>True is user exist false if not.</returns>
         internal static bool IsExist(string username, string password)
         {
-            using(var db = _dbFactory.OpenDbConnection())
+            using (var db = _dbFactory.OpenDbConnection())
             {
                 return db.Exists<USR01>(u => u.R01F02.Equals(username) && u.R01F03.Equals(password));
             }

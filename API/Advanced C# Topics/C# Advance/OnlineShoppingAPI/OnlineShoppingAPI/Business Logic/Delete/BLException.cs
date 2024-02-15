@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.Business_Logic.Delete
 {
     /// <summary>
     /// Class provides methods to write exceptions in txt file.

@@ -1,6 +1,6 @@
 ﻿using System.Web.Caching;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.Business_Logic.Delete
 {
     static class BLCaching
     {

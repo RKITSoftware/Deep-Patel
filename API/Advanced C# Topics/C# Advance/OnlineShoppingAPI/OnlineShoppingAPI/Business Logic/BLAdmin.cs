@@ -49,7 +49,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Getting admin details.
                 ADM01 objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
                 USR01 objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
-                
+
                 // If admin doesn't exist then not found statuscode return.
                 if (objAdmin == null)
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
@@ -57,12 +57,12 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Updating password
                 objAdmin.M01F04 = newPassword;
                 objUser.R01F03 = newPassword;
-                objUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+                objUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
 
                 db.Update(objAdmin);
                 db.Update(objUser);
 
-                return new HttpResponseMessage(HttpStatusCode.OK) 
+                return new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Password changed successfully.")
                 };
@@ -99,7 +99,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     R01F02 = username,
                     R01F03 = newPassword,
                     R01F04 = "Admin",
-                    R01F05 = BLUser.GetEncryptPassword(newPassword)
+                    R01F05 = BLHelper.GetEncryptPassword(newPassword)
                 });
 
                 return new HttpResponseMessage(HttpStatusCode.Created)

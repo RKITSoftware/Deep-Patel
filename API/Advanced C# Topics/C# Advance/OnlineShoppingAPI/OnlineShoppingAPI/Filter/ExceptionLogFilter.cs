@@ -24,7 +24,7 @@ namespace OnlineShoppingAPI.Filter
         /// <param name="actionExecutedContext">Contains the information about exceptions.</param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            BLException.SendErrorToTxt(actionExecutedContext.Exception, _path);
+            BLHelper.SendErrorToTxt(actionExecutedContext.Exception, _path);
         }
     }
 }

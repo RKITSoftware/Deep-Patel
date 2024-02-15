@@ -87,7 +87,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
@@ -139,7 +139,7 @@ namespace OnlineShoppingAPI.Business_Logic
         //    catch (Exception ex)
         //    {
         //        // Log the exception and return an appropriate response
-        //        BLException.SendErrorToTxt(ex, _logFolderPath);
+        //        BLHelper.SendErrorToTxt(ex, _logFolderPath);
         //        return new HttpResponseMessage(HttpStatusCode.InternalServerError)
         //        {
         //            Content = new StringContent("An error occurred while processing the request.")
@@ -184,7 +184,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
@@ -230,7 +230,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return null;
             }
 
@@ -277,7 +277,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
@@ -338,7 +338,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
@@ -427,7 +427,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while processing the request.")
@@ -473,7 +473,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
 
                 // Return a meaningful response for the client
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
@@ -521,7 +521,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
 
                 // Return a meaningful response for the client
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)

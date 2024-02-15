@@ -68,7 +68,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while adding item to cart.")
@@ -100,7 +100,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while buying all items of cart.")
@@ -142,7 +142,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while deleting item from your cart.")
@@ -187,7 +187,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while adding item to cart.")
@@ -229,7 +229,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return null;
             }
         }
@@ -268,7 +268,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     }
 
                     BuyAllItems(customerId);
-                    BLCaching.ServerCache.Remove(email);
+                    BLHelper.ServerCache.Remove(email);
 
                     return new HttpResponseMessage(HttpStatusCode.OK)
                     {
@@ -279,7 +279,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while verifying otp for buying.")

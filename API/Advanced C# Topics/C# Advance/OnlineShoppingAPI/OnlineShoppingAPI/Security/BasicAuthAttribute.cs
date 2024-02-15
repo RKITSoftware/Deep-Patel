@@ -37,9 +37,9 @@ namespace OnlineShoppingAPI.Security
                     string password = usernamePassword[1];
 
                     // Validate user credentials using the BLUser class.
-                    if (BLUser.IsExist(username, password))
+                    if (BLHelper.IsExist(username, password))
                     {
-                        USR01 userDetail = BLUser.GetUser(username);
+                        USR01 userDetail = BLHelper.GetUser(username);
                         GenericIdentity identity = new GenericIdentity(username);
 
                         identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
@@ -69,7 +69,7 @@ namespace OnlineShoppingAPI.Security
                 catch (Exception ex)
                 {
                     // Handle unexpected errors and return Internal Server Error response.
-                    BLException.SendErrorToTxt(ex, HttpContext.Current.Server.MapPath("~/Logs"));
+                    BLHelper.SendErrorToTxt(ex, HttpContext.Current.Server.MapPath("~/Logs"));
 
                     actionContext.Response = actionContext.Request
                         .CreateErrorResponse(HttpStatusCode.InternalServerError,

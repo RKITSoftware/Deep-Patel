@@ -54,7 +54,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the product.")
@@ -80,7 +80,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new List<PRO01>(); // Return an empty list in case of an exception
             }
         }
@@ -114,7 +114,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the products.")
@@ -160,7 +160,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while deleting the product.")
@@ -215,7 +215,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the product.")
@@ -259,7 +259,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the product.")

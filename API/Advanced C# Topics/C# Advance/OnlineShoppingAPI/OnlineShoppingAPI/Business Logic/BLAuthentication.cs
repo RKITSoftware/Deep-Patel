@@ -23,7 +23,7 @@ namespace OnlineShoppingAPI.Business_Logic
         internal HttpResponseMessage LogIn(string username, string password)
         {
             // Validate user credentials using the IsExist method from BLUser.
-            if (BLUser.IsExist(username, password))
+            if (BLHelper.IsExist(username, password))
             {
                 // Generate an authentication token and set it as a cookie in the response.
                 string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));

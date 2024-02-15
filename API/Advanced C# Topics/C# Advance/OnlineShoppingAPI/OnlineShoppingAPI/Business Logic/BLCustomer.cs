@@ -58,7 +58,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         R01F02 = username,
                         R01F03 = newPassword,
                         R01F04 = "Customer",
-                        R01F05 = BLUser.GetEncryptPassword(newPassword)
+                        R01F05 = BLHelper.GetEncryptPassword(newPassword)
                     });
 
                     return new HttpResponseMessage(HttpStatusCode.Created)
@@ -70,7 +70,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating the customer.")
@@ -125,7 +125,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while deleting the customer.")
@@ -182,7 +182,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while updating the customer.")
@@ -221,7 +221,7 @@ namespace OnlineShoppingAPI.Business_Logic
                             R01F02 = item.S01F03.Split('@')[0],
                             R01F03 = item.S01F04,
                             R01F04 = "Customer",
-                            R01F05 = BLUser.GetEncryptPassword(item.S01F04)
+                            R01F05 = BLHelper.GetEncryptPassword(item.S01F04)
                         });
                     }
 
@@ -234,7 +234,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while creating customers.")
@@ -260,7 +260,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return null;
             }
         }
@@ -289,7 +289,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     {
                         existingCustomer.S01F04 = newPassword;
                         existingUser.R01F03 = newPassword;
-                        existingUser.R01F05 = BLUser.GetEncryptPassword(newPassword);
+                        existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
 
                         db.Update(existingCustomer);
                         db.Update(existingUser);
@@ -311,7 +311,7 @@ namespace OnlineShoppingAPI.Business_Logic
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
-                BLException.SendErrorToTxt(ex, _logFolderPath);
+                BLHelper.SendErrorToTxt(ex, _logFolderPath);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
                     Content = new StringContent("An error occurred while changing the password.")

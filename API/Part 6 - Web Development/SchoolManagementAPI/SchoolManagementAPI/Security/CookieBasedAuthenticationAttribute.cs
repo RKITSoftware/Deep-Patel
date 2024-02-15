@@ -16,10 +16,22 @@ using System.Web.Http.Results;
 
 namespace SchoolManagementAPI.Security
 {
+    /// <summary>
+    /// Custom attribute for cookie-based authentication in ASP.NET Web API.
+    /// Implements IAuthenticationFilter interface to handle authentication process.
+    /// </summary>
     public class CookieBasedAuthenticationAttribute : Attribute, IAuthenticationFilter
     {
+        /// <summary>
+        /// Gets a value indicating whether this attribute can be specified more than once.
+        /// </summary>
         public bool AllowMultiple => false;
 
+        /// <summary>
+        /// Authenticates the user based on the provided cookie containing authentication information.
+        /// </summary>
+        /// <param name="context">HttpAuthenticationContext for authentication.</param>
+        /// <param name="cancellationToken">Cancellation token for asynchronous operation.</param>
         public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
             try
@@ -38,14 +50,18 @@ namespace SchoolManagementAPI.Security
                 // Validate user credentials using the BLUser class.
                 if (ValidateUser.CheckUser(username, password))
                 {
+                    // Retrieve user details for creating claims.
                     USR01 userDetail = ValidateUser.GetUserDetail(username, password);
                     GenericIdentity identity = new GenericIdentity(username);
 
+                    // Add claims for user identity.
                     identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
                     identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.R01F02 + "@gmail.com"));
 
+                    // Create a principal with the user identity and roles.
                     IPrincipal principal = new GenericPrincipal(identity, userDetail.R01F04.Split(','));
 
+                    // Set the current principal for the thread and HttpContext.
                     Thread.CurrentPrincipal = principal;
 
                     if (HttpContext.Current != null)
@@ -54,6 +70,7 @@ namespace SchoolManagementAPI.Security
                     }
                     else
                     {
+                        // Set an error result for unauthorized access.
                         context.ErrorResult = ErrorResponse(HttpStatusCode.Unauthorized, "Authorization Denied");
                     }
                 }
@@ -65,16 +82,25 @@ namespace SchoolManagementAPI.Security
             }
             catch (Exception ex)
             {
-                context.ErrorResult = ErrorResponse(HttpStatusCode.InternalServerError,
-                        ex.Message);
+                // Set an error result for internal server error.
+                context.ErrorResult = ErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
 
-        public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
-        {
+        /// <summary>
+        /// ChallengeAsync method from IAuthenticationFilter interface.
+        /// No additional challenge logic is implemented in this case.
+        /// </summary>
+        /// <param name="context">HttpAuthenticationChallengeContext for authentication challenge.</param>
+        /// <param name="cancellationToken">Cancellation token for asynchronous operation.</param>
+        public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken) { }
 
-        }
-
+        /// <summary>
+        /// Helper method to generate a custom error response.
+        /// </summary>
+        /// <param name="statusCode">HTTP status code for the response.</param>
+        /// <param name="message">Error message for the response content.</param>
+        /// <returns>ResponseMessageResult with the specified status code and message.</returns>
         private ResponseMessageResult ErrorResponse(HttpStatusCode statusCode, string message)
         {
             return new ResponseMessageResult(new HttpResponseMessage(statusCode)
@@ -83,4 +109,5 @@ namespace SchoolManagementAPI.Security
             });
         }
     }
+
 }

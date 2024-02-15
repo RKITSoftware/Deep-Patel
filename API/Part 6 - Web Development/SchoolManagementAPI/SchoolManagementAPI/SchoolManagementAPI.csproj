@@ -104,7 +104,6 @@
     <Compile Include="Controllers\CLUserController.cs" />
     <Compile Include="Filters\AuthenticationAttribute.cs" />
     <Compile Include="Filters\AuthorizationAttribute.cs" />
-    <Compile Include="Filters\CacheFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

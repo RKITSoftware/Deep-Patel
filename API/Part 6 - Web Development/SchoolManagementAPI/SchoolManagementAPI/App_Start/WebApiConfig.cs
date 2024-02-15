@@ -18,8 +18,8 @@ namespace SchoolManagementAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // BLHelper objHelper = new BLHelper();
-            // objHelper.StartUpdate();
+            BLHelper objHelper = new BLHelper();
+            objHelper.StartUpdate();
         }
     }
 }

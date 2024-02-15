@@ -11,62 +11,72 @@ namespace SchoolManagementAPI.Controllers
     /// </summary>
     [RoutePrefix("api/CLStudent")] // All user routes starts with student
     [CookieBasedAuthentication]
-    // [CacheFilter(TimeDuration = 100)] // Apply caching filter to cache responses for a specified duration.
     public class CLStudentController : ApiController
     {
+        /// <summary>
+        /// Business logic instance of Student
+        /// </summary>
+        private BLStudent _blStudent;
+
+        /// <summary>
+        /// Initialize instances of business logic class.
+        /// </summary>
+        public CLStudentController()
+        {
+            _blStudent = new BLStudent();
+        }
+
         #region API Endpoints
 
         /// <summary>
-        /// Create a student
+        /// POST Endpoint: api/CLStudent/add
         /// </summary>
-        /// <param name="student">Get student model from api body</param>
-        /// <returns>200 Response if user created</returns>
+        /// <param name="student">New student information</param>
         [HttpPost]
-        [Route("add")] // POST Endpoint :- api/CLStudent/add
-        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to add a student.
-        public IHttpActionResult AddStudent([FromBody] STU01 student)
+        [Route("add")]
+        [Authorization(Roles = "Admin")]
+        public IHttpActionResult AddStudent(STU01 student)
         {
-            return Ok(BLStudent.AddData(student));
+            return Ok(_blStudent.AddData(student));
         }
 
         /// <summary>
-        /// Write the student data to the studentData.json file
+        /// POST Endpoint: api/CLStudent/update
         /// </summary>
-        /// <returns>Ok Response for data successfully written.</returns>
+        /// <returns>Updates student data and writes it to a file.</returns>
         [HttpPost]
-        [Route("update")] // POST Endpoint  :- api/CLStudent/update
-        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to update student data.
+        [Route("update")]
+        [Authorization(Roles = "Admin")]
         public IHttpActionResult WriteStudentDataToFile()
         {
-            BLStudent.UpdateStudentDataFile();
+            _blStudent.UpdateStudentDataFile();
             return Ok("Data Written Successfully.");
         }
 
         /// <summary>
-        /// Get all Student Data
+        /// GET Endpoint: api/CLStudent/get/allData
         /// </summary>
-        /// <returns>All Student Data</returns>
+        /// <returns>Retrieves a list of all student data.</returns>
         [HttpGet]
-        [Route("get/allData")] // GET Endpoint :- api/CLStudent/get/allData
-        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to get all student data.
+        [Route("get/allData")]
+        [Authorization(Roles = "Admin")]
         public IHttpActionResult GetAllStudentData()
         {
             // Return the list of all students.
-            return Ok(BLStudent.GetAllStudentData());
+            return Ok(_blStudent.GetAllStudentData());
         }
 
         /// <summary>
-        /// Retrieve Student by using student Id
+        /// GET Endpoint: api/CLStudent/get/{studentId}
         /// </summary>
-        /// <param name="studentId">For Retrieving Student Data</param>
-        /// <returns>Student Data</returns>
+        /// <param name="studentId">Retrieves individual student data by ID.</param>
         [HttpGet]
-        [Route("get/{studentId}")] // Get Endpoint :- api/CLStudent/get/1
-        [Authorization(Roles = "Student")] // Allow only users with the "Student" role to get individual student data.
+        [Route("get/{studentId}")]
+        [Authorization(Roles = "Student")]
         public IHttpActionResult GetStudentData(int studentId)
         {
             // Retrieve a student by ID and return it.
-            STU01 student = BLStudent.GetStudentById(studentId);
+            STU01 student = _blStudent.GetStudentById(studentId);
 
             if (student == null)
                 return NotFound();
@@ -76,31 +86,29 @@ namespace SchoolManagementAPI.Controllers
         }
 
         /// <summary>
-        /// Delete Student
+        /// DELETE Endpoint: api/CLStudent/delete/{delId}
         /// </summary>
-        /// <param name="delId">For find ftudent</param>
-        /// <returns>200 Response With student delete message</returns>
+        /// <param name="delId">Deletes a student by ID.</param>
         [HttpDelete]
-        [Route("delete/{delId}")] // Delete Endpoint :- api/CLStudent/delete/1
-        [Authorization(Roles = "Admin")] // Allow only users with the "Admin" role to delete a student.
+        [Route("delete/{delId}")]
+        [Authorization(Roles = "Admin")]
         public IHttpActionResult DeleteStudentData(int delId)
         {
-            BLStudent.DeleteStudent(delId);
+            _blStudent.DeleteStudent(delId);
             return Ok("Student Deleted");
         }
 
         /// <summary>
-        /// Update the student's data with new data
+        /// PUT Endpoint: api/CLStudent/put/studentData
+        /// Requires "Student" role for authorization.
         /// </summary>
-        /// <param name="studentId">Student id for finding specific student</param>
-        /// <param name="updateData">New updated student data</param>
-        /// <returns>Updated data</returns>
+        /// <param name="updateData">Updates a student's data with new information.</param>
         [HttpPut]
-        [Route("put/studentData")] // Put Endpoint :- student/put/studentData/1
-        [Authorization(Roles = "Student")] // Allow only users with the "Student" role to update their own data.
+        [Route("put/studentData")]
+        [Authorization(Roles = "Student")]
         public IHttpActionResult UpdateStudentInfo(STU01 updateData)
         {
-            return Ok(BLStudent.UpdateStudentData(updateData));
+            return Ok(_blStudent.UpdateStudentData(updateData));
         }
 
         #endregion

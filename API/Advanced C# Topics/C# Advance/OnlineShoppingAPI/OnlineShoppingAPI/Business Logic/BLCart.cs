@@ -3,6 +3,7 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
@@ -58,16 +59,15 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the product data is null.
                 if (objProduct == null)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                    {
-                        Content = new StringContent("Product data is null.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                        "Product data is null.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     // Retrieve the corresponding source product from the database.
-                    PRO01 sourceProduct = db.Single(db.From<PRO01>().Where(product => product.O01F01 == objProduct.T01F03));
+                    PRO01 sourceProduct = db.Single(db.From<PRO01>()
+                        .Where(product => product.O01F01 == objProduct.T01F03));
 
                     // If the source product is not found, return NotFound response.
                     if (sourceProduct == null)
@@ -75,36 +75,31 @@ namespace OnlineShoppingAPI.Business_Logic
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
                     }
 
-                    // Check if the quantity in the cart exceeds the available quantity of the source product.
+                    // Check if the quantity in the cart exceeds the available quantity of
+                    // the source product.
                     if (sourceProduct.O01F04 < objProduct.T01F04)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                        {
-                            Content = new StringContent("Product can't be bought because the quantity can't be satisfied.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                            "Product can't be bought because the quantity can't be satisfied.");
                     }
 
                     // Calculate the total price of the product in the cart.
-                    objProduct.T01F05 = sourceProduct.O01F03 * objProduct.T01F04;
+                    objProduct.T01F05 = sourceProduct.O01F03;
 
                     // Insert the product into the cart.
                     db.Insert(objProduct);
 
                     // Return a success response.
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Product added successfully to cart.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Product added successfully to cart.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while adding item to cart.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while adding item to cart.");
             }
         }
 
@@ -122,10 +117,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the provided cartId is invalid (negative or zero).
                 if (cartId <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Id can't be negative nor zero.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be negative nor zero.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -136,30 +129,24 @@ namespace OnlineShoppingAPI.Business_Logic
                     // If the item is not found, return NotFound response.
                     if (objItem == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("Item not found.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "Item not found.");
                     }
 
                     // Delete the item from the cart.
                     db.DeleteById<CRT01>(cartId);
 
                     // Return a success response.
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Item deleted successfully from your cart.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Item deleted successfully from your cart.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while deleting item from your cart.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while deleting item from your cart.");
             }
         }
 
@@ -178,10 +165,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the customerId is valid (greater than zero).
                 if (customerId <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                    {
-                        Content = new StringContent("Customer Id can't be null or negative.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                        "Customer Id can't be null or negative.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -196,10 +181,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     // If the customer's email is not found, return NotFound response.
                     if (string.IsNullOrEmpty(email))
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("Customer email not found.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "Customer email not found.");
                     }
 
                     // Send the OTP to the customer's registered email.
@@ -217,19 +200,15 @@ namespace OnlineShoppingAPI.Business_Logic
                 }
 
                 // Return a success response.
-                return new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("OTP sent to your registered email.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                    "OTP sent to your registered email.");
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while generating OTP.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while generating OTP.");
             }
         }
 
@@ -238,7 +217,8 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="customerId">The unique identifier of the customer.</param>
         /// <returns>
-        /// List of CRT01 objects representing the items in the customer's cart, or null if an error occurs.
+        /// List of CRT01 objects representing the items in the customer's cart, or null if an 
+        /// error occurs.
         /// </returns>
         public List<CRT01> Get(int customerId)
         {
@@ -265,12 +245,14 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Verifies the provided OTP (One-Time Password) and initiates the purchase of items in the customer's cart.
+        /// Verifies the provided OTP (One-Time Password) and initiates the purchase of items 
+        /// in the customer's cart.
         /// </summary>
         /// <param name="customerId">The unique identifier of the customer.</param>
         /// <param name="otp">The OTP entered by the customer for verification.</param>
         /// <returns>
-        /// HttpResponseMessage indicating the success or failure of OTP verification and the subsequent purchase process.
+        /// HttpResponseMessage indicating the success or failure of OTP verification and the 
+        /// subsequent purchase process.
         /// </returns>
         public HttpResponseMessage VerifyAndBuy(int customerId, string otp)
         {
@@ -279,10 +261,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the provided customerId is invalid (negative or zero).
                 if (customerId <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                    {
-                        Content = new StringContent("Id can't be negative nor zero.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                        "Id can't be negative nor zero.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -296,19 +276,14 @@ namespace OnlineShoppingAPI.Business_Logic
                     // If no OTP is generated for buying items, return NotFound response.
                     if (existingOTP == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("OTP isn't generated for buying items.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "OTP isn't generated for buying items.");
                     }
 
                     // Check if the provided OTP matches the existing OTP for verification.
                     if (!existingOTP.Equals(otp))
                     {
-                        return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                        {
-                            Content = new StringContent("Incorrect OTP.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.BadRequest, "Incorrect OTP.");
                     }
 
                     // Call the BuyAllItems method to initiate the purchase process.
@@ -318,20 +293,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     BLHelper.ServerCache.Remove(email);
 
                     // Return a success response.
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Items bought successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Items bought successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while verifying OTP for buying.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while verifying OTP for buying.");
             }
         }
 
@@ -356,29 +327,27 @@ namespace OnlineShoppingAPI.Business_Logic
                     List<CRT01> lstItems = db.Where<CRT01>("T01F02", customerId);
 
                     // If the customer has nothing in the cart, return NotFound response.
-                    if (lstItems == null || lstItems.Count == 0)
+                    if (lstItems == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("Customer has nothing in their cart.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "Customer has nothing in their cart.");
                     }
+
+                    CUS01 objCustomer = db.SingleById<CUS01>(customerId);
 
                     // Create an instance of BLRecord to add records for the purchased items.
                     BLRecord objRecord = new BLRecord();
 
                     // Call the AddRecords method to add records for all items in the cart.
-                    return objRecord.AddRecords(lstItems);
+                    return objRecord.AddRecords(lstItems, objCustomer.S01F03);
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while buying all items in the cart.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                        "An error occurred while buying all items in the cart.");
             }
         }
 
@@ -393,7 +362,7 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Initialize SMTP client with Office 365 settings.
                 SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
-                smtpClient.Credentials = new NetworkCredential("deeppatel2513@outlook.com", "@Deep2513");
+                smtpClient.Credentials = HttpContext.Current.Application["Credentials"] as NetworkCredential;
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.EnableSsl = true;
 

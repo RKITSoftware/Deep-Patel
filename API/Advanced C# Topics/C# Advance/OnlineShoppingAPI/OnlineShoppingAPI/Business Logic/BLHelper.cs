@@ -3,6 +3,8 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.IO;
+using System.Net;
+using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -113,7 +115,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    return db.Exists<USR01>(u => u.R01F02.Equals(username) && u.R01F03.Equals(password));
+                    return db.Exists<USR01>(u =>
+                        u.R01F02.Equals(username) && u.R01F03.Equals(password));
                 }
             }
             catch (Exception ex)
@@ -137,7 +140,8 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 using (MemoryStream msEncrypt = new MemoryStream())
                 {
-                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor,
+                        CryptoStreamMode.Write))
                     {
                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                         {
@@ -198,6 +202,20 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Log the exception, e.g., print to console or use a dedicated logging framework
                 Console.WriteLine($"An error occurred while logging: {ex}");
             }
+        }
+
+        /// <summary>
+        /// Creates an HttpResponseMessage with the specified HTTP status code and message content.
+        /// </summary>
+        /// <param name="statusCode">The HTTP status code for the response.</param>
+        /// <param name="message">The content message to be included in the response.</param>
+        /// <returns>An HttpResponseMessage with the specified status code and message content.</returns>
+        public static HttpResponseMessage ResponseMessage(HttpStatusCode statusCode, string message)
+        {
+            return new HttpResponseMessage(statusCode)
+            {
+                Content = new StringContent(message)
+            };
         }
 
         #endregion

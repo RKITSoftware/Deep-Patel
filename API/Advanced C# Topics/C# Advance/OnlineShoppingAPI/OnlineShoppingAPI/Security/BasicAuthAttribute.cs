@@ -2,7 +2,6 @@
 using OnlineShoppingAPI.Models;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
@@ -19,8 +18,7 @@ namespace OnlineShoppingAPI.Security
         {
             if (actionContext.Request.Headers.Authorization == null)
             {
-                actionContext.Response = actionContext.Request
-                    .CreateErrorResponse(HttpStatusCode.Unauthorized, "Login Failed");
+                actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.Unauthorized, "Login failed");
             }
             else
             {
@@ -30,7 +28,9 @@ namespace OnlineShoppingAPI.Security
                     string authToken = actionContext.Request.Headers.Authorization.Parameter;
 
                     // Decode the base64-encoded credentials to get the username and password.
-                    string decodedAuthToken = Encoding.UTF8.GetString(Convert.FromBase64String(authToken));
+                    string decodedAuthToken = Encoding.UTF8.GetString(
+                        Convert.FromBase64String(authToken));
+
                     string[] usernamePassword = decodedAuthToken.Split(':');
 
                     string username = usernamePassword[0];
@@ -43,9 +43,11 @@ namespace OnlineShoppingAPI.Security
                         GenericIdentity identity = new GenericIdentity(username);
 
                         identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
-                        identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.R01F02 + "@gmail.com"));
+                        identity.AddClaim(new Claim(ClaimTypes.Email,
+                                            userDetail.R01F02 + "@gmail.com"));
 
-                        IPrincipal principal = new GenericPrincipal(identity, userDetail.R01F04.Split(','));
+                        IPrincipal principal = new GenericPrincipal(identity,
+                            userDetail.R01F04.Split(','));
 
                         Thread.CurrentPrincipal = principal;
 
@@ -55,15 +57,15 @@ namespace OnlineShoppingAPI.Security
                         }
                         else
                         {
-                            actionContext.Response = actionContext.Request
-                                .CreateErrorResponse(HttpStatusCode.Unauthorized, "Authorization Denied");
+                            actionContext.Response = BLHelper.ResponseMessage(
+                                HttpStatusCode.Unauthorized, "Authorization Denied");
                         }
                     }
                     else
                     {
                         // If invalid, return Unauthorized response.
-                        actionContext.Response = actionContext.Request
-                            .CreateErrorResponse(HttpStatusCode.Unauthorized, "Invalid Credentials");
+                        actionContext.Response = BLHelper.ResponseMessage(
+                            HttpStatusCode.Unauthorized, "Invalid Credentials");
                     }
                 }
                 catch (Exception ex)
@@ -71,8 +73,8 @@ namespace OnlineShoppingAPI.Security
                     // Handle unexpected errors and return Internal Server Error response.
                     BLHelper.LogError(ex);
 
-                    actionContext.Response = actionContext.Request
-                        .CreateErrorResponse(HttpStatusCode.InternalServerError,
+                    actionContext.Response = BLHelper.ResponseMessage(
+                        HttpStatusCode.InternalServerError,
                             "Internal Server Error - Please Try After Some Time");
                 }
             }

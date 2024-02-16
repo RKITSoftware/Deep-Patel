@@ -25,7 +25,9 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
-        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
+        /// <exception cref="ApplicationException">
+        /// If database can't connect then this exception shows.
+        /// </exception>
         public BLProduct()
         {
             // Getting data connection from Application state
@@ -55,20 +57,16 @@ namespace OnlineShoppingAPI.Business_Logic
                 {
                     db.Insert(objNewProduct);
 
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Product created successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Product created successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while creating the product.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while creating the product.");
             }
         }
 
@@ -105,29 +103,23 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 if (lstNewProducts.Count == 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Data is empty")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Data is empty");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     db.InsertAll(lstNewProducts);
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Products created successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Products created successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while creating the products.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while creating the products.");
             }
         }
 
@@ -142,10 +134,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 if (id <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Id can't be zero or negative.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -153,27 +143,21 @@ namespace OnlineShoppingAPI.Business_Logic
                     PRO01 product = db.SingleById<PRO01>(id);
                     if (product == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent($"Product with ID {id} not found.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            $"Product with ID {id} not found.");
                     }
 
                     db.DeleteById<PRO01>(id);
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Product deleted successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Product deleted successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while deleting the product.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while deleting the product.");
             }
         }
 
@@ -188,10 +172,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 if (objUpdatedProduct.O01F01 <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Id can't be zero or negative.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -200,10 +182,8 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     if (existingProduct == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent($"Product with ID {objUpdatedProduct.O01F01} not found.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            $"Product with ID {objUpdatedProduct.O01F01} not found.");
                     }
 
                     // Update product properties
@@ -215,20 +195,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     // Perform the database update
                     db.Update(existingProduct);
 
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Product updated successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Product updated successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while updating the product.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while updating the product.");
             }
         }
 
@@ -242,10 +218,8 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             if (productId <= 0)
             {
-                return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                {
-                    Content = new StringContent("Product Id can't be negative nor zero.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                    "Product Id can't be negative nor zero.");
             }
 
             try
@@ -256,30 +230,24 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     if (objProduct == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                        {
-                            Content = new StringContent("Product is not available.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                            "Product is not available.");
                     }
 
                     // Update product quantity
                     objProduct.O01F04 += quantity;
                     db.Update(objProduct);
 
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Product quantity successfully updated.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Product quantity successfully updated.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while updating the product.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while updating the product.");
             }
         }
 

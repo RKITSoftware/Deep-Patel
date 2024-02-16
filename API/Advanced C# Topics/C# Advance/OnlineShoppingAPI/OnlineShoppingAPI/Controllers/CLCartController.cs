@@ -1,11 +1,13 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Security;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/cart")]
+    [CookieBasedAuth]
     public class CLCartController : ApiController
     {
         /// <summary>
@@ -34,18 +36,6 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Deletes an item from the customer's cart.
-        /// </summary>
-        /// <param name="cartId">Identifier of the item in the cart to be deleted</param>
-        /// <returns>HTTP response message indicating the result of the operation</returns>
-        [HttpDelete]
-        [Route("DeleteItem/{cartId}")]
-        public HttpResponseMessage DeleteItemFromCart(int cartId)
-        {
-            return _cart.Delete(cartId);
-        }
-
-        /// <summary>
         /// Retrieves customer cart data based on the customer's identifier.
         /// </summary>
         /// <param name="customerId">Identifier of the customer</param>
@@ -55,6 +45,18 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult GetCustomerCartData(int customerId)
         {
             return Ok(_cart.Get(customerId));
+        }
+
+        /// <summary>
+        /// Deletes an item from the customer's cart.
+        /// </summary>
+        /// <param name="cartId">Identifier of the item in the cart to be deleted</param>
+        /// <returns>HTTP response message indicating the result of the operation</returns>
+        [HttpDelete]
+        [Route("DeleteItem/{cartId}")]
+        public HttpResponseMessage DeleteItemFromCart(int cartId)
+        {
+            return _cart.Delete(cartId);
         }
 
         /// <summary>

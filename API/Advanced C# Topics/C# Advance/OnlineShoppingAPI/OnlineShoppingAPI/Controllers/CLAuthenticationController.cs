@@ -27,7 +27,9 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="username">The username for login.</param>
         /// <param name="password">The password for login.</param>
-        /// <returns>HTTP response message indicating the success or failure of the login attempt.</returns>
+        /// <returns>
+        /// HTTP response message indicating the success or failure of the login attempt.
+        /// </returns>
         [HttpGet]
         [Route("Login")]
         public HttpResponseMessage LogIn(string username, string password)
@@ -38,7 +40,9 @@ namespace OnlineShoppingAPI.Controllers
         /// <summary>
         /// Handles HTTP GET request for user logout.
         /// </summary>
-        /// <returns>HTTP response message indicating the success or failure of the logout attempt.</returns>
+        /// <returns>
+        /// HTTP response message indicating the success or failure of the logout attempt.
+        /// </returns>
         [HttpGet]
         [Route("Logout")]
         public HttpResponseMessage LogOut()

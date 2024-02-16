@@ -10,7 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Record controller for handling api endpoints of order details
     /// </summary>
     [RoutePrefix("api/CLRecord")]
-    [BasicAuth]
+    [CookieBasedAuth]
     public class CLRecordController : ApiController
     {
         /// <summary>
@@ -34,7 +34,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("AddOrderDetail")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer,Admin")]
         public HttpResponseMessage AddOrder(RCD01 objOrder)
         {
             return _blRecord.Create(objOrder);
@@ -77,7 +77,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("DownloadCustomerRecords/{id}/{filetype}")]
-        [Authorize(Roles = "Customer")]
+        [Authorize(Roles = "Customer,Admin")]
         public HttpResponseMessage DownloadCustomerRecord(int id, string filetype)
         {
             return _blRecord.Download(id, filetype);

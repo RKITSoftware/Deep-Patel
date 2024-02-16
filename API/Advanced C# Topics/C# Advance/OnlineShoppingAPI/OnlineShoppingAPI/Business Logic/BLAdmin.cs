@@ -29,7 +29,9 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
-        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
+        /// <exception cref="ApplicationException">
+        /// If database can't connect then this exception shows.
+        /// </exception>
         public BLAdmin()
         {
             // Getting data connection from Application state
@@ -53,15 +55,20 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="oldPassword">Old password</param>
         /// <param name="newPassword">New password</param>
         /// <returns>Ok response</returns>
-        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
+        public HttpResponseMessage ChangePassword(string username,
+                string oldPassword, string newPassword)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     // Retrieve admin details.
-                    ADM01 objAdmin = db.Single(db.From<ADM01>().Where(a => a.M01F03.StartsWith(username) && a.M01F04.Equals(oldPassword)));
-                    USR01 objUser = db.Single(db.From<USR01>().Where(u => u.R01F02.StartsWith(username)));
+                    ADM01 objAdmin = db.Single(db.From<ADM01>()
+                        .Where(a => a.M01F03.StartsWith(username) &&
+                                    a.M01F04.Equals(oldPassword)));
+
+                    USR01 objUser = db.Single(db.From<USR01>()
+                        .Where(u => u.R01F02.StartsWith(username)));
 
                     // If admin doesn't exist, return Not Found status code.
                     if (objAdmin == null)
@@ -77,20 +84,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.Update(objUser);
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Password changed successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Password changed successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent($"An error occurred while processing the request: {ex.Message}")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request of changing password");
             }
         }
 
@@ -106,6 +109,14 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    db.CreateTable<ADM01>();
+                    db.CreateTable<USR01>();
+                    db.CreateTable<CUS01>();
+                    db.CreateTable<SUP01>();
+                    db.CreateTable<PRO01>();
+                    db.CreateTable<CRT01>();
+                    db.CreateTable<RCD01>();
+
                     // Inserting admin details
                     db.Insert(objAdmin);
 
@@ -124,20 +135,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     });
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Admin created successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Admin created successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the create request.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the create request.");
             }
         }
 
@@ -160,10 +167,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     // Check if there is only one admin, in which case, deny deletion
                     if (lstAdmin.Count == 1)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.Forbidden)
-                        {
-                            Content = new StringContent("Server can't fulfill the request because there is only one admin.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.Forbidden,
+                            "Server can't fulfill the request because there is only one admin.");
                     }
 
                     // Find the admin by id
@@ -172,10 +177,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     // If the admin with the given id is not found, return Not Found status
                     if (adminToDelete == null)
                     {
-                        return new HttpResponseMessage(HttpStatusCode.NotFound)
-                        {
-                            Content = new StringContent("Admin not found.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "Admin not found.");
                     }
 
                     // Extracting information for USR01
@@ -186,20 +189,68 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.Delete<USR01>(u => u.R01F02 == username);
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Admin deleted successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Admin deleted successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the delete request.");
+            }
+        }
+
+        /// <summary>
+        /// Changes the email for an admin using the username.
+        /// </summary>
+        /// <param name="username">Admin username</param>
+        /// <param name="password">Admin password</param>
+        /// <param name="newEmail">New email</param>
+        /// <returns>Ok response</returns>
+        public HttpResponseMessage ChangeEmail(string username, string password, string newEmail)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    Content = new StringContent("An error occurred while processing the delete request.")
-                };
+                    if (BLHelper.GetUser(newEmail) != null)
+                    {
+                        return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                            "New email is invalid");
+                    }
+
+                    // Retrieve admin details.
+                    ADM01 objAdmin = db.Single(db.From<ADM01>()
+                        .Where(a => a.M01F03.StartsWith(username) &&
+                                    a.M01F04.Equals(password)));
+
+                    USR01 objUser = BLHelper.GetUser(username);
+
+                    // If admin doesn't exist, return Not Found status code.
+                    if (objAdmin == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    // Update email and username
+                    objAdmin.M01F03 = newEmail;
+                    objUser.R01F02 = newEmail.Split('@')[0];
+
+                    // Update data in the database.
+                    db.Update(objAdmin);
+                    db.Update(objUser);
+
+                    // Return success response
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Email changed successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request of changing email");
             }
         }
 

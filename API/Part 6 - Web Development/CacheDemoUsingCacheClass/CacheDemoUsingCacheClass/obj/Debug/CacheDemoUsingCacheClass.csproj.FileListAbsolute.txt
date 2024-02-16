@@ -65,3 +65,6 @@ F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\Cac
 F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\obj\Debug\CacheDemoUsingCacheClass.csproj.CopyComplete
 F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\obj\Debug\CacheDemoUsingCacheClass.dll
 F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\obj\Debug\CacheDemoUsingCacheClass.pdb
+F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\bin\Microsoft.Web.Infrastructure.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\bin\Swashbuckle.Core.dll
+F:\Deep - 380\Training\API\Part 6 - Web Development\CacheDemoUsingCacheClass\CacheDemoUsingCacheClass\bin\WebActivatorEx.dll

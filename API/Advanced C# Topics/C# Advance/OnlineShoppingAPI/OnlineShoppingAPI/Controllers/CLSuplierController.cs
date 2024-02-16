@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/CLSuplier")]
-    [BasicAuth]
+    [CookieBasedAuth]
     public class CLSuplierController : ApiController
     {
         /// <summary>
@@ -25,28 +25,48 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLSuplier/Change/Email
+        /// </summary>
+        /// <param name="username">User name of suplier</param>
+        /// <param name="password">Password of suplier</param>
+        /// <param name="newEmail">New email of suplier</param>
+        /// <returns></returns>
+        [HttpPatch]
+        [Route("Change/Email")]
+        [Authorize(Roles = "Suplier,Admin")]
+        public HttpResponseMessage ChangeEmail(string username,
+            string password, string newEmail)
+        {
+            return _blSuplier.ChangeEmail(username, password, newEmail);
+        }
+
+        /// <summary>
+        /// Endpoint :- api/CLSuplier/ChangePassword
+        /// </summary>
+        /// <param name="username">User name of suplier</param>
+        /// <param name="oldPassword">Old password of suplier</param>
+        /// <param name="newPassword">New password of suplier</param>
+        /// <returns></returns>
+        [HttpPatch]
+        [Route("Change/Password")]
+        [Authorize(Roles = "Suplier,Admin")]
+        public HttpResponseMessage ChangePassword(string username,
+            string oldPassword, string newPassword)
+        {
+            return _blSuplier.ChangePassword(username, oldPassword, newPassword);
+        }
+
+        /// <summary>
         /// Endpoint :- api/CLSuplier/CreateSuplier
         /// </summary>
         /// <param name="objNewSuplier">Suplier data</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("CreateSuplier")]
+        [Route("Create")]
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateSuplier(SUP01 objNewSuplier)
         {
             return _blSuplier.Create(objNewSuplier);
-        }
-
-        /// <summary>
-        /// Endpoint :- api/CLSuplier/GetSupliers
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Route("GetSupliers")]
-        [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetSupliers()
-        {
-            return Ok(_blSuplier.GetAll());
         }
 
         /// <summary>
@@ -55,7 +75,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="lstNewSupliers">New suplier list</param>
         /// <returns></returns>
         [HttpPost]
-        [Route("CreateSuplier/List")]
+        [Route("Create/List")]
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage CreateSuplierFromList(List<SUP01> lstNewSupliers)
         {
@@ -76,6 +96,18 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
+        /// Endpoint :- api/CLSuplier/GetSupliers
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetSupliers")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetSupliers()
+        {
+            return Ok(_blSuplier.GetAll());
+        }
+
+        /// <summary>
         /// Endpoint :- api/CLSuplier/UpdateSuplier
         /// </summary>
         /// <param name="objUpdatedSuplier">updated suplier data</param>
@@ -86,20 +118,6 @@ namespace OnlineShoppingAPI.Controllers
         public HttpResponseMessage UpdateCustomer(SUP01 objUpdatedSuplier)
         {
             return _blSuplier.Update(objUpdatedSuplier);
-        }
-
-        /// <summary>
-        /// Endpoint :- api/CLSuplier/ChangePassword
-        /// </summary>
-        /// <param name="username">User name of suplier</param>
-        /// <param name="newPassword">New password of suplier</param>
-        /// <returns></returns>
-        [HttpPatch]
-        [Route("ChangePassword")]
-        [Authorize(Roles = "Suplier")]
-        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
-        {
-            return _blSuplier.ChangePassword(username, oldPassword, newPassword);
         }
     }
 }

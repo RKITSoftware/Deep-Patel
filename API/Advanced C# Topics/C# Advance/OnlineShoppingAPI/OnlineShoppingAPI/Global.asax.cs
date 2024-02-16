@@ -1,5 +1,6 @@
 using ServiceStack.OrmLite;
 using System.Configuration;
+using System.Net;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
@@ -17,6 +18,9 @@ namespace OnlineShoppingAPI
             // Storing OrmLiteConnectionFactory instance for further usage in any other component.
             Application["DbFactory"] = dbFactory;
             Application["LogFolderPath"] = HttpContext.Current.Server.MapPath("~/Logs");
+            Application["Credentials"] = new NetworkCredential(
+                ConfigurationManager.AppSettings["Username"],
+                ConfigurationManager.AppSettings["Password"]); ;
 
             string path = HostingEnvironment.MapPath("~/Logs");
 

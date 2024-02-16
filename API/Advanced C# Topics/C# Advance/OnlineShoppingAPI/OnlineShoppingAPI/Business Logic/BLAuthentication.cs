@@ -30,10 +30,13 @@ namespace OnlineShoppingAPI.Business_Logic
                 if (BLHelper.IsExist(username, password))
                 {
                     // Generate an authentication token and set it as a cookie in the response.
-                    string encodedAuthToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}"));
+                    string encodedAuthToken = Convert.ToBase64String(
+                        Encoding.UTF8.GetBytes($"{username}:{password}"));
 
-                    var response = new HttpResponseMessage(HttpStatusCode.OK);
-                    var cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
+                    HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        $"{username} successfully login.");
+
+                    CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
                     {
                         Expires = DateTime.Now.AddMinutes(20),
                         Path = "/"
@@ -50,10 +53,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Log the exception or handle it accordingly
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred during login.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred during login.");
             }
         }
 
@@ -69,8 +70,12 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 // Generate a response for logout by expiring the authentication token cookie.
-                var response = new HttpResponseMessage(HttpStatusCode.OK);
-                var expiredCookie = new CookieHeaderValue("MyAuth", "")
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent("Successfully logout.")
+                };
+
+                CookieHeaderValue expiredCookie = new CookieHeaderValue("MyAuth", "")
                 {
                     Expires = DateTime.Now.AddMinutes(-1),
                     Path = "/"
@@ -83,10 +88,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Log the exception or handle it accordingly
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred during logout.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred during logout.");
             }
         }
 

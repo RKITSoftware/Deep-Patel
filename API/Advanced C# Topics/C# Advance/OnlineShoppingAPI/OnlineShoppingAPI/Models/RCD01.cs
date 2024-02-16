@@ -41,5 +41,10 @@ namespace OnlineShoppingAPI.Models
         /// Invoice id for order
         /// </summary>
         public Guid D01F06 { get; set; }
+
+        /// <summary>
+        /// Date and time when product bought.
+        /// </summary>
+        public string D01F07 { get; set; }
     }
 }

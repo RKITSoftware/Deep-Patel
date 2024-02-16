@@ -11,7 +11,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Product controller for handling product api endpoints
     /// </summary>
     [RoutePrefix("api/CLProduct")]
-    [BasicAuth]
+    [CookieBasedAuth]
     public class CLProductController : ApiController
     {
         /// <summary>
@@ -33,22 +33,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="objNewProduct">Product information</param>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("AddProduct")]
+        [Route("Create")]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {
             return _blProduct.Create(objNewProduct);
-        }
-
-        /// <summary>
-        /// Endpoint :- api/CLProduct/GetProducts
-        /// </summary>
-        /// <returns>List of products</returns>
-        [HttpGet]
-        [Authorize(Roles = "Admin,Customer")]
-        [Route("GetProducts")]
-        public IHttpActionResult GetProducts()
-        {
-            return Ok(_blProduct.GetAll());
         }
 
         /// <summary>
@@ -57,7 +45,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="lstNewProducts">New products list for create</param>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("CreateProducts/List")]
+        [Route("Create/List")]
         public HttpResponseMessage CreateProductsFromList(List<PRO01> lstNewProducts)
         {
             return _blProduct.CreateFromList(lstNewProducts);
@@ -73,6 +61,18 @@ namespace OnlineShoppingAPI.Controllers
         public HttpResponseMessage DeleteProduct(int id)
         {
             return _blProduct.Delete(id);
+        }
+
+        /// <summary>
+        /// Endpoint :- api/CLProduct/GetProducts
+        /// </summary>
+        /// <returns>List of products</returns>
+        [HttpGet]
+        [Authorize(Roles = "Admin,Customer")]
+        [Route("GetProducts")]
+        public IHttpActionResult GetProducts()
+        {
+            return Ok(_blProduct.GetAll());
         }
 
         /// <summary>

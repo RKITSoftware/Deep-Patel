@@ -77,18 +77,14 @@ namespace OnlineShoppingAPI.Business_Logic
                         db.Update(existingUser);
 
                         // Return success response
-                        return new HttpResponseMessage(HttpStatusCode.OK)
-                        {
-                            Content = new StringContent("Password changed successfully.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                            "Password changed successfully.");
                     }
                     else
                     {
                         // Return Precondition Failed response if the old password is incorrect
-                        return new HttpResponseMessage(HttpStatusCode.PreconditionFailed)
-                        {
-                            Content = new StringContent("Password is incorrect.")
-                        };
+                        return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                            "Password is incorrect.");
                     }
                 }
             }
@@ -96,10 +92,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Log the exception and return an appropriate response in case of an error
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
             }
         }
 
@@ -127,20 +121,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     });
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Supplier created successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Supplier created successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response in case of an error
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
             }
         }
 
@@ -156,10 +146,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the list is empty
                 if (lstNewSupliers.Count == 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Data is empty")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Data is empty");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -180,20 +168,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     }
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.Created)
-                    {
-                        Content = new StringContent("Suppliers created successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Suppliers created successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response in case of an error
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
             }
         }
 
@@ -209,10 +193,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Check if the id is valid
                 if (id <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Id can't be zero or negative.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -234,20 +216,16 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
 
                     // Return success response
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Supplier deleted successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Supplier deleted successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response in case of an error
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
-                {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
             }
         }
 
@@ -284,10 +262,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 if (objUpdatedSupplier.P01F01 <= 0)
                 {
-                    return new HttpResponseMessage(HttpStatusCode.BadRequest)
-                    {
-                        Content = new StringContent("Id can't be zero or negative.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
                 }
 
                 using (var db = _dbFactory.OpenDbConnection())
@@ -305,20 +281,68 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     db.Update(existingSupplier);
 
-                    return new HttpResponseMessage(HttpStatusCode.OK)
-                    {
-                        Content = new StringContent("Supplier updated successfully.")
-                    };
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Supplier updated successfully.");
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response
                 BLHelper.LogError(ex);
-                return new HttpResponseMessage(HttpStatusCode.InternalServerError)
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
+            }
+        }
+
+        /// <summary>
+        /// Changes the email for an suplier using the username.
+        /// </summary>
+        /// <param name="username">Suplier username</param>
+        /// <param name="password">Suplier password</param>
+        /// <param name="newEmail">New email</param>
+        /// <returns>Ok response</returns>
+        public HttpResponseMessage ChangeEmail(string username, string password, string newEmail)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    Content = new StringContent("An error occurred while processing the request.")
-                };
+                    if (BLHelper.GetUser(newEmail) != null)
+                    {
+                        return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                            "New email is invalid");
+                    }
+
+                    // Retrieve admin details.
+                    SUP01 objSuplier = db.Single(db.From<SUP01>()
+                        .Where(s => s.P01F03.StartsWith(username) &&
+                                    s.P01F04.Equals(password)));
+
+                    USR01 objUser = BLHelper.GetUser(username);
+
+                    // If admin doesn't exist, return Not Found status code.
+                    if (objSuplier == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
+                    // Update email and username
+                    objSuplier.P01F03 = newEmail;
+                    objUser.R01F02 = newEmail.Split('@')[0];
+
+                    // Update data in the database.
+                    db.Update(objSuplier);
+                    db.Update(objUser);
+
+                    // Return success response
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Email changed successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request of changing email");
             }
         }
 

@@ -1,0 +1,93 @@
+Time: 10:20:20
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\CookieBasedAuthAttribute.cs:line 26
+
+Time: 11:46:17
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\CookieBasedAuthAttribute.cs:line 26
+
+Time: 12:37:30
+Error Message: RuntimeBinderException
+Exception Type: Microsoft.CSharp.RuntimeBinder.RuntimeBinderException
+Error Stack Trace:    at CallSite.Target(Closure , CallSite , Object )
+   at System.Dynamic.UpdateDelegates.UpdateAndExecute1[T0,TRet](CallSite site, T0 arg0)
+   at OnlineShoppingAPI.Business_Logic.BLRecord.HttpExcelResponse(Object lstPurchasedItem) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLRecord.cs:line 530
+   at OnlineShoppingAPI.Business_Logic.BLRecord.ExcelResponse(Int32 id) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLRecord.cs:line 671
+
+Time: 13:26:56
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\CookieBasedAuthAttribute.cs:line 26
+
+Time: 15:52:06
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\CookieBasedAuthAttribute.cs:line 27
+
+Time: 15:52:36
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLSuplier.ChangeEmail(String username, String password, String newEmail) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLSuplier.cs:line 329
+
+Time: 15:54:48
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLSuplier.ChangeEmail(String username, String password, String newEmail) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLSuplier.cs:line 329
+
+Time: 16:44:50
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\CookieBasedAuthAttribute.cs:line 27
+
+Time: 16:46:52
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Security.CookieBasedAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 16:50:46
+Error Message: MySqlException
+Exception Type: MySql.Data.MySqlClient.MySqlException
+Error Stack Trace:    at MySql.Data.MySqlClient.MySqlStream.<ReadPacketAsync>d__30.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.NativeDriver.<GetResultAsync>d__45.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.Driver.<GetResultAsync>d__85.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.Driver.<NextResultAsync>d__84.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at MySql.Data.MySqlClient.MySqlDataReader.<NextResultAsync>d__97.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at MySql.Data.MySqlClient.MySqlDataReader.<NextResultAsync>d__97.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.MySqlCommand.<ExecuteReaderAsync>d__111.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at MySql.Data.MySqlClient.MySqlCommand.<ExecuteReaderAsync>d__111.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at MySql.Data.MySqlClient.MySqlCommand.<ExecuteReaderAsync>d__111.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.MySqlCommand.<ExecuteNonQueryAsync>d__100.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at ServiceStack.OrmLite.OrmLiteWriteCommandExtensions.InsertAll[T](IDbCommand dbCmd, IEnumerable`1 objs, Action`1 commandFilter) in /home/runner/work/ServiceStack/ServiceStack/ServiceStack.OrmLite/src/ServiceStack.OrmLite/OrmLiteWriteCommandExtensions.cs:line 915
+   at ServiceStack.OrmLite.OrmLiteExecFilter.Exec(IDbConnection dbConn, Action`1 filter) in /home/runner/work/ServiceStack/ServiceStack/ServiceStack.OrmLite/src/ServiceStack.OrmLite/OrmLiteExecFilter.cs:line 111
+   at ServiceStack.OrmLite.OrmLiteWriteApi.InsertAll[T](IDbConnection dbConn, IEnumerable`1 objs) in /home/runner/work/ServiceStack/ServiceStack/ServiceStack.OrmLite/src/ServiceStack.OrmLite/OrmLiteWriteApi.cs:line 137
+   at OnlineShoppingAPI.Business_Logic.BLSuplier.CreateFromList(List`1 lstNewSupliers)
+

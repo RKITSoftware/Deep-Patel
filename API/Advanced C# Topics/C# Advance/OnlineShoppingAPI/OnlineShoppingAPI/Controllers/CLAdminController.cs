@@ -10,7 +10,8 @@ namespace OnlineShoppingAPI.Controllers
     /// Admin controller for handling api endpoints of admin
     /// </summary>
     [RoutePrefix("api/CLAdmin")]
-    [BasicAuth]
+    [CookieBasedAuth]
+    [Authorize(Roles = "Admin")]
     public class CLAdminController : ApiController
     {
         /// <summary>
@@ -24,6 +25,36 @@ namespace OnlineShoppingAPI.Controllers
         public CLAdminController()
         {
             _blAdmin = new BLAdmin();
+        }
+
+        /// <summary>
+        /// Changes the email for an admin.
+        /// </summary>
+        /// <param name="username">Admin username</param>
+        /// <param name="password">Admin old password</param>
+        /// <param name="newEmail">Admin new password</param>
+        /// <returns>Email change response message</returns>
+        [HttpPatch]
+        [Route("Change/Email")]
+        public HttpResponseMessage ChangeEmail(string username,
+            string password, string newEmail)
+        {
+            return _blAdmin.ChangeEmail(username, password, newEmail);
+        }
+
+        /// <summary>
+        /// Changes the password for an admin.
+        /// </summary>
+        /// <param name="username">Admin username</param>
+        /// <param name="oldPassword">Admin old password</param>
+        /// <param name="newPassword">Admin new password</param>
+        /// <returns>Password change response message</returns>
+        [HttpPatch]
+        [Route("Change/Password")]
+        public HttpResponseMessage ChangePassword(string username,
+            string oldPassword, string newPassword)
+        {
+            return _blAdmin.ChangePassword(username, oldPassword, newPassword);
         }
 
         /// <summary>
@@ -48,20 +79,6 @@ namespace OnlineShoppingAPI.Controllers
         public HttpResponseMessage DeleteAdmin(int id)
         {
             return _blAdmin.Delete(id);
-        }
-
-        /// <summary>
-        /// Changes the password for an admin.
-        /// </summary>
-        /// <param name="username">Admin username</param>
-        /// <param name="oldPassword">Admin old password</param>
-        /// <param name="newPassword">Admin new password</param>
-        /// <returns>Password change response message</returns>
-        [HttpPatch]
-        [Route("Password/Change")]
-        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
-        {
-            return _blAdmin.ChangePassword(username, oldPassword, newPassword);
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace AESCryptographyDemo
+﻿namespace AESCryptographyDemo
 {
-   internal  class Program
+    public class Program
     {
         /// <summary>
         /// Symmetric algorithm AES Implementation using System.Security.Cryptography class
@@ -114,7 +111,7 @@ namespace AESCryptographyDemo
             try
             {
                 byte[] encryptedData;
-                using(RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
+                using (RSACryptoServiceProvider RSA = new RSACryptoServiceProvider())
                 {
                     RSA.ImportParameters(rSAParameters);
                     encryptedData = RSA.Encrypt(plainText, false);
@@ -122,7 +119,7 @@ namespace AESCryptographyDemo
                     return encryptedData;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return null;
@@ -159,7 +156,7 @@ namespace AESCryptographyDemo
         static void Main(string[] args)
         {
             Program objProgram = new Program();
-           
+
             objProgram.AESDemo();
             objProgram.DESDemo();
             objProgram.RSADemo();

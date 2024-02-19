@@ -26,8 +26,10 @@ namespace CustomJWTBearerTokenAPI.Business_Logic
             string issuer = "CustomJWTBearerTokenAPI";
 
             // Creating SymmetricSecurityKey and SigningCredentials
-            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
-            SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(secretKey));
+            SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
+                SecurityAlgorithms.HmacSha256);
 
             // Creating claims for the user
             List<Claim> claims = new List<Claim>

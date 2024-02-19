@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AESCryptographyDemo
 {
-     class Program
+   internal  class Program
     {
         /// <summary>
         /// Symmetric algorithm AES Implementation using System.Security.Cryptography class

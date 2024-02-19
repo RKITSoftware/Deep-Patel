@@ -8,7 +8,7 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/CLSuplier")]
-    [CookieBasedAuth]
+    [BearerAuth]
     public class CLSuplierController : ApiController
     {
         /// <summary>

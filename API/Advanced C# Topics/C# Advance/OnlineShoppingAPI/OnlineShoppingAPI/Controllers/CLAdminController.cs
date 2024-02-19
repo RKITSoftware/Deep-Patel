@@ -10,7 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Admin controller for handling api endpoints of admin
     /// </summary>
     [RoutePrefix("api/CLAdmin")]
-    [CookieBasedAuth]
+    [BearerAuth]
     [Authorize(Roles = "Admin")]
     public class CLAdminController : ApiController
     {

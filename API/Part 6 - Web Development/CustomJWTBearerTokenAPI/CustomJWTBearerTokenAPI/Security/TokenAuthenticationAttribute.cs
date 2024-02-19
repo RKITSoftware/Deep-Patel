@@ -2,7 +2,6 @@
 using System;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
@@ -26,7 +25,7 @@ namespace CustomJWTBearerTokenAPI.Security
         /// </summary>
         /// <param name="context">The authentication context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
+        public Task AuthenticateAsync(HttpAuthenticationContext context, CancellationToken cancellationToken)
         {
             var authHeader = context.Request.Headers.Authorization;
 
@@ -34,14 +33,14 @@ namespace CustomJWTBearerTokenAPI.Security
             if (authHeader == null)
             {
                 context.ErrorResult = ErrorResponse(HttpStatusCode.BadRequest, "Please provide jwt token.");
-                return;
+                return Task.CompletedTask;
             }
 
             // Check if the authentication method is "Bearer"
             if (authHeader.Scheme != "Bearer")
             {
                 context.ErrorResult = ErrorResponse(HttpStatusCode.BadRequest, "Incorrect authentication method.");
-                return;
+                return Task.CompletedTask;
             }
 
             // Validate the JWT token
@@ -49,11 +48,12 @@ namespace CustomJWTBearerTokenAPI.Security
             if (!isValidToken)
             {
                 context.ErrorResult = ErrorResponse(HttpStatusCode.Unauthorized, "Jwt token is invalid or expired.");
-                return;
+                return Task.CompletedTask;
             }
 
             // Set the user principal in the current HttpContext
             HttpContext.Current.User = BLToken.GetPrincipal(authHeader.Parameter);
+            return Task.CompletedTask;
         }
 
         /// <summary>
@@ -61,17 +61,9 @@ namespace CustomJWTBearerTokenAPI.Security
         /// </summary>
         /// <param name="context">The authentication challenge context.</param>
         /// <param name="cancellationToken">The cancellation token.</param>
-        public async Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
+        public Task ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken)
         {
-            //var result = await context.Result.ExecuteAsync(cancellationToken);
-
-            //// Add the challenge header for the "Bearer" authentication scheme
-            //if (result.StatusCode == HttpStatusCode.Unauthorized)
-            //{
-            //    result.Headers.WwwAuthenticate.Add(new AuthenticationHeaderValue("Bearer", "realm=localhost"));
-            //}
-
-            //context.Result = new ResponseMessageResult(result);
+            return Task.CompletedTask;
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/cart")]
-    [CookieBasedAuth]
+    [BearerAuth]
     public class CLCartController : ApiController
     {
         /// <summary>

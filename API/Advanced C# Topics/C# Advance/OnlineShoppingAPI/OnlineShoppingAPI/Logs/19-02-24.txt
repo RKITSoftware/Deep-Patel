@@ -1,0 +1,10 @@
+Time: 11:47:31
+Error Message: NotImplementedException
+Exception Type: System.NotImplementedException
+Error Stack Trace:    at OnlineShoppingAPI.Security.BearerAuthAttribute.ChallengeAsync(HttpAuthenticationChallengeContext context, CancellationToken cancellationToken) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Security\BearerAuthAttribute.cs:line 33
+   at System.Web.Http.Controllers.AuthenticationFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+

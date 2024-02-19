@@ -10,7 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Record controller for handling api endpoints of order details
     /// </summary>
     [RoutePrefix("api/CLRecord")]
-    [CookieBasedAuth]
+    [BearerAuth]
     public class CLRecordController : ApiController
     {
         /// <summary>

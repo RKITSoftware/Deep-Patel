@@ -70,10 +70,8 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 // Generate a response for logout by expiring the authentication token cookie.
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("Successfully logout.")
-                };
+                HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
+                    "Successfully logout.");
 
                 CookieHeaderValue expiredCookie = new CookieHeaderValue("MyAuth", "")
                 {

@@ -462,7 +462,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Send the email using SMTP
                 SmtpClient smtpClient = new SmtpClient("smtp.office365.com");
                 smtpClient.Port = 587;
-                smtpClient.Credentials = HttpContext.Current.Application["Credentials"] as NetworkCredential;
+                smtpClient.Credentials = HttpContext.Current.Application["Credentials"]
+                    as NetworkCredential;
                 smtpClient.EnableSsl = true;
 
                 try

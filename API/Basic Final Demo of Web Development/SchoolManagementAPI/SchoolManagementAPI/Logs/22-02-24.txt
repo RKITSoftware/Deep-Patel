@@ -1,0 +1,20 @@
+Time: 15:51:49
+Error Message: DivideByZeroException
+Exception Type: System.DivideByZeroException
+Error Stack Trace:    at SchoolManagementAPI.Business_Logic.BLAdmin.GetAll() in F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\Business Logic\BLAdmin.cs:line 46
+
+Time: 16:09:10
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at SchoolManagementAPI.Business_Logic.BLAdmin.Delete(Int32 id) in F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\Business Logic\BLAdmin.cs:line 65
+
+Time: 17:03:14
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at SchoolManagementAPI.Business_Logic.BLToken.GenerateToken(Guid sessionId, USR01 objUser) in F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\Business Logic\BLToken.cs:line 32
+
+Time: 17:03:57
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at SchoolManagementAPI.Business_Logic.BLToken.GenerateToken(Guid sessionId, USR01 objUser)
+

@@ -98,5 +98,12 @@ namespace OnlineShoppingAPI.Controllers
         {
             return _blProduct.UpdateQuantity(productId, quantity);
         }
+
+        [HttpPost]
+        [Route("Add")]
+        public HttpResponseMessage Add(PRO02 objProduct)
+        {
+            return _blProduct.Add(objProduct);
+        }
     }
 }

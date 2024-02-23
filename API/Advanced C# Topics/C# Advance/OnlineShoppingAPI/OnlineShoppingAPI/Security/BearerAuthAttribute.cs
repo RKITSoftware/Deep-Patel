@@ -18,23 +18,42 @@ namespace OnlineShoppingAPI.Security
             try
             {
                 // Getting Cookie Value
-                CookieHeaderValue cookie = actionContext.Request.Headers
-                    .GetCookies("Session-Id").FirstOrDefault();
+                CookieHeaderValue cookieJwtToken = actionContext.Request.Headers
+                    .GetCookies().FirstOrDefault();
 
-                if (cookie == null)
+                if (cookieJwtToken["Token"] == null || cookieJwtToken["Token"].Value == "")
                 {
                     actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Please login");
+                        HttpStatusCode.Unauthorized, "Please provide token");
                     return;
                 }
 
-                string sessionId = cookie["Session-Id"]?.Value;
+                string token = cookieJwtToken["Token"].Value;
+
+                if (!BLToken.IsJwtValid(token))
+                {
+                    actionContext.Response = BLHelper.ResponseMessage(
+                        HttpStatusCode.Unauthorized, "Alteration with the Token");
+                    return;
+                }
+
+                CookieHeaderValue cookieLoginSessionId = actionContext.Request.Headers
+                    .GetCookies("LoginSessionId").FirstOrDefault();
+                string sessionId = cookieLoginSessionId["LoginSessionId"]?.Value;
+
                 string jwtToken = (string)BLHelper.ServerCache.Get(sessionId);
 
                 if (jwtToken == null)
                 {
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Login expired, please login.");
+                    return;
+                }
+
+                if (jwtToken != token)
+                {
+                    actionContext.Response = BLHelper.ResponseMessage(
+                        HttpStatusCode.Unauthorized, "Token Modificication Error");
                     return;
                 }
 

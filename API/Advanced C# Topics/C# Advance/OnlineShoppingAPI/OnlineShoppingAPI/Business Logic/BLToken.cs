@@ -37,14 +37,6 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 TimeSpan slidingExpiration = new TimeSpan(0, 20, 0);
 
-                BLHelper.ServerCache.Add(objUser.R01F02,
-                    sessionId.ToString(),
-                    null,
-                    DateTime.MaxValue,
-                    slidingExpiration,
-                    CacheItemPriority.Normal,
-                    null);
-
                 string issuer = "CustomJWTBearerTokenAPI";
 
                 // Creating SymmetricSecurityKey and SigningCredentials
@@ -63,18 +55,22 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 // Creating JWT token with claims and signing credentials
                 JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
-                    expires: null,
+                    expires: DateTime.Now.AddMinutes(20),
                     signingCredentials: credentials);
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string jwtToken = handler.WriteToken(token);
 
-                CookieHeaderValue cookieSessionId =
-                    new CookieHeaderValue("Session-Id", sessionId.ToString())
-                    {
-                        Path = "/",
-                        HttpOnly = true,
-                    };
+                string userDataSessionId = Guid.NewGuid().ToString();
+
+                BLHelper.ServerCache.Add(objUser.R01F02,
+                                        value: new string[] { jwtToken, sessionId.ToString(),
+                                            userDataSessionId },
+                                        dependencies: null,
+                                        absoluteExpiration: DateTime.MaxValue,
+                                        slidingExpiration: slidingExpiration,
+                                        CacheItemPriority.Normal,
+                                        onRemoveCallback: null);
 
                 BLHelper.ServerCache.Add(sessionId.ToString(),
                                          value: jwtToken,
@@ -84,11 +80,45 @@ namespace OnlineShoppingAPI.Business_Logic
                                          priority: CacheItemPriority.Normal,
                                          onRemoveCallback: null);
 
+                BLHelper.ServerCache.Add(userDataSessionId,
+                                         value: "Testing",
+                                         dependencies: null,
+                                         absoluteExpiration: DateTime.MaxValue,
+                                         slidingExpiration: slidingExpiration,
+                                         priority: CacheItemPriority.Normal,
+                                         onRemoveCallback: null);
+
+                //CookieHeaderValue cookieActiveSessionId =
+                //    new CookieHeaderValue("Session-Id", sessionId.ToString())
+                //    {
+                //        Path = "/",
+                //        HttpOnly = true,
+                //    };
+
+                CookieHeaderValue[] cookies =
+                {
+                    new CookieHeaderValue("LoginSessionId", sessionId.ToString())
+                    {
+                        Path = "/",
+                        HttpOnly = true
+                    },
+                    new CookieHeaderValue("UserDataSessionId", userDataSessionId)
+                    {
+                        Path = "/",
+                        HttpOnly = true
+                    },
+                    new CookieHeaderValue("Token", jwtToken)
+                    {
+                        Path = "/",
+                        HttpOnly = true
+                    },
+                };
+
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent("Logged in")
                 };
-                response.Headers.AddCookies(new CookieHeaderValue[] { cookieSessionId });
+                response.Headers.AddCookies(cookies);
 
                 return response;
             }
@@ -202,19 +232,43 @@ namespace OnlineShoppingAPI.Business_Logic
                 HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
                     "Successfully logout.");
 
-                CookieHeaderValue expiredCookie = new CookieHeaderValue("Session-Id", "")
+                //CookieHeaderValue expiredCookie = new CookieHeaderValue("Session-Id", "")
+                //{
+                //    Expires = DateTime.Now.AddMinutes(-1),
+                //    Path = "/",
+                //};
+
+                CookieHeaderValue[] expiredCookie =
                 {
-                    Expires = DateTime.Now.AddMinutes(-1),
-                    Path = "/",
+                    new CookieHeaderValue("LoginSessionId", "")
+                    {
+                        Path = "/",
+                        HttpOnly = true,
+                        Expires = DateTime.Now.AddMinutes(-1)
+                    },
+                    new CookieHeaderValue("UserDataSessionId", "")
+                    {
+                        Path = "/",
+                        HttpOnly = true,
+                        Expires = DateTime.Now.AddMinutes(-1)
+
+                    },
+                    new CookieHeaderValue("Token", "")
+                    {
+                        Path = "/",
+                        HttpOnly = true,
+                        Expires = DateTime.Now.AddMinutes(-1)
+                    },
                 };
 
-                response.Headers.AddCookies(new CookieHeaderValue[] { expiredCookie });
+                response.Headers.AddCookies(expiredCookie);
 
-                string sessionID = (string)BLHelper.ServerCache.Get(username);
+                string[] userSessionIds = (string[])BLHelper.ServerCache.Get(username);
 
-                if (sessionID != null)
+                if (userSessionIds != null)
                 {
-                    BLHelper.ServerCache.Remove(sessionID);
+                    BLHelper.ServerCache.Remove(userSessionIds[1]);
+                    BLHelper.ServerCache.Remove(userSessionIds[2]);
                     BLHelper.ServerCache.Remove(username);
                 }
 

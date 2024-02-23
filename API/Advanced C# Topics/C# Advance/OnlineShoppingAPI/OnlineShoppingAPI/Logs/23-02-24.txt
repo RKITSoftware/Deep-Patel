@@ -1,0 +1,35 @@
+Time: 10:21:30
+Error Message: IndexOutOfRangeException
+Exception Type: System.IndexOutOfRangeException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.IsJwtValid(String token)
+   at OnlineShoppingAPI.Security.BearerAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 10:22:54
+Error Message: IndexOutOfRangeException
+Exception Type: System.IndexOutOfRangeException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.IsJwtValid(String token)
+   at OnlineShoppingAPI.Security.BearerAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 10:23:25
+Error Message: IndexOutOfRangeException
+Exception Type: System.IndexOutOfRangeException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.IsJwtValid(String token)
+   at OnlineShoppingAPI.Security.BearerAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 10:27:47
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.IsJwtValid(String token)
+   at OnlineShoppingAPI.Security.BearerAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 10:29:12
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.IsJwtValid(String token)
+   at OnlineShoppingAPI.Security.BearerAuthAttribute.OnAuthorization(HttpActionContext actionContext)
+
+Time: 10:36:47
+Error Message: InvalidCastException
+Exception Type: System.InvalidCastException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLToken.LogOut(String username) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLToken.cs:line 266
+

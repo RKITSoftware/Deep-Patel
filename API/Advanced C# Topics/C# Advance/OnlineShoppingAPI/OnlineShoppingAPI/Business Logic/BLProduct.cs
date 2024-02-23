@@ -251,6 +251,39 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        public HttpResponseMessage Add(PRO02 objProduct)
+        {
+            try
+            {
+                if (objProduct == null)
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Product data is null.");
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    db.CreateTable<PRO02>();
+
+                    if (objProduct.O02F03 >= 0 && objProduct.O02F04 >= 0 && objProduct.O02F05 >= 0)
+                    {
+                        objProduct.O02F08 = DateTime.Now;
+                        db.Insert(objProduct);
+
+                        return BLHelper.ResponseMessage(HttpStatusCode.Created,
+                        "Product Added Successfully.");
+                    }
+
+                    return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                        "Product buy price, sell price, or quantity is negative.");
+                }
+            }
+            catch (Exception ex)
+            {
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occured during creatig product.");
+            }
+        }
+
         #endregion
     }
 }

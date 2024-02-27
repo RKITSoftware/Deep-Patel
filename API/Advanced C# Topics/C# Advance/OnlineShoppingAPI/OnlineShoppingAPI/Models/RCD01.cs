@@ -24,7 +24,7 @@ namespace OnlineShoppingAPI.Models
         /// <summary>
         /// Foreign key of Product
         /// </summary>
-        [References(typeof(PRO01))]
+        [References(typeof(PRO02))]
         public int D01F03 { get; set; }
 
         /// <summary>

@@ -22,7 +22,7 @@ namespace OnlineShoppingAPI.Models
         /// <summary>
         /// Product id foreign key for cart
         /// </summary>
-        [References(typeof(PRO01))]
+        [References(typeof(PRO02))]
         public int T01F03 { get; set; }
 
         /// <summary>

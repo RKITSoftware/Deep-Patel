@@ -25,7 +25,8 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <summary>
         /// Static constructor is used to initialize _dbfactory for future reference.
         /// </summary>
-        /// <exception cref="ApplicationException">If database can't connect then this exception shows.</exception>
+        /// <exception cref="ApplicationException">If database can't connect then 
+        /// this exception shows.</exception>
         public BLSuplier()
         {
             // Getting data connection from Application state
@@ -48,15 +49,19 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <param name="username">Username of the user</param>
         /// <param name="oldPassword">Old password for verification</param>
         /// <param name="newPassword">New password to set</param>
-        /// <returns>Response indicating the success or failure of the password change operation</returns>
-        public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
+        /// <returns>
+        /// Response indicating the success or failure of the password change operation
+        /// </returns>
+        public HttpResponseMessage ChangePassword(string username, string oldPassword,
+            string newPassword)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     // Check if the user is a supplier or a regular user
-                    SUP01 existingSupplier = db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
+                    SUP01 existingSupplier =
+                        db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
                     USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
 
                     if (existingSupplier == null || existingUser == null)
@@ -117,7 +122,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         R01F02 = objNewSuplier.P01F03.Split('@')[0], // Extract username from email
                         R01F03 = objNewSuplier.P01F04, // Use supplier's password
                         R01F04 = "Supplier",
-                        R01F05 = BLHelper.GetEncryptPassword(objNewSuplier.P01F04) // Encrypt the password
+                        R01F05 = BLHelper.GetEncryptPassword(objNewSuplier.P01F04)
                     });
 
                     // Return success response
@@ -182,7 +187,8 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Deletes a supplier and its associated user account from the database based on the supplied id.
+        /// Deletes a supplier and its associated user account from the database 
+        /// based on the supplied id.
         /// </summary>
         /// <param name="id">Supplier id</param>
         /// <returns>Delete response message indicating success or failure</returns>

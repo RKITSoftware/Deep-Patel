@@ -7,13 +7,16 @@ using System.Web.Http;
 
 namespace OnlineShoppingAPI
 {
-    public class WebApiApplication : System.Web.HttpApplication
+    public class WebApiApplication : HttpApplication
     {
         protected void Application_Start()
         {
             // Database connection using connection string and orm lite tool.
-            string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            OrmLiteConnectionFactory dbFactory = new OrmLiteConnectionFactory(connectionString, MySqlDialect.Provider);
+            string connectionString = ConfigurationManager
+                .ConnectionStrings["MyConnectionString"].ConnectionString;
+
+            OrmLiteConnectionFactory dbFactory = new OrmLiteConnectionFactory(
+                connectionString, MySqlDialect.Provider);
 
             // Storing OrmLiteConnectionFactory instance for further usage in any other component.
             Application["DbFactory"] = dbFactory;

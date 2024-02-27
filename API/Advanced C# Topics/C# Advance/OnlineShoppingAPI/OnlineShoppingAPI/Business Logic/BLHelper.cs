@@ -35,7 +35,7 @@ namespace OnlineShoppingAPI.Business_Logic
         private static readonly string key = "0123456789ABCDEF0123456789ABCDEF";
 
         /// <summary>
-        /// Initialization Vector (IV) used for AES encryption. It should be a 32-character hexadecimal string.
+        /// Initialization Vector (IV) used for AES encryption. 
         /// </summary>
         private static readonly string iv = "0123456789ABCDEF";
 

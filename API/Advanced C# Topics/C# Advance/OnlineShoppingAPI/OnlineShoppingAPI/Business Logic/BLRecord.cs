@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using OfficeOpenXml;
+using OnlineShoppingAPI.Enums;
 using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -66,7 +67,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    PRO01 sourceProduct = db.SingleById<PRO01>(objRecord.D01F03);
+                    PRO02 sourceProduct = db.SingleById<PRO02>(objRecord.D01F03);
 
                     if (sourceProduct == null)
                     {
@@ -74,15 +75,20 @@ namespace OnlineShoppingAPI.Business_Logic
                             "Product not found.");
                     }
 
-                    if (sourceProduct.O01F04 < objRecord.D01F04)
+                    if (sourceProduct.O02F05 < objRecord.D01F04)
                     {
                         return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
                             "Product can't be bought because the quantity can't be satisfied.");
                     }
 
                     // Update source product quantity and calculate total cost
-                    sourceProduct.O01F04 -= objRecord.D01F04;
-                    objRecord.D01F05 = sourceProduct.O01F03;
+                    sourceProduct.O02F05 -= objRecord.D01F04;
+                    if (sourceProduct.O02F05 == 0)
+                    {
+                        sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
+                    }
+
+                    objRecord.D01F05 = sourceProduct.O02F04;
                     objRecord.D01F06 = Guid.NewGuid();
                     objRecord.D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
 
@@ -91,7 +97,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     string customerEmail = db.SingleById<CUS01>(objRecord.D01F02).S01F03;
                     lstItems.Add(new
                     {
-                        ProductName = sourceProduct.O01F02,
+                        ProductName = sourceProduct.O02F02,
                         Quantity = objRecord.D01F04,
                         Price = objRecord.D01F05,
                         InvoiceId = objRecord.D01F06,
@@ -315,27 +321,22 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    HttpResponseMessage response;
-
                     // Check the requested file type
                     if (filetype.Equals("Json"))
                     {
                         // Call the JSONResponse method to handle JSON file generation
-                        response = JSONResponse(id);
-                    }
-                    else if (filetype.Equals("Excel"))
-                    {
-                        // Call the ExcelResponse method to handle Excel file generation
-                        response = ExcelResponse(id);
-                    }
-                    else
-                    {
-                        // Return a BadRequest response for unsupported file types
-                        response = BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                            "Invalid file type. Supported types are 'Json' and 'Excel'.");
+                        return JSONResponse(id);
                     }
 
-                    return response;
+                    if (filetype.Equals("Excel"))
+                    {
+                        // Call the ExcelResponse method to handle Excel file generation
+                        return ExcelResponse(id);
+                    }
+
+                    // Return a BadRequest response for unsupported file types
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Invalid file type. Supported types are 'Json' and 'Excel'.");
                 }
             }
             catch (Exception ex)
@@ -356,7 +357,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="lstItems">List of items representing purchase attempts</param>
         /// <returns>Response indicating the success or failure of the purchase operation</returns>
-        public HttpResponseMessage AddRecords(List<CRT01> lstItems,
+        public HttpResponseMessage BuyCartItems(List<CRT01> lstItems,
                                                 string customerEmail)
         {
             try
@@ -369,9 +370,9 @@ namespace OnlineShoppingAPI.Business_Logic
                     foreach (CRT01 item in lstItems)
                     {
                         // Check if the product is in stock
-                        PRO01 sourceProduct = db.SingleById<PRO01>(item.T01F03);
+                        PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
 
-                        if (sourceProduct != null && sourceProduct.O01F04 >= item.T01F04)
+                        if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
                         {
                             RCD01 objRecord = new RCD01()
                             {
@@ -386,7 +387,7 @@ namespace OnlineShoppingAPI.Business_Logic
                             lstPurchasedItem.Add(new
                             {
                                 OrderId = id++,
-                                ProductName = sourceProduct.O01F02,
+                                ProductName = sourceProduct.O02F02,
                                 Quantity = objRecord.D01F04,
                                 Price = objRecord.D01F05,
                                 InvoiceId = objRecord.D01F06,
@@ -397,7 +398,11 @@ namespace OnlineShoppingAPI.Business_Logic
                             db.Insert(objRecord);
 
                             // Update the product stock
-                            sourceProduct.O01F04 -= item.T01F04;
+                            sourceProduct.O02F05 -= item.T01F04;
+                            if (sourceProduct.O02F05 == 0)
+                            {
+                                sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
+                            }
 
                             db.Update(sourceProduct);
 
@@ -406,7 +411,7 @@ namespace OnlineShoppingAPI.Business_Logic
                         }
                     }
 
-                    SendMailToUserAsync(customerEmail, lstPurchasedItem);
+                    _ = SendMailToUserAsync(customerEmail, lstPurchasedItem);
                 }
 
                 // Return a successful response
@@ -429,10 +434,12 @@ namespace OnlineShoppingAPI.Business_Logic
         #region Private Methods
 
         /// <summary>
-        /// Asynchronously sends an email to a customer with an attached Excel file containing order details.
+        /// Asynchronously sends an email to a customer with an attached Excel file 
+        /// containing order details.
         /// </summary>
         /// <param name="customerEmail">The email address of the customer.</param>
-        /// <param name="lstPurchasedItem">The list of purchased items to include in the Excel file.</param>
+        /// <param name="lstPurchasedItem">The list of purchased items to include 
+        /// in the Excel file.</param>
         /// <returns>A Task representing the asynchronous operation.</returns>
         private async Task SendMailToUserAsync(string customerEmail, dynamic lstPurchasedItem)
         {
@@ -462,8 +469,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 // Send the email using SMTP
                 SmtpClient smtpClient = new SmtpClient("smtp.office365.com");
                 smtpClient.Port = 587;
-                smtpClient.Credentials = HttpContext.Current.Application["Credentials"]
-                    as NetworkCredential;
+                smtpClient.Credentials =
+                    HttpContext.Current.Application["Credentials"] as NetworkCredential;
                 smtpClient.EnableSsl = true;
 
                 try
@@ -473,7 +480,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error sending email: " + ex.Message);
+                    // Logging error into the file.
+                    BLHelper.LogError(ex);
                 }
                 finally
                 {
@@ -557,6 +565,43 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
+        /// Retrieves a dynamic list of joined records from tables RCD01, PRO02, and CUS01, 
+        /// containing order details for a specified customer ID.
+        /// </summary>
+        /// <param name="customerId">The ID of the customer for whom to retrieve 
+        /// order details.</param>
+        /// <returns>
+        /// A list of dynamic objects containing OrderId, CustomerName, ProductName, 
+        /// Price, Quantity, and InvoiceId for the specified customer ID.
+        /// </returns>
+        private dynamic JoinOfRcdProCus(int customerId)
+        {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                // Define SQL expression for joining tables (RCD01, PRO02, CUS01)
+                SqlExpression<RCD01> joinSql = db.From<RCD01>()
+                    .Join<PRO02>((r, p) => r.D01F03 == p.O02F01)
+                    .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
+
+                // Execute the SQL query to retrieve order details for the specified customer ID
+                var result = db.SelectMulti<RCD01, PRO02, CUS01>(joinSql)
+                    .Where((r) => r.Item1.D01F02 == customerId)
+                    .Select((r) => new
+                    {
+                        OrderId = r.Item1.D01F01,
+                        CustomerName = r.Item3.S01F02,
+                        ProductName = r.Item2.O02F02,
+                        Price = r.Item1.D01F05,
+                        Quantity = r.Item1.D01F04,
+                        InvoiceId = r.Item1.D01F06
+                    })
+                    .ToList();
+
+                return result;
+            }
+        }
+
+        /// <summary>
         /// Creates a JSON response for a view model containing order details of a specific customer.
         /// </summary>
         /// <param name="id">Customer ID.</param>
@@ -567,24 +612,7 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Define SQL expression for joining tables (RCD01, PRO01, CUS01)
-                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
-                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
-                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
-
-                    // Execute the SQL query to retrieve order details for the specified customer ID
-                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
-                        .Where((r) => r.Item1.D01F02 == id)
-                        .Select((r) => new
-                        {
-                            OrderId = r.Item1.D01F01,
-                            CustomerName = r.Item3.S01F02,
-                            ProductName = r.Item2.O01F02,
-                            Price = r.Item1.D01F05,
-                            Quantity = r.Item1.D01F04,
-                            InvoiceId = r.Item1.D01F06
-                        })
-                        .ToList();
+                    dynamic result = JoinOfRcdProCus(id);
 
                     // Check if any data is found for the specified criteria
                     if (result.Count == 0)
@@ -631,24 +659,7 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Join tables to get order details along with customer and product information
-                    SqlExpression<RCD01> joinSql = db.From<RCD01>()
-                        .Join<PRO01>((r, p) => r.D01F03 == p.O01F01)
-                        .Join<CUS01>((r, c) => r.D01F02 == c.S01F01);
-
-                    // Retrieve data from the database based on the specified customer ID
-                    var result = db.SelectMulti<RCD01, PRO01, CUS01>(joinSql)
-                        .Where((r) => r.Item1.D01F02 == id)
-                        .Select((r) => new
-                        {
-                            CustomerName = r.Item3.S01F02,
-                            ProductName = r.Item2.O01F02,
-                            Price = r.Item1.D01F05,
-                            Quantity = r.Item1.D01F04,
-                            InvoiceId = r.Item1.D01F06,
-                            PurchaseTime = r.Item1.D01F07
-                        })
-                        .ToList();
+                    dynamic result = JoinOfRcdProCus(id);
 
                     // Check if any data is found for the specified criteria
                     if (result.Count == 0)

@@ -61,6 +61,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string jwtToken = handler.WriteToken(token);
 
+                // Adding information to the ServeerCache for 20 minute session.
                 string userDataSessionId = Guid.NewGuid().ToString();
 
                 BLHelper.ServerCache.Add(objUser.R01F02,
@@ -88,13 +89,7 @@ namespace OnlineShoppingAPI.Business_Logic
                                          priority: CacheItemPriority.Normal,
                                          onRemoveCallback: null);
 
-                //CookieHeaderValue cookieActiveSessionId =
-                //    new CookieHeaderValue("Session-Id", sessionId.ToString())
-                //    {
-                //        Path = "/",
-                //        HttpOnly = true,
-                //    };
-
+                // Cookies send to user for authentication, active sessioin purpose.
                 CookieHeaderValue[] cookies =
                 {
                     new CookieHeaderValue("LoginSessionId", sessionId.ToString())
@@ -229,15 +224,11 @@ namespace OnlineShoppingAPI.Business_Logic
             try
             {
                 // Generate a response for logout by expiring the authentication token cookie.
-                HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
-                    "Successfully logout.");
+                HttpResponseMessage response =
+                    BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Successfully logout.");
 
-                //CookieHeaderValue expiredCookie = new CookieHeaderValue("Session-Id", "")
-                //{
-                //    Expires = DateTime.Now.AddMinutes(-1),
-                //    Path = "/",
-                //};
-
+                // Removing cookies from user browser.
                 CookieHeaderValue[] expiredCookie =
                 {
                     new CookieHeaderValue("LoginSessionId", "")
@@ -263,6 +254,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 response.Headers.AddCookies(expiredCookie);
 
+                // Getting cache data from server and removing it.
                 string[] userSessionIds = (string[])BLHelper.ServerCache.Get(username);
 
                 if (userSessionIds != null)

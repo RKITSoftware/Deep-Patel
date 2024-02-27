@@ -109,14 +109,6 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    //db.CreateTable<ADM01>();
-                    //db.CreateTable<USR01>();
-                    //db.CreateTable<CUS01>();
-                    //db.CreateTable<SUP01>();
-                    //db.CreateTable<PRO01>();
-                    //db.CreateTable<CRT01>();
-                    //db.CreateTable<RCD01>();
-
                     // Inserting admin details
                     db.Insert(objAdmin);
 

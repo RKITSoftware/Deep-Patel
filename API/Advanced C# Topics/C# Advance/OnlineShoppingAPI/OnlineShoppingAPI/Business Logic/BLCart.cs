@@ -66,8 +66,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     // Retrieve the corresponding source product from the database.
-                    PRO01 sourceProduct = db.Single(db.From<PRO01>()
-                        .Where(product => product.O01F01 == objProduct.T01F03));
+                    PRO02 sourceProduct = db.Single(db.From<PRO02>()
+                        .Where(product => product.O02F01 == objProduct.T01F03));
 
                     // If the source product is not found, return NotFound response.
                     if (sourceProduct == null)
@@ -77,14 +77,14 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     // Check if the quantity in the cart exceeds the available quantity of
                     // the source product.
-                    if (sourceProduct.O01F04 < objProduct.T01F04)
+                    if (sourceProduct.O02F05 < objProduct.T01F04)
                     {
                         return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
                             "Product can't be bought because the quantity can't be satisfied.");
                     }
 
                     // Calculate the total price of the product in the cart.
-                    objProduct.T01F05 = sourceProduct.O01F03;
+                    objProduct.T01F05 = sourceProduct.O02F04;
 
                     // Insert the product into the cart.
                     db.Insert(objProduct);
@@ -201,7 +201,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 // Return a success response.
                 return BLHelper.ResponseMessage(HttpStatusCode.OK,
-                    "OTP sent to your registered email.");
+                    "OTP sent to customer's registered email.");
             }
             catch (Exception ex)
             {
@@ -226,12 +226,6 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Ensure that the CRT01 table exists in the database.
-                    if (!db.TableExists<CRT01>())
-                    {
-                        db.CreateTable<CRT01>();
-                    }
-
                     // Retrieve the list of items in the customer's cart based on the customerId.
                     return db.Where<CRT01>("T01F02", customerId) ?? new List<CRT01>();
                 }
@@ -287,7 +281,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     }
 
                     // Call the BuyAllItems method to initiate the purchase process.
-                    BuyAllItems(customerId);
+                    _ = BuyAllItems(customerId);
 
                     // Remove the OTP from the cache after successful verification.
                     BLHelper.ServerCache.Remove(email);
@@ -339,7 +333,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     BLRecord objRecord = new BLRecord();
 
                     // Call the AddRecords method to add records for all items in the cart.
-                    return objRecord.AddRecords(lstItems, objCustomer.S01F03);
+                    return objRecord.BuyCartItems(lstItems, objCustomer.S01F03);
                 }
             }
             catch (Exception ex)
@@ -362,7 +356,9 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Initialize SMTP client with Office 365 settings.
                 SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
-                smtpClient.Credentials = HttpContext.Current.Application["Credentials"] as NetworkCredential;
+                smtpClient.Credentials = HttpContext.Current
+                    .Application["Credentials"] as NetworkCredential;
+
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.EnableSsl = true;
 
@@ -370,6 +366,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 MailMessage mailMessage = new MailMessage();
                 mailMessage.From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel");
                 mailMessage.To.Add(new MailAddress(email));
+
                 mailMessage.Subject = "OTP for Buying";
                 mailMessage.Body = $"OTP for buying items in your cart: {otp}";
 

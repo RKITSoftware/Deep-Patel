@@ -221,6 +221,7 @@
     <Compile Include="Business Logic\BLCustomer.cs" />
     <Compile Include="Business Logic\BLHelper.cs" />
     <Compile Include="Business Logic\BLProduct.cs" />
+    <Compile Include="Business Logic\BLProductV2.cs" />
     <Compile Include="Business Logic\BLRecord.cs" />
     <Compile Include="Business Logic\BLSuplier.cs" />
     <Compile Include="Business Logic\BLToken.cs" />

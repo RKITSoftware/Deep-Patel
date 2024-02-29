@@ -1,0 +1,13 @@
+﻿@model UserLoginViewModel
+
+<div>
+    <form asp-controller="Home" asp-action="LogIn" method="post">
+        <h2>Email</h2>
+        <input asp-for="Email"/>
+        <span asp-validation-for="Email"></span>
+        <h2>Password</h2>
+        <input asp-for="Password" />
+        <span asp-validation-for="Password"></span>
+        <button type="submit">Submit</button>
+    </form>
+</div>

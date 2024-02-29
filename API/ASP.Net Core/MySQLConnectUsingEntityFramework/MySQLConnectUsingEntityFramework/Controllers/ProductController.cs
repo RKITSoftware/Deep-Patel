@@ -37,5 +37,12 @@ namespace MySQLConnectUsingEntityFramework.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult User()
+        {
+            var user = _context.UserData.FirstOrDefault(u => u.Id == 1);
+            return View(user);
+        }
     }
 }

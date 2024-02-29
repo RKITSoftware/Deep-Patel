@@ -15,8 +15,15 @@ using System.Web.Http.Filters;
 
 namespace SchoolManagementAPI.Security
 {
+    /// <summary>
+    /// Custom authorization attribute for Cookie-based authentication.
+    /// </summary>
     public class CookieBasedAuthAttribute : AuthorizationFilterAttribute
     {
+        /// <summary>
+        /// Called when authorization is required.
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             try
@@ -27,6 +34,7 @@ namespace SchoolManagementAPI.Security
 
                 if (cookie == null)
                 {
+                    // Unauthorized: Cookie not found
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Please login");
                     return;
@@ -45,31 +53,37 @@ namespace SchoolManagementAPI.Security
                 // Validate user credentials using the BLUser class.
                 if (BLHelper.IsExist(username, password))
                 {
+                    // Get user details from BLHelper
                     USR01 userDetail = BLHelper.GetUser(username, password);
+
+                    // Create a generic identity
                     GenericIdentity identity = new GenericIdentity(username);
 
+                    // Add claims to the identity
                     identity.AddClaim(new Claim(ClaimTypes.Name, userDetail.R01F02));
-                    identity.AddClaim(new Claim(ClaimTypes.Email,
-                        userDetail.R01F02 + "@gmail.com"));
+                    identity.AddClaim(new Claim(ClaimTypes.Email, userDetail.R01F02 + "@gmail.com"));
 
-                    IPrincipal principal = new GenericPrincipal(identity,
-                        userDetail.R01F04.Split(','));
+                    // Create a generic principal with the identity and roles
+                    IPrincipal principal = new GenericPrincipal(identity, userDetail.R01F04.Split(','));
 
+                    // Set the current principal for the current thread
                     Thread.CurrentPrincipal = principal;
 
+                    // Set the principal for the HttpContext, if available
                     if (HttpContext.Current != null)
                     {
                         HttpContext.Current.User = principal;
                     }
                     else
                     {
+                        // If HttpContext is not available, return Unauthorized response
                         actionContext.Response = BLHelper.ResponseMessage(
                             HttpStatusCode.Unauthorized, "Authorization Denied");
                     }
                 }
                 else
                 {
-                    // If invalid, return Unauthorized response.
+                    // Unauthorized: Invalid credentials
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Invalid Credentials");
                 }

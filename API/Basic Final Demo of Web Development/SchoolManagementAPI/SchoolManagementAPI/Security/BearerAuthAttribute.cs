@@ -11,8 +11,15 @@ using System.Web.Http.Filters;
 
 namespace SchoolManagementAPI.Security
 {
+    /// <summary>
+    /// Custom authorization attribute for Bearer token authentication.
+    /// </summary>
     public class BearerAuthAttribute : AuthorizationFilterAttribute
     {
+        /// <summary>
+        /// Called when authorization is required.
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             try
@@ -23,6 +30,7 @@ namespace SchoolManagementAPI.Security
 
                 if (cookie == null)
                 {
+                    // Unauthorized: Cookie not found
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Please login");
                     return;
@@ -33,27 +41,32 @@ namespace SchoolManagementAPI.Security
 
                 if (jwtToken == null)
                 {
+                    // Unauthorized: Login expired
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Login expired, please login.");
                     return;
                 }
 
+                // Validate JWT Token and get principal
                 IPrincipal principal = BLToken.GetPrincipal(jwtToken);
 
                 if (principal == null)
                 {
+                    // Unauthorized: Invalid user
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Unauthorized user.");
                     return;
                 }
 
+                // Set the authenticated principal in the current HttpContext
                 HttpContext.Current.User = principal;
             }
             catch (Exception ex)
             {
+                // Log and handle any exceptions during authentication
                 BLHelper.LogError(ex);
                 actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                    "An error occured during authentication");
+                    "An error occurred during authentication");
             }
         }
     }

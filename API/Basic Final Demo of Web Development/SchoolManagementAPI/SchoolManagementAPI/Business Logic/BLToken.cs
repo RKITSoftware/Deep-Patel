@@ -23,20 +23,24 @@ namespace SchoolManagementAPI.Business_Logic
         /// <summary>
         /// Generates a JWT token for the provided user.
         /// </summary>
+        /// <param name="sessionId">Unique session identifier.</param>
         /// <param name="objUser">The user for whom the token is generated.</param>
         /// <returns>The generated JWT token as a string.</returns>
         public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
         {
             try
             {
+                // Check if the user is already logged in
                 if (BLHelper.ServerCache.Get(objUser.R01F02) != null)
                 {
                     return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                        "User is already login");
+                        "User is already logged in");
                 }
 
+                // Set sliding expiration for the session
                 TimeSpan slidingExpiration = new TimeSpan(0, 20, 0);
 
+                // Add user session to the server cache
                 BLHelper.ServerCache.Add(objUser.R01F02,
                     sessionId.ToString(),
                     null,
@@ -45,23 +49,21 @@ namespace SchoolManagementAPI.Business_Logic
                     CacheItemPriority.Normal,
                     null);
 
+                // Define issuer and create SymmetricSecurityKey and SigningCredentials
                 string issuer = "CustomJWTBearerTokenAPI";
-
-                // Creating SymmetricSecurityKey and SigningCredentials
                 SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(secretKey));
-
                 SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
                     SecurityAlgorithms.HmacSha256);
 
-                // Creating claims for the user
+                // Create claims for the user
                 List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Sid, sessionId.ToString()),
                     new Claim("Id", objUser.R01F01.ToString())
                 };
 
-                // Creating JWT token with claims and signing credentials
+                // Create JWT token with claims and signing credentials
                 JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
                     expires: null,
                     signingCredentials: credentials);
@@ -69,6 +71,7 @@ namespace SchoolManagementAPI.Business_Logic
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string jwtToken = handler.WriteToken(token);
 
+                // Set cookie for the session ID
                 CookieHeaderValue cookieSessionId =
                     new CookieHeaderValue("Session-Id", sessionId.ToString())
                     {
@@ -76,6 +79,7 @@ namespace SchoolManagementAPI.Business_Logic
                         HttpOnly = true,
                     };
 
+                // Add session ID and token to the server cache
                 BLHelper.ServerCache.Add(sessionId.ToString(),
                                          value: jwtToken,
                                          dependencies: null,
@@ -84,19 +88,19 @@ namespace SchoolManagementAPI.Business_Logic
                                          priority: CacheItemPriority.Normal,
                                          onRemoveCallback: null);
 
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent("Logged in")
-                };
-                response.Headers.AddCookies(new CookieHeaderValue[] { cookieSessionId });
+                // Create and return a success response with the token
+                HttpResponseMessage response = BLHelper.ResponseMessage(
+                    HttpStatusCode.OK, "Logged in");
 
+                response.Headers.AddCookies(new CookieHeaderValue[] { cookieSessionId });
                 return response;
             }
             catch (Exception ex)
             {
+                // Log and handle exceptions during token generation
                 BLHelper.LogError(ex);
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
-                    "An error occured during generating token.");
+                    "An error occurred during token generation.");
             }
         }
 
@@ -115,6 +119,7 @@ namespace SchoolManagementAPI.Business_Logic
 
             try
             {
+                // Decode the payload and retrieve user information
                 string decodedPayloadBytes = Encoding.UTF8.GetString(
                     Convert.FromBase64String(jwtEncodePayload));
                 JObject json = JObject.Parse(decodedPayloadBytes);
@@ -130,7 +135,8 @@ namespace SchoolManagementAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                // Log and handle exceptions during token decoding
+                BLHelper.LogError(ex);
                 return null;
             }
         }
@@ -194,6 +200,14 @@ namespace SchoolManagementAPI.Business_Logic
             return false;
         }
 
+        /// <summary>
+        /// Logs out the user by expiring the authentication token cookie and removing 
+        /// session-related data.
+        /// </summary>
+        /// <param name="username">The username of the user to log out.</param>
+        /// <returns>
+        /// HTTP response indicating the success or failure of the logout operation.
+        /// </returns>
         public HttpResponseMessage LogOut(string username)
         {
             try
@@ -202,6 +216,7 @@ namespace SchoolManagementAPI.Business_Logic
                 HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
                     "Successfully logout.");
 
+                // Expire the Session-Id cookie
                 CookieHeaderValue expiredCookie = new CookieHeaderValue("Session-Id", "")
                 {
                     Expires = DateTime.Now.AddMinutes(-1),
@@ -210,6 +225,7 @@ namespace SchoolManagementAPI.Business_Logic
 
                 response.Headers.AddCookies(new CookieHeaderValue[] { expiredCookie });
 
+                // Retrieve and remove session-related data from the server cache
                 string sessionID = (string)BLHelper.ServerCache.Get(username);
 
                 if (sessionID != null)
@@ -228,5 +244,6 @@ namespace SchoolManagementAPI.Business_Logic
                     "An error occurred during logout.");
             }
         }
+
     }
 }

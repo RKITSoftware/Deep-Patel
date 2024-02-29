@@ -27,19 +27,19 @@ namespace SchoolManagementAPI.Business_Logic
                 }
 
                 // Assign unique IDs and set user role
-                objSTUUSR.objStudent.U01F01 = BLHelper.studentID + 1;
-                objSTUUSR.objStudent.U01F06 = objSTUUSR.objUser.R01F02;
+                objSTUUSR.U01.U01F01 = BLHelper.studentID + 1;
+                objSTUUSR.U01.U01F06 = objSTUUSR.R01.R01F02;
 
-                objSTUUSR.objUser.R01F01 = BLHelper.userID + 1;
-                objSTUUSR.objUser.R01F04 = "Student";
+                objSTUUSR.R01.R01F01 = BLHelper.userID + 1;
+                objSTUUSR.R01.R01F04 = "Student";
 
                 // Increment ID counters
                 BLHelper.studentID++;
                 BLHelper.userID++;
 
                 // Add student and user to the respective lists
-                BLHelper.lstStudent.Add(objSTUUSR.objStudent);
-                BLHelper.lstUsers.Add(objSTUUSR.objUser);
+                BLHelper.lstStudent.Add(objSTUUSR.U01);
+                BLHelper.lstUsers.Add(objSTUUSR.R01);
 
                 return BLHelper.ResponseMessage(HttpStatusCode.Created,
                     "Student Created Successfully");

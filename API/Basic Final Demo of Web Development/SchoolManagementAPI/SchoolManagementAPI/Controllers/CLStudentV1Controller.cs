@@ -1,5 +1,6 @@
 ﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Models;
+using SchoolManagementAPI.Security;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -8,6 +9,8 @@ namespace SchoolManagementAPI.Controllers
     /// <summary>
     /// Controller for handling version 1 of student-related API endpoints.
     /// </summary>
+    [RoutePrefix("api/v1/CLStudent")]
+    [BearerAuth]
     public class CLStudentV1Controller : ApiController
     {
         private BLStudentV1 _blStudent;

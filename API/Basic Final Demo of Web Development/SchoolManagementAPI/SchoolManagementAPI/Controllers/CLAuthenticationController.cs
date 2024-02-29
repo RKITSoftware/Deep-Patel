@@ -1,6 +1,5 @@
 ﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Models;
-using SchoolManagementAPI.Security;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -11,7 +10,6 @@ namespace SchoolManagementAPI.Controllers
     /// <summary>
     /// Controller class handling authentication-related HTTP requests.
     /// </summary>
-    [BearerAuth]
     public class CLAuthenticationController : ApiController
     {
         /// <summary>

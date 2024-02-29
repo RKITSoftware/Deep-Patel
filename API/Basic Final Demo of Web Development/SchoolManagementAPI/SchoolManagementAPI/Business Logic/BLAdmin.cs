@@ -29,19 +29,19 @@ namespace SchoolManagementAPI.Business_Logic
                 }
 
                 // Assign IDs and roles
-                objADMUSR.objAdmin.M01F01 = BLHelper.adminID + 1;
-                objADMUSR.objAdmin.M01F04 = objADMUSR.objUser.R01F02;
+                objADMUSR.M01.M01F01 = BLHelper.adminID + 1;
+                objADMUSR.M01.M01F04 = objADMUSR.R01.R01F02;
 
-                objADMUSR.objUser.R01F01 = BLHelper.userID + 1;
-                objADMUSR.objUser.R01F04 = "Admin";
+                objADMUSR.R01.R01F01 = BLHelper.userID + 1;
+                objADMUSR.R01.R01F04 = "Admin";
 
                 // Increment global IDs
                 BLHelper.adminID++;
                 BLHelper.userID++;
 
                 // Add to respective lists
-                BLHelper.lstAdmin.Add(objADMUSR.objAdmin);
-                BLHelper.lstUsers.Add(objADMUSR.objUser);
+                BLHelper.lstAdmin.Add(objADMUSR.M01);
+                BLHelper.lstUsers.Add(objADMUSR.R01);
 
                 return BLHelper.ResponseMessage(HttpStatusCode.Created,
                     "Admin Created Successfully");

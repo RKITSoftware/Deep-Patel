@@ -1,4 +1,7 @@
 using IdentityDemo.Data;
+using IdentityDemo.Helpers;
+using IdentityDemo.Interfaces;
+using IdentityDemo.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +15,8 @@ namespace IdentityDemo
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddTransient<ISendEmail, SendEmail>();
+            builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration.GetSection("Outlook"));
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
             {
                 var connectionString = builder.Configuration.GetConnectionString("Default");
@@ -22,6 +26,15 @@ namespace IdentityDemo
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+
+            builder.Services.Configure<IdentityOptions>(opt =>
+            {
+                opt.Password.RequiredLength = 5;
+                opt.Password.RequireLowercase = true;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
+                opt.Lockout.MaxFailedAccessAttempts = 5;
+                //opt.SignIn.RequireConfirmedAccount = true;
+            });
 
             var app = builder.Build();
 
@@ -37,7 +50,7 @@ namespace IdentityDemo
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

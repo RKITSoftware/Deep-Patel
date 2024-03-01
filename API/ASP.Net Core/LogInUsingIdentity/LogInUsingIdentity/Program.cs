@@ -25,8 +25,13 @@ namespace LogInUsingIdentity
                 .AddEntityFrameworkStores<AppDbContext>();
             builder.Services.AddMemoryCache();
             builder.Services.AddSession();
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(cookie =>
+                {
+                    cookie.ExpireTimeSpan = new TimeSpan(0, 1, 0);
+                    cookie.SlidingExpiration = true;
+                });
 
             var app = builder.Build();
 
@@ -43,6 +48,7 @@ namespace LogInUsingIdentity
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

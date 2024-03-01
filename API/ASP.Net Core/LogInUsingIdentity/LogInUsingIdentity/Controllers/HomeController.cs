@@ -67,6 +67,13 @@ namespace LogInUsingIdentity.Controllers
             return RedirectToAction("Accept", "Home");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> LogOff()
+        {
+            await _signInManager.SignOutAsync();
+            return View("Index");
+        }
+
         public IActionResult Accept()
         {
             return View();

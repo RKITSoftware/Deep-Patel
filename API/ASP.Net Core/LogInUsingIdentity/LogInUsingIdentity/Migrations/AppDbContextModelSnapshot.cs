@@ -19,6 +19,21 @@ namespace LogInUsingIdentity.Migrations
                 .HasAnnotation("ProductVersion", "7.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("LogInUsingIdentity.Models.Address", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("LogInUsingIdentity.Models.Department", b =>
                 {
                     b.Property<int>("Id")
@@ -237,8 +252,13 @@ namespace LogInUsingIdentity.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
+
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("DepartmentId");
 
@@ -298,9 +318,15 @@ namespace LogInUsingIdentity.Migrations
 
             modelBuilder.Entity("LogInUsingIdentity.Models.AppUser", b =>
                 {
+                    b.HasOne("LogInUsingIdentity.Models.Address", "Adress")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
                     b.HasOne("LogInUsingIdentity.Models.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Adress");
 
                     b.Navigation("Department");
                 });

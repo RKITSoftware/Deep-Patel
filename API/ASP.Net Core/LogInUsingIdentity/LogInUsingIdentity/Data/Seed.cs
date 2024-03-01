@@ -44,16 +44,18 @@ namespace LogInUsingIdentity.Data
                     System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
 
-                string appUserEmail = "user@gmail.com";
+                string appUserEmail = "user1@gmail.com";
 
                 var appUser = await userManager.FindByEmailAsync(appUserEmail);
                 if (appUser == null)
                 {
                     var newAppUser = new AppUser()
                     {
-                        UserName = "user",
+                        UserName = "1111",
                         Email = appUserEmail,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        //Adress = new Address() { Street = "Surat" },
+                        //Department = new Department() { Name = "Computer" }
                     };
                     var result = await userManager.CreateAsync(newAppUser, "@User2513");
                     if (result.Succeeded)

@@ -33,6 +33,26 @@ namespace LogInUsingIdentity
                     cookie.SlidingExpiration = true;
                 });
 
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(cookie =>
+                {
+                    cookie.ExpireTimeSpan = new TimeSpan(0, 1, 0);
+                    cookie.SlidingExpiration = true;
+                });
+
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie().AddApplicationCookie();
+
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie().AddExternalCookie();
+
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie().AddIdentityCookies();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

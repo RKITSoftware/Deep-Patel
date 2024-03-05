@@ -1,4 +1,7 @@
-﻿namespace AESCryptographyDemo
+﻿using System.Security.Cryptography;
+using System.Text;
+
+namespace AESCryptographyDemo
 {
     public class Program
     {

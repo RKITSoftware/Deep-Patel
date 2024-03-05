@@ -25,7 +25,8 @@ namespace GenericClassUsingDIAPI
             container.RegisterType<IService<STU01>, BLStudent>();
 
             // Set the Unity container as the dependency resolver for Web API
-            GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(container);
+            GlobalConfiguration.Configuration.DependencyResolver = new
+                UnityDependencyResolver(container);
         }
     }
 }

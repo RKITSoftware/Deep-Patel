@@ -3,7 +3,6 @@ using SchoolManagementAPI.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 
 namespace SchoolManagementAPI.Business_Logic
 {
@@ -17,7 +16,9 @@ namespace SchoolManagementAPI.Business_Logic
         /// <summary>
         /// File location of studentData.json
         /// </summary>
-        private static readonly string filePath = HttpContext.Current.Server.MapPath("/Data/studentData.json");
+        private static readonly string filePath = "F:\\Deep - 380\\Training\\API" +
+            "\\Part 6 - Web Development\\SchoolManagementAPI\\SchoolManagementAPI" +
+            "\\Data\\studentData.json";
 
         /// <summary>
         /// Student List for Operation of API Endpoints

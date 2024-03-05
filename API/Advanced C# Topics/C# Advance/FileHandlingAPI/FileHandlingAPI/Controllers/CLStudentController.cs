@@ -159,11 +159,11 @@ namespace FileHandlingAPI.Controllers
             DirectoryInfo dirInfo = new DirectoryInfo(path);
 
             // Creating a Directory
-            // dirInfo.Create();
+            dirInfo.Create();
 
             // Creating sub directories in Deep Patel
-            // dirInfo.CreateSubdirectory("College Work");
-            // dirInfo.CreateSubdirectory("Internship Work");
+            dirInfo.CreateSubdirectory("College Work");
+            dirInfo.CreateSubdirectory("Internship Work");
 
             // Moving Souce directory data to Destination directory.
             // dirInfo.MoveTo(destDirName: path2);
@@ -212,7 +212,7 @@ namespace FileHandlingAPI.Controllers
                 writer.WriteLine("File Created");
             }
 
-            using(StreamWriter writer = fileInfo.AppendText())
+            using (StreamWriter writer = fileInfo.AppendText())
             {
                 writer.Write("Append text");
             }

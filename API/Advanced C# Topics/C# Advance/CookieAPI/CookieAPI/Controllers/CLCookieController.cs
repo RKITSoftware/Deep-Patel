@@ -13,10 +13,6 @@ namespace CookieAPI.Controllers
         [Route("SetCookie")]
         public HttpResponseMessage SetCookie()
         {
-            //BLSession obj = new BLSession();
-            //string ans = obj.CreateSessionID(HttpContext.Current);
-
-            //System.Diagnostics.Debug.WriteLine(HttpContext.Current.Session.SessionID);
             // Single Cookie Add
 
             var response = new HttpResponseMessage();
@@ -44,7 +40,8 @@ namespace CookieAPI.Controllers
         [Route("GetCookie")]
         public IHttpActionResult GetCookieValue()
         {
-            CookieHeaderValue cookie = Request.Headers.GetCookies("session").FirstOrDefault();
+            CookieHeaderValue cookie = Request.Headers.
+                GetCookies("session").FirstOrDefault();
 
             if (cookie != null)
             {

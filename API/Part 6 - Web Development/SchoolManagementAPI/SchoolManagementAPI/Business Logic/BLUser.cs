@@ -16,7 +16,9 @@ namespace SchoolManagementAPI.Business_Logic
         /// <summary>
         /// File location of userData.json
         /// </summary>
-        private readonly static string filePath = "F:\\Deep - 380\\Training\\API\\Part 6 - Web Development\\SchoolManagementAPI\\SchoolManagementAPI\\Data\\userData.json";
+        private readonly static string filePath = "F:\\Deep - 380\\Training\\API" +
+            "\\Part 6 - Web Development\\SchoolManagementAPI\\SchoolManagementAPI" +
+            "\\Data\\userData.json";
 
         /// <summary>
         /// List of users for API endpoints.
@@ -44,8 +46,8 @@ namespace SchoolManagementAPI.Business_Logic
         {
             // Read user data from the JSON file when the controller is initialized.
             string jsonContent = File.ReadAllText(filePath);
-
             lstUser = JsonConvert.DeserializeObject<List<USR01>>(jsonContent);
+
             noOfNextUserId = lstUser.OrderByDescending(e => e.R01F01).FirstOrDefault().R01F01; ;
         }
 

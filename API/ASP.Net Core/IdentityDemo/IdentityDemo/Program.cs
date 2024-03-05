@@ -26,6 +26,14 @@ namespace IdentityDemo
 
             builder.Services.AddIdentity<IdentityUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.Configure<IdentityOptions>(opt =>
+            {
+                opt.Password.RequiredLength = 5;
+                opt.Password.RequireLowercase = true;
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
+                opt.Lockout.MaxFailedAccessAttempts = 5;
+                //opt.SignIn.RequireConfirmedAccount = true;
+            });
 
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -43,19 +51,9 @@ namespace IdentityDemo
                 options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
                 options.SlidingExpiration = true;
             });
-
             builder.Services.ConfigureExternalCookie(options =>
             {
                 options.Cookie.Name = "_ASPSharedExternalCookie";
-            });
-
-            builder.Services.Configure<IdentityOptions>(opt =>
-            {
-                opt.Password.RequiredLength = 5;
-                opt.Password.RequireLowercase = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(10);
-                opt.Lockout.MaxFailedAccessAttempts = 5;
-                //opt.SignIn.RequireConfirmedAccount = true;
             });
 
             var app = builder.Build();

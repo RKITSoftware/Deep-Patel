@@ -1,6 +1,7 @@
 ﻿using SchoolManagementAPI.Business_Logic;
 using SchoolManagementAPI.Filters;
 using SchoolManagementAPI.Models;
+using SchoolManagementAPI.Security;
 using System.Web.Http;
 
 namespace SchoolManagementAPI.Controllers
@@ -9,7 +10,7 @@ namespace SchoolManagementAPI.Controllers
     /// Controller for managing user-related operations.
     /// </summary>
     [RoutePrefix("api/CLUser")]
-    [Authentication]
+    [CookieBasedAuthentication]
     [Authorization(Roles = "Admin")]
     public class CLUserController : ApiController
     {

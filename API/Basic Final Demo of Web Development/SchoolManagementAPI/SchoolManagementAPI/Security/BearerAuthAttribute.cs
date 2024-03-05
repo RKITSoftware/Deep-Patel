@@ -47,6 +47,14 @@ namespace SchoolManagementAPI.Security
                     return;
                 }
 
+                //if (!BLToken.IsJwtValid(jwtToken))
+                //{
+                //    // Unauthorized: Login expired
+                //    actionContext.Response = BLHelper.ResponseMessage(
+                //        HttpStatusCode.Unauthorized, "Token is invalid.");
+                //    return;
+                //}
+
                 // Validate JWT Token and get principal
                 IPrincipal principal = BLToken.GetPrincipal(jwtToken);
 

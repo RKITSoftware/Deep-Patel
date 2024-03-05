@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "U01F01": 1,
+    "U01F02": "string",
+    "U01F03": "string",
+    "U01F04": "string",
+    "U01F05": true,
+    "U01F06": "string"
+  }
+]

@@ -96,3 +96,9 @@ F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementA
 F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\obj\Release\SchoolManagementAPI.csproj.CopyComplete
 F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\obj\Release\SchoolManagementAPI.dll
 F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\obj\Release\SchoolManagementAPI.pdb
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\Newtonsoft.Json.Bson.dll
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\System.Web.Cors.dll
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\System.Web.Http.Cors.dll
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\Newtonsoft.Json.Bson.pdb
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\Newtonsoft.Json.Bson.xml
+F:\Deep - 380\Training\API\Basic Final Demo of Web Development\SchoolManagementAPI\SchoolManagementAPI\bin\System.Web.Http.Cors.xml

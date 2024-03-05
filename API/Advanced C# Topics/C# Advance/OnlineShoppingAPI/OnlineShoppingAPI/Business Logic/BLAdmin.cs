@@ -62,25 +62,17 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve admin details.
-                    ADM01 objAdmin = db.Single(db.From<ADM01>()
-                        .Where(a => a.M01F03.StartsWith(username) &&
-                                    a.M01F04.Equals(oldPassword)));
+                    USR01 objUser = BLHelper.GetUser(username, oldPassword);
 
-                    USR01 objUser = db.Single(db.From<USR01>()
-                        .Where(u => u.R01F02.StartsWith(username)));
-
-                    // If admin doesn't exist, return Not Found status code.
-                    if (objAdmin == null)
+                    // If user doesn't exist, return Not Found status code.
+                    if (objUser == null)
                         return new HttpResponseMessage(HttpStatusCode.NotFound);
 
                     // Update passwords
-                    objAdmin.M01F04 = newPassword;
                     objUser.R01F03 = newPassword;
                     objUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
 
                     // Update data in the database.
-                    db.Update(objAdmin);
                     db.Update(objUser);
 
                     // Return success response
@@ -103,19 +95,21 @@ namespace OnlineShoppingAPI.Business_Logic
         /// </summary>
         /// <param name="objAdmin">Admin data</param>
         /// <returns>Create response</returns>
-        public HttpResponseMessage Create(ADM01 objAdmin)
+        public HttpResponseMessage Create(ADMUSR objAdminUser)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    db.CreateTable<ADM01>(overwrite: true);
+
                     // Inserting admin details
-                    db.Insert(objAdmin);
+                    db.Insert(objAdminUser.M01);
 
                     // Extracting information for USR01
-                    var emailParts = objAdmin.M01F03.Split('@');
+                    var emailParts = objAdminUser.M01.M01F03.Split('@');
                     var username = emailParts[0];
-                    var newPassword = objAdmin.M01F04;
+                    var newPassword = objAdminUser.R01.R01F03;
 
                     // Inserting related USR01 record
                     db.Insert(new USR01
@@ -213,16 +207,16 @@ namespace OnlineShoppingAPI.Business_Logic
                             "New email is invalid");
                     }
 
+                    // Retrieve User Details
+                    USR01 objUser = BLHelper.GetUser(username, password);
+
+                    // If user doesn't exist, return Not Found status code.
+                    if (objUser == null)
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+
                     // Retrieve admin details.
                     ADM01 objAdmin = db.Single(db.From<ADM01>()
-                        .Where(a => a.M01F03.StartsWith(username) &&
-                                    a.M01F04.Equals(password)));
-
-                    USR01 objUser = BLHelper.GetUser(username);
-
-                    // If admin doesn't exist, return Not Found status code.
-                    if (objAdmin == null)
-                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                        .Where(a => a.M01F03.StartsWith(username)));
 
                     // Update email and username
                     objAdmin.M01F03 = newEmail;

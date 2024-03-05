@@ -24,19 +24,19 @@ namespace OnlineShoppingAPI.Security
         {
             try
             {
+                string token = actionContext.Request.Headers.Authorization?.ToString();
+
                 // Getting Cookie Value
-                CookieHeaderValue cookieJwtToken = actionContext.Request.Headers
-                    .GetCookies().FirstOrDefault();
+                // CookieHeaderValue cookieJwtToken = actionContext.Request.Headers
+                // .GetCookies().FirstOrDefault();
 
                 // Checking if Token is provided
-                if (cookieJwtToken["Token"] == null || cookieJwtToken["Token"].Value == "")
+                if (token == null || token == "")
                 {
                     actionContext.Response = BLHelper.ResponseMessage(
                         HttpStatusCode.Unauthorized, "Please provide a token.");
                     return;
                 }
-
-                string token = cookieJwtToken["Token"].Value;
 
                 // Validating JWT Token
                 if (!BLToken.IsJwtValid(token))

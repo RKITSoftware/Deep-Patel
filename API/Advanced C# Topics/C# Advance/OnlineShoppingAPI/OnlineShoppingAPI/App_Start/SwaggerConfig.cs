@@ -1,6 +1,10 @@
 using OnlineShoppingAPI;
 using Swashbuckle.Application;
+using Swashbuckle.Swagger;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Description;
 using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
@@ -62,10 +66,24 @@ namespace OnlineShoppingAPI
                         //    .Description("Basic HTTP Authentication");
                         //
                         // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
+
+                        c.ApiKey("apiKey")
+                            .Description("API Key Authentication")
+                            .Name("Authorization")
+                            .In("header");
+
                         //c.ApiKey("apiKey")
                         //    .Description("API Key Authentication")
-                        //    .Name("apiKey")
+                        //    .Name("Authorization")
                         //    .In("header");
+
+                        //c.ApiKey("apiId")
+                        //    .Description("API Key Authentication")
+                        //    .Name("Authorization")
+                        //    .In("header");
+
+                        // c.OperationFilter<AuthTokenHeaderParameter>();
+
                         //
                         //c.OAuth2("oauth2")
                         //    .Description("OAuth2 Implicit Grant")
@@ -248,8 +266,41 @@ namespace OnlineShoppingAPI
                         // If your API supports ApiKey, you can override the default values.
                         // "apiKeyIn" can either be "query" or "header"
                         //
-                        //c.EnableApiKeySupport("apiKey", "header");
+                        c.EnableApiKeySupport("Authorization", "header");
                     });
         }
     }
+    public class AuthTokenHeaderParameter : IOperationFilter
+    {
+        public void Apply(Operation operation, SchemaRegistry schemaRegistry, ApiDescription apiDescription)
+        {
+            if (operation.parameters == null)
+                operation.parameters = new List<Parameter>();
+
+            var authorizeAttributes = apiDescription
+                .ActionDescriptor.GetCustomAttributes<AuthorizeAttribute>();
+
+            if (authorizeAttributes.ToList().Any(attr => attr.GetType() == typeof(AllowAnonymousAttribute)) == false)
+            {
+                operation.parameters.Add(new Parameter()
+                {
+                    name = "ApiKey",
+                    @in = "header",
+                    type = "string",
+                    description = "Authorization Token. Please remember the Bearer part",
+                    @default = "Bearer ",
+                    required = true
+                });
+                //operation.parameters.Add(new Parameter()
+                //{
+                //    name = "AppId",
+                //    @in = "header",
+                //    type = "string",
+                //    description = "AppId",
+                //    required = true
+                //});
+            }
+        }
+    }
+
 }

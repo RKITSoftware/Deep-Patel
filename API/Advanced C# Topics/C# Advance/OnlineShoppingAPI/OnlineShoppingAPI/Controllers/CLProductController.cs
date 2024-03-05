@@ -11,7 +11,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Product controller for handling product API endpoints.
     /// </summary>
     [RoutePrefix("api/CLProduct")]
-    [BearerAuth]
+    [CookieBasedAuth]
     public class CLProductController : ApiController
     {
         /// <summary>

@@ -593,7 +593,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         ProductName = r.Item2.O02F02,
                         Price = r.Item1.D01F05,
                         Quantity = r.Item1.D01F04,
-                        InvoiceId = r.Item1.D01F06
+                        InvoiceId = r.Item1.D01F06,
+                        PurchaseTime = r.Item1.D01F07
                     })
                     .ToList();
 

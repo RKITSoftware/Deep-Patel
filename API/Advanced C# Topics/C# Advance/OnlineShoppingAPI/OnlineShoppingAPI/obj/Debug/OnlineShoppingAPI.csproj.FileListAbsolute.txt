@@ -137,3 +137,9 @@ F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\Onlin
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Text.Encodings.Web.xml
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Text.Json.xml
 F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.ValueTuple.xml
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Newtonsoft.Json.Bson.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Web.Cors.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Web.Http.Cors.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Newtonsoft.Json.Bson.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\Newtonsoft.Json.Bson.xml
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\bin\System.Web.Http.Cors.xml

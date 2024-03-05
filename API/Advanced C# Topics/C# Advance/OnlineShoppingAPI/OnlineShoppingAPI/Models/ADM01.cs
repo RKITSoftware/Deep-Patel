@@ -24,12 +24,5 @@ namespace OnlineShoppingAPI.Models
         [Required]
         [ValidateEmail]
         public string M01F03 { get; set; }
-
-        /// <summary>
-        /// Admin Password
-        /// </summary>
-        [Required]
-        [StringLength(minimumLength: 8, maximumLength: 16)]
-        public string M01F04 { get; set; }
     }
 }

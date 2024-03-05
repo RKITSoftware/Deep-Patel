@@ -111,7 +111,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
                 {
-                    Content = new StringContent("Logged in")
+                    Content = new StringContent(jwtToken)
                 };
                 response.Headers.AddCookies(cookies);
 

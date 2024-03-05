@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Models;
-using OnlineShoppingAPI.Security;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -10,8 +9,8 @@ namespace OnlineShoppingAPI.Controllers
     /// Admin controller for handling api endpoints of admin
     /// </summary>
     [RoutePrefix("api/CLAdmin")]
-    [BearerAuth]
-    [Authorize(Roles = "Admin")]
+    //[BearerAuth]
+    //[Authorize(Roles = "Admin")]
     public class CLAdminController : ApiController
     {
         /// <summary>
@@ -64,9 +63,9 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Create response message</returns>
         [HttpPost]
         [Route("Add")]
-        public HttpResponseMessage CreateAdmin(ADM01 objAdmin)
+        public HttpResponseMessage CreateAdmin(ADMUSR objAdminUser)
         {
-            return _blAdmin.Create(objAdmin);
+            return _blAdmin.Create(objAdminUser);
         }
 
         /// <summary>

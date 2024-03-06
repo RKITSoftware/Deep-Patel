@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
 using System.Net.Http;
@@ -35,6 +36,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("AddOrderDetail")]
         [Authorize(Roles = "Customer,Admin")]
+        [ValidateModel]
         public HttpResponseMessage AddOrder(RCD01 objOrder)
         {
             return _blRecord.Create(objOrder);

@@ -245,6 +245,7 @@
     <Compile Include="Controllers\CLSuplierController.cs" />
     <Compile Include="Enums\OnlineShoopingEnums.cs" />
     <Compile Include="Filter\ExceptionLogFilter.cs" />
+    <Compile Include="Filter\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

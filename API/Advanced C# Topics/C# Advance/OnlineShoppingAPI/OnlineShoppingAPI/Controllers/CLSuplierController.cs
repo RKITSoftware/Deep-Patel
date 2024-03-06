@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
@@ -64,6 +65,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("Create")]
         [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public HttpResponseMessage CreateSuplier(SUP01 objNewSuplier)
         {
             return _blSuplier.Create(objNewSuplier);
@@ -77,6 +79,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("Create/List")]
         [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public HttpResponseMessage CreateSuplierFromList(List<SUP01> lstNewSupliers)
         {
             return _blSuplier.CreateFromList(lstNewSupliers);
@@ -115,6 +118,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPut]
         [Route("UpdateSuplier")]
         [Authorize(Roles = "Admin,Suplier")]
+        [ValidateModel]
         public HttpResponseMessage UpdateCustomer(SUP01 objUpdatedSuplier)
         {
             return _blSuplier.Update(objUpdatedSuplier);

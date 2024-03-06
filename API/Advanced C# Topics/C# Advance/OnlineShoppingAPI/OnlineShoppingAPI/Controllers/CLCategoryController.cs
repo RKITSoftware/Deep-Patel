@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -32,6 +33,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HttpResponseMessage indicating success or failure.</returns>
         [HttpPost]
         [Route("Add")]
+        [ValidateModel]
         public HttpResponseMessage Add(CAT01 objCategory)
         {
             return _category.Add(objCategory);

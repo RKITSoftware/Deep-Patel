@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Interface;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
@@ -62,6 +63,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("CreateCustomer")]
         [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
             => _customerService.Create(objNewCustomer);
 
@@ -73,6 +75,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("CreateCustomer/List")]
         [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
             => _customerService.CreateFromList(lstNewCustomers);
 
@@ -105,6 +108,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPut]
         [Route("UpdateCustomer")]
         [Authorize(Roles = "Customer,Admin")]
+        [ValidateModel]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
             => _customerService.Update(objUpdatedCustomer);
     }

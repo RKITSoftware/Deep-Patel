@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
@@ -40,6 +41,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("Create")]
+        [ValidateModel]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {
             return _blProduct.Create(objNewProduct);
@@ -52,6 +54,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Authorize(Roles = "Admin")]
         [Route("Create/List")]
+        [ValidateModel]
         public HttpResponseMessage CreateProductsFromList(List<PRO01> lstNewProducts)
         {
             return _blProduct.CreateFromList(lstNewProducts);
@@ -88,6 +91,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPut]
         [Authorize(Roles = "Admin")]
         [Route("UpdateProduct")]
+        [ValidateModel]
         public HttpResponseMessage UpdateProduct(PRO01 objUpdatedProduct)
         {
             return _blProduct.Update(objUpdatedProduct);
@@ -111,6 +115,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="objProduct">Product information</param>
         [HttpPost]
         [Route("Add")]
+        [ValidateModel]
         public HttpResponseMessage Add(PRO02 objProduct)
         {
             return _blProductV2.Add(objProduct);

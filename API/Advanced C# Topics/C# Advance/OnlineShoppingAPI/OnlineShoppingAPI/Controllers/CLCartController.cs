@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Security;
 using System.Net.Http;
@@ -30,6 +31,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message indicating the result of the operation</returns>
         [HttpPost]
         [Route("AddItem")]
+        [ValidateModel]
         public HttpResponseMessage AddItemToCart(CRT01 objProduct)
         {
             return _cart.Add(objProduct);

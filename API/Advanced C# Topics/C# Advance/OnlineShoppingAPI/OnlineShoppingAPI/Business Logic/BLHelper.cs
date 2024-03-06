@@ -113,10 +113,12 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             try
             {
+                string encryptedPassword = GetEncryptPassword(password);
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     return db.Exists<USR01>(u =>
-                        u.R01F02.Equals(username) && u.R01F03.Equals(password));
+                        u.R01F02.Equals(username) &&
+                        u.R01F05.Equals(encryptedPassword));
                 }
             }
             catch (Exception ex)
@@ -249,10 +251,12 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             try
             {
+                string encryptedPassword = GetEncryptPassword(password);
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    return db.Single<USR01>(u => u.R01F02.Equals(username)
-                                                && u.R01F03.Equals(password));
+                    return db.Single<USR01>(u =>
+                        u.R01F02.Equals(username) &&
+                        u.R01F03.Equals(encryptedPassword));
                 }
             }
             catch (Exception ex)

@@ -1,0 +1,15 @@
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\bin\Debug\net6.0\NetworkService.exe
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\bin\Debug\net6.0\NetworkService.deps.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\bin\Debug\net6.0\NetworkService.runtimeconfig.json
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\bin\Debug\net6.0\NetworkService.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\bin\Debug\net6.0\NetworkService.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.csproj.AssemblyReference.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.GeneratedMSBuildEditorConfig.editorconfig
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.AssemblyInfoInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.AssemblyInfo.cs
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.csproj.CoreCompileInputs.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\refint\NetworkService.dll
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.pdb
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\NetworkService.genruntimeconfig.cache
+F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\UnitTesting\NetworkService\obj\Debug\net6.0\ref\NetworkService.dll

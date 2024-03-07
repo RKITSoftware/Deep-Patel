@@ -1,0 +1,67 @@
+﻿@model IEnumerable<OnlineShoopingApp.Models.Customer>
+
+@{
+    ViewBag.Title = "ViewCustomer";
+    int rowNumber = 1;
+}
+
+<h2>ViewCustomer</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateCustomer")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            No.
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Username
+        </th>
+        <th>
+            Mobile Number
+        </th>
+        <th>
+            City
+        </th>
+        <th>Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @rowNumber
+                @{ 
+                    rowNumber++;
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.S01F02)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.S01F03)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.S01F04)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.S01F05)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.S01F06)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCustomer", new { id = item.S01F01 }) |
+                @Html.ActionLink("Delete", "DeleteCustomer", new { id = item.S01F01 })
+            </td>
+        </tr>
+    }
+
+</table>

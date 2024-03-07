@@ -1,0 +1,45 @@
+﻿@using OnlineShoopingApp.Models
+@model IEnumerable<OnlineShoopingApp.Models.Category>
+
+@{
+    ViewBag.Title = "ViewCategories";
+    int rowNumber = 1;
+}
+
+<h2>ViewCategories</h2>
+
+<p>
+    @Html.ActionLink("Create New", "CreateCategory")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            No.
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.T01F02)
+        </th>
+        <th style="float:right;">Actions</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.HiddenFor(model => item.T01F01)
+                @rowNumber
+                @{
+                    rowNumber++;
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.T01F02)
+            </td>
+            <td style="float:right;">
+                @Html.ActionLink("Edit", "EditCategory", new { id = item.T01F01 }) |
+                @Html.ActionLink("Delete", "DeleteCategory", new { id = item.T01F01 })
+            </td>
+        </tr>
+    }
+
+</table>

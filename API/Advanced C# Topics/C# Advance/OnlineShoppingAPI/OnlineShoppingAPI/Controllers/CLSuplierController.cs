@@ -1,7 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
-using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
-using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
@@ -9,7 +7,7 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/CLSuplier")]
-    [BearerAuth]
+    //[BearerAuth]
     public class CLSuplierController : ApiController
     {
         /// <summary>
@@ -34,7 +32,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPatch]
         [Route("Change/Email")]
-        [Authorize(Roles = "Suplier,Admin")]
+        //[Authorize(Roles = "Suplier,Admin")]
         public HttpResponseMessage ChangeEmail(string username,
             string password, string newEmail)
         {
@@ -50,7 +48,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPatch]
         [Route("Change/Password")]
-        [Authorize(Roles = "Suplier,Admin")]
+        //[Authorize(Roles = "Suplier,Admin")]
         public HttpResponseMessage ChangePassword(string username,
             string oldPassword, string newPassword)
         {
@@ -64,8 +62,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Create")]
-        [Authorize(Roles = "Admin")]
-        [ValidateModel]
+        //[Authorize(Roles = "Admin")]
+        //[ValidateModel]
         public HttpResponseMessage CreateSuplier(SUP01 objNewSuplier)
         {
             return _blSuplier.Create(objNewSuplier);
@@ -78,8 +76,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Create/List")]
-        [Authorize(Roles = "Admin")]
-        [ValidateModel]
+        //[Authorize(Roles = "Admin")]
+        //[ValidateModel]
         public HttpResponseMessage CreateSuplierFromList(List<SUP01> lstNewSupliers)
         {
             return _blSuplier.CreateFromList(lstNewSupliers);
@@ -92,7 +90,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("DeleteSuplier/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteSuplier(int id)
         {
             return _blSuplier.Delete(id);
@@ -101,13 +99,23 @@ namespace OnlineShoppingAPI.Controllers
         /// <summary>
         /// Endpoint :- api/CLSuplier/GetSupliers
         /// </summary>
-        /// <returns></returns>
         [HttpGet]
         [Route("GetSupliers")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IHttpActionResult GetSupliers()
         {
             return Ok(_blSuplier.GetAll());
+        }
+
+        /// <summary>
+        /// Endpoint :- api/CLSuplier/GetSuplier/{id}
+        /// </summary>
+        [HttpGet]
+        [Route("GetSuplier/{id}")]
+        //[Authorize(Roles = "Admin")]
+        public IHttpActionResult GetSuplierById(int id)
+        {
+            return Ok(_blSuplier.Get(id));
         }
 
         /// <summary>
@@ -117,8 +125,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("UpdateSuplier")]
-        [Authorize(Roles = "Admin,Suplier")]
-        [ValidateModel]
+        //[Authorize(Roles = "Admin,Suplier")]
+        //[ValidateModel]
         public HttpResponseMessage UpdateCustomer(SUP01 objUpdatedSuplier)
         {
             return _blSuplier.Update(objUpdatedSuplier);

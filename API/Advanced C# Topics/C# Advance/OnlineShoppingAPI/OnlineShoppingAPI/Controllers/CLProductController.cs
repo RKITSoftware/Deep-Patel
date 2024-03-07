@@ -1,7 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
-using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
-using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
@@ -12,7 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Product controller for handling product API endpoints.
     /// </summary>
     [RoutePrefix("api/CLProduct")]
-    [CookieBasedAuth]
+    //[CookieBasedAuth]
     public class CLProductController : ApiController
     {
         /// <summary>
@@ -40,8 +38,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="objNewProduct">Product information</param>
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [Route("Create")]
-        [ValidateModel]
+        //[Route("Create")]
+        //[ValidateModel]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {
             return _blProduct.Create(objNewProduct);
@@ -52,9 +50,9 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="lstNewProducts">New products list for creation</param>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [Route("Create/List")]
-        [ValidateModel]
+        //[ValidateModel]
         public HttpResponseMessage CreateProductsFromList(List<PRO01> lstNewProducts)
         {
             return _blProduct.CreateFromList(lstNewProducts);
@@ -65,7 +63,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="id">Product ID</param>
         [HttpDelete]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [Route("DeleteProduct/{id}")]
         public HttpResponseMessage DeleteProduct(int id)
         {
@@ -77,7 +75,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <returns>List of products</returns>
         [HttpGet]
-        [Authorize(Roles = "Admin,Customer")]
+        //[Authorize(Roles = "Admin,Customer")]
         [Route("GetProducts")]
         public IHttpActionResult GetProducts()
         {
@@ -89,9 +87,9 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="objUpdatedProduct">Updated product data</param>
         [HttpPut]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [Route("UpdateProduct")]
-        [ValidateModel]
+        //[ValidateModel]
         public HttpResponseMessage UpdateProduct(PRO01 objUpdatedProduct)
         {
             return _blProduct.Update(objUpdatedProduct);
@@ -115,7 +113,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="objProduct">Product information</param>
         [HttpPost]
         [Route("Add")]
-        [ValidateModel]
+        //[ValidateModel]
         public HttpResponseMessage Add(PRO02 objProduct)
         {
             return _blProductV2.Add(objProduct);
@@ -153,6 +151,13 @@ namespace OnlineShoppingAPI.Controllers
         public HttpResponseMessage UpdateSellPrice(int productId, int sellPrice)
         {
             return _blProductV2.UpdateSellPrice(productId, sellPrice);
+        }
+
+        [HttpGet]
+        [Route("GetAllProductsInfo")]
+        public IHttpActionResult GetAllProductInfo()
+        {
+            return Ok(_blProductV2.GetInfo());
         }
     }
 }

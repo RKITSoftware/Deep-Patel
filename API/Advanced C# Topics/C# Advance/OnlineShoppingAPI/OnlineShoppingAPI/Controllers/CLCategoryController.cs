@@ -10,7 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// <summary>
     /// Controller for handling category-related API endpoints.
     /// </summary>
-    [RoutePrefix("api/Category")]
+    [RoutePrefix("api/CLCategory")]
     public class CLCategoryController : ApiController
     {
         /// <summary>
@@ -54,6 +54,27 @@ namespace OnlineShoppingAPI.Controllers
                 return NotFound();
 
             return Ok(lstCategory);
+        }
+
+        [HttpGet]
+        [Route("Get/{id}")]
+        public IHttpActionResult GetById(int id)
+        {
+            return Ok(_category.Get(id));
+        }
+
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public HttpResponseMessage DeleteCategory(int id)
+        {
+            return _category.Delete(id);
+        }
+
+        [HttpPut]
+        [Route("Edit")]
+        public HttpResponseMessage Edit(CAT01 objCategory)
+        {
+            return _category.Edit(objCategory);
         }
     }
 }

@@ -2,7 +2,6 @@
 using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Interface;
 using OnlineShoppingAPI.Models;
-using OnlineShoppingAPI.Security;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Http;
@@ -13,7 +12,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Customer controller for handling customer api endpoints
     /// </summary>
     [RoutePrefix("api/CLCustomer")]
-    [BearerAuth]
+    //[CookieBasedAuth]
     public class CLCustomerController : ApiController
     {
         /// <summary>
@@ -38,7 +37,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Email change response message</returns>
         [HttpPatch]
         [Route("Change/Email")]
-        [Authorize(Roles = "Customer,Admin")]
+        //[Authorize(Roles = "Customer,Admin")]
         public HttpResponseMessage ChangeEmail(string username, string password, string newEmail)
             => _customerService.ChangeEmail(username, password, newEmail);
 
@@ -51,7 +50,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message</returns>
         [HttpPatch]
         [Route("Change/Password")]
-        [Authorize(Roles = "Customer,Admin")]
+        //[Authorize(Roles = "Customer,Admin")]
         public HttpResponseMessage ChangePassword(string username, string oldPassword, string newPassword)
             => _customerService.ChangePassword(username, oldPassword, newPassword);
 
@@ -62,8 +61,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message</returns>
         [HttpPost]
         [Route("CreateCustomer")]
-        [Authorize(Roles = "Admin")]
-        [ValidateModel]
+        //[Authorize(Roles = "Admin")]
+        //[ValidateModel]
         public HttpResponseMessage CreateCustomer(CUS01 objNewCustomer)
             => _customerService.Create(objNewCustomer);
 
@@ -74,7 +73,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message</returns>
         [HttpPost]
         [Route("CreateCustomer/List")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [ValidateModel]
         public HttpResponseMessage CreateCustomerFromList(List<CUS01> lstNewCustomers)
             => _customerService.CreateFromList(lstNewCustomers);
@@ -86,7 +85,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message</returns>
         [HttpDelete]
         [Route("DeleteCustomer/{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public HttpResponseMessage DeleteCustomer(int id)
             => _customerService.Delete(id);
 
@@ -96,9 +95,19 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response with customer data</returns>
         [HttpGet]
         [Route("GetCustomers")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
             => Ok(_customerService.GetAll());
+
+        /// <summary>
+        /// Retrieves a list of customers.
+        /// </summary>
+        /// <returns>HTTP response with customer data</returns>
+        [HttpGet]
+        [Route("GetCustomerById/{id}")]
+        //[Authorize(Roles = "Admin")]
+        public IHttpActionResult GetCustomerById(int id)
+            => Ok(_customerService.Get(id));
 
         /// <summary>
         /// Updates customer information.
@@ -107,8 +116,8 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message</returns>
         [HttpPut]
         [Route("UpdateCustomer")]
-        [Authorize(Roles = "Customer,Admin")]
-        [ValidateModel]
+        //[Authorize(Roles = "Customer,Admin")]
+        //[ValidateModel]
         public HttpResponseMessage UpdateCustomer(CUS01 objUpdatedCustomer)
             => _customerService.Update(objUpdatedCustomer);
     }

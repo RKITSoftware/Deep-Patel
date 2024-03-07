@@ -3,7 +3,7 @@ using System.Net.Http;
 
 namespace OnlineShoppingAPI.Interface
 {
-    internal interface IBasicAPIService<T> 
+    internal interface IBasicAPIService<T>
         where T : class
     {
         HttpResponseMessage ChangeEmail(string username, string password, string newEmail);
@@ -13,5 +13,6 @@ namespace OnlineShoppingAPI.Interface
         HttpResponseMessage Delete(int id);
         List<T> GetAll();
         HttpResponseMessage Update(T entity);
+        T Get(int id);
     }
 }

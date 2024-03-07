@@ -17,7 +17,7 @@ namespace OnlineShoppingAPI.Models
         public string P01F02 { get; set; }
 
         /// <summary>
-        /// Suplier Gmail Id
+        /// Suplier Email Id
         /// </summary>
         [Required]
         public string P01F03 { get; set; }

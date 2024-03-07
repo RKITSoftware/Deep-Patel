@@ -4,9 +4,11 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+using System.Web.Caching;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
@@ -74,6 +76,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         R01F05 = BLHelper.GetEncryptPassword(newPassword)
                     });
 
+                    BLHelper.ServerCache.Remove("lstCustomers");
+
                     // Return a success response.
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
                         "Customer created successfully.");
@@ -125,6 +129,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.DeleteById<CUS01>(id);
                     db.Delete<USR01>(u => u.R01F02 == username);
 
+                    BLHelper.ServerCache.Remove("lstCustomers");
+
                     // Return a success response.
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Customer deleted successfully.");
@@ -173,6 +179,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     existingCustomer.S01F02 = objUpdatedCustomer.S01F02;
                     existingCustomer.S01F05 = objUpdatedCustomer.S01F05;
                     existingCustomer.S01F06 = objUpdatedCustomer.S01F06;
+
+                    BLHelper.ServerCache.Remove("lstCustomers");
 
                     // Perform the database update.
                     db.Update(existingCustomer);
@@ -226,6 +234,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         });
                     }
 
+                    BLHelper.ServerCache.Remove("lstCustomers");
+
                     // Return a success response.
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
                         "Customers created successfully.");
@@ -248,13 +258,22 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             try
             {
+                List<CUS01> lstCustomers = BLHelper.ServerCache.Get("lstCustomers") as List<CUS01>;
+
+                if (lstCustomers != null)
+                {
+                    return lstCustomers;
+                }
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve all customer details from the CUS01 table.
-                    List<CUS01> customers = db.Select<CUS01>();
+                    lstCustomers = db.Select<CUS01>();
 
-                    // Return an empty list if 'customers' is null.
-                    return customers ?? new List<CUS01>();
+                    BLHelper.ServerCache.Add("lstCustomers",
+                        lstCustomers, null,
+                        DateTime.MaxValue, TimeSpan.FromMinutes(20),
+                        CacheItemPriority.Default, null);
+
+                    return lstCustomers;
                 }
             }
             catch (Exception ex)
@@ -301,6 +320,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     existingCustomer.S01F04 = newPassword;
                     existingUser.R01F03 = newPassword;
                     existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
+
+                    BLHelper.ServerCache.Remove("lstCustomers");
 
                     // Perform the database updates.
                     db.Update(existingCustomer);
@@ -354,6 +375,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     objCustomer.S01F03 = newEmail;
                     objUser.R01F02 = newEmail.Split('@')[0];
 
+                    BLHelper.ServerCache.Remove("lstCustomers");
+
                     // Update data in the database.
                     db.Update(objCustomer);
                     db.Update(objUser);
@@ -369,6 +392,31 @@ namespace OnlineShoppingAPI.Business_Logic
                 BLHelper.LogError(ex);
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred while processing the request of changing email");
+            }
+        }
+
+        public CUS01 Get(int id)
+        {
+            try
+            {
+                List<CUS01> lstCustomers = BLHelper.ServerCache.Get("lstCustomers") as List<CUS01>;
+
+                if (lstCustomers != null)
+                {
+                    return lstCustomers.FirstOrDefault(c => c.S01F01 == id);
+                }
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CUS01 objCustomer = db.Single<CUS01>(c => c.S01F01 == id);
+                    return objCustomer;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                BLHelper.LogError(ex);
+                return null;
             }
         }
 

@@ -105,6 +105,98 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        public HttpResponseMessage Delete(int id)
+        {
+            try
+            {
+                // Check if the id is valid
+                if (id <= 0)
+                {
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
+                }
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Retrieve category information by id
+                    CAT01 category = db.SingleById<CAT01>(id);
+
+                    // Check if the category exists
+                    if (category == null)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
+
+                    db.Delete(category);
+
+                    // Return success response
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Category deleted successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response in case of an error
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
+            }
+        }
+
+        public CAT01 Get(int id)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CAT01 objCategory = db.Single<CAT01>(c => c.T01F01 == id);
+                    return objCategory;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception for debugging purposes.
+                BLHelper.LogError(ex);
+                return null;
+            }
+        }
+
+        public HttpResponseMessage Edit(CAT01 objCategory)
+        {
+            try
+            {
+                if (objCategory.T01F01 <= 0)
+                {
+                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
+                        "Id can't be zero or negative.");
+                }
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CAT01 existingCategory = db.SingleById<CAT01>(objCategory.T01F01);
+
+                    if (existingCategory == null)
+                    {
+                        return new HttpResponseMessage(HttpStatusCode.NotFound);
+                    }
+
+                    existingCategory.T01F02 = objCategory.T01F02;
+
+                    db.Update(existingCategory);
+
+                    return BLHelper.ResponseMessage(HttpStatusCode.OK,
+                        "Category updated successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
+            }
+        }
+
         #endregion
     }
 }

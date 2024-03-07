@@ -1,4 +1,5 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using ServiceStack;
+using ServiceStack.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models
 {
@@ -17,6 +18,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [StringLength(100)]
+        [ValidateMaximumLength(100)]
         public string O01F02 { get; set; }
 
         /// <summary>

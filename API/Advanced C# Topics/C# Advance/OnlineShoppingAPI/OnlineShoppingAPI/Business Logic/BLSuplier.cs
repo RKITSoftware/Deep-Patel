@@ -3,9 +3,11 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
+using System.Web.Caching;
 
 namespace OnlineShoppingAPI.Business_Logic
 {
@@ -59,6 +61,8 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    BLHelper.ServerCache.Remove("lstSuplier");
+
                     // Check if the user is a supplier or a regular user
                     SUP01 existingSupplier =
                         db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
@@ -125,6 +129,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         R01F05 = BLHelper.GetEncryptPassword(objNewSuplier.P01F04)
                     });
 
+                    BLHelper.ServerCache.Remove("lstSuplier");
+
                     // Return success response
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
                         "Supplier created successfully.");
@@ -171,6 +177,8 @@ namespace OnlineShoppingAPI.Business_Logic
                             R01F05 = BLHelper.GetEncryptPassword(item.P01F04) // Encrypt the password
                         });
                     }
+
+                    BLHelper.ServerCache.Remove("lstSuplier");
 
                     // Return success response
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
@@ -221,6 +229,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.DeleteById<SUP01>(id);
                     db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
 
+                    BLHelper.ServerCache.Remove("lstSuplier");
+
                     // Return success response
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Supplier deleted successfully.");
@@ -243,10 +253,23 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             try
             {
+                List<SUP01> lstSuplier = BLHelper.ServerCache.Get("lstSuplier") as List<SUP01>;
+
+                if (lstSuplier != null)
+                {
+                    return lstSuplier;
+                }
+
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    List<SUP01> suppliers = db.Select<SUP01>();
-                    return suppliers ?? new List<SUP01>(); // Return an empty list if suppliers is null
+                    lstSuplier = db.Select<SUP01>();
+
+                    BLHelper.ServerCache.Add("lstSuplier",
+                        lstSuplier, null,
+                        DateTime.MaxValue, TimeSpan.FromMinutes(20),
+                        CacheItemPriority.Default, null);
+
+                    return lstSuplier;
                 }
             }
             catch (Exception ex)
@@ -286,6 +309,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     existingSupplier.P01F06 = objUpdatedSupplier.P01F06;
 
                     db.Update(existingSupplier);
+                    BLHelper.ServerCache.Remove("lstSuplier");
 
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Supplier updated successfully.");
@@ -338,6 +362,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.Update(objSuplier);
                     db.Update(objUser);
 
+                    BLHelper.ServerCache.Remove("lstSuplier");
+
                     // Return success response
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Email changed successfully.");
@@ -349,6 +375,29 @@ namespace OnlineShoppingAPI.Business_Logic
                 BLHelper.LogError(ex);
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred while processing the request of changing email");
+            }
+        }
+
+        public SUP01 Get(int id)
+        {
+            try
+            {
+                List<SUP01> lstSuplier = BLHelper.ServerCache.Get("lstSuplier") as List<SUP01>;
+                if (lstSuplier != null)
+                {
+                    return lstSuplier.FirstOrDefault(s => s.P01F01 == id);
+                }
+
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    SUP01 objSuplier = db.Single<SUP01>(s => s.P01F01 == id);
+                    return objSuplier;
+                }
+            }
+            catch (Exception ex)
+            {
+                BLHelper.LogError(ex);
+                return null;
             }
         }
 

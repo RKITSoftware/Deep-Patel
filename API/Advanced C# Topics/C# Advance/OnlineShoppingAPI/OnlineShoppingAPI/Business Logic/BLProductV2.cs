@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Enums;
+﻿using MySql.Data.MySqlClient;
+using OnlineShoppingAPI.Enums;
 using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
@@ -174,6 +175,68 @@ namespace OnlineShoppingAPI.Business_Logic
                 BLHelper.LogError(ex);
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred during updating product.");
+            }
+        }
+
+        public dynamic GetInfo()
+        {
+            try
+            {
+                dynamic lstProducts = new List<dynamic>();
+
+                // Creating a MySqlConnection to connect to the database
+                using (MySqlConnection _connection = new MySqlConnection(
+                    "Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;"))
+                {
+
+                    // Using MySqlCommand to execute SQL command
+                    using (MySqlCommand cmd = new MySqlCommand(@"SELECT 
+	                                                                pro02.O02F01 AS 'Id',
+                                                                    pro02.O02F02 AS 'Name',
+                                                                    pro02.O02F03 AS 'Buy Price',
+                                                                    pro02.O02F04 AS 'Sell Price',
+                                                                    pro02.O02F05 AS 'Quantity',
+                                                                    pro02.O02F06 AS 'Image Link',
+                                                                    cat01.T01F02 AS 'Category Name',
+                                                                    sup01.P01F02 AS 'Suplier Name'
+                                                                FROM
+                                                                    pro02
+                                                                        INNER JOIN
+                                                                    cat01 ON pro02.O02F09 = cat01.T01F01
+                                                                        INNER JOIN
+                                                                    sup01 ON pro02.O02F10 = sup01.P01F01;",
+                                                                    _connection))
+                    {
+                        _connection.Open();
+
+                        // Using MySqlDataReader to read data from the executed command
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Mapping the data from reader to PRO02 object and adding it to the list
+                                lstProducts.Add(new
+                                {
+                                    Id = (int)reader[0],
+                                    Name = (string)reader[1],
+                                    BuyPrice = (int)reader[2],
+                                    SellPrice = (int)reader[3],
+                                    Quantity = (decimal)reader[4],
+                                    ImageLink = (string)reader[5],
+                                    CategoryName = (string)reader[6],
+                                    SuplierName = (string)reader[7]
+                                });
+                            }
+                        }
+                    }
+                }
+
+                return lstProducts;
+            }
+            catch (Exception ex)
+            {
+                BLHelper.LogError(ex);
+                return null;
             }
         }
     }

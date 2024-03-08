@@ -37,8 +37,8 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         /// <param name="objNewProduct">Product information</param>
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        //[Route("Create")]
+        //[Authorize(Roles = "Admin")]
+        [Route("Create")]
         //[ValidateModel]
         public HttpResponseMessage AddProduct(PRO01 objNewProduct)
         {

@@ -110,6 +110,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.Insert(objRecord);
                     db.Update(sourceProduct);
 
+                    BLHelper.UpdateProfit(sourceProduct, objRecord.D01F04);
+
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
                         "Record added successfully.");
                 }
@@ -226,7 +228,7 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 // Creating a MySqlConnection to connect to the database
                 using (MySqlConnection _connection = new MySqlConnection(
-                    "Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;"))
+                    HttpContext.Current.Application["MySQLConnection"] as string))
                 {
                     // Using MySqlCommand to execute SQL command
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM RCD01;", _connection))
@@ -405,6 +407,7 @@ namespace OnlineShoppingAPI.Business_Logic
                             }
 
                             db.Update(sourceProduct);
+                            BLHelper.UpdateProfit(sourceProduct, objRecord.D01F04);
 
                             // Remove the processed purchase item
                             db.DeleteById<CRT01>(item.T01F01);

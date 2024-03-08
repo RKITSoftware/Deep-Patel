@@ -1,7 +1,9 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using MySql.Data.MySqlClient;
+using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -263,6 +265,88 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 LogError(ex);
                 return null;
+            }
+        }
+
+        public static void UpdateProfit(PRO02 objProduct, int quantity)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    db.CreateTableIfNotExists<PFT01>();
+
+                    PFT01 objProfit = db.Single<PFT01>(p =>
+                        p.T01F02 == DateTime.Now.ToString("dd-MM-yyyy"));
+
+                    if (objProfit == null)
+                    {
+                        db.Insert(new PFT01()
+                        {
+                            T01F02 = DateTime.Now.ToString("dd-MM-yyyy"),
+                            T01F03 = 0
+                        });
+                    }
+
+                    objProfit.T01F03 += (objProduct.O02F04 - objProduct.O02F03) * quantity;
+                    db.Update(objProfit);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+            }
+        }
+
+        public static List<decimal> GetMonthData(int year)
+        {
+            try
+            {
+                List<decimal> lstData = new List<decimal>();
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    for (int month = 1; month <= 12; month++)
+                    {
+                        // Creating a MySqlConnection to connect to the database
+                        using (MySqlConnection _connection = new MySqlConnection(
+                            HttpContext.Current.Application["MySQLConnection"] as string))
+                        {
+                            // Using MySqlCommand to execute SQL command
+                            using (MySqlCommand cmd = new MySqlCommand(@"SELECT 
+                                                                            SUM(pft01.T01F03) AS 'Profit'
+                                                                        FROM
+                                                                            pft01
+                                                                        WHERE
+                                                                            pft01.T01F02 LIKE '__-@month-@year';",
+                                                                            _connection))
+                            {
+                                _connection.Open();
+                                cmd.Parameters.AddWithValue("@month", month.ToString("00"));
+                                cmd.Parameters.AddWithValue("@year", year.ToString("0000"));
+
+                                // Using MySqlDataReader to read data from the executed command
+                                using (MySqlDataReader reader = cmd.ExecuteReader())
+                                {
+                                    if (reader.Read())
+                                    {
+                                        lstData.Add(Convert.ToDecimal(reader[0]));
+                                    }
+                                    else
+                                    {
+                                        lstData.Add(0);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return lstData;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return new List<decimal>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             }
         }
 

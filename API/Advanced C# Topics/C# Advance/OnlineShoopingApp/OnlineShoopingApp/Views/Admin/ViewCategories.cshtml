@@ -11,17 +11,18 @@
 <p>
     @Html.ActionLink("Create New", "CreateCategory")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            No.
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.T01F02)
-        </th>
-        <th style="float:right;">Actions</th>
-    </tr>
-
+<table class="table" id="myTable" width="100%">
+    <thead>
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.T01F02)
+            </th>
+            <th style="float:right;">Actions</th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
         <tr>
@@ -41,5 +42,4 @@
             </td>
         </tr>
     }
-
 </table>

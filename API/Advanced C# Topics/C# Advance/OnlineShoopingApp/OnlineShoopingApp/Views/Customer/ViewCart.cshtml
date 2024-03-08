@@ -1,0 +1,55 @@
+﻿@model IEnumerable<OnlineShoopingApp.ViewModel.CartViewModel>
+
+@{
+    ViewBag.Title = "ViewCart";
+    int rowNumber = 1;
+}
+
+<h2>ViewCart</h2>
+
+<table class="table" id="myTable" width="100%">
+    <thead>
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+            Actions
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @rowNumber
+                @{
+                    rowNumber++;
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink("Buy", "BuyItem", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "DeleteItem", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

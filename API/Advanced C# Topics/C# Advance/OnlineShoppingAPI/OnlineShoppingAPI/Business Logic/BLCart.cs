@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using MySql.Data.MySqlClient;
+using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -300,6 +301,99 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        public dynamic GetCartInfo(int id)
+        {
+            try
+            {
+                dynamic lstCartItems = new List<dynamic>();
+
+                // Creating a MySqlConnection to connect to the database
+                using (MySqlConnection _connection = new MySqlConnection(
+                    HttpContext.Current.Application["MySQLConnection"] as string))
+                {
+
+                    // Using MySqlCommand to execute SQL command
+                    using (MySqlCommand cmd = new MySqlCommand(@"SELECT 
+                                                                    crt01.T01F01 AS 'Id',
+                                                                    pro02.O02F02 AS 'Product Name',
+                                                                    crt01.T01F04 AS 'Quantity',
+                                                                    (crt01.T01F05 * crt01.T01F04) AS 'Price'
+                                                                FROM
+                                                                    crt01
+                                                                        INNER JOIN
+                                                                    pro02 ON crt01.T01F03 = pro02.O02F01
+                                                                WHERE
+                                                                    crt01.T01F02 = @Id;",
+                                                                    _connection))
+                    {
+                        _connection.Open();
+                        cmd.Parameters.AddWithValue("@Id", id);
+
+                        // Using MySqlDataReader to read data from the executed command
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Mapping the data from reader to PRO02 object and adding it to the list
+                                lstCartItems.Add(new
+                                {
+                                    Id = (int)reader[0],
+                                    ProductName = (string)reader[1],
+                                    Quantity = (int)reader[2],
+                                    Price = (long)reader[3]
+                                });
+                            }
+                        }
+                    }
+                }
+
+                return lstCartItems;
+            }
+            catch (Exception ex)
+            {
+                BLHelper.LogError(ex);
+                return null;
+            }
+        }
+
+        public HttpResponseMessage BuyItem(int cartId)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Retrieve the item in the cart.
+                    CRT01 objCart = db.Single<CRT01>(c => c.T01F01 == cartId);
+
+                    // If the customer has nothing in the cart, return NotFound response.
+                    if (objCart == null)
+                    {
+                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                            "Customer has nothing in their cart.");
+                    }
+
+                    CUS01 objCustomer = db.SingleById<CUS01>(objCart.T01F02);
+
+                    // Create an instance of BLRecord to add records for the purchased items.
+                    BLRecord objRecord = new BLRecord();
+
+                    List<CRT01> lstCart = new List<CRT01>()
+                    {
+                        objCart
+                    };
+
+                    // Call the AddRecords method to add records for all items in the cart.
+                    return objRecord.BuyCartItems(lstCart, objCustomer.S01F03);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception and return an appropriate response
+                BLHelper.LogError(ex);
+                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                        "An error occurred while buying all items in the cart.");
+            }
+        }
         #endregion
 
         #region Private Methods

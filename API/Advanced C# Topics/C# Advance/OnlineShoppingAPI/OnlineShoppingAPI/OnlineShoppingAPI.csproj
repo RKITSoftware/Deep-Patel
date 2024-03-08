@@ -240,6 +240,7 @@
     <Compile Include="Controllers\CLCartController.cs" />
     <Compile Include="Controllers\CLCategoryController.cs" />
     <Compile Include="Controllers\CLCustomerController.cs" />
+    <Compile Include="Controllers\CLProfitController.cs" />
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
     <Compile Include="Controllers\CLSuplierController.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Models\CAT01.cs" />
     <Compile Include="Models\CRT01.cs" />
     <Compile Include="Models\CUS01.cs" />
+    <Compile Include="Models\PFT01.cs" />
     <Compile Include="Models\PRO02.cs" />
     <Compile Include="Models\RCD01.cs" />
     <Compile Include="Models\PRO01.cs" />

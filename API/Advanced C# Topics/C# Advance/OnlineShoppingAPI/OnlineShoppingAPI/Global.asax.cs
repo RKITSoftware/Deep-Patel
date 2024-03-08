@@ -23,7 +23,8 @@ namespace OnlineShoppingAPI
             Application["LogFolderPath"] = HttpContext.Current.Server.MapPath("~/Logs");
             Application["Credentials"] = new NetworkCredential(
                 ConfigurationManager.AppSettings["Username"],
-                ConfigurationManager.AppSettings["Password"]); ;
+                ConfigurationManager.AppSettings["Password"]);
+            Application["MySQLConnection"] = connectionString;
 
             string path = HostingEnvironment.MapPath("~/Logs");
 

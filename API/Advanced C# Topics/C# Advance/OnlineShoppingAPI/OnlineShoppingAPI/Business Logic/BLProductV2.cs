@@ -69,6 +69,8 @@ namespace OnlineShoppingAPI.Business_Logic
                         objProduct.O02F08 = DateTime.Now;
 
                         db.Insert(objProduct);
+                        BLHelper.ServerCache.Remove("lstProductsV2");
+
                         return BLHelper.ResponseMessage(HttpStatusCode.Created,
                             "Product Added Successfully.");
                     }
@@ -93,10 +95,15 @@ namespace OnlineShoppingAPI.Business_Logic
         {
             try
             {
+                List<PRO02> lstProductsV2 = BLHelper.ServerCache.Get("lstProductsV2") as List<PRO02>;
+
+                if (lstProductsV2 != null)
+                    return lstProductsV2;
+
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    List<PRO02> products = db.Select<PRO02>();
-                    return products ?? new List<PRO02>(); // Return an empty list if products is null
+                    lstProductsV2 = db.Select<PRO02>();
+                    return lstProductsV2; // Return an empty list if products is null
                 }
             }
             catch (Exception ex)
@@ -133,6 +140,8 @@ namespace OnlineShoppingAPI.Business_Logic
                     }
 
                     db.DeleteById<PRO02>(productId);
+                    BLHelper.ServerCache.Remove("lstProductsV2");
+
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Product deleted successfully.");
                 }
@@ -165,6 +174,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                     existingProduct.O02F04 = sellPrice;
                     db.Update(existingProduct);
+                    BLHelper.ServerCache.Remove("lstProductsV2");
 
                     return BLHelper.ResponseMessage(HttpStatusCode.OK,
                         "Product updated successfully.");
@@ -186,7 +196,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 // Creating a MySqlConnection to connect to the database
                 using (MySqlConnection _connection = new MySqlConnection(
-                    "Server=localhost;Port=3306;Database=onlineshopping;User Id=Admin;Password=gs@123;"))
+                    HttpContext.Current.Application["MySQLConnection"] as string))
                 {
 
                     // Using MySqlCommand to execute SQL command

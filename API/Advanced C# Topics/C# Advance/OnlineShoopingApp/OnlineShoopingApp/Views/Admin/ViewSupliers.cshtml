@@ -10,59 +10,61 @@
 <p>
     @Html.ActionLink("Create New", "CreateSuplier")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            No.
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Password
-        </th>
-        <th>
-            Mobile Number
-        </th>
-        <th>
-            GST Number
-        </th>
-        <th>
-            Actions
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @rowNumber
-            @{ 
-                rowNumber++;
-            }
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.P01F02)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.P01F03)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.P01F04)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.P01F05)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.P01F06)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditSuplier", new { id = item.P01F01 }) |
-            @Html.ActionLink("Delete", "DeleteSuplier", new { id = item.P01F01 })
-        </td>
-    </tr>
-}
+<table class="table" id="myTable" width="100%">
+    <thead>
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Password
+            </th>
+            <th>
+                Mobile Number
+            </th>
+            <th>
+                GST Number
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @rowNumber
+                @{
+                    rowNumber++;
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.P01F02)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.P01F03)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.P01F04)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.P01F05)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.P01F06)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditSuplier", new { id = item.P01F01 }) |
+                @Html.ActionLink("Delete", "DeleteSuplier", new { id = item.P01F01 })
+            </td>
+        </tr>
+    }
 
 </table>

@@ -193,7 +193,7 @@ namespace OnlineShoopingApp.Controllers
             string data = JsonConvert.SerializeObject(category);
             var content = new StringContent(data, null, "application/json");
             request.Content = content;
-            var response = await _httpClient.SendAsync(request);
+            await _httpClient.SendAsync(request);
 
             return RedirectToAction("ViewCategories", "Admin");
         }
@@ -249,6 +249,25 @@ namespace OnlineShoopingApp.Controllers
             var lstProducts = JsonConvert.DeserializeObject<List<ProductViewModel>>(data);
 
             return View(lstProducts);
+        }
+
+        [HttpGet]
+        public ActionResult CreateProduct()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateProduct(Product product)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                "http://localhost:59592/api/CLProduct/Add");
+            string data = JsonConvert.SerializeObject(product);
+            var content = new StringContent(data, null, "application/json");
+            request.Content = content;
+            await _httpClient.SendAsync(request);
+
+            return RedirectToAction("ViewProducts", "Admin");
         }
     }
 }

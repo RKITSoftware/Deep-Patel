@@ -240,6 +240,23 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        public decimal GetProfit(string time)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    decimal profit = db.Single<PFT01>(p => p.T01F02.Equals(time)).T01F03;
+                    return profit;
+                }
+            }
+            catch (Exception ex)
+            {
+                BLHelper.LogError(ex);
+                return -1;
+            }
+        }
+
         #endregion
     }
 }

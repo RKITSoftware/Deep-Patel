@@ -10,35 +10,36 @@
 <p>
     @Html.ActionLink("Create New", "CreateCustomer")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            No.
-        </th>
-        <th>
-            Name
-        </th>
-        <th>
-            Email
-        </th>
-        <th>
-            Username
-        </th>
-        <th>
-            Mobile Number
-        </th>
-        <th>
-            City
-        </th>
-        <th>Actions</th>
-    </tr>
-
+<table class="table" id="myTable" width="100%">
+    <thead>
+        <tr>
+            <th>
+                No.
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Username
+            </th>
+            <th>
+                Mobile Number
+            </th>
+            <th>
+                City
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
     @foreach (var item in Model)
     {
         <tr>
             <td>
                 @rowNumber
-                @{ 
+                @{
                     rowNumber++;
                 }
             </td>

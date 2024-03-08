@@ -1,14 +1,12 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
-using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Models;
-using OnlineShoppingAPI.Security;
 using System.Net.Http;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/cart")]
-    [BearerAuth]
+    //[BearerAuth]
     public class CLCartController : ApiController
     {
         /// <summary>
@@ -31,7 +29,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>HTTP response message indicating the result of the operation</returns>
         [HttpPost]
         [Route("AddItem")]
-        [ValidateModel]
+        //[ValidateModel]
         public HttpResponseMessage AddItemToCart(CRT01 objProduct)
         {
             return _cart.Add(objProduct);
@@ -86,6 +84,19 @@ namespace OnlineShoppingAPI.Controllers
             return _cart.VerifyAndBuy(customerId, otp);
         }
 
+        [HttpGet]
+        [Route("GetCartInfo/{id}")]
+        public IHttpActionResult GetCartInfo(int id)
+        {
+            return Ok(_cart.GetCartInfo(id));
+        }
+
+        [HttpGet]
+        [Route("BuyItem/{id}")]
+        public HttpResponseMessage BuyItem(int id)
+        {
+            return _cart.BuyItem(id);
+        }
 
         #region Unused endpoints
 

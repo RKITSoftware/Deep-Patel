@@ -81,5 +81,12 @@ namespace OnlineShoppingAPI.Controllers
         {
             return _blAdmin.Delete(id);
         }
+
+        [HttpGet]
+        [Route("ShowProfit")]
+        public IHttpActionResult GetProfit(string time)
+        {
+            return Ok(_blAdmin.GetProfit(time));
+        }
     }
 }

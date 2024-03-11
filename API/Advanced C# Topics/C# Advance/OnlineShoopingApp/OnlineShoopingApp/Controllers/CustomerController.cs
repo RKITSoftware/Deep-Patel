@@ -71,5 +71,33 @@ namespace OnlineShoopingApp.Controllers
 
             return RedirectToAction("Success", "Customer");
         }
+
+        [HttpGet]
+        public async Task<ActionResult> BuyItems(int id)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"http://localhost:59592/api/cart/GenerateOtp?customerId={id}");
+            await _httpClient.SendAsync(request);
+
+            BuyItemsViewModel buyItemsViewModel = new BuyItemsViewModel()
+            {
+                Id = id
+            };
+
+            return View(buyItemsViewModel);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> VerifyOTP(BuyItemsViewModel buyItemsViewModel)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post,
+                $"http://localhost:59592/api/cart/VerifyOTP/{buyItemsViewModel.Id}" +
+                $"?otp={buyItemsViewModel.Otp}");
+            var response = await _httpClient.SendAsync(request);
+
+            response.EnsureSuccessStatusCode();
+
+            return View("Success");
+        }
     }
 }

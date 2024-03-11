@@ -219,6 +219,11 @@ namespace OnlineShoppingAPI.Business_Logic
             return false;
         }
 
+        /// <summary>
+        /// For logging out user from the active session.
+        /// </summary>
+        /// <param name="username">User's username</param>
+        /// <returns>HttpResponseMessage for logout successful or not.</returns>
         public HttpResponseMessage LogOut(string username)
         {
             try

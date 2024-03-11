@@ -188,6 +188,10 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// An Sql query that returns the product information with specific category name and suplier details.
+        /// </summary>
+        /// <returns>Product information</returns>
         public dynamic GetInfo()
         {
             try

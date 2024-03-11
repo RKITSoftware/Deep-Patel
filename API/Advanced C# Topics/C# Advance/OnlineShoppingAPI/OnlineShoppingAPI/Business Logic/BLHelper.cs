@@ -257,7 +257,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 {
                     return db.Single<USR01>(u =>
                         u.R01F02.Equals(username) &&
-                        u.R01F03.Equals(encryptedPassword));
+                        u.R01F05.Equals(encryptedPassword));
                 }
             }
             catch (Exception ex)
@@ -267,6 +267,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// When a product is bought at that time this method calculates the profit and 
+        /// add it to that day's profit.
+        /// </summary>
+        /// <param name="objProduct">Products buy price and Sell price information</param>
+        /// <param name="quantity">Quantity that user bought.</param>
         public static void UpdateProfit(PRO02 objProduct, int quantity)
         {
             try
@@ -276,19 +282,20 @@ namespace OnlineShoppingAPI.Business_Logic
                     db.CreateTableIfNotExists<PFT01>();
 
                     PFT01 objProfit = db.Single<PFT01>(p =>
-                        p.T01F02 == DateTime.Now.ToString("dd-MM-yyyy"));
+                        p.T01F02 == "14-03-2024");
 
-                    if (objProfit == null)
+                    if (objProfit != null)
                     {
-                        db.Insert(new PFT01()
-                        {
-                            T01F02 = DateTime.Now.ToString("dd-MM-yyyy"),
-                            T01F03 = 0
-                        });
+                        objProfit.T01F03 += (objProduct.O02F04 - objProduct.O02F03) * quantity;
+                        db.Update(objProfit);
+                        return;
                     }
 
-                    objProfit.T01F03 += (objProduct.O02F04 - objProduct.O02F03) * quantity;
-                    db.Update(objProfit);
+                    db.Insert(new PFT01()
+                    {
+                        T01F02 = "15-03-2024",
+                        T01F03 = (objProduct.O02F04 - objProduct.O02F03) * quantity
+                    });
                 }
             }
             catch (Exception ex)
@@ -297,6 +304,10 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Gets the year data of this running like how much profit company earns this year.
+        /// </summary>
+        /// <returns>A list of decimal which contains month wise profit.</returns>
         public static List<decimal> GetMonthData()
         {
             try
@@ -328,6 +339,10 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Gets the last 10 years profit data for analysis.
+        /// </summary>
+        /// <returns>A list of last 10 year profit.</returns>
         public static List<decimal> GetPreviousYearData()
         {
             try

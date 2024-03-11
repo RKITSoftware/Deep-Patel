@@ -17,3 +17,30 @@ Error Message: NullReferenceException
 Exception Type: System.NullReferenceException
 Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLHelper.GetMonthData(Int32 year) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLHelper.cs:line 309
 
+Time: 12:54:35
+Error Message: TaskCanceledException
+Exception Type: System.Threading.Tasks.TaskCanceledException
+Error Stack Trace:    at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.ThrowForNonSuccess(Task task)
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+
+Time: 12:59:17
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLHelper.UpdateProfit(PRO02 objProduct, Int32 quantity) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLHelper.cs:line 290
+
+Time: 13:13:04
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLHelper.UpdateProfit(PRO02 objProduct, Int32 quantity)
+

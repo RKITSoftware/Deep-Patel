@@ -82,11 +82,16 @@ namespace OnlineShoppingAPI.Controllers
             return _blAdmin.Delete(id);
         }
 
+        /// <summary>
+        /// Get the profit of specific date
+        /// </summary>
+        /// <param name="date">Date in dd-MM-yyyy format</param>
+        /// <returns>Profit for specific that date</returns>
         [HttpGet]
         [Route("ShowProfit")]
-        public IHttpActionResult GetProfit(string time)
+        public IHttpActionResult GetProfit(string date)
         {
-            return Ok(_blAdmin.GetProfit(time));
+            return Ok(_blAdmin.GetProfit(date));
         }
     }
 }

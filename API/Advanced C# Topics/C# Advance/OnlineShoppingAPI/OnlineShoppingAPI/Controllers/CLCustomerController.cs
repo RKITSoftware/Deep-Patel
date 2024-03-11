@@ -100,7 +100,7 @@ namespace OnlineShoppingAPI.Controllers
             => Ok(_customerService.GetAll());
 
         /// <summary>
-        /// Retrieves a list of customers.
+        /// Retrieves a customers.
         /// </summary>
         /// <returns>HTTP response with customer data</returns>
         [HttpGet]

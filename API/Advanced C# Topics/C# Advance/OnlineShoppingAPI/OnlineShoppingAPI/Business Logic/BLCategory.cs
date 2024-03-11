@@ -105,6 +105,14 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Deleted the category from the database using the category id which is given when creating that category.
+        /// </summary>
+        /// <param name="id">Category id</param>
+        /// <returns>
+        /// HttpResponseMessage which contains the specific information about what happens
+        /// when deletig category.
+        /// </returns>
         public HttpResponseMessage Delete(int id)
         {
             try
@@ -143,6 +151,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Return the category which is specified by id in database tables.
+        /// </summary>
+        /// <param name="id">Category Id</param>
+        /// <returns>Category</returns>
         public CAT01 Get(int id)
         {
             try
@@ -161,6 +174,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Edit the category that user wants to update.
+        /// </summary>
+        /// <param name="objCategory">Updated information of category</param>
+        /// <returns>HttpResponseMessage </returns>
         public HttpResponseMessage Edit(CAT01 objCategory)
         {
             try

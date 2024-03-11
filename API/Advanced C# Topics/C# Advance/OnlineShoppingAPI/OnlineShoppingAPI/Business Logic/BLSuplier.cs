@@ -378,6 +378,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Gets the suplier data from the cache if exist otherwise from the database.
+        /// </summary>
+        /// <param name="id">Suplier id for finding suplier information.</param>
+        /// <returns>Suplier information</returns>
         public SUP01 Get(int id)
         {
             try

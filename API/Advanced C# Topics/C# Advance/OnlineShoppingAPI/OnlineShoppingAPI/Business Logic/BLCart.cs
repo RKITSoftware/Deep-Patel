@@ -301,6 +301,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// An method that return a cart info of specific customer.
+        /// </summary>
+        /// <param name="id">customer id for finding items in his cart.</param>
+        /// <returns>An dynamic list which contains the cart items which user have in his/her cart.</returns>
         public dynamic GetCartInfo(int id)
         {
             try
@@ -311,7 +316,6 @@ namespace OnlineShoppingAPI.Business_Logic
                 using (MySqlConnection _connection = new MySqlConnection(
                     HttpContext.Current.Application["MySQLConnection"] as string))
                 {
-
                     // Using MySqlCommand to execute SQL command
                     using (MySqlCommand cmd = new MySqlCommand(@"SELECT 
                                                                     crt01.T01F01 AS 'Id',
@@ -356,6 +360,12 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Buy single item from user's cart.
+        /// </summary>
+        /// <param name="cartId">Cart id for finding that item in cart table.</param>
+        /// <returns>HttpResponseMessage if user successfully buy that item or another status code
+        /// messages for specific conditions failed during buying that item.</returns>
         public HttpResponseMessage BuyItem(int cartId)
         {
             try

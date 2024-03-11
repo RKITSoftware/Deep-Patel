@@ -153,6 +153,10 @@ namespace OnlineShoppingAPI.Controllers
             return _blProductV2.UpdateSellPrice(productId, sellPrice);
         }
 
+        /// <summary>
+        /// Gets all product information for Admin.
+        /// </summary>
+        /// <returns>Product information with category name & suplier name.</returns>
         [HttpGet]
         [Route("GetAllProductsInfo")]
         public IHttpActionResult GetAllProductInfo()

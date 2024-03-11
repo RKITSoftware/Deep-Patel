@@ -561,7 +561,8 @@ namespace OnlineShoppingAPI.Business_Logic
                 };
 
                 // Set content type for Excel file
-                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue(
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
                 return response;
             }

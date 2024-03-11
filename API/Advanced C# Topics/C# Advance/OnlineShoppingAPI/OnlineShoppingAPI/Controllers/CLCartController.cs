@@ -84,6 +84,11 @@ namespace OnlineShoppingAPI.Controllers
             return _cart.VerifyAndBuy(customerId, otp);
         }
 
+        /// <summary>
+        /// Get the customer's cart details.
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns>Customer cart item's list.</returns>
         [HttpGet]
         [Route("GetCartInfo/{id}")]
         public IHttpActionResult GetCartInfo(int id)
@@ -91,6 +96,11 @@ namespace OnlineShoppingAPI.Controllers
             return Ok(_cart.GetCartInfo(id));
         }
 
+        /// <summary>
+        /// Buy single item from the list of items in cart.
+        /// </summary>
+        /// <param name="id">cart's item id</param>
+        /// <returns>Success of Error Response according to the item available or not.</returns>
         [HttpGet]
         [Route("BuyItem/{id}")]
         public HttpResponseMessage BuyItem(int id)

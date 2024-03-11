@@ -240,13 +240,18 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public decimal GetProfit(string time)
+        /// <summary>
+        /// Get the profit of that specific date
+        /// </summary>
+        /// <param name="time">Date format in dd-MM-yyyy format.</param>
+        /// <returns>Profit on that date</returns>
+        public decimal GetProfit(string date)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    decimal profit = db.Single<PFT01>(p => p.T01F02.Equals(time)).T01F03;
+                    decimal profit = db.Single<PFT01>(p => p.T01F02.Equals(date)).T01F03;
                     return profit;
                 }
             }

@@ -395,6 +395,11 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Gets the customer using id
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns>Customer deatils</returns>
         public CUS01 Get(int id)
         {
             try

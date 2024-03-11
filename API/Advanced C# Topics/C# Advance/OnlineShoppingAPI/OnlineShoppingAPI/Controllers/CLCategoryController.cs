@@ -56,6 +56,11 @@ namespace OnlineShoppingAPI.Controllers
             return Ok(lstCategory);
         }
 
+        /// <summary>
+        /// API Endpoint for retrieving a category.
+        /// </summary>
+        /// <param name="id">Category id</param>
+        /// <returns>Category</returns>
         [HttpGet]
         [Route("Get/{id}")]
         public IHttpActionResult GetById(int id)
@@ -63,6 +68,11 @@ namespace OnlineShoppingAPI.Controllers
             return Ok(_category.Get(id));
         }
 
+        /// <summary>
+        /// API Endpoint for deleting the category
+        /// </summary>
+        /// <param name="id">Category id</param>
+        /// <returns>Response message accoring to the delete.</returns>
         [HttpDelete]
         [Route("Delete/{id}")]
         public HttpResponseMessage DeleteCategory(int id)
@@ -70,6 +80,10 @@ namespace OnlineShoppingAPI.Controllers
             return _category.Delete(id);
         }
 
+        /// <summary>
+        /// API Endpoint for editing category using Category Id
+        /// </summary>
+        /// <param name="objCategory">New category information</param>
         [HttpPut]
         [Route("Edit")]
         public HttpResponseMessage Edit(CAT01 objCategory)

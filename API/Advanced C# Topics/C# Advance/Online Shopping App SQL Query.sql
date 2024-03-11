@@ -1,3 +1,4 @@
+-- Getting product information for admin
 SELECT 
 	pro02.O02F01 AS "Id",
     pro02.O02F02 AS 'Name',
@@ -14,6 +15,7 @@ FROM
         INNER JOIN
     sup01 ON pro02.O02F10 = sup01.P01F01;
     
+-- Getting customer cart details using customer id
 SELECT 
     crt01.T01F01 AS 'Id',
     pro02.O02F02 AS 'Product Name',
@@ -25,3 +27,11 @@ FROM
     pro02 ON crt01.T01F03 = pro02.O02F01
 WHERE
     crt01.T01F02 = 1;
+    
+-- Getting profit specific to month.
+SELECT 
+    SUM(pft01.T01F03) AS 'Profit'
+FROM
+    pft01
+WHERE
+    pft01.T01F02 LIKE '__-03-2024';

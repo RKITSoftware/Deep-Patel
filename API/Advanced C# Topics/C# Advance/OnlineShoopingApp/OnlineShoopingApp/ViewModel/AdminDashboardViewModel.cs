@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace OnlineShoopingApp.ViewModel
+﻿namespace OnlineShoopingApp.ViewModel
 {
     public class AdminDashboardViewModel
     {
-        public List<int> MonthChartData { get; set; }
+        public string MonthChartData { get; set; }
+        public string YearChartData { get; set; }
     }
 }

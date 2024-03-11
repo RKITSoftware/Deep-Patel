@@ -159,6 +159,8 @@
     <Content Include="Views\Customer\ViewCart.cshtml" />
     <Content Include="Views\Customer\Success.cshtml" />
     <Content Include="Views\Customer\Delete.cshtml" />
+    <Content Include="Views\Admin\MonthChart.cshtml" />
+    <Content Include="Views\Admin\YearChart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

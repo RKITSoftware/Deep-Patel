@@ -1,0 +1,19 @@
+Time: 10:10:12
+Error Message: InvalidOperationException
+Exception Type: System.InvalidOperationException
+Error Stack Trace:    at System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   at System.Nullable`1.get_Value()
+   at OnlineShoppingAPI.Business_Logic.BLHelper.GetMonthData(Int32 year) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLHelper.cs:line 309
+
+Time: 10:10:56
+Error Message: InvalidOperationException
+Exception Type: System.InvalidOperationException
+Error Stack Trace:    at System.ThrowHelper.ThrowInvalidOperationException(ExceptionResource resource)
+   at System.Nullable`1.get_Value()
+   at OnlineShoppingAPI.Business_Logic.BLHelper.GetMonthData(Int32 year) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLHelper.cs:line 309
+
+Time: 10:15:34
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.Business_Logic.BLHelper.GetMonthData(Int32 year) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Business Logic\BLHelper.cs:line 309
+

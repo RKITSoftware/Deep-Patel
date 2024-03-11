@@ -18,9 +18,23 @@ namespace OnlineShoopingApp.Controllers
         }
 
         // GET: Admin
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            AdminDashboardViewModel adminDashboardViewModel = new AdminDashboardViewModel();
+            var request = new HttpRequestMessage(HttpMethod.Get,
+                $"http://localhost:59592/api/profit/monthChartData");
+            var response = await _httpClient.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+
+            var request1 = new HttpRequestMessage(HttpMethod.Get,
+                $"http://localhost:59592/api/profit/yearChartData");
+            var response1 = await _httpClient.SendAsync(request1);
+            response1.EnsureSuccessStatusCode();
+
+            adminDashboardViewModel.MonthChartData = await response.Content.ReadAsStringAsync();
+            adminDashboardViewModel.YearChartData = await response1.Content.ReadAsStringAsync();
+
+            return View(adminDashboardViewModel);
         }
 
         [HttpGet]

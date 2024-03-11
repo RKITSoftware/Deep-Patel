@@ -3,13 +3,21 @@ using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
+    [RoutePrefix("api/profit")]
     public class CLProfitController : ApiController
     {
         [HttpGet]
-        [Route("monthChartData/{year}")]
-        public IHttpActionResult GetMonthChartData(int year)
+        [Route("monthChartData")]
+        public IHttpActionResult GetMonthChartData()
         {
-            return Ok(BLHelper.GetMonthData(year));
+            return Ok(BLHelper.GetMonthData());
+        }
+
+        [HttpGet]
+        [Route("yearChartData")]
+        public IHttpActionResult GetPrevious10YearData()
+        {
+            return Ok(BLHelper.GetPreviousYearData());
         }
     }
 }

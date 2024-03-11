@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -298,46 +297,25 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-        public static List<decimal> GetMonthData(int year)
+        public static List<decimal> GetMonthData()
         {
             try
             {
                 List<decimal> lstData = new List<decimal>();
                 using (var db = _dbFactory.OpenDbConnection())
                 {
+                    int year = DateTime.Now.Year;
                     for (int month = 1; month <= 12; month++)
                     {
-                        // Creating a MySqlConnection to connect to the database
-                        using (MySqlConnection _connection = new MySqlConnection(
-                            HttpContext.Current.Application["MySQLConnection"] as string))
-                        {
-                            // Using MySqlCommand to execute SQL command
-                            using (MySqlCommand cmd = new MySqlCommand(@"SELECT 
-                                                                            SUM(pft01.T01F03) AS 'Profit'
-                                                                        FROM
-                                                                            pft01
-                                                                        WHERE
-                                                                            pft01.T01F02 LIKE '__-@month-@year';",
-                                                                            _connection))
-                            {
-                                _connection.Open();
-                                cmd.Parameters.AddWithValue("@month", month.ToString("00"));
-                                cmd.Parameters.AddWithValue("@year", year.ToString("0000"));
+                        decimal profit = db.SqlScalar<decimal>(
+                            @"SELECT 
+                                SUM(pft01.T01F03) AS 'Profit' 
+                            FROM 
+                                pft01 
+                            WHERE pft01.T01F02 " +
+                                $"LIKE '__-{month.ToString("00")}-{year.ToString("0000")}'");
 
-                                // Using MySqlDataReader to read data from the executed command
-                                using (MySqlDataReader reader = cmd.ExecuteReader())
-                                {
-                                    if (reader.Read())
-                                    {
-                                        lstData.Add(Convert.ToDecimal(reader[0]));
-                                    }
-                                    else
-                                    {
-                                        lstData.Add(0);
-                                    }
-                                }
-                            }
-                        }
+                        lstData.Add(profit);
                     }
                 }
 
@@ -347,6 +325,36 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 LogError(ex);
                 return new List<decimal>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            }
+        }
+
+        public static List<decimal> GetPreviousYearData()
+        {
+            try
+            {
+                List<decimal> lstData = new List<decimal>();
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    for (int year = DateTime.Now.Year - 9; year <= DateTime.Now.Year; year++)
+                    {
+                        decimal profit = db.SqlScalar<decimal>(
+                            @"SELECT 
+                                SUM(pft01.T01F03) AS 'Profit' 
+                            FROM 
+                                pft01 
+                            WHERE pft01.T01F02 " +
+                                $"LIKE '__-__-{year.ToString("0000")}'");
+
+                        lstData.Add(profit);
+                    }
+                }
+
+                return lstData;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return new List<decimal>() { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             }
         }
 

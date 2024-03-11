@@ -1,0 +1,46 @@
+﻿@model OnlineShoopingApp.ViewModel.AdminDashboardViewModel
+
+<script>
+    var chartData = @Html.Raw(Model.YearChartData);
+
+    var currentYear = new Date().getFullYear();
+    var years = Array.from({ length: 10 }, (_, index) => (currentYear - 9 + index).toString());
+
+    console.log(years);
+
+    var yearChartOptions = {
+        series: [{
+            name: "Profit",
+            data: chartData
+        }],
+        chart: {
+            height: 350,
+            type: 'line',
+            zoom: {
+                enabled: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'straight'
+        },
+        title: {
+            text: 'Year-Wise profit',
+            align: 'left'
+        },
+        grid: {
+            row: {
+                colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                opacity: 0.5
+            },
+        },
+        xaxis: {
+            categories: years,
+        }
+    };
+
+    var yearChart = new ApexCharts(document.querySelector("#yearChart"), yearChartOptions);
+    yearChart.render();
+</script>

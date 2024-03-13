@@ -1,6 +1,4 @@
-﻿using AbstractComponentAPI.Filter;
-using System.Web.Http;
-using System.Web.Http.Dispatcher;
+﻿using System.Web.Http;
 
 namespace AbstractComponentAPI
 {
@@ -19,9 +17,6 @@ namespace AbstractComponentAPI
                 defaults: new { id = RouteParameter.Optional }
             );
 
-            // Replace the default controller selector with a custom implementation
-            // This allows customizing controller selection logic, as demonstrated by CustomSelectorController
-            config.Services.Replace(typeof(IHttpControllerSelector), new CustomSelectorController(config));
         }
     }
 }

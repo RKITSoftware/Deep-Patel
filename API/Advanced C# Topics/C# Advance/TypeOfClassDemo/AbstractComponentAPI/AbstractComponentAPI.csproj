@@ -100,7 +100,6 @@
     <Compile Include="Controllers\CLBaseEmployeeController.cs" />
     <Compile Include="Controllers\CLEmployeeV1Controller.cs" />
     <Compile Include="Controllers\CLEmployeeV2Controller.cs" />
-    <Compile Include="Filter\CustomSelectorController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

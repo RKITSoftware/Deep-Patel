@@ -6,6 +6,7 @@ namespace AbstractComponentAPI.Controllers
     /// <summary>
     /// Employee V1 controller for handling Employee v1 models operations.
     /// </summary>
+    [RoutePrefix("api/CLEmployeeV1")]
     public class CLEmployeeV1Controller : CLBaseEmployeeController
     {
         /// <summary>

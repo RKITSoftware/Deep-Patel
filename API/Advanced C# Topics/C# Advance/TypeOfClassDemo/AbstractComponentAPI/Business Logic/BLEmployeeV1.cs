@@ -13,7 +13,25 @@ namespace AbstractComponentAPI.Business_Logic
         /// <summary>
         /// Stores Employee Version 1 models data into list
         /// </summary>
-        private readonly static List<EMP01> lstEmployeeV1 = new List<EMP01>();
+        private readonly static List<EMP01> lstEmployeeV1 = new List<EMP01>()
+        {
+            new EMP01()
+            {
+                P01F01 = 1,
+                P01F02 = "Deep Patel",
+                P01F03 = 21,
+                P01F04 = "Rajkot",
+                P01F05 = "Gujarat"
+            },
+            new EMP01()
+            {
+                P01F01 = 2,
+                P01F02 = "Vishal Gohil",
+                P01F03 = 21,
+                P01F04 = "Bhavnagar",
+                P01F05 = "Gujarat"
+            },
+        };
 
         #endregion
 

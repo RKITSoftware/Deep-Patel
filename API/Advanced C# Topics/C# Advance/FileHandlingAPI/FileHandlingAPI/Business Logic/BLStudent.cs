@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web;
-using System.Web.Http;
 
 namespace FileHandlingAPI.Business_Logic
 {
@@ -68,17 +68,6 @@ namespace FileHandlingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Create a file with today date
-        /// </summary>
-        public void CreateFile()
-        {
-            if (!File.Exists(filePath))
-            {
-                File.Create(filePath);
-            }
-        }
-
-        /// <summary>
         /// Writing data into a file
         /// </summary>
         /// <returns>File written response</returns>
@@ -86,9 +75,9 @@ namespace FileHandlingAPI.Business_Logic
         {
             CreateFile();
 
-            using(StreamWriter writer = new StreamWriter(filePath)) 
+            using (StreamWriter writer = new StreamWriter(filePath))
             {
-                foreach(STU01 objSTU01 in lstStudent)
+                foreach (STU01 objSTU01 in lstStudent)
                 {
                     writer.WriteLine($"{objSTU01.U01F01}, {objSTU01.U01F02}, {objSTU01.U01F03}");
                 }
@@ -104,17 +93,16 @@ namespace FileHandlingAPI.Business_Logic
         {
             if (File.Exists(filePath))
             {
-                var dataBytes = File.ReadAllBytes(filePath);
-                var dataStream = new MemoryStream(dataBytes);
+                byte[] dataBytes = File.ReadAllBytes(filePath);
+                MemoryStream dataStream = new MemoryStream(dataBytes);
 
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Content = new StreamContent(dataStream);
-                response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment") 
-                { 
+                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
 
-                };
-                response.Content.Headers.ContentDisposition.FileName = "Backup of Student Data " + DateTime.Now.ToString("dd-MM-yyyy") + ".txt"; // Set the desired file name
-                response.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                response.Content.Headers.ContentDisposition.FileName =
+                    "Backup of Student Data " + DateTime.Now.ToString("dd-MM-yyyy") + ".txt"; // Set the desired file name
+                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
 
                 return response;
             }
@@ -138,9 +126,9 @@ namespace FileHandlingAPI.Business_Logic
             {
                 lstStudent.Clear();
 
-                using(StreamReader sr = new StreamReader(readFilePath))
+                using (StreamReader sr = new StreamReader(readFilePath))
                 {
-                    while(!sr.EndOfStream)
+                    while (!sr.EndOfStream)
                     {
                         string[] parts = sr.ReadLine().Split(',');
 
@@ -157,6 +145,17 @@ namespace FileHandlingAPI.Business_Logic
             }
 
             return new HttpResponseMessage(HttpStatusCode.NotFound);
+        }
+
+        /// <summary>
+        /// Create a file with today date
+        /// </summary>
+        private void CreateFile()
+        {
+            if (!File.Exists(filePath))
+            {
+                File.Create(filePath);
+            }
         }
     }
 }

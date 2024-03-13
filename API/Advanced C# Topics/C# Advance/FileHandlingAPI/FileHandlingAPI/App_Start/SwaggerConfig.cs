@@ -1,7 +1,8 @@
-using System.Web.Http;
-using WebActivatorEx;
 using FileHandlingAPI;
 using Swashbuckle.Application;
+using System.Reflection;
+using System.Web.Http;
+using WebActivatorEx;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -11,7 +12,7 @@ namespace FileHandlingAPI
     {
         public static void Register()
         {
-            var thisAssembly = typeof(SwaggerConfig).Assembly;
+            Assembly thisAssembly = typeof(SwaggerConfig).Assembly;
 
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
@@ -61,7 +62,7 @@ namespace FileHandlingAPI
                         //c.BasicAuth("basic")
                         //    .Description("Basic HTTP Authentication");
                         //
-						// NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
+                        // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
                         //c.ApiKey("apiKey")
                         //    .Description("API Key Authentication")
                         //    .Name("apiKey")

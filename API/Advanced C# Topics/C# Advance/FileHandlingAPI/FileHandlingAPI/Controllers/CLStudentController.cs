@@ -17,6 +17,11 @@ namespace FileHandlingAPI.Controllers
     {
         private BLStudent _blStudent;
 
+        public CLStudentController()
+        {
+            _blStudent = new BLStudent();
+        }
+
         /// <summary>
         /// GET :- api/CLStudent/GetAllStudentData
         /// </summary>
@@ -25,7 +30,6 @@ namespace FileHandlingAPI.Controllers
         [Route("GetAllStudentData")]
         public IHttpActionResult GetAllStudentData()
         {
-            _blStudent = new BLStudent();
             return Ok(_blStudent.GetAllStudent());
         }
 
@@ -38,7 +42,6 @@ namespace FileHandlingAPI.Controllers
         [Route("GetStudentById/{id}")]
         public IHttpActionResult GetStudentById([FromUri] int id)
         {
-            _blStudent = new BLStudent();
             return Ok(_blStudent.GetStudentById(id));
         }
 
@@ -51,7 +54,6 @@ namespace FileHandlingAPI.Controllers
         [Route("AddStudent")]
         public IHttpActionResult Addstudent([FromBody] STU01 objStudent)
         {
-            _blStudent = new BLStudent();
             return Ok(_blStudent.CreateStudent(objStudent));
         }
 
@@ -64,7 +66,6 @@ namespace FileHandlingAPI.Controllers
         [Route("DeleteStudent/{id}")]
         public IHttpActionResult DeleteStudent(int id)
         {
-            _blStudent = new BLStudent();
             return Ok(_blStudent.DeleteStudent(id));
         }
 
@@ -77,7 +78,6 @@ namespace FileHandlingAPI.Controllers
         [Route("FileWrite")]
         public IHttpActionResult WriteStudentDataIntoFile()
         {
-            _blStudent = new BLStudent();
             return Ok(_blStudent.WriteData());
         }
 
@@ -90,7 +90,6 @@ namespace FileHandlingAPI.Controllers
         [Route("download")]
         public HttpResponseMessage DownloadFile()
         {
-            _blStudent = new BLStudent();
             return _blStudent.DownloadFile();
         }
 
@@ -103,21 +102,21 @@ namespace FileHandlingAPI.Controllers
         [Route("upload")]
         public async Task<string> UploadFileAsync()
         {
-            var ctx = HttpContext.Current;
-            var root = ctx.Server.MapPath("~/Upload Data");
-            var provider = new MultipartFormDataStreamProvider(root);
+            HttpContext ctx = HttpContext.Current;
+            string root = ctx.Server.MapPath("~/Upload Data");
+            MultipartFormDataStreamProvider provider = new MultipartFormDataStreamProvider(root);
 
             try
             {
                 await Request.Content.ReadAsMultipartAsync(provider);
 
-                foreach (var file in provider.FileData)
+                foreach (MultipartFileData file in provider.FileData)
                 {
-                    var name = file.Headers.ContentDisposition.FileName;
+                    string name = file.Headers.ContentDisposition.FileName;
                     name = name.Trim('"');
 
-                    var localFileName = file.LocalFileName;
-                    var fileP = Path.Combine(root, name);
+                    string localFileName = file.LocalFileName;
+                    string fileP = Path.Combine(root, name);
 
                     File.Copy(localFileName, fileP, true);
                 }
@@ -142,7 +141,6 @@ namespace FileHandlingAPI.Controllers
         [Route("FillData")]
         public HttpResponseMessage FillStudentDataToList(string day, string month, string year)
         {
-            _blStudent = new BLStudent();
             return _blStudent.FillData(day, month, year);
         }
 
@@ -177,7 +175,7 @@ namespace FileHandlingAPI.Controllers
             // Get all Directories
             DirectoryInfo[] dirs = dirInfo.GetDirectories();
 
-            foreach (var dir in dirs)
+            foreach (DirectoryInfo dir in dirs)
             {
                 // Some Properties of DirectoryInfo
 

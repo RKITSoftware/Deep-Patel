@@ -373,6 +373,48 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
+        /// <summary>
+        /// Returns the day wise profit of running month.
+        /// </summary>
+        /// <returns></returns>
+        public static List<decimal> GetDayWiseProfit()
+        {
+            int month = DateTime.Now.Month;
+            int year = DateTime.Now.Year;
+            int days = DateTime.DaysInMonth(year, month);
+
+            try
+            {
+                List<decimal> lstData = new List<decimal>();
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    for (int day = 1; day <= days; day++)
+                    {
+                        decimal profit = db.SqlScalar<decimal>(
+                            @"SELECT 
+                                pft01.T01F03 AS 'Profit' 
+                            FROM 
+                                pft01 
+                            WHERE pft01.T01F02 " +
+                                $"LIKE '{day.ToString("00")}-{month.ToString("00")}-{year.ToString("0000")}'");
+
+                        lstData.Add(profit);
+                    }
+                }
+
+                return lstData;
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+
+                List<decimal> lstData = new List<decimal>();
+                for (int day = 1; day <= days; day++)
+                    lstData.Add(0);
+
+                return lstData;
+            }
+        }
         #endregion
     }
 }

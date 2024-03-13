@@ -9,7 +9,6 @@ namespace RedisCachingDemo
             for (int i = 0; i < 1000000; i++)
             {
                 MyCache.Get().StringSet("Deep" + i, "Hello");
-                Console.WriteLine(i);
             }
 
             Console.WriteLine(MyCache.Get().StringGet("Deep"));

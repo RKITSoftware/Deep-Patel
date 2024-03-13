@@ -32,5 +32,16 @@ namespace OnlineShoppingAPI.Controllers
             // Retrieve and return profit data for the previous 10 years using the Business Logic Helper.
             return Ok(BLHelper.GetPreviousYearData());
         }
+
+        /// <summary>
+        /// Retrieves profit data of this month's
+        /// </summary>
+        /// <returns>A list of this month's daywise profit</returns>
+        [HttpGet]
+        [Route("dayWiseProfit")]
+        public IHttpActionResult GetDayWiseProfit()
+        {
+            return Ok(BLHelper.GetDayWiseProfit());
+        }
     }
 }

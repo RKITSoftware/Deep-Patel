@@ -45,7 +45,7 @@ namespace DataSerializationDemo
             Console.WriteLine(jsonData);
 
             // Deserialize json data to object
-            List<STU01> objstudent2 = JsonConvert.DeserializeObject < List<STU01>>(jsonData);
+            List<STU01> objstudent2 = JsonConvert.DeserializeObject<List<STU01>>(jsonData);
 
             foreach (STU01 obj in objstudent2)
             {
@@ -60,7 +60,7 @@ namespace DataSerializationDemo
         {
             XmlDocument objXmlDocument = new XmlDocument();
             XPathNavigator xNav = objXmlDocument.CreateNavigator();
-            
+
             STU01 objStudent = new STU01()
             {
                 Id = 1,
@@ -69,7 +69,7 @@ namespace DataSerializationDemo
             };
 
             XmlSerializer x = new XmlSerializer(objStudent.GetType());
-            using(var xs = xNav.AppendChild())
+            using (var xs = xNav.AppendChild())
             {
                 x.Serialize(xs, objStudent);
             }
@@ -96,7 +96,7 @@ namespace DataSerializationDemo
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(fs, objstudent);
             fs.Close();
-           
+
             // Deserialization
             FileStream fs1 = new FileStream("F:\\Deep - 380\\Training\\API\\Advanced C# Topics\\C# Advance\\DataSerializationDemo\\DataSerializationDemo\\demo.dat", FileMode.Open);
             STU02 derializeObj = (STU02)formatter.Deserialize(fs1);

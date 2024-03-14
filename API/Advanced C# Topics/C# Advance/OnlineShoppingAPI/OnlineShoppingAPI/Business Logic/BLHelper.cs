@@ -105,6 +105,74 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
+        /// Retrieves user details for authentication.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(int id)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.SingleById<USR01>(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves user details.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="password">Password of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(string username, string password)
+        {
+            try
+            {
+                string encryptedPassword = GetEncryptPassword(password);
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.Single<USR01>(u =>
+                        u.R01F02.Equals(username) &&
+                        u.R01F05.Equals(encryptedPassword));
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Checks if a user exists.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <returns>True if the user exists, false otherwise.</returns>
+        public static bool IsExist(string username)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.Exists<USR01>(u => u.R01F02.Equals(username));
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it as needed
+                LogError(ex);
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Checks if a user exists.
         /// </summary>
         /// <param name="username">Username of the user.</param>
@@ -219,52 +287,6 @@ namespace OnlineShoppingAPI.Business_Logic
             {
                 Content = new StringContent(message)
             };
-        }
-
-        /// <summary>
-        /// Retrieves user details for authentication.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(int id)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.SingleById<USR01>(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves user details for authentication.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <param name="password">Password of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(string username, string password)
-        {
-            try
-            {
-                string encryptedPassword = GetEncryptPassword(password);
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Single<USR01>(u =>
-                        u.R01F02.Equals(username) &&
-                        u.R01F05.Equals(encryptedPassword));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
         }
 
         /// <summary>

@@ -1,4 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.Dto;
+using OnlineShoppingAPI.Mappers;
+using OnlineShoppingAPI.Models;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -6,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Web;
 
 namespace OnlineShoppingAPI.Business_Logic
@@ -49,7 +52,7 @@ namespace OnlineShoppingAPI.Business_Logic
         #region Public Methods
 
         /// <summary>
-        /// Changes the password for an admin using the username.
+        /// Changes the password for an admin using the username and oldPassword
         /// </summary>
         /// <param name="username">Admin username</param>
         /// <param name="oldPassword">Old password</param>
@@ -89,36 +92,29 @@ namespace OnlineShoppingAPI.Business_Logic
             }
         }
 
-
         /// <summary>
         /// Creates a new admin along with the associated user record.
         /// </summary>
         /// <param name="objAdmin">Admin data</param>
         /// <returns>Create response</returns>
-        public HttpResponseMessage Create(ADMUSR objAdminUser)
+        public HttpResponseMessage Create(DtoADM01 objAdminDto)
         {
             try
             {
+                // PreSave
+                ADMUSR objAdminUser = AdminMapper.ToPoco(objAdminDto);
+
+                // Validation
+                if (!IsValidAdminUser(objAdminUser))
+                    return BLHelper.ResponseMessage(HttpStatusCode.PreconditionFailed,
+                        "Details are incorrect or false.");
+
+                // Save
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    db.CreateTable<ADM01>(overwrite: true);
-
                     // Inserting admin details
                     db.Insert(objAdminUser.M01);
-
-                    // Extracting information for USR01
-                    var emailParts = objAdminUser.M01.M01F03.Split('@');
-                    var username = emailParts[0];
-                    var newPassword = objAdminUser.R01.R01F03;
-
-                    // Inserting related USR01 record
-                    db.Insert(new USR01
-                    {
-                        R01F02 = username,
-                        R01F03 = newPassword,
-                        R01F04 = "Admin",
-                        R01F05 = BLHelper.GetEncryptPassword(newPassword)
-                    });
+                    db.Insert(objAdminUser.R01);
 
                     // Return success response
                     return BLHelper.ResponseMessage(HttpStatusCode.Created,
@@ -133,7 +129,6 @@ namespace OnlineShoppingAPI.Business_Logic
                     "An error occurred while processing the create request.");
             }
         }
-
 
         /// <summary>
         /// Deletes admin details using admin id. If only one admin exists, it won't delete the admin.
@@ -260,6 +255,28 @@ namespace OnlineShoppingAPI.Business_Logic
                 BLHelper.LogError(ex);
                 return -1;
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Validates admin user relational model for further processing
+        /// </summary>
+        /// <param name="objAdminUser">Admin-User relation model</param>
+        /// <returns>True if all model's property meet the criteria else returns False.</returns>
+        private bool IsValidAdminUser(ADMUSR objAdminUser)
+        {
+            string namePattern = @"^[a-zA-Z]+(?:\s+[a-zA-Z]+)*$";
+
+            if (!Regex.IsMatch(objAdminUser.M01.M01F02, namePattern))
+                return false;
+
+            if (BLHelper.IsExist(username: objAdminUser.R01.R01F02))
+                return false;
+
+            return true;
         }
 
         #endregion

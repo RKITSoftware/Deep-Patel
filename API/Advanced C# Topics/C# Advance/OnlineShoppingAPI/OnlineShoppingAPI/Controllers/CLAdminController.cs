@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.Dto;
 using OnlineShoppingAPI.Filter;
-using OnlineShoppingAPI.Models;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -65,9 +65,9 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [ValidateModel]
-        public HttpResponseMessage CreateAdmin(ADMUSR objAdminUser)
+        public HttpResponseMessage CreateAdmin(DtoADM01 objAdmin)
         {
-            return _blAdmin.Create(objAdminUser);
+            return _blAdmin.Create(objAdmin);
         }
 
         /// <summary>

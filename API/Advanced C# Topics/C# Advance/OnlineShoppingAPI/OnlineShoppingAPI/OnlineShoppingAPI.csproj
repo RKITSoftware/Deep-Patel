@@ -244,6 +244,7 @@
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
     <Compile Include="Controllers\CLSuplierController.cs" />
+    <Compile Include="Dto\DtoADM01.cs" />
     <Compile Include="Enums\OnlineShoopingEnums.cs" />
     <Compile Include="Filter\ExceptionLogFilter.cs" />
     <Compile Include="Filter\ValidateModelAttribute.cs" />
@@ -251,6 +252,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interface\IBasicAPIService.cs" />
+    <Compile Include="Mappers\AdminMapper.cs" />
     <Compile Include="Models\ADM01.cs" />
     <Compile Include="Models\ADMUSR.cs" />
     <Compile Include="Models\CAT01.cs" />

@@ -246,6 +246,7 @@
     <Compile Include="Controllers\CLSuplierController.cs" />
     <Compile Include="Dto\DtoADM01.cs" />
     <Compile Include="Enums\OnlineShoopingEnums.cs" />
+    <Compile Include="Extension\OnlineShoppingExtensions.cs" />
     <Compile Include="Filter\ExceptionLogFilter.cs" />
     <Compile Include="Filter\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">

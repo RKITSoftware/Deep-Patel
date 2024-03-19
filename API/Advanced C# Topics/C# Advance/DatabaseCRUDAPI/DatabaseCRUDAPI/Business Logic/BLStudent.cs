@@ -2,7 +2,6 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Net;
 using System.Net.Http;
 
@@ -14,30 +13,38 @@ namespace DatabaseCRUDAPI.Business_Logic
     public class BLStudent
     {
         /// <summary>
+        /// An sql connection for CRUD operation of APIs
+        /// </summary>
+        private readonly MySqlConnection _connection = new MySqlConnection(
+                "Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
+
+        /// <summary>
         /// Inserting data into the college database 
         /// </summary>
         /// <param name="objStudent">Student data to insert</param>
         /// <returns>Create response</returns>
         public HttpResponseMessage InsertData(STU01 objStudent)
         {
-            MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
-
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand())
+                using (MySqlCommand cmd = new MySqlCommand(
+                    "INSERT INTO STU01 (U01F02, U01F03) VALUES (@Name, @Age)", _connection))
                 {
-                    cmd.Connection = _connection;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "INSERT INTO STU01 (U01F02, U01F03) VALUES (@Name, @Age)";
+                    MySqlParameter[] mySqlParameters =
+                    {
+                        new MySqlParameter("@Name", objStudent.U01F02),
+                        new MySqlParameter("@Age", objStudent.U01F03)
+                    };
+                    cmd.Parameters.AddRange(mySqlParameters);
 
-                    cmd.Parameters.AddWithValue("@Name", objStudent.U01F02);
-                    cmd.Parameters.AddWithValue("@Age", objStudent.U01F03);
+                    //cmd.Parameters.AddWithValue("@Name", objStudent.U01F02);
+                    //cmd.Parameters.AddWithValue("@Age", objStudent.U01F03);
 
                     _connection.Open();
                     cmd.ExecuteNonQuery();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError)
                 {
@@ -61,7 +68,6 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// <returns>List of students</returns>
         public List<STU01> ReadData()
         {
-            MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
             List<STU01> lstStudent = new List<STU01>();
 
             try
@@ -103,21 +109,22 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// <returns>Update response</returns>
         public HttpResponseMessage UpdateStudent(STU01 objStudent)
         {
-            MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
-
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand())
+                using (MySqlCommand cmd = new MySqlCommand(@"UPDATE 
+                                                                STU01 
+                                                            SET 
+                                                                U01F02=@Name, 
+                                                                U01F03=@Age 
+                                                            WHERE U01F01=@Id", _connection))
                 {
-                    cmd.Connection = _connection;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "UPDATE STU01 " +
-                                        "SET U01F02=@Name, U01F03=@Age " +
-                                        "WHERE U01F01=@Id";
-
-                    cmd.Parameters.AddWithValue("@Id", objStudent.U01F01);
-                    cmd.Parameters.AddWithValue("@Name", objStudent.U01F02);
-                    cmd.Parameters.AddWithValue("@Age", objStudent.U01F03);
+                    MySqlParameter[] mySqlParameters =
+                    {
+                        new MySqlParameter("@Id", objStudent.U01F01),
+                        new MySqlParameter("@Name", objStudent.U01F02),
+                        new MySqlParameter("@Age", objStudent.U01F03)
+                    };
+                    cmd.Parameters.AddRange(mySqlParameters);
 
                     _connection.Open();
                     cmd.ExecuteNonQuery();
@@ -148,17 +155,12 @@ namespace DatabaseCRUDAPI.Business_Logic
         /// <returns>Delete response</returns>
         public HttpResponseMessage DeleteStudent(int id)
         {
-            MySqlConnection _connection = new MySqlConnection("Server=localhost;Port=3306;Database=college;User Id=Admin;Password=gs@123;");
-
             try
             {
-                using (MySqlCommand cmd = new MySqlCommand())
+                using (MySqlCommand cmd = new MySqlCommand(@"DELETE 
+                                                                FROM STU01 
+                                                                WHERE U01F01 = @Id", _connection))
                 {
-                    cmd.Connection = _connection;
-                    cmd.CommandType = CommandType.Text;
-                    cmd.CommandText = "DELETE FROM STU01 " +
-                                        "WHERE U01F01 = @Id";
-
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     _connection.Open();

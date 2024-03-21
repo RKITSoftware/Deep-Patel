@@ -1,14 +1,24 @@
 ﻿namespace MiddleWareDemo.Middleware
 {
+    /// <summary>
+    /// Middleware for adding a custom header to HTTP responses.
+    /// </summary>
     public class CustomHeaderMiddleware : IMiddleware
     {
+        /// <summary>
+        /// Adds a custom header to the HTTP response and performs a redirection.
+        /// </summary>
+        /// <param name="context">The HTTP context.</param>
+        /// <param name="next">The delegate representing the next middleware in the pipeline.</param>
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            // Do all work related to response before the requestDelegate because it sends the response
-            // to the client so no other modifictaions can be done after that.
+            // Add custom header to the response.
             context.Response.Headers.Append("Author", "Deep Patel");
+
+            // Perform a redirection.
             context.Response.Redirect("https://www.google.com");
 
+            // Call the next middleware in the pipeline.
             await next(context);
         }
 

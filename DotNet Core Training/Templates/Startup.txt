@@ -28,9 +28,6 @@
 
             // Swagger Service
             services.AddSwaggerGen();
-
-            // Register CustomHeaderMiddleware as a singleton service.
-            services.AddSingleton<CustomHeaderMiddleware>();
         }
 
         /// <summary>
@@ -56,9 +53,6 @@
 
             // Map controllers.
             app.MapControllers();
-
-            // Use CustomHeaderMiddleware to add custom header to responses.
-            app.UseMiddleware<CustomHeaderMiddleware>();
 
             // End the pipeline.
             app.Run();

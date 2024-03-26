@@ -24,6 +24,8 @@ namespace FilterDemo.Filters
         /// <param name="context">The exception context.</param>
         public void OnException(ExceptionContext context)
         {
+            Console.WriteLine("Exception occured.");
+
             // Log exception to file
             LogExceptionToFile(context.Exception);
         }

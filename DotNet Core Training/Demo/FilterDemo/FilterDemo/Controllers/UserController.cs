@@ -9,6 +9,7 @@ namespace FilterDemo.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [TypeFilter(typeof(LoggingExceptionFilter))] // Apply custom exception logging filter.
     public class UserController : ControllerBase
     {
         /// <summary>
@@ -16,11 +17,11 @@ namespace FilterDemo.Controllers
         /// </summary>
         /// <returns>A string message.</returns>
         [HttpGet("Admin")]
-        [Authorize(Roles = "Admin")] // Authorize access to admin role only.
-        [TypeFilter(typeof(LoggingExceptionFilter))] // Apply custom exception logging filter.
+        [AllowAnonymous]
+        [CustomResultFilter]
         public string Get()
         {
-            return "Hello Admin";
+            throw new Exception("Exception");
         }
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace FilterDemo.Controllers
         /// <param name="id">The ID of the user.</param>
         /// <returns>An IActionResult containing user information.</returns>
         [HttpGet("{id}")]
-        [Authorize(Roles = "User")] // Authorize access to user role only.
+        // [Authorize(Roles = "User")] // Authorize access to user role only.
         public IActionResult Get(int id)
         {
             return Ok(new { id });

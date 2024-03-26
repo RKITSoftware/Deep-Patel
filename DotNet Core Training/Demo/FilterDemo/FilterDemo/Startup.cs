@@ -33,6 +33,7 @@ namespace FilterDemo
             {
                 // Adds a global action filter.
                 options.Filters.Add(new MySampleActionFilterAttribute("Global"));
+                options.Filters.Add(new CustomResourceFilterAttribute());
             });
 
             // Endpoint Service
@@ -74,7 +75,7 @@ namespace FilterDemo
 
             // Adds basic authentication scheme to the application.
             services.AddAuthentication("BasicAuthentication")
-                    .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthentication", null);
+                   .AddScheme<AuthenticationSchemeOptions, BasicAuthHandler>("BasicAuthentication", null);
         }
 
         /// <summary>

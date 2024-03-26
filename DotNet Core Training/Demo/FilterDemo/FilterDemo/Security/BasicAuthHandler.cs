@@ -2,6 +2,7 @@
 using FilterDemo.Helper;
 using FilterDemo.Model;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -31,6 +32,17 @@ namespace FilterDemo.Security
         /// <returns>An authentication result.</returns>
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
+            Console.WriteLine("Authentication");
+
+            // Checking if currently executing action have AllowAnonymous Attribute or not.
+            Endpoint? endpoints = Context.GetEndpoint();
+
+            if (endpoints is not null &&
+                endpoints.Metadata.Any(meta => meta.GetType() == typeof(AllowAnonymousAttribute)))
+            {
+                return AuthenticateResult.NoResult();
+            }
+
             // Check if Authorization header exists.
             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Authorization header missing");
@@ -38,7 +50,8 @@ namespace FilterDemo.Security
             // Extract username and password from Authorization header.
             string header = Request.Headers["Authorization"].ToString();
             string encodedUsernameAndPassword = header.Substring(6);
-            Tuple<string, string> credentials = AuthenticationHelper.ExtractUserNameAndPassword(encodedUsernameAndPassword);
+            Tuple<string, string> credentials =
+                AuthenticationHelper.ExtractUserNameAndPassword(encodedUsernameAndPassword);
 
             string username = credentials.Item1;
             string password = credentials.Item2;

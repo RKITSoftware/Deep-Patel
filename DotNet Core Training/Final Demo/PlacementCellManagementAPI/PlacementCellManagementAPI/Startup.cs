@@ -18,7 +18,8 @@ namespace PlacementCellManagementAPI
         /// <param name="configuration">The application configuration.</param>
         public Startup(IConfiguration configuration)
         {
-            LogManager.Setup().LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
+            LogManager.Setup()
+                .LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -35,6 +36,7 @@ namespace PlacementCellManagementAPI
 
             services.AddScoped<IExceptionLogger, BLException>();
             services.AddScoped<AuthenticationMiddleware>();
+            services.AddScoped<IAdminService, BLAdmin>();
         }
 
         /// <summary>

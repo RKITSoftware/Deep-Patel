@@ -1,0 +1,21 @@
+2024-03-26 15:32:50.4161 
+	System.Exception: kfsbdb
+	   at BookMyShowAPI.Business_Logic.BLAccount.RegisterUser(DtoUSR01 objDtoUser) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\BookMyShowAPI\BookMyShowAPI\Business Logic\BLAccount.cs:line 88
+
+
+2024-03-26 17:43:09.1945 
+	MySql.Data.MySqlClient.MySqlException: Column 'E01F02' specified twice
+	   at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+   at MySql.Data.MySqlClient.NativeDriver.GetResultAsync(Int32 affectedRow, Int64 insertedId, Boolean execAsync)
+   at MySql.Data.MySqlClient.Driver.GetResultAsync(Int32 statementId, Int32 affectedRows, Int64 insertedId, Boolean execAsync)
+   at MySql.Data.MySqlClient.Driver.NextResultAsync(Int32 statementId, Boolean force, Boolean execAsync)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQueryAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at BookMyShowAPI.Services.DatabaseService.ExecuteNonQuery(MySqlCommand command) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\BookMyShowAPI\BookMyShowAPI\Services\DatabaseService.cs:line 29
+
+

@@ -37,6 +37,7 @@ namespace PlacementCellManagementAPI
             services.AddScoped<IExceptionLogger, BLException>();
             services.AddScoped<AuthenticationMiddleware>();
             services.AddScoped<IAdminService, BLAdmin>();
+            services.AddScoped<IUserService, BLUser>();
         }
 
         /// <summary>

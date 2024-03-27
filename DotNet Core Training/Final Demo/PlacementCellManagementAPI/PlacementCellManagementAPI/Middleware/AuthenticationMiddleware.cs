@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Models;
 using System.Security.Claims;
 using System.Text;
 
@@ -9,6 +11,20 @@ namespace PlacementCellManagementAPI.Middleware
     /// </summary>
     public class AuthenticationMiddleware : IMiddleware
     {
+        /// <summary>
+        /// Instance of a <see cref="IUserService"/> to get the methods for the authentication process.
+        /// </summary>
+        private readonly IUserService _userService;
+
+        /// <summary>
+        /// Initializes a new instance of the AuthenticationMiddleware class.
+        /// </summary>
+        /// <param name="userService">Service for user authentication.</param>
+        public AuthenticationMiddleware(IUserService userService)
+        {
+            _userService = userService;
+        }
+
         /// <summary>
         /// Invokes the middleware to check user authentication.
         /// </summary>
@@ -46,13 +62,15 @@ namespace PlacementCellManagementAPI.Middleware
                 string password = usernameAndPassword.Item2;
 
                 // Validate username and password
-                if (username == "Admin" && password == "123")
+                USR01 objUser;
+                if (_userService.CheckUser(username, password, out objUser))
                 {
                     // If valid, create claims for the user
                     Claim[] claims = new[]
                     {
-                        new Claim(ClaimTypes.Name, username),
-                        new Claim(ClaimTypes.Role, "Admin")
+                        new Claim(ClaimTypes.Name, objUser.R01F02),
+                        new Claim(ClaimTypes.Email, objUser.R01F03),
+                        new Claim(ClaimTypes.Role, objUser.R01F05)
                     };
 
                     // Create identity and principal for the user

@@ -1,6 +1,7 @@
 ﻿using NLog;
 using PlacementCellManagementAPI.Business_Logic;
 using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Middleware;
 
 namespace PlacementCellManagementAPI
 {
@@ -33,6 +34,7 @@ namespace PlacementCellManagementAPI
             services.AddSwaggerGen();
 
             services.AddScoped<IExceptionLogger, BLException>();
+            services.AddScoped<AuthenticationMiddleware>();
         }
 
         /// <summary>
@@ -51,6 +53,8 @@ namespace PlacementCellManagementAPI
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware<AuthenticationMiddleware>();
+
             app.UseAuthorization();
 
             app.MapControllers();

@@ -1,0 +1,10 @@
+2024-03-28 10:43:12.6736 
+	System.InvalidOperationException: Connection must be valid and open.
+	   at MySql.Data.MySqlClient.MySqlConnection.Throw(Exception ex)
+   at MySql.Data.MySqlClient.MySqlCommand.Throw(Exception ex)
+   at MySql.Data.MySqlClient.MySqlCommand.CheckState()
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader()
+   at PlacementCellManagementAPI.Business_Logic.BLAdmin.GetAll() in F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\Business Logic\BLAdmin.cs:line 119
+
+

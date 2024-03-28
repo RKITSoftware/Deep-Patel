@@ -33,6 +33,6 @@
         /// <summary>
         /// Foreign Key of User
         /// </summary>
-        public string M01F06 { get; set; }
+        public int M01F06 { get; set; }
     }
 }

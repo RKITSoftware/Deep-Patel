@@ -104,5 +104,50 @@ namespace PlacementCellManagementAPI.Business_Logic
 
             return true;
         }
+
+        /// <summary>
+        /// Retrieves all instances of ADM01 from the database.
+        /// </summary>
+        /// <remarks>
+        /// This method fetches all records from the ADM01 table in the database.
+        /// </remarks>
+        /// <returns>A collection of ADM01 instances.</returns>
+        public IEnumerable<ADM01> GetAll()
+        {
+            List<ADM01> lstAdmin = new List<ADM01>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    string query = @"SELECT * FROM ADM01;";
+                    MySqlCommand command = new MySqlCommand(query, connection);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            lstAdmin.Add(new ADM01()
+                            {
+                                M01F01 = reader.GetInt32(0),
+                                M01F02 = reader.GetString(1),
+                                M01F03 = reader.GetString(2),
+                                M01F04 = reader.GetDateTime(3),
+                                M01F05 = reader.GetString(4),
+                                M01F06 = reader.GetInt32(5)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionLogger.Log(ex);
+            }
+
+            return lstAdmin;
+        }
     }
 }

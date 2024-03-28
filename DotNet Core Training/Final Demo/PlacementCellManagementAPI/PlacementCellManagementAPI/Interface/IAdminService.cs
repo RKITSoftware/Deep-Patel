@@ -1,4 +1,5 @@
 ﻿using PlacementCellManagementAPI.Dtos;
+using PlacementCellManagementAPI.Models;
 
 namespace PlacementCellManagementAPI.Interface
 {
@@ -20,5 +21,11 @@ namespace PlacementCellManagementAPI.Interface
         /// <param name="id">ID of the admin to be deleted.</param>
         /// <returns>True if admin deletion is successful, false otherwise.</returns>
         bool DeleteAdmin(int id);
+
+        /// <summary>
+        /// Retrieves all instances of ADM01.
+        /// </summary>
+        /// <returns>An IEnumerable collection of ADM01 instances.</returns>
+        IEnumerable<ADM01> GetAll();
     }
 }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlacementCellManagementAPI.Dtos;
 using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Models;
 
 namespace PlacementCellManagementAPI.Controllers
 {
@@ -51,5 +52,19 @@ namespace PlacementCellManagementAPI.Controllers
 
             return BadRequest("Admin can't be deleted");
         }
+
+        /// <summary>
+        /// Retrieves all instances of ADM01.
+        /// </summary>
+        /// <remarks>
+        /// This method is used to handle HTTP GET requests without any specific route parameters.
+        /// </remarks>
+        /// <returns>An ActionResult containing IEnumerable collection of ADM01 instances.</returns>
+        [HttpGet("")]
+        public ActionResult<IEnumerable<ADM01>> GetAll()
+        {
+            return Ok(_adminService.GetAll());
+        }
+
     }
 }

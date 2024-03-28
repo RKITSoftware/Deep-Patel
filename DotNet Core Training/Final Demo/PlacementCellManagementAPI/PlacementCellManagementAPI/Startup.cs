@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using NLog;
 using PlacementCellManagementAPI.Business_Logic;
 using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Interface;
@@ -40,10 +41,12 @@ namespace PlacementCellManagementAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IExceptionLogger, BLException>();
             services.AddScoped<AuthenticationMiddleware>();
             services.AddScoped<IAdminService, BLAdmin>();
             services.AddScoped<IUserService, BLUser>();
+            services.AddScoped<IStudentService, BLStudent>();
         }
 
         /// <summary>

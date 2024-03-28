@@ -34,6 +34,7 @@ namespace PlacementCellManagementAPI
             services.AddControllers(configure =>
             {
                 configure.Filters.Add(typeof(ExceptionFilter));
+                configure.Filters.Add(typeof(ValidateModelFilter));
             });
 
             services.AddEndpointsApiExplorer();
@@ -58,6 +59,8 @@ namespace PlacementCellManagementAPI
                 // Enable Swagger and Swagger UI in development environment.
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                app.UseDeveloperExceptionPage();
             }
 
             app.UseHttpsRedirection();

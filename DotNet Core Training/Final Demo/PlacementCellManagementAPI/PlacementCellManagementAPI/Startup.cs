@@ -1,5 +1,6 @@
 ﻿using NLog;
 using PlacementCellManagementAPI.Business_Logic;
+using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Interface;
 using PlacementCellManagementAPI.Middleware;
 
@@ -29,12 +30,16 @@ namespace PlacementCellManagementAPI
         /// <param name="services">The service collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+
+            services.AddControllers(configure =>
+            {
+                configure.Filters.Add(typeof(ExceptionFilter));
+            });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.AddScoped<IExceptionLogger, BLException>();
+            services.AddSingleton<IExceptionLogger, BLException>();
             services.AddScoped<AuthenticationMiddleware>();
             services.AddScoped<IAdminService, BLAdmin>();
             services.AddScoped<IUserService, BLUser>();
@@ -56,8 +61,8 @@ namespace PlacementCellManagementAPI
             }
 
             app.UseHttpsRedirection();
-            app.UseMiddleware<AuthenticationMiddleware>();
 
+            app.UseMiddleware<AuthenticationMiddleware>();
             app.UseAuthorization();
 
             app.MapControllers();

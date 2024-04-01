@@ -1,8 +1,5 @@
-﻿using ORMToolDemo.Models;
-using ServiceStack.Data;
-using ServiceStack.OrmLite;
-using System;
-using System.Web;
+﻿using ORMToolDemo.Business_Logic;
+using ORMToolDemo.Models;
 using System.Web.Http;
 
 namespace ORMToolDemo.Controllers
@@ -14,23 +11,16 @@ namespace ORMToolDemo.Controllers
     public class CLCustomerController : ApiController
     {
         /// <summary>
-        /// Database connection interface for CRUD operation
+        /// Business logic of Customer Controller Instance
         /// </summary>
-        private readonly IDbConnectionFactory _dbFactory;
+        private readonly BLCustomer _blCustomer;
 
         /// <summary>
-        /// Giving a database reference to dbfactory
+        /// Initializing the <see cref="CLCustomerController"/> instances.
         /// </summary>
-        /// <exception cref="ApplicationException">If connection with database not establish 
-        /// then it gives erro.</exception>
         public CLCustomerController()
         {
-            _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-
-            if (_dbFactory == null)
-            {
-                throw new ApplicationException("IDbConnectionFactory not found in Application state.");
-            }
+            _blCustomer = new BLCustomer();
         }
 
         /// <summary>
@@ -42,11 +32,7 @@ namespace ORMToolDemo.Controllers
         [Route("GetCustomers")]
         public IHttpActionResult GetCustomers()
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                var customers = db.Select<Customer>();
-                return Ok(customers);
-            }
+            return Ok(_blCustomer.GetAll());
         }
 
         /// <summary>
@@ -59,11 +45,7 @@ namespace ORMToolDemo.Controllers
         [Route("GetCustomer/{id}")]
         public IHttpActionResult GetCustomerById(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                var customer = db.SingleById<Customer>(id);
-                return Ok(customer);
-            }
+            return Ok(_blCustomer.GetById(id));
         }
 
         /// <summary>
@@ -76,11 +58,7 @@ namespace ORMToolDemo.Controllers
         [Route("Add")]
         public IHttpActionResult AddData(Customer objCustomer)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                db.Insert(objCustomer);
-                return Ok("Added Successfully");
-            }
+            return Ok(_blCustomer.Add(objCustomer));
         }
 
         /// <summary>
@@ -93,11 +71,7 @@ namespace ORMToolDemo.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteData(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                db.DeleteById<Customer>(id);
-                return Ok("Delete");
-            }
+            return Ok(_blCustomer.Delete(id));
         }
 
         /// <summary>
@@ -111,25 +85,7 @@ namespace ORMToolDemo.Controllers
         [Route("Update/{id}")]
         public IHttpActionResult PutCustomer(int id, Customer objUpdatedCustomer)
         {
-            if (objUpdatedCustomer == null)
-            {
-                return BadRequest("Invalid customer data.");
-            }
-
-            using (var db = _dbFactory.OpenDbConnection())
-            {
-                var objExistingCustomer = db.SingleById<Customer>(id);
-
-                if (objExistingCustomer == null)
-                    return NotFound();
-
-                objExistingCustomer.FirstName = objUpdatedCustomer.FirstName;
-                objExistingCustomer.LastName = objUpdatedCustomer.LastName;
-
-                db.Update(objExistingCustomer);
-
-                return Ok("Customer updated successfully");
-            }
+            return Ok(_blCustomer.Update(objUpdatedCustomer));
         }
     }
 }

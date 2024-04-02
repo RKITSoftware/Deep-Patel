@@ -1,0 +1,12 @@
+2024-04-02 13:12:10.4653 Something went wrong: System.NullReferenceException: Object reference not set to an instance of an object.
+   at PlacementCellManagementAPI.Middleware.AuthenticationMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\Middleware\AuthenticationMiddleware.cs:line 39
+   at Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.<>c__DisplayClass6_1.<<UseMiddlewareInterface>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+
+2024-04-02 13:16:16.8722 Something went wrong: System.NullReferenceException: Object reference not set to an instance of an object.
+   at PlacementCellManagementAPI.Middleware.AuthenticationMiddleware.InvokeAsync(HttpContext context, RequestDelegate next) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\Middleware\AuthenticationMiddleware.cs:line 39
+   at Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.<>c__DisplayClass6_1.<<UseMiddlewareInterface>b__1>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Diagnostics.ExceptionHandlerMiddleware.<Invoke>g__Awaited|6_0(ExceptionHandlerMiddleware middleware, HttpContext context, Task task)
+

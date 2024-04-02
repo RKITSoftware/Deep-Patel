@@ -11,9 +11,8 @@ namespace PlacementCellManagementAPI.Interface
         /// <summary>
         /// Creates a new admin based on the provided DTO.
         /// </summary>
-        /// <param name="ObjAdminDto">DTO containing admin information.</param>
         /// <returns>True if admin creation is successful, false otherwise.</returns>
-        bool CreateAdmin(DtoADM01 ObjAdminDto);
+        bool CreateAdmin();
 
         /// <summary>
         /// Deletes an admin with the specified ID.
@@ -27,5 +26,17 @@ namespace PlacementCellManagementAPI.Interface
         /// </summary>
         /// <returns>An IEnumerable collection of ADM01 instances.</returns>
         IEnumerable<ADM01> GetAll();
+
+        /// <summary>
+        /// Performs pre-save operations on the admin DTO object.
+        /// </summary>
+        /// <param name="objAdminDto">The DTO object representing the admin.</param>
+        void PreSave(DtoADM01 objAdminDto);
+
+        /// <summary>
+        /// Performs validation checks on the admin data.
+        /// </summary>
+        /// <returns>True if the admin data is valid, otherwise false.</returns>
+        bool Validation();
     }
 }

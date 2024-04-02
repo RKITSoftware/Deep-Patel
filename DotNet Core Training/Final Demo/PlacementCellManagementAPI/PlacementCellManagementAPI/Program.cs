@@ -4,17 +4,14 @@ namespace PlacementCellManagementAPI
     {
         public static void Main(string[] args)
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-
-            // Creating a startup object
-            Startup startup = new Startup(builder.Configuration);
-
-            // Configuring Services
-            startup.ConfigureServices(builder.Services);
-
-            // Building App and Starting.
-            WebApplication app = builder.Build();
-            startup.Configure(app, builder.Environment);
+            CreateHostBuilder(args).Build().Run();
         }
+
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

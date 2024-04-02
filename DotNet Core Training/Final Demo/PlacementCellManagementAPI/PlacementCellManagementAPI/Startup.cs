@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
-using NLog;
+﻿using NLog;
 using PlacementCellManagementAPI.Business_Logic;
 using PlacementCellManagementAPI.Filters;
+using PlacementCellManagementAPI.Handlers;
 using PlacementCellManagementAPI.Interface;
 using PlacementCellManagementAPI.Middleware;
 
@@ -34,19 +34,22 @@ namespace PlacementCellManagementAPI
 
             services.AddControllers(configure =>
             {
-                configure.Filters.Add(typeof(ExceptionFilter));
+                // configure.Filters.Add(typeof(ExceptionFilter));
                 configure.Filters.Add(typeof(ValidateModelFilter));
             });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddSingleton<IExceptionLogger, BLException>();
+
             services.AddScoped<AuthenticationMiddleware>();
-            services.AddScoped<IAdminService, BLAdmin>();
-            services.AddScoped<IUserService, BLUser>();
-            services.AddScoped<IStudentService, BLStudent>();
+
+            services.AddTransient<IAdminService, BLAdmin>();
+            services.AddTransient<IUserService, BLUser>();
+            services.AddTransient<IStudentService, BLStudent>();
+            services.AddTransient<ICompanyService, BLCompany>();
+            services.AddTransient<IJobService, BLJob>();
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace PlacementCellManagementAPI
         /// </summary>
         /// <param name="app">The application builder.</param>
         /// <param name="environment">The hosting environment.</param>
-        public void Configure(WebApplication app, IWebHostEnvironment environment)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
         {
             // Configure the HTTP request pipeline.
             if (environment.IsDevelopment())
@@ -65,15 +68,21 @@ namespace PlacementCellManagementAPI
 
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.ConfigureExceptionHandler();
+            }
 
             app.UseHttpsRedirection();
+            app.UseRouting();
 
             app.UseMiddleware<AuthenticationMiddleware>();
             app.UseAuthorization();
 
-            app.MapControllers();
-
-            app.Run();
+            app.UseEndpoints(configure =>
+            {
+                configure.MapControllers();
+            });
         }
     }
 }

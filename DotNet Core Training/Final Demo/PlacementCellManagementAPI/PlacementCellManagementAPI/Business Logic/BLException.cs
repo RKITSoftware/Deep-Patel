@@ -23,5 +23,14 @@ namespace PlacementCellManagementAPI.Business_Logic
                 $"\n\t{exception.GetType()}: {exception.Message}\n\t{exception.StackTrace}\n\n";
             _logger.Error(message);
         }
+
+        /// <summary>
+        /// Logs the specified message.
+        /// </summary>
+        /// <param name="exception">The message to be logged.</param>
+        public void Log(string message)
+        {
+            _logger.Error(message + Environment.NewLine);
+        }
     }
 }

@@ -13,6 +13,9 @@ namespace PlacementCellManagementAPI.Controllers
     [AllowAnonymous]
     public class CLStudentController : ControllerBase
     {
+        /// <summary>
+        /// Instance of a <see cref="IStudentService"/> for getting student related services.
+        /// </summary>
         private readonly IStudentService _studentService;
 
         /// <summary>
@@ -32,8 +35,25 @@ namespace PlacementCellManagementAPI.Controllers
         [HttpPost("")]
         public ActionResult Create(DtoSTU01 objStudentDto)
         {
-            if (_studentService.Add(objStudentDto))
-                return StatusCode(201, "Student created successfully.");
+            _studentService.PreSave(objStudentDto);
+
+            if (!_studentService.Validation())
+                return BadRequest();
+
+            return Ok(_studentService.Add());
+        }
+
+        /// <summary>
+        /// Deletes a student by ID.
+        /// </summary>
+        /// <param name="id">The ID of the student to delete.</param>
+        /// <returns>Returns Ok if the student was deleted successfully, otherwise returns BadRequest.</returns>
+        [HttpDelete("Delete/{id}")]
+        [ProducesResponseType(400)]
+        public ActionResult Delete(int id)
+        {
+            if (_studentService.Delete(id))
+                return Ok("Student successfully deleted.");
 
             return BadRequest(ModelState);
         }

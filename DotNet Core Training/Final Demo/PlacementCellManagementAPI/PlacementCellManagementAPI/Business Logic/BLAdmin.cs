@@ -1,7 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using PlacementCellManagementAPI.Dtos;
+using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Interface;
-using PlacementCellManagementAPI.Mapper;
 using PlacementCellManagementAPI.Models;
 using System.Data;
 
@@ -12,8 +12,25 @@ namespace PlacementCellManagementAPI.Business_Logic
     /// </summary>
     public class BLAdmin : IAdminService
     {
+        /// <summary>
+        /// Stores the connection string of the database.
+        /// </summary>
         private readonly string _connectionString;
+
+        /// <summary>
+        /// Logs the exception to the file.
+        /// </summary>
         private readonly IExceptionLogger _exceptionLogger;
+
+        /// <summary>
+        /// Admin object to store admin details.
+        /// </summary>
+        private ADM01 objAdmin;
+
+        /// <summary>
+        /// User object to store user's credentials.
+        /// </summary>
+        private USR01 objUser;
 
         /// <summary>
         /// Initializes a new instance of the BLAdmin class.
@@ -31,13 +48,8 @@ namespace PlacementCellManagementAPI.Business_Logic
         /// </summary>
         /// <param name="ObjAdminDto">DTO containing admin information.</param>
         /// <returns>True if admin creation is successful, false otherwise.</returns>
-        public bool CreateAdmin(DtoADM01 ObjAdminDto)
+        public bool CreateAdmin()
         {
-            // PreSave
-            ADMUSR objAdminUser = AdminMapper.ToPOCO(ObjAdminDto);
-
-            // Validation
-
             // Save
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
@@ -50,14 +62,14 @@ namespace PlacementCellManagementAPI.Business_Logic
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Add parameters required by the stored procedure
-                    cmd.Parameters.AddWithValue("@p_username", objAdminUser.R01.R01F02);
-                    cmd.Parameters.AddWithValue("@p_email", objAdminUser.R01.R01F03);
-                    cmd.Parameters.AddWithValue("@p_password", objAdminUser.R01.R01F04);
+                    cmd.Parameters.AddWithValue("@p_username", objUser.R01F02);
+                    cmd.Parameters.AddWithValue("@p_email", objUser.R01F03);
+                    cmd.Parameters.AddWithValue("@p_password", objUser.R01F04);
                     cmd.Parameters.AddWithValue("@p_role", "Admin");
-                    cmd.Parameters.AddWithValue("@p_first_name", objAdminUser.M01.M01F02);
-                    cmd.Parameters.AddWithValue("@p_last_name", objAdminUser.M01.M01F03);
-                    cmd.Parameters.AddWithValue("@p_date_of_birth", objAdminUser.M01.M01F04.ToString("yyyy-MM-dd"));
-                    cmd.Parameters.AddWithValue("@p_gender", objAdminUser.M01.M01F05);
+                    cmd.Parameters.AddWithValue("@p_first_name", objAdmin.M01F02);
+                    cmd.Parameters.AddWithValue("@p_last_name", objAdmin.M01F03);
+                    cmd.Parameters.AddWithValue("@p_date_of_birth", objAdmin.M01F04.ToString("yyyy-MM-dd"));
+                    cmd.Parameters.AddWithValue("@p_gender", objAdmin.M01F05);
 
                     // Execute the stored procedure
                     cmd.ExecuteNonQuery();
@@ -148,6 +160,17 @@ namespace PlacementCellManagementAPI.Business_Logic
             }
 
             return lstAdmin;
+        }
+
+        public void PreSave(DtoADM01 objAdminDto)
+        {
+            objAdmin = objAdminDto.Convert<ADM01>();
+            objUser = objAdminDto.Convert<USR01>();
+        }
+
+        public bool Validation()
+        {
+            return true;
         }
     }
 }

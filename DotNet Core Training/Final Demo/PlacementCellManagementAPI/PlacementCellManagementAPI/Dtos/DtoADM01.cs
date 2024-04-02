@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Dtos
 {
@@ -8,39 +9,53 @@ namespace PlacementCellManagementAPI.Dtos
     public class DtoADM01
     {
         /// <summary>
-        /// Admin Full Name
+        /// Admin First Name
         /// </summary>
         [Required]
-        [StringLength(50, MinimumLength = 5, ErrorMessage = "Name length must be between 5 to 50.")]
-        public string M01101 { get; set; }
+        [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
+        [JsonProperty("M01F02")]
+        public string M01102 { get; set; }
+
+        /// <summary>
+        /// Admin Last Name
+        /// </summary>
+        [Required]
+        [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
+        [JsonProperty("M01F03")]
+        public string M01103 { get; set; }
 
         /// <summary>
         /// Date of Birth
         /// </summary>
         [Required]
         [DataType(DataType.Date, ErrorMessage = "Enter the date in correct format.")]
-        public DateTime M01102 { get; set; }
+        [JsonProperty("M01F04")]
+        public DateTime M01104 { get; set; }
 
         /// <summary>
         /// Gender
         /// </summary>
         [StringLength(1, MinimumLength = 1, ErrorMessage = "M for Male and F For Female")]
-        public string M01103 { get; set; }
+        [JsonProperty("M01F05")]
+        public string M01105 { get; set; }
 
         /// <summary>
         /// Admin's Username
         /// </summary>
-        public string M01104 { get; set; }
+        [JsonProperty("R01F02")]
+        public string R01102 { get; set; }
 
         /// <summary>
         /// Admin's Email
         /// </summary>
         [DataType(DataType.EmailAddress)]
-        public string M01105 { get; set; }
+        [JsonProperty("R01F03")]
+        public string R01103 { get; set; }
 
         /// <summary>
         /// Admin's Password
         /// </summary>
-        public string M01106 { get; set; }
+        [JsonProperty("R01F04")]
+        public string R01104 { get; set; }
     }
 }

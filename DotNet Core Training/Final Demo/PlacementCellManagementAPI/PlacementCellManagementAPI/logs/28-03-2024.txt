@@ -41,3 +41,19 @@
 	   at PlacementCellManagementAPI.Business_Logic.BLStudent.Add(DtoSTU01 objStudentDto) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\Business Logic\BLStudent.cs:line 54
 
 
+2024-03-28 15:57:59.8295 
+	MySql.Data.MySqlClient.MySqlException: Student not found
+	   at MySql.Data.MySqlClient.MySqlStream.ReadPacketAsync(Boolean execAsync)
+   at MySql.Data.MySqlClient.NativeDriver.GetResultAsync(Int32 affectedRow, Int64 insertedId, Boolean execAsync)
+   at MySql.Data.MySqlClient.Driver.GetResultAsync(Int32 statementId, Int32 affectedRows, Int64 insertedId, Boolean execAsync)
+   at MySql.Data.MySqlClient.Driver.NextResultAsync(Int32 statementId, Boolean force, Boolean execAsync)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlDataReader.NextResultAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReaderAsync(CommandBehavior behavior, Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQueryAsync(Boolean execAsync, CancellationToken cancellationToken)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()
+   at PlacementCellManagementAPI.Business_Logic.BLStudent.Delete(Int32 id) in F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\Business Logic\BLStudent.cs:line 100
+
+

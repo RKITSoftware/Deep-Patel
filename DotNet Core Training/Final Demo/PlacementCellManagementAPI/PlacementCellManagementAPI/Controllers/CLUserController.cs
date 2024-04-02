@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PlacementCellManagementAPI.Controllers
 {
@@ -7,6 +8,7 @@ namespace PlacementCellManagementAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class CLUserController : ControllerBase
     {
         /// <summary>

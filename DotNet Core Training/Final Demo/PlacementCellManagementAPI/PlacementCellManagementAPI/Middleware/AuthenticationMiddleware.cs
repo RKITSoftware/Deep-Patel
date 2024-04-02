@@ -35,8 +35,10 @@ namespace PlacementCellManagementAPI.Middleware
         /// </returns>
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
+            Endpoint? endpoint = context.GetEndpoint();
+
             // Check if the endpoint allows anonymous access
-            bool allowAnonymous = context.GetEndpoint()
+            bool allowAnonymous = endpoint
                 .Metadata.Any(meta => meta.GetType() == typeof(AllowAnonymousAttribute));
 
             if (allowAnonymous)

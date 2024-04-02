@@ -51,7 +51,7 @@ namespace PlacementCellManagementAPI.Business_Logic
                         objUser = new USR01()
                         {
                             R01F02 = (string)dr["R01F02"],
-                            R01F04 = (string)dr["R01F04"],
+                            R01F03 = (string)dr["R01F03"],
                             R01F05 = (string)dr["R01F05"]
                         };
                         return true;
@@ -74,7 +74,7 @@ namespace PlacementCellManagementAPI.Business_Logic
                 try
                 {
                     connection.Open();
-                    string query = "SELECT R01F02, R01F04, R01F05 FROM USR01;";
+                    string query = "SELECT R01F02, R01F03, R01F04, R01F05 FROM USR01;";
 
                     MySqlCommand command = new MySqlCommand(query, connection);
 

@@ -11,9 +11,12 @@ namespace PlacementCellManagementAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous] // Allow anonymous access to these endpoints
+    [AllowAnonymous]
     public class CLAdminController : ControllerBase
     {
+        /// <summary>
+        /// Instance of <see cref="IAdminService"/>.
+        /// </summary>
         private readonly IAdminService _adminService;
 
         /// <summary>
@@ -33,10 +36,12 @@ namespace PlacementCellManagementAPI.Controllers
         [HttpPost("")]
         public ActionResult CreateAdmin(DtoADM01 objAdminDto)
         {
-            if (_adminService.CreateAdmin(objAdminDto))
-                return StatusCode(201, "Admin Created Successfully.");
+            _adminService.PreSave(objAdminDto);
 
-            return BadRequest("Admin can't be created.");
+            if (!_adminService.Validation())
+                return BadRequest();
+
+            return Ok(_adminService.CreateAdmin());
         }
 
         /// <summary>
@@ -65,6 +70,5 @@ namespace PlacementCellManagementAPI.Controllers
         {
             return Ok(_adminService.GetAll());
         }
-
     }
 }

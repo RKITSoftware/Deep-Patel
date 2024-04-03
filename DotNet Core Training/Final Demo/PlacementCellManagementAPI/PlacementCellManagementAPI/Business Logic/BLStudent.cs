@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using PlacementCellManagementAPI.Dtos;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Interface;
@@ -38,9 +37,7 @@ namespace PlacementCellManagementAPI.Business_Logic
         /// </summary>
         /// <param name="configuration">The application configuration.</param>
         /// <param name="exceptionLogger">The exception logger service.</param>
-        /// <param name="actionContext">The action context accessor.</param>
-        public BLStudent(IConfiguration configuration, IExceptionLogger exceptionLogger,
-            IActionContextAccessor actionContext)
+        public BLStudent(IConfiguration configuration, IExceptionLogger exceptionLogger)
         {
             _connectionString = configuration.GetConnectionString("Default");
             _exceptionLogger = exceptionLogger;

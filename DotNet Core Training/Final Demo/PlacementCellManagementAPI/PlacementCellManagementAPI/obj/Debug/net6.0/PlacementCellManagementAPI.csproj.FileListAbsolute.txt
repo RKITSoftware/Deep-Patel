@@ -67,3 +67,11 @@ F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAP
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\ServiceStack.OrmLite.MySql.dll
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\ServiceStack.Text.dll
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Newtonsoft.Json.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

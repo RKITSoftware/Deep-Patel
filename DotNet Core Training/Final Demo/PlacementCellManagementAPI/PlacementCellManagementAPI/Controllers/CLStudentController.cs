@@ -10,7 +10,7 @@ namespace PlacementCellManagementAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class CLStudentController : ControllerBase
     {
         /// <summary>

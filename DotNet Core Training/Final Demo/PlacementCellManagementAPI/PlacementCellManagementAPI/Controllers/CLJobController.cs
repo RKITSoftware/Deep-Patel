@@ -11,7 +11,7 @@ namespace PlacementCellManagementAPI.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous]
+    [Authorize]
     public class CLJobController : ControllerBase
     {
         /// <summary>

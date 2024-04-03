@@ -1,13 +1,10 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using NLog;
+﻿using NLog;
 using PlacementCellManagementAPI.Business_Logic;
+using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Handlers;
 using PlacementCellManagementAPI.Interface;
 using PlacementCellManagementAPI.Middleware;
-using System.Text;
 
 namespace PlacementCellManagementAPI
 {
@@ -37,66 +34,21 @@ namespace PlacementCellManagementAPI
         {
             services.AddControllers(configure =>
             {
-                // configure.Filters.Add(typeof(ExceptionFilter));
+                configure.Filters.Add(typeof(ExceptionFilter));
                 configure.Filters.Add(typeof(ValidateModelFilter));
             });
 
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(config =>
             {
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    Description = "Jwt Token Based Authentication",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.ApiKey
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
-                {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Id = "Bearer",
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
-                });
-
+                config.JwtConfiguration();
             });
 
             services.AddSingleton<IExceptionLogger, BLException>();
-
             services.AddScoped<AuthenticationMiddleware>();
 
-            services.AddTransient<IAdminService, BLAdmin>();
-            services.AddTransient<IUserService, BLUser>();
-            services.AddTransient<IStudentService, BLStudent>();
-            services.AddTransient<ICompanyService, BLCompany>();
-            services.AddTransient<IJobService, BLJob>();
-            services.AddTransient<ITokenService, BLToken>();
-
-            string issuer = Configuration.GetSection("Jwt:Issuer").Get<string>();
-            string key = Configuration.GetSection("Jwt:Key").Get<string>();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = issuer,
-                        ValidAudience = issuer,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
-                    };
-                });
+            services.AddInterfaceServices();
+            services.AddJwtAuthentication(Configuration);
         }
 
         /// <summary>

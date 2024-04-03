@@ -162,7 +162,23 @@ namespace PlacementCellManagementAPI.Business_Logic
         /// <returns>True if data is valid, false otherwise.</returns>
         public bool Validation()
         {
-            return true; // Placeholder for validation logic
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (db.Exists<CMP01>(c =>
+                        c.P01F02 == _objCompany.P01F02 &&
+                            c.P01F03 == _objCompany.P01F03))
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionLogger.Log(ex);
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

@@ -6,7 +6,7 @@ namespace PlacementCellManagementAPI.Extensions
     /// <summary>
     /// Provides extension methods for object conversion.
     /// </summary>
-    public static class Converter
+    public static class ConverterExtension
     {
         /// <summary>
         /// Converts the properties of an object to another type with matching properties annotated with JsonPropertyAttribute.

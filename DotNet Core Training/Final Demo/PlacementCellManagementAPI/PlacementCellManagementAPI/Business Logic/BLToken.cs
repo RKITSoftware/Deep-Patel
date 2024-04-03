@@ -96,6 +96,11 @@ namespace PlacementCellManagementAPI.Business_Logic
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     bool isExist = db.Exists<USR01>(u => u.R01F02 == _objUser.R01F02 && u.R01F04 == _objUser.R01F04);
+
+                    if (isExist)
+                    {
+                        _objUser = db.SingleWhere<USR01>("R01F02", _objUser.R01F02);
+                    }
                     return isExist;
                 }
             }

@@ -3,6 +3,8 @@ using PlacementCellManagementAPI.Dtos;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Interface;
 using PlacementCellManagementAPI.Models;
+using ServiceStack.Data;
+using ServiceStack.OrmLite;
 using System.Data;
 
 namespace PlacementCellManagementAPI.Business_Logic
@@ -33,6 +35,11 @@ namespace PlacementCellManagementAPI.Business_Logic
         private USR01 objUser;
 
         /// <summary>
+        /// OrmLite Connection
+        /// </summary>
+        private readonly IDbConnectionFactory _dbFactory;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BLStudent"/> class.
         /// </summary>
         /// <param name="configuration">The application configuration.</param>
@@ -41,6 +48,7 @@ namespace PlacementCellManagementAPI.Business_Logic
         {
             _connectionString = configuration.GetConnectionString("Default");
             _exceptionLogger = exceptionLogger;
+            _dbFactory = new OrmLiteConnectionFactory(_connectionString, MySqlDialect.Provider);
         }
 
         /// <summary>
@@ -131,6 +139,23 @@ namespace PlacementCellManagementAPI.Business_Logic
         /// <returns>True if the student data is valid, otherwise false.</returns>
         public bool Validation()
         {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (db.Exists<USR01>(u => u.R01F02 == objUser.R01F02))
+                        return false;
+
+                    if (db.Exists<USR01>(u => u.R01F03 == objUser.R01F03))
+                        return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _exceptionLogger.Log(ex);
+                return false;
+            }
+
             return true;
         }
     }

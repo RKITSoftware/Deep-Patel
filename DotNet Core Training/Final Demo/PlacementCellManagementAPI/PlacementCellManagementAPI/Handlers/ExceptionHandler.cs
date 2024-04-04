@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using PlacementCellManagementAPI.Business_Logic;
-using PlacementCellManagementAPI.Interface;
-using PlacementCellManagementAPI.Models;
+using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Business_Logic.Services;
+using PlacementCellManagementAPI.Models.POCO;
 using System.Net;
 
 namespace PlacementCellManagementAPI.Handlers

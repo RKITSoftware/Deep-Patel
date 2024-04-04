@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PlacementCellManagementAPI.Dtos;
+using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Extensions;
-using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Models.Dtos;
 
 namespace PlacementCellManagementAPI.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using PlacementCellManagementAPI.Business_Logic;
-using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Business_Logic.Services;
 using System.Text;
 
 namespace PlacementCellManagementAPI.Extensions

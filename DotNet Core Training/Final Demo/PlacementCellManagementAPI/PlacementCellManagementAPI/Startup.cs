@@ -1,9 +1,9 @@
 ﻿using NLog;
-using PlacementCellManagementAPI.Business_Logic;
+using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Handlers;
-using PlacementCellManagementAPI.Interface;
 using PlacementCellManagementAPI.Middleware;
 
 namespace PlacementCellManagementAPI
@@ -44,6 +44,19 @@ namespace PlacementCellManagementAPI
                 config.JwtConfiguration();
             });
 
+            string developerCorsPolicy = "DevCorsPolicy";
+            services.AddCors(options =>
+            {
+                options.AddPolicy(developerCorsPolicy, builder =>
+                {
+                    builder.WithOrigins("https://www.google.com")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetPreflightMaxAge(TimeSpan.FromHours(3));
+                });
+            });
+
             services.AddSingleton<IExceptionLogger, BLException>();
             services.AddScoped<AuthenticationMiddleware>();
 
@@ -66,6 +79,7 @@ namespace PlacementCellManagementAPI
                 app.UseSwaggerUI();
 
                 app.UseDeveloperExceptionPage();
+                app.UseCors("DevCorsPolicy");
             }
             else
             {

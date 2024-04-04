@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using PlacementCellManagementAPI.Interface;
+using PlacementCellManagementAPI.Business_Logic.Interface;
 
 namespace PlacementCellManagementAPI.Filters
 {

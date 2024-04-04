@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using PlacementCellManagementAPI.Interface;
-using PlacementCellManagementAPI.Models;
+using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Models.POCO;
 using System.Security.Claims;
 using System.Text;
 

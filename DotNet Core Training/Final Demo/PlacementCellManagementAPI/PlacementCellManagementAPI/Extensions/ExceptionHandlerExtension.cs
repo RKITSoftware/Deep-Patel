@@ -4,9 +4,9 @@ using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Models.POCO;
 using System.Net;
 
-namespace PlacementCellManagementAPI.Handlers
+namespace PlacementCellManagementAPI.Extensions
 {
-    public static class ExceptionHandler
+    public static class ExceptionHandlerExtension
     {
         /// <summary>
         /// Configures the global exception handling middleware.

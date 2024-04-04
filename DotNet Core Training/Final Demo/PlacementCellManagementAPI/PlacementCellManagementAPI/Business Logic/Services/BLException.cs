@@ -20,7 +20,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         public void Log(Exception exception)
         {
             string message =
-                $"\n\t{exception.GetType()}: {exception.Message}\n\t{exception.StackTrace}\n\n";
+                $"\n\t{exception.GetType()}: {exception.Message}\n\t{exception.StackTrace}\n";
             _logger.Error(message);
         }
 

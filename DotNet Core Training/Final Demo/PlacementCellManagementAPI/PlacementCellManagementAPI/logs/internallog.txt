@@ -168,3 +168,20 @@
 2024-04-04 09:55:21.3846 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
 2024-04-04 09:55:21.3846 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
 2024-04-04 09:55:21.4064 Info Configuration initialized.
+2024-04-04 12:24:00.6087 Debug Message Template Auto Format enabled
+2024-04-04 12:24:00.8206 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-04 12:24:00.9880 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-04 12:24:00.9880 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-04 12:24:01.0297 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-04 12:24:01.0456 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-04 12:24:01.0456 Debug --- NLog configuration dump ---
+2024-04-04 12:24:01.0456 Debug Targets:
+2024-04-04 12:24:01.0456 Debug FileTarget(Name=logfile)
+2024-04-04 12:24:01.0456 Debug Rules:
+2024-04-04 12:24:01.0566 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-04 12:24:01.0566 Debug --- End of NLog configuration dump ---
+2024-04-04 12:24:01.0566 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-04 12:24:01.0765 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-04 12:24:01.0765 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-04 12:24:01.0947 Info Configuration initialized.

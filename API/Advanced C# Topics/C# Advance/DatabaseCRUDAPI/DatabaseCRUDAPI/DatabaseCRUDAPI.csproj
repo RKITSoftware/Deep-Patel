@@ -146,12 +146,15 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Business Logic\BLStudent.cs" />
-    <Compile Include="Controllers\CLStudentController.cs" />
+    <Compile Include="Business Logic\BLSTU01.cs" />
+    <Compile Include="Controllers\CLSTU01Controller.cs" />
+    <Compile Include="DAL\DBSTU01.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\STU01.cs" />
+    <Compile Include="Models\DTO\DTOSTU01.cs" />
+    <Compile Include="Models\Enums\EnmOperation.cs" />
+    <Compile Include="Models\POCO\STU01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

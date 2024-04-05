@@ -224,7 +224,8 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Business Logic\BLAdmin.cs" />
+    <Compile Include="BL\Service\BLADM01.cs" />
+    <Compile Include="BL\Interface\IADM01Service.cs" />
     <Compile Include="Business Logic\BLAuthentication.cs" />
     <Compile Include="Business Logic\BLCart.cs" />
     <Compile Include="Business Logic\BLCategory.cs" />
@@ -235,7 +236,7 @@
     <Compile Include="Business Logic\BLRecord.cs" />
     <Compile Include="Business Logic\BLSuplier.cs" />
     <Compile Include="Business Logic\BLToken.cs" />
-    <Compile Include="Controllers\CLAdminController.cs" />
+    <Compile Include="Controllers\CLADM01Controller.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCartController.cs" />
     <Compile Include="Controllers\CLCategoryController.cs" />
@@ -244,8 +245,9 @@
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
     <Compile Include="Controllers\CLSuplierController.cs" />
-    <Compile Include="Dto\DtoADM01.cs" />
+    <Compile Include="DL\DBADM01.cs" />
     <Compile Include="Enums\OnlineShoopingEnums.cs" />
+    <Compile Include="Extension\ConvertExtension.cs" />
     <Compile Include="Extension\OnlineShoppingExtensions.cs" />
     <Compile Include="Filter\ExceptionLogFilter.cs" />
     <Compile Include="Filter\ValidateModelAttribute.cs" />
@@ -253,16 +255,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interface\IBasicAPIService.cs" />
-    <Compile Include="Mappers\AdminMapper.cs" />
-    <Compile Include="Models\ADM01.cs" />
-    <Compile Include="Models\ADMUSR.cs" />
+    <Compile Include="Models\POCO\ADM01.cs" />
     <Compile Include="Models\CAT01.cs" />
     <Compile Include="Models\CRT01.cs" />
     <Compile Include="Models\CUS01.cs" />
+    <Compile Include="Models\DTO\DTOADM01.cs" />
+    <Compile Include="Models\Enum\EnmOperation.cs" />
     <Compile Include="Models\PFT01.cs" />
     <Compile Include="Models\PRO02.cs" />
     <Compile Include="Models\RCD01.cs" />
     <Compile Include="Models\PRO01.cs" />
+    <Compile Include="Models\Response.cs" />
+    <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\SUP01.cs" />
     <Compile Include="Models\USR01.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

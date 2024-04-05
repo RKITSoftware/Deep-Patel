@@ -1,4 +1,5 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using Newtonsoft.Json;
+using ServiceStack.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models
 {
@@ -21,6 +22,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [StringLength(minimumLength: 8, maximumLength: 16)]
+        [JsonProperty("R01103")]
         public string R01F03 { get; set; }
 
         /// <summary>

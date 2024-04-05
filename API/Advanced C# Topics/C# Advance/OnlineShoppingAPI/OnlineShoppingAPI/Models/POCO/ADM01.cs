@@ -1,7 +1,8 @@
-﻿using ServiceStack;
+﻿using Newtonsoft.Json;
+using ServiceStack;
 using ServiceStack.DataAnnotations;
 
-namespace OnlineShoppingAPI.Models
+namespace OnlineShoppingAPI.Models.POCO
 {
     public class ADM01
     {
@@ -16,6 +17,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [StringLength(50)]
+        [JsonProperty("M01102")]
         public string M01F02 { get; set; }
 
         /// <summary>
@@ -23,6 +25,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [ValidateEmail]
+        [JsonProperty("M01103")]
         public string M01F03 { get; set; }
     }
 }

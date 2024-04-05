@@ -1,0 +1,5 @@
+Time: 15:48:41
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.BL.Service.BLADM01.GetProfit(String date, Response& response)
+

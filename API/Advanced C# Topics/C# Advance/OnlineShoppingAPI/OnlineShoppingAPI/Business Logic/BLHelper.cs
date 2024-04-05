@@ -437,6 +437,16 @@ namespace OnlineShoppingAPI.Business_Logic
                 return lstData;
             }
         }
+
+        public static Response ISEResponse()
+        {
+            return new Response()
+            {
+                IsError = true,
+                StatusCode = HttpStatusCode.InternalServerError,
+                Message = "An internal error occured during request."
+            };
+        }
         #endregion
     }
 }

@@ -15,7 +15,7 @@ namespace DependencyInjection.Extensions
 
             // services.AddTransient<IDateTime, Time>();
             // services.AddScoped<IDateTime, Time>();
-            services.AddSingleton<IDateTime, Time>();
+            services.AddSingleton<IDateTime, BLTime>();
 
             return services;
         }

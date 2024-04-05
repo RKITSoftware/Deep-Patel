@@ -73,7 +73,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateCategory([FromBody] CategoryDto categoryCreate)
         {
-            if(categoryCreate == null)
+            if (categoryCreate == null)
             {
                 return BadRequest(ModelState);
             }
@@ -82,20 +82,20 @@ namespace PokemonReviewApp.Controllers
                 .Where(c => c.Name.Trim().ToUpper() == categoryCreate.Name.Trim().ToUpper())
                 .FirstOrDefault();
 
-            if(category != null)
+            if (category != null)
             {
                 ModelState.AddModelError("", "Category already exists");
                 return StatusCode(422, ModelState);
             }
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             var categoryMap = _mapper.Map<Category>(categoryCreate);
 
-            if(!_categoryRepository.CreateCategory(categoryMap))
+            if (!_categoryRepository.CreateCategory(categoryMap))
             {
                 ModelState.AddModelError("", "Something went wrong while saving");
                 return StatusCode(500, ModelState);
@@ -124,7 +124,7 @@ namespace PokemonReviewApp.Controllers
 
             var categoryMap = _mapper.Map<Category>(updatedCategory);
 
-            if(!_categoryRepository.UpdateCategory(categoryMap))
+            if (!_categoryRepository.UpdateCategory(categoryMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating category");
                 return StatusCode(500, ModelState);
@@ -139,14 +139,14 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(404)]
         public IActionResult DeleteCategory(int categoryId)
         {
-            if(!_categoryRepository.CategoryExists(categoryId))
+            if (!_categoryRepository.CategoryExists(categoryId))
             {
                 return NotFound();
             }
 
             var categoryToDelete = _categoryRepository.GetCategory(categoryId);
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }

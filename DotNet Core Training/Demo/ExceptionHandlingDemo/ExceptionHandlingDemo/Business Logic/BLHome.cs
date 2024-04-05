@@ -10,15 +10,8 @@
         /// </summary>
         public static void Get()
         {
-            try
-            {
-                int a = 0;
-                int b = 1 / a;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            int a = 0;
+            int b = 1 / a;
         }
     }
 }

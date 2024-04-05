@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "WZDY4cLUKTRyH8klNoNMqcJDAHp9UVfoZO/YlperCyA=",
+  "Source": "LoggingUsingNLogAndLoggingProviders",
+  "BasePath": "_content/LoggingUsingNLogAndLoggingProviders",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

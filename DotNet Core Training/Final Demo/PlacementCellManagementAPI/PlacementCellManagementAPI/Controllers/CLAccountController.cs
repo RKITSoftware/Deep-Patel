@@ -31,13 +31,10 @@ namespace PlacementCellManagementAPI.Controllers
         [HttpPost("Generate")]
         public IActionResult GenerateToken(DtoUSR01 objUserDto)
         {
-            // Perform pre-save operations, if any
             _tokenService.PreSave(objUserDto);
 
-            // Check if token exists for the user
             if (!_tokenService.IsExist())
             {
-                // Return 404 Not Found if token does not exist
                 return NotFound();
             }
 

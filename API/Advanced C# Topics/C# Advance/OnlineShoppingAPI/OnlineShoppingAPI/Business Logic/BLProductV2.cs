@@ -1,6 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.Enums;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.Enum;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;

@@ -1,60 +1,55 @@
 /// <summary>
-    /// Startup class for configuring middleware and services.
+    /// Startup class for the configure the project.
     /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Access to appsettings.json file.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
         /// <summary>
-        /// Initializes a new instance of the Startup class.
+        /// Initialize the <see cref="Startup"/>.
         /// </summary>
-        /// <param name="configuration">The application configuration.</param>
+        /// <param name="configuration"></param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
         /// <summary>
-        /// Configures services for the application.
+        /// Configure the services that used in project.
         /// </summary>
-        /// <param name="services">The service collection.</param>
+        /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-            // Controller Service
             services.AddControllers();
-
-            // Endpoint Service
-            services.AddEndpointsApiExplorer();
-
-            // Swagger Service
             services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
         }
 
         /// <summary>
-        /// Configures the HTTP request pipeline.
+        /// Configure the web app.
         /// </summary>
-        /// <param name="app">The application builder.</param>
-        /// <param name="environment">The hosting environment.</param>
-        public void Configure(WebApplication app, IWebHostEnvironment environment)
+        /// <param name="app"><see cref="IApplicationBuilder"/> instance.</param>
+        /// <param name="env"><see cref="IWebHostEnvironment"/> specifies which environment.</param>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // Configure the HTTP request pipeline.
-            if (environment.IsDevelopment())
+            if (env.IsDevelopment())
             {
-                // Enable Swagger and Swagger UI in development environment.
                 app.UseSwagger();
                 app.UseSwaggerUI();
+
+                app.UseDeveloperExceptionPage();
             }
 
-            // Redirect HTTP requests to HTTPS.
             app.UseHttpsRedirection();
+            app.UseRouting();
 
-            // Enable authorization.
             app.UseAuthorization();
-
-            // Map controllers.
-            app.MapControllers();
-
-            // End the pipeline.
-            app.Run();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }

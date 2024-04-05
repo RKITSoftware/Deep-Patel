@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "AMaRmq4qXHEPrP3i+TSzbKcpBiU/zvluXzFReWqbR9Y=",
+  "Source": "AspDotNetCoreRequestProcessingPipeline",
+  "BasePath": "_content/AspDotNetCoreRequestProcessingPipeline",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

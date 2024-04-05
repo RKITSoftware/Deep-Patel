@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Models;
 using PlacementCellManagementAPI.Models.Dtos;
 using PlacementCellManagementAPI.Models.POCO;
 
@@ -34,12 +35,12 @@ namespace PlacementCellManagementAPI.Controllers
         /// <param name="objAdminDto">DTO containing admin information.</param>
         /// <returns>Returns HTTP status code indicating the result of the operation.</returns>
         [HttpPost("")]
-        public ActionResult CreateAdmin(DtoADM01 objAdminDto)
+        public IActionResult CreateAdmin(DtoADM01 objAdminDto)
         {
             _adminService.PreSave(objAdminDto);
 
-            if (!_adminService.Validation())
-                return BadRequest();
+            if (!_adminService.Validation(out BaseResponse response))
+                return StatusCode(response.StatusCode, response.Message);
 
             return Ok(_adminService.CreateAdmin());
         }

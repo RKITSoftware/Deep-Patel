@@ -3,7 +3,6 @@ using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Filters;
-using PlacementCellManagementAPI.Handlers;
 using PlacementCellManagementAPI.Middleware;
 
 namespace PlacementCellManagementAPI

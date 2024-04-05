@@ -46,6 +46,11 @@
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
+                //DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions()
+                //{
+                //    SourceCodeLineCount = 2,
+                //};
+
                 app.UseDeveloperExceptionPage();
             }
             else

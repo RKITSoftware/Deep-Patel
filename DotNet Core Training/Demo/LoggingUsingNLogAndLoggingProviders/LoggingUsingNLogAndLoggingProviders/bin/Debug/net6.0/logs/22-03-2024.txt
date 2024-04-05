@@ -1,0 +1,3 @@
+2024-03-22 11:58:18.2284 | 0 | INFO | LoggingUsingNLogAndLoggingProviders.Services.LoggerManager | Get Method called of weather controller. 
+2024-03-22 11:58:20.8613 | 0 | INFO | LoggingUsingNLogAndLoggingProviders.Services.LoggerManager | Get Method called of weather controller. 
+2024-03-22 12:04:48.1584 INFO Get Method called of weather controller.

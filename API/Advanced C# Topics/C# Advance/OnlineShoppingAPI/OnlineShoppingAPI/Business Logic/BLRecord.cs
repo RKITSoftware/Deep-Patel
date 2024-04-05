@@ -1,8 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using OfficeOpenXml;
-using OnlineShoppingAPI.Enums;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.Enum;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;

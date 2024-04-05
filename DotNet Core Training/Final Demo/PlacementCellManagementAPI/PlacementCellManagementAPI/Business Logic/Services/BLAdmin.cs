@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Extensions;
+using PlacementCellManagementAPI.Models;
 using PlacementCellManagementAPI.Models.Dtos;
 using PlacementCellManagementAPI.Models.POCO;
 using ServiceStack.Data;
@@ -160,25 +161,52 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// Performs validation checks before saving.
         /// </summary>
         /// <returns>True if validation is successful, false otherwise.</returns>
-        public bool Validation()
+        public bool Validation(out BaseResponse response)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     if (db.Exists<USR01>(u => u.R01F02 == _objUser.R01F02))
+                    {
+                        response = new BaseResponse
+                        {
+                            StatusCode = 412, // precondition failed
+                            IsError = true,
+                            Message = "Username already Exists."
+                        };
                         return false;
+                    }
 
                     if (db.Exists<USR01>(u => u.R01F03 == _objUser.R01F03))
+                    {
+                        response = new BaseResponse
+                        {
+                            StatusCode = 412, // precondition failed
+                            IsError = true,
+                            Message = "Email already Exists."
+                        };
                         return false;
+                    }
                 }
             }
             catch (Exception ex)
             {
                 _exceptionLogger.Log(ex);
+                response = new BaseResponse
+                {
+                    StatusCode = 500, // Internal Server Error
+                    IsError = true,
+                    Message = "Internal Server Error."
+                };
                 return false;
             }
 
+            response = new BaseResponse
+            {
+                StatusCode = 200, // Ok
+                Message = "Validation Successful."
+            };
             return true;
         }
     }

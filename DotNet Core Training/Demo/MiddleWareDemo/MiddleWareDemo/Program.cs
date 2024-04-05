@@ -1,11 +1,11 @@
-﻿using MiddleWareDemo.Controllers;
-namespace MiddleWareDemo
+﻿namespace MiddleWareDemo
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder =
+                WebApplication.CreateBuilder(args);
 
             // Creating a startup object
             Startup startup = new Startup(builder.Configuration);

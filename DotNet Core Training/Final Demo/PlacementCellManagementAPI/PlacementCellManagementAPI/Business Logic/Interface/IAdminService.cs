@@ -1,4 +1,5 @@
-﻿using PlacementCellManagementAPI.Models.Dtos;
+﻿using PlacementCellManagementAPI.Models;
+using PlacementCellManagementAPI.Models.Dtos;
 using PlacementCellManagementAPI.Models.POCO;
 
 namespace PlacementCellManagementAPI.Business_Logic.Interface
@@ -36,7 +37,8 @@ namespace PlacementCellManagementAPI.Business_Logic.Interface
         /// <summary>
         /// Performs validation checks on the admin data.
         /// </summary>
-        /// <returns>True if the admin data is valid, otherwise false.</returns>
-        bool Validation();
+        /// <param name="response">Response object for returning api response.</param>
+        /// <returns><see langword="true"/> if the admin data is valid, otherwise <see langword="false"/>.</returns>
+        bool Validation(out BaseResponse response);
     }
 }

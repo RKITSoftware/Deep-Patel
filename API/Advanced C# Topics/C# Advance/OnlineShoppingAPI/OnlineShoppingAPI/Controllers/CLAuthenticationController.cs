@@ -1,5 +1,5 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
-using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Net;
 using System.Net.Http;

@@ -1,0 +1,22 @@
+2024-03-22 14:54:41.0250 | 
+2024-03-22 14:56:11.2015 | System.DivideByZeroException: Attempted to divide by zero.
+   at LoggingUsingNLogAndLoggingProviders.Controllers.WeatherForecastController.Get() in F:\Deep - 380\Training\DotNet Core Training\Demo\LoggingUsingNLogAndLoggingProviders\LoggingUsingNLogAndLoggingProviders\Controllers\WeatherForecastController.cs:line 34
+
+
+2024-03-22 15:00:14.1873 | System.DivideByZeroException: Attempted to divide by zero.
+   at LoggingUsingNLogAndLoggingProviders.Controllers.WeatherForecastController.Get() in F:\Deep - 380\Training\DotNet Core Training\Demo\LoggingUsingNLogAndLoggingProviders\LoggingUsingNLogAndLoggingProviders\Controllers\WeatherForecastController.cs:line 34
+
+
+2024-03-22 15:01:23.9600 | 
+System.DivideByZeroException: Attempted to divide by zero.
+   at LoggingUsingNLogAndLoggingProviders.Controllers.WeatherForecastController.Get()
+
+
+2024-03-22 15:04:24.0960 | 
+	System.DivideByZeroException: Attempted to divide by zero.
+   at LoggingUsingNLogAndLoggingProviders.Controllers.WeatherForecastController.Get() in F:\Deep - 380\Training\DotNet Core Training\Demo\LoggingUsingNLogAndLoggingProviders\LoggingUsingNLogAndLoggingProviders\Controllers\WeatherForecastController.cs:line 34
+
+
+2024-03-22 15:05:49.8685 | 
+	System.DivideByZeroException: Attempted to divide by zero.
+	   at LoggingUsingNLogAndLoggingProviders.Controllers.WeatherForecastController.Get() in F:\Deep - 380\Training\DotNet Core Training\Demo\LoggingUsingNLogAndLoggingProviders\LoggingUsingNLogAndLoggingProviders\Controllers\WeatherForecastController.cs:line 34

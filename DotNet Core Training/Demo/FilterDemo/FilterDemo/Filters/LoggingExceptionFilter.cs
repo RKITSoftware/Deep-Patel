@@ -41,7 +41,8 @@ namespace FilterDemo.Filters
                 "ExceptionLog", DateTime.Now.ToString("dd-MM-yyyy"));
 
             // Create the log message including exception details
-            string logMessage = $"[{DateTime.Now}] {exception.GetType()}: {exception.Message}\n{exception.StackTrace}\n\n";
+            string logMessage =
+                $"[{DateTime.Now}] {exception.GetType()}: {exception.Message}\n{exception.StackTrace}\n\n";
 
             // Append the exception details to the log file
             File.AppendAllText(logFilePath, logMessage);

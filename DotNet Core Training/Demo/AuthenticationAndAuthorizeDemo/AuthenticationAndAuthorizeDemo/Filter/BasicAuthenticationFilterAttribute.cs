@@ -12,7 +12,7 @@ namespace AuthenticationAndAuthorizeDemo.Filter
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             bool allowAnnoymous = context.ActionDescriptor.EndpointMetadata
-                .Any(meta => meta.GetType() == typeof(AllowAnonymousAttribute));
+                .OfType<AllowAnonymousAttribute>().Any();
 
             if (allowAnnoymous)
             {

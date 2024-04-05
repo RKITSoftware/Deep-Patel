@@ -56,6 +56,10 @@
             // Map controllers.
             app.MapControllers();
 
+            //app.MapControllerRoute(
+            //    name: "default",
+            //    pattern: "api/{controller}/{action}/{id?}");
+
             // End the pipeline.
             app.Run();
         }

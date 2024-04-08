@@ -1,8 +1,8 @@
-﻿using OnlineShoppingAPI.Models.POCO;
+﻿using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
 using System;
 
-namespace OnlineShoppingAPI.Models
+namespace OnlineShoppingAPI.Models.POCO
 {
     [Alias("PRO02")]
     public class PRO02
@@ -12,6 +12,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [AutoIncrement]
         [PrimaryKey]
+        [JsonProperty("O02101")]
         public int O02F01 { get; set; }
 
         /// <summary>
@@ -19,6 +20,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [StringLength(100)]
+        [JsonProperty("O02102")]
         public string O02F02 { get; set; }
 
         /// <summary>
@@ -26,6 +28,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [DecimalLength(10, 2)]
+        [JsonProperty("O02103")]
         public int O02F03 { get; set; }
 
         /// <summary>
@@ -33,17 +36,20 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [DecimalLength(10, 2)]
+        [JsonProperty("O02104")]
         public int O02F04 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
         [Required]
+        [JsonProperty("O02105")]
         public decimal O02F05 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
+        [JsonProperty("O02106")]
         public string O02F06 { get; set; }
 
         /// <summary>
@@ -63,6 +69,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [References(typeof(CAT01))]
+        [JsonProperty("O02109")]
         public int O02F09 { get; set; }
 
         /// <summary>
@@ -70,6 +77,7 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         [Required]
         [References(typeof(SUP01))]
+        [JsonProperty("O02110")]
         public int O02F10 { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
 {

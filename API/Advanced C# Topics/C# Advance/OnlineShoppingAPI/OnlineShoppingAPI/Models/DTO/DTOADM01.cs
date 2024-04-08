@@ -10,7 +10,6 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Admin Name
         /// </summary>
-        [JsonProperty("M01F02")]
         public string M01102 { get; set; }
 
         /// <summary>

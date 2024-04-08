@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.Net;
+﻿using System.Net;
 
 namespace OnlineShoppingAPI.Models
 {
@@ -8,6 +7,6 @@ namespace OnlineShoppingAPI.Models
         public bool IsError { get; set; } = false;
         public string Message { get; set; }
         public HttpStatusCode StatusCode { get; set; }
-        public DataTable Data { get; set; }
+        public dynamic Data { get; set; }
     }
 }

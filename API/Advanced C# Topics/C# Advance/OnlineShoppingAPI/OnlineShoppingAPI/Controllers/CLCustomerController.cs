@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Filter;
 using OnlineShoppingAPI.Interface;
 using OnlineShoppingAPI.Models;
@@ -19,6 +20,8 @@ namespace OnlineShoppingAPI.Controllers
         /// Business logic class instance for handling customer endpoints.
         /// </summary>
         private readonly IBasicAPIService<CUS01> _customerService;
+
+        private readonly BLCUS01 _blCUS01;
 
         /// <summary>
         /// Constructor to initialize the Business Logic instance.

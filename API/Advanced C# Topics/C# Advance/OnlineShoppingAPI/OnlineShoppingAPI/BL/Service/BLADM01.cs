@@ -125,7 +125,7 @@ namespace OnlineShoppingAPI.BL.Service
             // Set success response
             response = new Response()
             {
-                StatusCode = HttpStatusCode.OK,
+                StatusCode = HttpStatusCode.Created,
                 Message = "Admin created successfully."
             };
         }

@@ -1,4 +1,5 @@
-﻿using ServiceStack.DataAnnotations;
+﻿using OnlineShoppingAPI.Models.POCO;
+using ServiceStack.DataAnnotations;
 using System;
 
 namespace OnlineShoppingAPI.Models

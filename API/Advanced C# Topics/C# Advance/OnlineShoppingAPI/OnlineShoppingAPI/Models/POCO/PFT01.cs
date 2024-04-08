@@ -1,6 +1,6 @@
 ﻿using ServiceStack.DataAnnotations;
 
-namespace OnlineShoppingAPI.Models
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// Profit table contains the details about specific date's profit

@@ -2,6 +2,7 @@
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;

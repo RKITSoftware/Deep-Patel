@@ -229,9 +229,9 @@
     <Compile Include="BL\Service\BLCAT01.cs" />
     <Compile Include="BL\Interface\ICAT01Service.cs" />
     <Compile Include="BL\Service\BLCUS01.cs" />
+    <Compile Include="BL\Interface\ICUS01Service.cs" />
     <Compile Include="Business Logic\BLAuthentication.cs" />
     <Compile Include="Business Logic\BLCart.cs" />
-    <Compile Include="Business Logic\BLCustomer.cs" />
     <Compile Include="Business Logic\BLHelper.cs" />
     <Compile Include="Business Logic\BLProduct.cs" />
     <Compile Include="Business Logic\BLProductV2.cs" />
@@ -242,7 +242,7 @@
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCartController.cs" />
     <Compile Include="Controllers\CLCAT01Controller.cs" />
-    <Compile Include="Controllers\CLCustomerController.cs" />
+    <Compile Include="Controllers\CLCUS01Controller.cs" />
     <Compile Include="Controllers\CLProfitController.cs" />
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
@@ -250,6 +250,7 @@
     <Compile Include="DL\DBADM01.cs" />
     <Compile Include="DL\DBCAT01.cs" />
     <Compile Include="Models\DTO\DTOCAT01.cs" />
+    <Compile Include="Models\DTO\DTOCUS01.cs" />
     <Compile Include="Models\Enum\OnlineShoopingEnums.cs" />
     <Compile Include="Extension\ConvertExtension.cs" />
     <Compile Include="Extension\OnlineShoppingExtensions.cs" />
@@ -258,11 +259,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Interface\IBasicAPIService.cs" />
     <Compile Include="Models\POCO\ADM01.cs" />
     <Compile Include="Models\POCO\CAT01.cs" />
     <Compile Include="Models\CRT01.cs" />
-    <Compile Include="Models\CUS01.cs" />
+    <Compile Include="Models\POCO\CUS01.cs" />
     <Compile Include="Models\DTO\DTOADM01.cs" />
     <Compile Include="Models\Enum\EnmOperation.cs" />
     <Compile Include="Models\PFT01.cs" />

@@ -1,49 +1,58 @@
-﻿using ServiceStack;
+﻿using Newtonsoft.Json;
+using ServiceStack;
 using ServiceStack.DataAnnotations;
 
-namespace OnlineShoppingAPI.Models
+namespace OnlineShoppingAPI.Models.DTO
 {
-    [Alias("CUS01")]
-    public class CUS01
+    /// <summary>
+    /// DTO for CUS01 POCO Model
+    /// </summary>
+    public class DTOCUS01
     {
         /// <summary>
         /// Customer Id
         /// </summary>
         [AutoIncrement]
-        public int S01F01 { get; set; }
+        [JsonProperty("S01F01")]
+        public int S01101 { get; set; }
 
         /// <summary>
         /// Customer Name
         /// </summary>
         [Required]
         [StringLength(maximumLength: 50)]
-        public string S01F02 { get; set; }
+        [JsonProperty("S01F02")]
+        public string S01102 { get; set; }
 
         /// <summary>
         /// Customer Email Address
         /// </summary>
         [Required]
         [ValidateEmail]
-        public string S01F03 { get; set; }
+        [JsonProperty("S01F03")]
+        public string S01103 { get; set; }
 
         /// <summary>
         /// Customer Password
         /// </summary>
         [Required]
         [StringLength(minimumLength: 8, maximumLength: 16)]
-        public string S01F04 { get; set; }
+        [JsonProperty("S01F04")]
+        public string S01104 { get; set; }
 
         /// <summary>
         /// Customer Mobile Number
         /// </summary>
         [Required]
         [StringLength(minimumLength: 10, maximumLength: 10)]
-        public string S01F05 { get; set; }
+        [JsonProperty("S01F05")]
+        public string S01105 { get; set; }
 
         /// <summary>
         /// Customer Address
         /// </summary>
         [Required]
-        public string S01F06 { get; set; }
+        [JsonProperty("S01F06")]
+        public string S01106 { get; set; }
     }
 }

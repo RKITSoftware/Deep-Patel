@@ -448,6 +448,15 @@ namespace OnlineShoppingAPI.Business_Logic
                 Message = "An internal error occured during request."
             };
         }
+
+        public static Response OkResponse()
+        {
+            return new Response()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = "Success"
+            };
+        }
         #endregion
     }
 }

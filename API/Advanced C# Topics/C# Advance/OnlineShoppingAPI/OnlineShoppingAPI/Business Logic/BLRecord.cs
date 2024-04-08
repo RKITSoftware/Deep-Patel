@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using OfficeOpenXml;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;

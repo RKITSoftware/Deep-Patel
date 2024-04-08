@@ -230,6 +230,8 @@
     <Compile Include="BL\Interface\ICAT01Service.cs" />
     <Compile Include="BL\Service\BLCUS01.cs" />
     <Compile Include="BL\Interface\ICUS01Service.cs" />
+    <Compile Include="BL\Service\BLPFT01.cs" />
+    <Compile Include="BL\Interface\IPFT01Service.cs" />
     <Compile Include="Business Logic\BLAuthentication.cs" />
     <Compile Include="Business Logic\BLCart.cs" />
     <Compile Include="Business Logic\BLHelper.cs" />
@@ -243,12 +245,13 @@
     <Compile Include="Controllers\CLCartController.cs" />
     <Compile Include="Controllers\CLCAT01Controller.cs" />
     <Compile Include="Controllers\CLCUS01Controller.cs" />
-    <Compile Include="Controllers\CLProfitController.cs" />
+    <Compile Include="Controllers\CLPFT01Controller.cs" />
     <Compile Include="Controllers\CLRecordController.cs" />
     <Compile Include="Controllers\CLProductController.cs" />
     <Compile Include="Controllers\CLSuplierController.cs" />
     <Compile Include="DL\DBADM01.cs" />
     <Compile Include="DL\DBCAT01.cs" />
+    <Compile Include="DL\DBPFT01.cs" />
     <Compile Include="Models\DTO\DTOCAT01.cs" />
     <Compile Include="Models\DTO\DTOCUS01.cs" />
     <Compile Include="Models\Enum\OnlineShoopingEnums.cs" />

@@ -1,7 +1,7 @@
 ﻿using OnlineShoppingAPI.Business_Logic;
 using System.Web.Http.Filters;
 
-namespace OnlineShoppingAPI.Filter
+namespace OnlineShoppingAPI.Controllers.Filter
 {
     /// <summary>
     /// My exception filter for writing all exception occured during when server is run.

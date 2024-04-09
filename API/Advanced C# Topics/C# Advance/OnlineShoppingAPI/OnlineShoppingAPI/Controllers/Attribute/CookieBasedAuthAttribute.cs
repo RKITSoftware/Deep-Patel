@@ -13,7 +13,7 @@ using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace OnlineShoppingAPI.Security
+namespace OnlineShoppingAPI.Controllers.Attribute
 {
     /// <summary>
     /// Custom Authorization Filter for Cookie-Based Authentication.

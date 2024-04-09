@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Filter;
+using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
@@ -40,15 +40,10 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel] // Applies model validation
         public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
-            Response response;
-
-            // Prepare admin data for saving
             _adm01Service.PreSave(objDTOADM01, EnmOperation.Create);
 
-            // Validate admin data
-            if (_adm01Service.Validation(out response))
+            if (_adm01Service.Validation(out Response response))
             {
-                // Save admin data
                 _adm01Service.Save(out response);
             }
 
@@ -67,9 +62,7 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangeEmail(string username,
             string password, string newEmail)
         {
-            Response response;
-            _adm01Service.ChangeEmail(username, password, newEmail, out response);
-
+            _adm01Service.ChangeEmail(username, password, newEmail, out Response response);
             return Ok(response);
         }
 
@@ -85,9 +78,7 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangePassword(string username,
             string oldPassword, string newPassword)
         {
-            Response response;
-            _adm01Service.ChangePassword(username, oldPassword, newPassword, out response);
-
+            _adm01Service.ChangePassword(username, oldPassword, newPassword, out Response response);
             return Ok(response);
         }
 
@@ -100,8 +91,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteAdmin(int id)
         {
-            Response response;
-            _adm01Service.Delete(id, out response);
+            _adm01Service.Delete(id, out Response response);
 
             return Ok(response);
         }
@@ -115,9 +105,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("ShowProfit")]
         public IHttpActionResult GetProfit(string date)
         {
-            Response response;
-            _adm01Service.GetProfit(date, out response);
-
+            _adm01Service.GetProfit(date, out Response response);
             return Ok(response);
         }
     }

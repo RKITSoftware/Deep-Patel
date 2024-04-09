@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace OnlineShoppingAPI.Filter
+namespace OnlineShoppingAPI.Controllers.Filter
 {
     public class ValidateModelAttribute : ActionFilterAttribute
     {

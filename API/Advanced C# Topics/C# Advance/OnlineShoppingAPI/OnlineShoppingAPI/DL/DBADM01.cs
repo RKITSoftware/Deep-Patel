@@ -76,13 +76,8 @@ namespace OnlineShoppingAPI.DL
                     return;
                 }
 
-                // If profit data is found, populate the response object with the data
-                response = new Response()
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = "Success",
-                    Data = dtProfit
-                };
+                response = BLHelper.OkResponse();
+                response.Data = dtProfit;
             }
             catch (Exception ex)
             {

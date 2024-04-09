@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Filter;
+using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
@@ -36,10 +36,9 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult Add(DTOCAT01 objDTOCAT01)
         {
-            Response response;
             _cat01Service.PreSave(objDTOCAT01, EnmOperation.Create);
 
-            if (_cat01Service.Validation(out response))
+            if (_cat01Service.Validation(out Response response))
             {
                 _cat01Service.Save(EnmOperation.Create, out response);
             }
@@ -54,8 +53,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetAll")]
         public IHttpActionResult GetAllCategories()
         {
-            Response response;
-            _cat01Service.GetAll(out response);
+            _cat01Service.GetAll(out Response response);
 
             return Ok(response);
         }
@@ -68,8 +66,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Get/{id}")]
         public IHttpActionResult GetById(int id)
         {
-            Response response;
-            _cat01Service.GetById(id, out response);
+            _cat01Service.GetById(id, out Response response);
 
             return Ok(response);
         }
@@ -82,8 +79,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteCategory(int id)
         {
-            Response response;
-            _cat01Service.Delete(id, out response);
+            _cat01Service.Delete(id, out Response response);
 
             return Ok(response);
         }
@@ -96,10 +92,9 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Edit")]
         public IHttpActionResult Edit(DTOCAT01 objCAT01DTO)
         {
-            Response response;
             _cat01Service.PreSave(objCAT01DTO, EnmOperation.Update);
 
-            if (_cat01Service.Validation(out response))
+            if (_cat01Service.Validation(out Response response))
             {
                 _cat01Service.Save(EnmOperation.Update, out response);
             }

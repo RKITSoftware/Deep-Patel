@@ -19,6 +19,7 @@ namespace LoggingUsingNLogAndLoggingProviders
         {
             LogManager.Setup().LoadConfigurationFromFile(string.Concat(
                 Directory.GetCurrentDirectory(), "/nlog.config"));
+
             Configuration = configuration;
         }
 

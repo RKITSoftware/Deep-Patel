@@ -11,10 +11,10 @@ using System.Text;
 using System.Web;
 using System.Web.Caching;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.BL.Common
 {
     /// <summary>
-    /// Helper class containing various utility methods for the online shooping solution.
+    /// Helper class for common method of this project.
     /// </summary>
     public class BLHelper
     {
@@ -28,10 +28,10 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <summary>
         /// AES (Advanced Encryption Standard) encryption object for secure password handling.
         /// </summary>
-        private static Aes _objAes;
+        private static readonly Aes _objAes;
 
         /// <summary>
-        /// Key used for AES encryption. It should be a 32-character hexadecimal string.
+        /// Key used for AES encryption.
         /// </summary>
         private static readonly string key = "0123456789ABCDEF0123456789ABCDEF";
 
@@ -50,7 +50,7 @@ namespace OnlineShoppingAPI.Business_Logic
         #region Public Properties
 
         /// <summary>
-        /// Cache for storing server-related data.
+        /// Cache for storing server-related cache-data.
         /// </summary>
         public static Cache ServerCache;
 
@@ -84,7 +84,28 @@ namespace OnlineShoppingAPI.Business_Logic
         #region Public Methods
 
         /// <summary>
-        /// Retrieves user details for authentication.
+        /// Retrieves user details using user id.
+        /// </summary>
+        /// <param name="username">User id of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(int id)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.SingleById<USR01>(id);
+                }
+            }
+            catch (Exception ex)
+            {
+                LogError(ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Retrieves user details using username.
         /// </summary>
         /// <param name="username">Username of the user.</param>
         /// <returns>User details. Null if the user is not found.</returns>
@@ -105,28 +126,7 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Retrieves user details for authentication.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(int id)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.SingleById<USR01>(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves user details.
+        /// Retrieves user details using username and password.
         /// </summary>
         /// <param name="username">Username of the user.</param>
         /// <param name="password">Password of the user.</param>
@@ -151,7 +151,7 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// Checks if a user exists.
+        /// Checks if a user exists using username only.
         /// </summary>
         /// <param name="username">Username of the user.</param>
         /// <returns>True if the user exists, false otherwise.</returns>
@@ -166,14 +166,13 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as needed
                 LogError(ex);
                 return false;
             }
         }
 
         /// <summary>
-        /// Checks if a user exists.
+        /// Checks if a user exists using username and password.
         /// </summary>
         /// <param name="username">Username of the user.</param>
         /// <param name="password">Password of the user.</param>
@@ -192,7 +191,6 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as needed
                 LogError(ex);
                 return false;
             }
@@ -201,8 +199,8 @@ namespace OnlineShoppingAPI.Business_Logic
         /// <summary>
         /// Encrypts a password using AES encryption.
         /// </summary>
-        /// <param name="plaintext">The plaintext password to be encrypted.</param>
-        /// <returns>Encrypted password as a Base64-encoded string.</returns>
+        /// <param name="plaintext">The plaintext to be encrypted.</param>
+        /// <returns>Encrypted ciphertext.</returns>
         public static string GetEncryptPassword(string plaintext)
         {
             try
@@ -225,7 +223,6 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it as needed
                 LogError(ex);
                 return string.Empty;
             }
@@ -235,11 +232,11 @@ namespace OnlineShoppingAPI.Business_Logic
         /// Writes exception information to a text file.
         /// </summary>
         /// <param name="exception">The exception that occurred.</param>
-        /// <param name="directoryPath">The directory path for storing log files.</param>
         public static void LogError(Exception exception)
         {
             try
             {
+                // Checks directory exists or not.
                 if (!Directory.Exists(_logFolderPath))
                 {
                     Directory.CreateDirectory(_logFolderPath);
@@ -247,6 +244,7 @@ namespace OnlineShoppingAPI.Business_Logic
 
                 string filePath = Path.Combine(_logFolderPath, $"{DateTime.Today:dd-MM-yy}.txt");
 
+                // Checks the log file exists or not.
                 if (!File.Exists(filePath))
                 {
                     File.Create(filePath).Dispose();
@@ -270,17 +268,19 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception, e.g., print to console or use a dedicated logging framework
                 Console.WriteLine($"An error occurred while logging: {ex}");
             }
         }
 
         /// <summary>
-        /// Creates an HttpResponseMessage with the specified HTTP status code and message content.
+        /// Creates an <see cref="HttpResponseMessage"/> with the specified HTTP status code 
+        /// and message content.
         /// </summary>
         /// <param name="statusCode">The HTTP status code for the response.</param>
         /// <param name="message">The content message to be included in the response.</param>
-        /// <returns>An HttpResponseMessage with the specified status code and message content.</returns>
+        /// <returns>
+        /// An <see cref="HttpResponseMessage"/> with the specified status code and message content.
+        /// </returns>
         public static HttpResponseMessage ResponseMessage(HttpStatusCode statusCode, string message)
         {
             return new HttpResponseMessage(statusCode)
@@ -290,42 +290,9 @@ namespace OnlineShoppingAPI.Business_Logic
         }
 
         /// <summary>
-        /// When a product is bought at that time this method calculates the profit and 
-        /// add it to that day's profit.
+        /// Creates a InternalServerError <see cref="Response"/> with error message.
         /// </summary>
-        /// <param name="objProduct">Products buy price and Sell price information</param>
-        /// <param name="quantity">Quantity that user bought.</param>
-        public static void UpdateProfit(PRO02 objProduct, int quantity)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.CreateTableIfNotExists<PFT01>();
-
-                    PFT01 objProfit = db.Single<PFT01>(p =>
-                        p.T01F02 == "14-03-2024");
-
-                    if (objProfit != null)
-                    {
-                        objProfit.T01F03 += (objProduct.O02F04 - objProduct.O02F03) * quantity;
-                        db.Update(objProfit);
-                        return;
-                    }
-
-                    db.Insert(new PFT01()
-                    {
-                        T01F02 = "15-03-2024",
-                        T01F03 = (objProduct.O02F04 - objProduct.O02F03) * quantity
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-            }
-        }
-
+        /// <returns><see cref="Response"/> Containg InternalServerError response.</returns>
         public static Response ISEResponse()
         {
             return new Response()
@@ -336,6 +303,10 @@ namespace OnlineShoppingAPI.Business_Logic
             };
         }
 
+        /// <summary>
+        /// Retuns the Success response with Success Message.
+        /// </summary>
+        /// <returns><see cref="Response"/> containing the Success response.</returns>
         public static Response OkResponse()
         {
             return new Response()

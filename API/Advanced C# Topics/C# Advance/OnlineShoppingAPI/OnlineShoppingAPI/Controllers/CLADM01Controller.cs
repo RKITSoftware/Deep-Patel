@@ -1,19 +1,21 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     /// <summary>
-    /// Controller for handling admin-related operations.
+    /// Controller for handling <see cref="ADM01"/> related api's
     /// </summary>
-    [RoutePrefix("api/CLAdmin")]
-    //[BearerAuth] // Bearer token authentication is required
-    //[Authorize(Roles = "Admin")] //  Authorization based on roles is required
+    [RoutePrefix("api/CLADM01")]
+    [BearerAuth]
+    [Authorize(Roles = "Admin")]
     public class CLADM01Controller : ApiController
     {
         /// <summary>
@@ -26,7 +28,6 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLADM01Controller()
         {
-            // Initialize the service used for admin operations
             _adm01Service = new BLADM01();
         }
 
@@ -37,7 +38,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPost]
         [Route("Add")]
-        [ValidateModel] // Applies model validation
+        [ValidateModel]
         public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
             _adm01Service.PreSave(objDTOADM01, EnmOperation.Create);

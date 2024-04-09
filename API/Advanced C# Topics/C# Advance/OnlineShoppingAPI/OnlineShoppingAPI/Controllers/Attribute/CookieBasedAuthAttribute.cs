@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Linq;
@@ -90,8 +91,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
             }
             catch (Exception ex)
             {
-                // Handle unexpected errors and return Internal Server Error response.
-                BLHelper.LogError(ex);
+                ex.LogException();
                 actionContext.Response = BLHelper.ResponseMessage(
                     HttpStatusCode.InternalServerError,
                     "Internal Server Error - Please Try After Some Time");

@@ -1,4 +1,4 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
 using System;
 using System.Net;
 using System.Net.Http;

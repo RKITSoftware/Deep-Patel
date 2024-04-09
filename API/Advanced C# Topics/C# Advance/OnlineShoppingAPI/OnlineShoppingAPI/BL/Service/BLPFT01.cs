@@ -11,22 +11,28 @@ using System.Web;
 namespace OnlineShoppingAPI.BL.Service
 {
     /// <summary>
-    /// Service class for handling profit-related operations.
+    /// Service implementation of <see cref="IPFT01Service/>.
     /// </summary>
     public class BLPFT01 : IPFT01Service
     {
+        #region Private Fields
+
         /// <summary>
-        /// Database Context for Mysql queries.
+        /// Database Context for Mysql queries of <see cref="BLPFT01"/>.
         /// </summary>
         private readonly DBPFT01 _context;
 
         /// <summary>
-        /// Orm Lite Connection Factory.
+        /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the BLPFT01 class.
+        /// Initializes a new instance of the <see cref="BLPFT01"/> class.
         /// </summary>
         public BLPFT01()
         {
@@ -34,10 +40,12 @@ namespace OnlineShoppingAPI.BL.Service
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
         }
 
+        #endregion
+
         /// <summary>
         /// Retrieves profit data for each day of current running month.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with day-wise profit data.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void GetDayWiseData(out Response response)
         {
             int month = DateTime.Now.Month;
@@ -47,9 +55,9 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Retrieves aggregated profit data for each month of current year.
+        /// Retrieves profit data for each month of current year.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with month-wise profit data.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void GetMonthData(out Response response)
         {
             int year = DateTime.Now.Year;
@@ -59,14 +67,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// <summary>
         /// Retrieves aggregated profit data for last 10 year.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with year-wise profit data.</param>
-        public void GetYearData(out Response response)
-        {
-            _context.GetData(out response);
-        }
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        public void GetYearData(out Response response) => _context.GetData(out response);
 
         /// <summary>
-        /// Updates profit information based on the provided product and quantity.
+        /// Updates profit information based on the provided product and quantity of the today.
         /// </summary>
         /// <param name="objPRO02">The product object for which profit is being updated.</param>
         /// <param name="quantity">The quantity of product being sold.</param>

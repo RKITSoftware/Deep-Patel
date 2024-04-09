@@ -1,5 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -15,27 +15,33 @@ using System.Web;
 namespace OnlineShoppingAPI.BL.Service
 {
     /// <summary>
-    /// Service class for managing CAT01 business logic.
+    /// Service class for managing <see cref="CAT01"/> business logic.
     /// </summary>
     public class BLCAT01 : ICAT01Service
     {
+        #region Private Fields
+
         /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
-        /// Category object instance for request.
+        /// <see cref="CAT01"/> object instance for request.
         /// </summary>
         private CAT01 _objCAT01;
 
         /// <summary>
-        /// DB Context for MySql Queries.
+        /// DB Context of <see cref="CAT01"/>.
         /// </summary>
         private readonly DBCAT01 _context;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the BLCAT01 class.
+        /// Initializes a new instance of the <see cref="BLCAT01"/> class.
         /// </summary>
         public BLCAT01()
         {
@@ -43,15 +49,17 @@ namespace OnlineShoppingAPI.BL.Service
             _context = new DBCAT01();
         }
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Prepares for saving a category.
+        /// Prepares category object for saving a category.
         /// </summary>
         /// <param name="objDTOCAT01">Data Transfer Object representing the category.</param>
         /// <param name="operation">Operation type for the save action.</param>
         public void PreSave(DTOCAT01 objDTOCAT01, EnmOperation operation)
-        {
-            _objCAT01 = objDTOCAT01.Convert<CAT01>();
-        }
+            => _objCAT01 = objDTOCAT01.Convert<CAT01>();
 
         /// <summary>
         /// Validates category information.
@@ -67,7 +75,7 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Saves changes made to a category.
+        /// Create or Updates the category information.
         /// </summary>
         /// <param name="operation">Operation type for the save action.</param>
         /// <param name="response">Out parameter containing the response status after saving.</param>
@@ -78,6 +86,85 @@ namespace OnlineShoppingAPI.BL.Service
             else
                 Update(out response);
         }
+
+        /// <summary>
+        /// Retrieves all categories.
+        /// </summary>
+        /// <param name="response">Out parameter containing the response with all categories.</param>
+        public void GetAll(out Response response) => _context.GetAll(out response);
+
+        /// <summary>
+        /// Retrieves a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to retrieve.</param>
+        /// <param name="response">Out parameter containing the response with the requested category.</param>
+        public void GetById(int id, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CAT01 objCategory = db.Single<CAT01>(c => c.T01F01 == id);
+
+                    if (objCategory == null)
+                    {
+                        response = new Response()
+                        {
+                            StatusCode = HttpStatusCode.NotFound,
+                            Message = "Category not found."
+                        };
+                    }
+                    else
+                    {
+                        response = BLHelper.OkResponse();
+                        response.Data = objCategory;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = BLHelper.ISEResponse();
+            }
+        }
+
+        /// <summary>
+        /// Deletes a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to be deleted.</param>
+        /// <param name="response">Out parameter containing the response status after deletion.</param>
+        public void Delete(int id, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    CAT01 category = db.SingleById<CAT01>(id);
+
+                    if (category == null)
+                    {
+                        response = new Response()
+                        {
+                            StatusCode = HttpStatusCode.NotFound,
+                            Message = "Category doesn't exist."
+                        };
+                        return;
+                    }
+
+                    db.Delete(category);
+                    response = BLHelper.OkResponse();
+                }
+            }
+            catch (Exception exception)
+            {
+                exception.LogException();
+                response = BLHelper.ISEResponse();
+            }
+        }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
         /// Creates a new category.
@@ -128,11 +215,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
 
                     db.Update(_objCAT01);
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "Category updated successfully."
-                    };
+                    response = BLHelper.OkResponse();
                 }
             }
             catch (Exception exception)
@@ -142,91 +225,6 @@ namespace OnlineShoppingAPI.BL.Service
             }
         }
 
-        /// <summary>
-        /// Retrieves all categories.
-        /// </summary>
-        /// <param name="response">Out parameter containing the response with all categories.</param>
-        public void GetAll(out Response response) => _context.GetAll(out response);
-
-        /// <summary>
-        /// Retrieves a category by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the category to retrieve.</param>
-        /// <param name="response">Out parameter containing the response with the requested category.</param>
-        public void GetById(int id, out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    CAT01 objCategory = db.Single<CAT01>(c => c.T01F01 == id);
-
-                    if (objCategory == null)
-                    {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Category not found."
-                        };
-                    }
-                    else
-                    {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.OK,
-                            Message = "Success.",
-                            Data = objCategory
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = BLHelper.ISEResponse();
-            }
-        }
-
-        /// <summary>
-        /// Deletes a category by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the category to be deleted.</param>
-        /// <param name="response">Out parameter containing the response status after deletion.</param>
-        public void Delete(int id, out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Retrieve category information by id
-                    CAT01 category = db.SingleById<CAT01>(id);
-
-                    // Check if the category exists
-                    if (category == null)
-                    {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Category doesn't exist."
-                        };
-                        return;
-                    }
-
-                    db.Delete(category);
-
-                    // Return success response
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "Category Successfully Deleted."
-                    };
-                }
-            }
-            catch (Exception exception)
-            {
-                exception.LogException();
-                response = BLHelper.ISEResponse();
-            }
-        }
+        #endregion
     }
 }

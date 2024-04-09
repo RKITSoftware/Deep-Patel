@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.Extension;
 using System;
 using System.Linq;
 using System.Net;
@@ -84,8 +85,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
             }
             catch (Exception ex)
             {
-                // Logging the exception and returning an error response
-                BLHelper.LogError(ex);
+                ex.LogException();
                 actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
                     "An error occurred during authentication.");
             }

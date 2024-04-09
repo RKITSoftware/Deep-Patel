@@ -13,8 +13,18 @@ using System.Web;
 
 namespace OnlineShoppingAPI.BL.Common.Service
 {
+    /// <summary>
+    /// Implementation of <see cref="IEmailService"/>.
+    /// </summary>
     public class BLEmail : IEmailService
     {
+        #region Public Methods
+
+        /// <summary>
+        /// Send the order attachment to the user.
+        /// </summary>
+        /// <param name="customerEmail">Receiver email address.</param>
+        /// <param name="lstItems">List of items that user purchased.</param>
         public async Task SendAsync(string customerEmail, List<dynamic> lstItems)
         {
             HttpResponseMessage response = HttpExcelResponse(lstItems);
@@ -26,8 +36,10 @@ namespace OnlineShoppingAPI.BL.Common.Service
             using (MemoryStream excelStream = new MemoryStream(excelData))
             {
                 // Create a MailMessage
-                MailMessage mail = new MailMessage();
-                mail.From = new MailAddress("deeppatel2513@outlook.com");
+                MailMessage mail = new MailMessage
+                {
+                    From = new MailAddress("deeppatel2513@outlook.com")
+                };
                 mail.To.Add(customerEmail);
                 mail.Subject = "Order Receipt";
                 //mail.Body = "Body of the Email";
@@ -40,11 +52,13 @@ namespace OnlineShoppingAPI.BL.Common.Service
                 mail.Attachments.Add(attachment);
 
                 // Send the email using SMTP
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com");
-                smtpClient.Port = 587;
-                smtpClient.Credentials =
-                    HttpContext.Current.Application["Credentials"] as NetworkCredential;
-                smtpClient.EnableSsl = true;
+                SmtpClient smtpClient = new SmtpClient("smtp.office365.com")
+                {
+                    Port = 587,
+                    Credentials =
+                    HttpContext.Current.Application["Credentials"] as NetworkCredential,
+                    EnableSsl = true
+                };
 
                 try
                 {
@@ -64,21 +78,30 @@ namespace OnlineShoppingAPI.BL.Common.Service
             }
         }
 
+        /// <summary>
+        /// Send the OTP to the user.
+        /// </summary>
+        /// <param name="email">Customer email address.</param>
+        /// <param name="otp">OTP(One Time Password) for the user.</param>
         public void Send(string email, string otp)
         {
             try
             {
                 // Initialize SMTP client with Office 365 settings.
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587);
-                smtpClient.Credentials = HttpContext.Current
-                    .Application["Credentials"] as NetworkCredential;
+                SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587)
+                {
+                    Credentials = HttpContext.Current
+                        .Application["Credentials"] as NetworkCredential,
 
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.EnableSsl = true;
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    EnableSsl = true
+                };
 
                 // Create a mail message with sender, recipient, subject, and body.
-                MailMessage mailMessage = new MailMessage();
-                mailMessage.From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel");
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel")
+                };
                 mailMessage.To.Add(new MailAddress(email));
 
                 mailMessage.Subject = "OTP for Buying";
@@ -93,6 +116,16 @@ namespace OnlineShoppingAPI.BL.Common.Service
             }
         }
 
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Generates an <see cref="HttpResponseMessage"/> that contains the 
+        /// excel response as attachment.
+        /// </summary>
+        /// <param name="lstItems">List of items that user bought.</param>
+        /// <returns><see cref="HttpResponseMessage"/> containing order receipt.</returns>
         private HttpResponseMessage HttpExcelResponse(dynamic lstItems)
         {
             // Set the license context for EPPlus (ExcelPackage)
@@ -161,5 +194,7 @@ namespace OnlineShoppingAPI.BL.Common.Service
                 return response;
             }
         }
+
+        #endregion
     }
 }

@@ -1,5 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
@@ -8,7 +9,7 @@ using System.Web.Http;
 namespace OnlineShoppingAPI.Controllers
 {
     [RoutePrefix("api/cart")]
-    //[BearerAuth]
+    [BearerAuth]
     public class CLCRT01Controller : ApiController
     {
         private readonly ICRT01Service _crt01Service;

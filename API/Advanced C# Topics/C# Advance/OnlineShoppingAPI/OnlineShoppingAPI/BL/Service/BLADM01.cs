@@ -1,5 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -16,17 +16,19 @@ using System.Web;
 namespace OnlineShoppingAPI.BL.Service
 {
     /// <summary>
-    /// Service implementation for admin-related operations.
+    /// Service implementation of <see cref="IADM01Service"/>.
     /// </summary>
     public class BLADM01 : IADM01Service
     {
+        #region Private Fields
+
         /// <summary>
-        /// <see cref="ADM01"/> object for request.
+        /// Instance of <see cref="ADM01"/>.
         /// </summary>
         private ADM01 _objADM01;
 
         /// <summary>
-        /// <see cref="USR01"/> object for request.
+        /// Instance of <see cref="USR01"/>
         /// </summary>
         private USR01 _objUSR01;
 
@@ -40,14 +42,22 @@ namespace OnlineShoppingAPI.BL.Service
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the BLADM01 class.
+        /// Initializes a new instance of the <see cref="BLADM01"/> class.
         /// </summary>
         public BLADM01()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
             _context = new DBADM01();
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Prepares admin and user objects before saving.
@@ -110,24 +120,21 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Insert admin and user records into the database
                     db.Insert(_objADM01);
                     db.Insert(_objUSR01);
                 }
+
+                response = new Response()
+                {
+                    StatusCode = HttpStatusCode.Created,
+                    Message = "Admin created successfully."
+                };
             }
             catch (Exception ex)
             {
                 ex.LogException();
                 response = BLHelper.ISEResponse();
-                return;
             }
-
-            // Set success response
-            response = new Response()
-            {
-                StatusCode = HttpStatusCode.Created,
-                Message = "Admin created successfully."
-            };
         }
 
         /// <summary>
@@ -156,10 +163,8 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    // Retrieve User Details
                     USR01 objUser = BLHelper.GetUser(username, password);
 
-                    // If user doesn't exist, return Not Found Response.
                     if (objUser == null)
                     {
                         response = new Response()
@@ -171,32 +176,23 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    // Retrieve admin details.
                     ADM01 objAdmin = db.Single(db.From<ADM01>()
                         .Where(a => a.M01F03.StartsWith(username)));
 
-                    // Update email and username
                     objAdmin.M01F03 = newEmail;
                     objUser.R01F02 = newEmail.Split('@')[0];
 
-                    // Update data in the database.
                     db.Update(objAdmin);
                     db.Update(objUser);
                 }
+
+                response = BLHelper.OkResponse();
             }
             catch (Exception ex)
             {
                 ex.LogException();
                 response = BLHelper.ISEResponse();
-                return;
             }
-
-            // Set success response
-            response = new Response()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Email Changed Successfully."
-            };
         }
 
         /// <summary>
@@ -213,10 +209,8 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve user details using username and old password
                     USR01 objUser = BLHelper.GetUser(username, oldPassword);
 
-                    // If user doesn't exist, return Not Found status code.
                     if (objUser == null)
                     {
                         response = new Response()
@@ -228,19 +222,11 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    // Update passwords
                     objUser.R01F03 = newPassword;
                     objUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
 
-                    // Update data in the database.
                     db.Update(objUser);
-
-                    // Set success response
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "Password changed successfully."
-                    };
+                    response = BLHelper.OkResponse();
                 }
             }
             catch (Exception ex)
@@ -257,10 +243,8 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response">Response indicating the outcome of the operation.</param>
         public void Delete(int id, out Response response)
         {
-            // Retrieve admin details based on ID
             ADM01 objAdmin = GetAdmin(id);
 
-            // If admin doesn't exist, return Not Found response
             if (objAdmin == null)
             {
                 response = new Response()
@@ -272,34 +256,21 @@ namespace OnlineShoppingAPI.BL.Service
                 return;
             }
 
-            // Delete admin record
             Delete(objAdmin, out response);
         }
 
         /// <summary>
-        /// Deletes the specified admin record and its related user record.
+        /// Retrieves the profit for the specified date.
         /// </summary>
-        /// <param name="objAdmin">Admin object to be deleted.</param>
+        /// <param name="date">Date for which profit is to be retrieved.</param>
         /// <param name="response">Response indicating the outcome of the operation.</param>
-        private void Delete(ADM01 objAdmin, out Response response)
+        public void GetProfit(string date, out Response response)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Extract username from admin email
-                    string username = objAdmin.M01F03.Split('@')[0];
-
-                    // Delete admin and related USR01 record
-                    db.DeleteById<ADM01>(objAdmin.M01F01);
-                    db.Delete<USR01>(u => u.R01F02 == username);
-
-                    // Set success response
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "Admin deleted successfully."
-                    };
+                    _context.GetProfit(date, out response);
                 }
             }
             catch (Exception ex)
@@ -308,6 +279,10 @@ namespace OnlineShoppingAPI.BL.Service
                 response = BLHelper.ISEResponse();
             }
         }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
         /// Retrieves the admin record with the specified ID.
@@ -331,19 +306,23 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Retrieves the profit for the specified date.
+        /// Deletes the specified admin record and its related user record.
         /// </summary>
-        /// <param name="date">Date for which profit is to be retrieved.</param>
+        /// <param name="objAdmin">Admin object to be deleted.</param>
         /// <param name="response">Response indicating the outcome of the operation.</param>
-        public void GetProfit(string date, out Response response)
+        private void Delete(ADM01 objAdmin, out Response response)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    // Retrieve profit data using DB context
-                    _context.GetProfit(date, out response);
+                    string username = objAdmin.M01F03.Split('@')[0];
+
+                    db.DeleteById<ADM01>(objAdmin.M01F01);
+                    db.Delete<USR01>(u => u.R01F02 == username);
+
                 }
+                response = BLHelper.OkResponse();
             }
             catch (Exception ex)
             {
@@ -351,5 +330,7 @@ namespace OnlineShoppingAPI.BL.Service
                 response = BLHelper.ISEResponse();
             }
         }
+
+        #endregion
     }
 }

@@ -1,11 +1,12 @@
 ﻿using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
 {
     /// <summary>
-    /// Interface for service handling category-related operations.
+    /// Interface for service handling of <see cref="CAT01"/> operations.
     /// </summary>
     public interface ICAT01Service
     {
@@ -30,14 +31,14 @@ namespace OnlineShoppingAPI.BL.Interface
         void GetById(int id, out Response response);
 
         /// <summary>
-        /// Prepares for saving a category.
+        /// Prepares category object for saving a category.
         /// </summary>
         /// <param name="objDTOCAT01">Data Transfer Object representing the category.</param>
         /// <param name="operation">Operation type for the save action.</param>
         void PreSave(DTOCAT01 objDTOCAT01, EnmOperation operation);
 
         /// <summary>
-        /// Saves changes made to a category.
+        /// Create or Updates the category information.
         /// </summary>
         /// <param name="operation">Operation type for the save action.</param>
         /// <param name="response">Out parameter containing the response status after saving.</param>

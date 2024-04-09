@@ -1,5 +1,4 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -11,48 +10,52 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.BL.Service
 {
     /// <summary>
-    /// Service class for managing customer-related business logic.
+    /// Service implementation of <see cref="ICUS01Service"/>.
     /// </summary>
     public class BLCUS01 : ICUS01Service
     {
+        #region Private Fields
+
         /// <summary>
-        /// IDbConnectionFactory instance used for accessing the database connection.
+        /// OrmLite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
-        /// The current customer object being operated on.
+        /// Insatnce of <see cref="CUS01"/>.
         /// </summary>
         private CUS01 _objCUS01;
 
         /// <summary>
-        /// The current user object being operated on.
+        /// Instance of <see cref="USR01"/>.
         /// </summary>
         private USR01 _objUSR01;
 
         /// <summary>
-        /// The operation being performed on the customer.
+        /// The operation being performed create or update.
         /// </summary>
         private EnmOperation _operation;
 
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// Initializes a new instance of the BLCUS01 class.
+        /// Initializes a new instance of the <see cref="BLCUS01"/>.
         /// </summary>
         public BLCUS01()
         {
-            // Getting data connection from Application state
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-
-            // If database connection cannot be established.
-            if (_dbFactory == null)
-            {
-                throw new ApplicationException("IDbConnectionFactory not found in Application state.");
-            }
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Changes the email address of a customer.
@@ -60,7 +63,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
         /// <param name="newEmail">The new email address to set.</param>
-        /// <param name="response">Out parameter containing the response status after the email change operation.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void ChangeEmail(string username, string password, string newEmail,
             out Response response)
         {
@@ -68,7 +71,7 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    if (BLHelper.GetUser(newEmail) != null)
+                    if (GetUser(newEmail) != null)
                     {
                         response = new Response()
                         {
@@ -95,7 +98,7 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    USR01 objUser = BLHelper.GetUser(username);
+                    USR01 objUser = GetUser(username);
 
                     // Update email and username
                     objCustomer.S01F03 = newEmail;
@@ -105,18 +108,13 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(objCustomer);
                     db.Update(objUser);
 
-                    // Return success response
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.OK,
-                        Message = "Email successfully changed."
-                    };
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -126,7 +124,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="username">The username of the user.</param>
         /// <param name="oldPassword">The old password of the user.</param>
         /// <param name="newPassword">The new password to set.</param>
-        /// <param name="response">Out parameter containing the response status after the password change operation.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void ChangePassword(string username, string oldPassword, string newPassword,
             out Response response)
         {
@@ -152,7 +150,6 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if the provided old password matches the existing customer password.
                     if (!existingCustomer.S01F04.Equals(oldPassword))
                     {
-                        // Return a precondition failed response if the old password is incorrect.
                         response = new Response()
                         {
                             IsError = true,
@@ -165,28 +162,28 @@ namespace OnlineShoppingAPI.BL.Service
                     // Update customer and user passwords with the new password.
                     existingCustomer.S01F04 = newPassword;
                     existingUser.R01F03 = newPassword;
-                    existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
+                    existingUser.R01F05 = GetEncryptPassword(newPassword);
 
                     // Perform the database updates.
                     db.Update(existingCustomer);
                     db.Update(existingUser);
 
                     // Return a success response.
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 // Log the exception and return an appropriate response.
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
         /// <summary>
-        /// Prepares for saving a user.
+        /// Prepares the objects for create or update operation.
         /// </summary>
-        /// <param name="objCUS01DTO">The DTO object representing the user.</param>
+        /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
         /// <param name="operation">The operation type for the save action.</param>
         public void PreSave(DTOCUS01 objCUS01DTO, EnmOperation operation)
         {
@@ -199,7 +196,7 @@ namespace OnlineShoppingAPI.BL.Service
                     R01F02 = _objCUS01.S01F03.Split('@')[0],
                     R01F03 = _objCUS01.S01F04,
                     R01F04 = Roles.Customer,
-                    R01F05 = BLHelper.GetEncryptPassword(_objCUS01.S01F04)
+                    R01F05 = GetEncryptPassword(_objCUS01.S01F04)
                 };
             }
 
@@ -207,9 +204,9 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Validates user information.
+        /// Validates customer information.
         /// </summary>
-        /// <param name="response">Out parameter containing the validation result.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         /// <returns>True if the user information is valid, otherwise false.</returns>
         public bool Validation(out Response response)
         {
@@ -236,7 +233,7 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
                 return false;
             }
 
@@ -245,9 +242,9 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Saves changes made to a user.
+        /// Saves changes according to the operation.
         /// </summary>
-        /// <param name="response">Out parameter containing the response status after saving.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
             if (_operation == EnmOperation.Create)
@@ -260,7 +257,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// Deletes a user by their ID.
         /// </summary>
         /// <param name="id">The ID of the user to be deleted.</param>
-        /// <param name="response">Out parameter containing the response status after the deletion operation.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Delete(int id, out Response response)
         {
             try
@@ -290,20 +287,20 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Delete<USR01>(u => u.R01F02 == username);
 
                     // Return a success response.
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
         /// <summary>
-        /// Retrieves all users.
+        /// Retrieves all customers information.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with all users.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void GetAll(out Response response)
         {
             try
@@ -324,7 +321,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                         response.Data = lstCUS01;
                     }
                 }
@@ -332,15 +329,15 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
         /// <summary>
-        /// Retrieves a user by their ID.
+        /// Retrieves a customer by their ID.
         /// </summary>
-        /// <param name="id">The ID of the user to retrieve.</param>
-        /// <param name="response">Out parameter containing the response with the requested user.</param>
+        /// <param name="id">The ID of the customer to retrieve.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void GetById(int id, out Response response)
         {
             try
@@ -359,7 +356,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                         response.Data = objCUS01;
                     }
                 }
@@ -367,14 +364,18 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception exception)
             {
                 exception.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
+
+        #endregion
+
+        #region Private Methods
 
         /// <summary>
         /// Updates an existing customer in the database.
         /// </summary>
-        /// <param name="response">Out parameter containing the response status after the update operation.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         private void Update(out Response response)
         {
             try
@@ -403,20 +404,20 @@ namespace OnlineShoppingAPI.BL.Service
 
                     // Perform the database update.
                     db.Update(existingCustomer);
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
         /// <summary>
         /// Creates a new customer in the database.
         /// </summary>
-        /// <param name="response">Out parameter containing the response status after the creation operation.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         private void Create(out Response response)
         {
             try
@@ -426,15 +427,16 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Insert(_objCUS01);
                     db.Insert(_objUSR01);
 
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        #endregion
     }
 }

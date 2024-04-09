@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using OfficeOpenXml;
+using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.BL.Common.Interface;
 using OnlineShoppingAPI.BL.Common.Service;
 using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -20,18 +20,54 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.BL.Service
 {
+    /// <summary>
+    /// Service implementation of <see cref="IRCD01Service"/> interface.
+    /// </summary>
     public class BLRCD01 : IRCD01Service
     {
+        #region Private Fields
+
+        /// <summary>
+        /// Instance of <see cref="RCD01"/> for create or delete operation.
+        /// </summary>
         private RCD01 _objRCD01;
+
+        /// <summary>
+        /// Operations that performes when validation and save process invoke.
+        /// </summary>
         private EnmOperation _operation;
+
+        /// <summary>
+        /// Orm Lite Connection.
+        /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
+
+        /// <summary>
+        /// Services of <see cref="IPFT01Service"/>
+        /// </summary>
         private readonly IPFT01Service _pft01Service;
+
+        /// <summary>
+        /// Services of Email for email sent.
+        /// </summary>
         private readonly IEmailService _emailService;
+
+        /// <summary>
+        /// DB Context for MySQL related query execution.
+        /// </summary>
         private readonly DBRCD01 _dbRCD01;
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initialize fields of <see cref="BLRCD01"/>.
+        /// </summary>
         public BLRCD01()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
@@ -40,6 +76,15 @@ namespace OnlineShoppingAPI.BL.Service
             _dbRCD01 = new DBRCD01();
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Initialize objects which are needed for create or update operation.
+        /// </summary>
+        /// <param name="objDTORCD01">DTO of RCD01</param>
+        /// <param name="operation">Operation to perform.</param>
         public void PreSave(DTORCD01 objDTORCD01, EnmOperation operation)
         {
             _objRCD01 = objDTORCD01.Convert<RCD01>();
@@ -52,71 +97,214 @@ namespace OnlineShoppingAPI.BL.Service
             }
         }
 
+        /// <summary>
+        /// Performs the create or update operation.
+        /// </summary>
+        /// <param name="response"></param>
         public void Save(out Response response)
         {
             if (_operation == EnmOperation.Create)
                 Create(out response);
             else
-                response = BLHelper.OkResponse();
+                response = OkResponse();
         }
 
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PRO02 sourceProduct = db.SingleById<PRO02>(_objRCD01.D01F03);
-
-                    // Update source product quantity and calculate total cost
-                    sourceProduct.O02F05 -= _objRCD01.D01F04;
-                    if (sourceProduct.O02F05 == 0)
-                    {
-                        sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
-                    }
-
-                    _objRCD01.D01F05 = sourceProduct.O02F04;
-
-                    // Sending Email
-                    List<dynamic> lstItems = new List<dynamic>();
-                    string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
-                    lstItems.Add(new
-                    {
-                        ProductName = sourceProduct.O02F02,
-                        Quantity = _objRCD01.D01F04,
-                        Price = _objRCD01.D01F05,
-                        InvoiceId = _objRCD01.D01F06,
-                        PurchaseTime = _objRCD01.D01F07
-                    });
-
-                    _emailService.SendAsync(customerEmail, lstItems);
-
-                    // Insert order record and update source product
-                    db.Insert(_objRCD01);
-                    db.Update(sourceProduct);
-
-                    _pft01Service.UpdateProfit(sourceProduct, _objRCD01.D01F04);
-
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Message = "Record successfully created."
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = BLHelper.ISEResponse();
-            }
-        }
-
+        /// <summary>
+        /// Validates the objects before the save process.
+        /// </summary>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        /// <returns>True if validation successful, else false.</returns>
         public bool Validation(out Response response)
         {
             response = null;
             return true;
         }
 
+        /// <summary>
+        /// Deletes the record from the database.
+        /// </summary>
+        /// <param name="id">Record Id.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        public void Delete(int id, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    RCD01 order = db.SingleById<RCD01>(id);
+
+                    if (order == null)
+                    {
+                        response = new Response()
+                        {
+                            IsError = true,
+                            StatusCode = HttpStatusCode.NotFound,
+                            Message = "Record doesn't exist."
+                        };
+                        return;
+                    }
+
+                    db.DeleteById<RCD01>(id);
+                    response = OkResponse();
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
+        }
+
+        /// <summary>
+        /// Generate a <see cref="HttpResponseMessage"/> containing the download response as attachment.
+        /// </summary>
+        /// <param name="id">Customer Id</param>
+        /// <param name="filetype">File that user wants to download.</param>
+        /// <returns></returns>
+        public HttpResponseMessage Download(int id, string filetype)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (filetype.Equals("Json"))
+                    {
+                        return JSONResponse(id);
+                    }
+                    else if (filetype.Equals("Excel"))
+                    {
+                        return ExcelResponse(id);
+                    }
+
+                    return ResponseMessage(HttpStatusCode.BadRequest,
+                        "Invalid file type. Supported types are 'Json' and 'Excel'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                return ResponseMessage(HttpStatusCode.InternalServerError,
+                    "An error occurred while processing the request.");
+            }
+        }
+
+        /// <summary>
+        /// Retrieves all records information.
+        /// </summary>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        public void GetAllRecord(out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    List<RCD01> lstRCD01 = db.Select<RCD01>();
+
+                    if (lstRCD01 == null || lstRCD01.Count == 0)
+                    {
+                        response = new Response()
+                        {
+                            StatusCode = HttpStatusCode.NoContent,
+                            Message = "No Records."
+                        };
+                    }
+                    else
+                    {
+                        response = OkResponse();
+                        response.Data = lstRCD01;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
+        }
+
+        /// <summary>
+        /// Buy all items of customer from the cart.
+        /// </summary>
+        /// <param name="lstItems">List of items that customer wants to buy.</param>
+        /// <param name="s01F03">customer Email Address.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        /// <returns>True for successful completion, else false if error occurs.</returns>
+        public bool BuyCartItems(List<CRT01> lstItems, string s01F03, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    int id = 1;
+                    dynamic lstPurchasedItem = new List<dynamic>();
+
+                    foreach (CRT01 item in lstItems)
+                    {
+                        // Check if the product is in stock
+                        PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
+
+                        if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
+                        {
+                            RCD01 objRecord = new RCD01()
+                            {
+                                D01F02 = item.T01F02,
+                                D01F03 = item.T01F03,
+                                D01F04 = item.T01F04,
+                                D01F05 = item.T01F05,
+                                D01F06 = Guid.NewGuid(),
+                                D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+                            };
+
+                            lstPurchasedItem.Add(new
+                            {
+                                OrderId = id++,
+                                ProductName = sourceProduct.O02F02,
+                                Quantity = objRecord.D01F04,
+                                Price = objRecord.D01F05,
+                                InvoiceId = objRecord.D01F06,
+                                PurchaseTime = objRecord.D01F07
+                            });
+
+                            // Create a new order record
+                            db.Insert(objRecord);
+
+                            // Update the product stock
+                            sourceProduct.O02F05 -= item.T01F04;
+                            if (sourceProduct.O02F05 == 0)
+                            {
+                                sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
+                            }
+
+                            db.Update(sourceProduct);
+                            _pft01Service.UpdateProfit(sourceProduct, objRecord.D01F04);
+
+                            db.DeleteById<CRT01>(item.T01F01);
+                        }
+                    }
+
+                    _emailService.SendAsync(s01F03, lstPurchasedItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = BLHelper.ISEResponse();
+                return false;
+            }
+
+            response = BLHelper.OkResponse();
+            return true;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Creates an <see cref="HttpResponseMessage"/> with excel file as attachment.
+        /// </summary>
+        /// <param name="lstPurchasedItem">List of purchased item of customer.</param>
+        /// <returns><see cref="HttpResponseMessage"/> containing order receipt.</returns>
         private HttpResponseMessage HttpExcelResponse(dynamic lstPurchasedItem)
         {
             // Set the license context for EPPlus (ExcelPackage)
@@ -186,64 +374,66 @@ namespace OnlineShoppingAPI.BL.Service
             }
         }
 
-        public void Delete(int id, out Response response)
+        /// <summary>
+        /// Creates a record.
+        /// </summary>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        private void Create(out Response response)
         {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    RCD01 order = db.SingleById<RCD01>(id);
+                    PRO02 sourceProduct = db.SingleById<PRO02>(_objRCD01.D01F03);
 
-                    if (order == null)
+                    // Update source product quantity and calculate total cost
+                    sourceProduct.O02F05 -= _objRCD01.D01F04;
+                    if (sourceProduct.O02F05 == 0)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Record doesn't exist."
-                        };
-                        return;
+                        sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
                     }
 
-                    db.DeleteById<RCD01>(id);
-                    response = BLHelper.OkResponse();
+                    _objRCD01.D01F05 = sourceProduct.O02F04;
+
+                    List<dynamic> lstItems = new List<dynamic>();
+                    string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
+                    lstItems.Add(new
+                    {
+                        ProductName = sourceProduct.O02F02,
+                        Quantity = _objRCD01.D01F04,
+                        Price = _objRCD01.D01F05,
+                        InvoiceId = _objRCD01.D01F06,
+                        PurchaseTime = _objRCD01.D01F07
+                    });
+
+                    _emailService.SendAsync(customerEmail, lstItems);
+
+                    // Insert order record and update source product
+                    db.Insert(_objRCD01);
+                    db.Update(sourceProduct);
+
+                    _pft01Service.UpdateProfit(sourceProduct, _objRCD01.D01F04);
+
+                    response = new Response()
+                    {
+                        StatusCode = HttpStatusCode.Created,
+                        Message = "Record successfully created."
+                    };
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
-        public HttpResponseMessage Download(int id, string filetype)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (filetype.Equals("Json"))
-                    {
-                        return JSONResponse(id);
-                    }
-                    else if (filetype.Equals("Excel"))
-                    {
-                        return ExcelResponse(id);
-                    }
-
-                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                        "Invalid file type. Supported types are 'Json' and 'Excel'.");
-                }
-            }
-            catch (Exception ex)
-            {
-                BLHelper.LogError(ex);
-                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
-                    "An error occurred while processing the request.");
-            }
-        }
-
-        private dynamic JoinOfRcdProCus(int customerId)
+        /// <summary>
+        /// Gets the customer records using OrmLite.
+        /// </summary>
+        /// <param name="customerId">Customer id</param>
+        /// <returns>A dynamic result containing the customer records.</returns>
+        private dynamic JoinOfRcdProCus(int id)
         {
             using (var db = _dbFactory.OpenDbConnection())
             {
@@ -254,7 +444,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                 // Execute the SQL query to retrieve order details for the specified customer ID
                 var result = db.SelectMulti<RCD01, PRO02, CUS01>(joinSql)
-                        .Where((r) => r.Item1.D01F02 == customerId)
+                        .Where((r) => r.Item1.D01F02 == id)
                         .Select((r) => new
                         {
                             OrderId = r.Item1.D01F01,
@@ -271,6 +461,11 @@ namespace OnlineShoppingAPI.BL.Service
             }
         }
 
+        /// <summary>
+        /// Generates a excel file response according to the specified id.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         private HttpResponseMessage ExcelResponse(int id)
         {
             try
@@ -282,7 +477,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if any data is found for the specified criteria
                     if (result.Count == 0)
                     {
-                        return BLHelper.ResponseMessage(HttpStatusCode.NotFound,
+                        return ResponseMessage(HttpStatusCode.NotFound,
                             "No data found for the specified criteria.");
                     }
 
@@ -291,13 +486,17 @@ namespace OnlineShoppingAPI.BL.Service
             }
             catch (Exception ex)
             {
-                // Log the exception and return an appropriate response
-                BLHelper.LogError(ex);
-                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                ex.LogException();
+                return ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred while processing the request.");
             }
         }
 
+        /// <summary>
+        /// Creates a JSON <see cref="HttpResponseMessage"/> containing the customer record data.
+        /// </summary>
+        /// <param name="id">Customer Id</param>
+        /// <returns><see cref="HttpResponseMessage"/> with customer records data.</returns>
         private HttpResponseMessage JSONResponse(int id)
         {
             try
@@ -317,8 +516,10 @@ namespace OnlineShoppingAPI.BL.Service
                     string jsonData = JsonConvert.SerializeObject(dtCUS01RCD01Data, Formatting.Indented);
 
                     // Create an HTTP response with JSON content
-                    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-                    response.Content = new StringContent(jsonData);
+                    HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
+                    {
+                        Content = new StringContent(jsonData)
+                    };
                     response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
                     // Set content disposition for attachment with a filename based on the customer name
@@ -332,108 +533,12 @@ namespace OnlineShoppingAPI.BL.Service
             }
             catch (Exception ex)
             {
-                // Log the exception and return an InternalServerError response
-                BLHelper.LogError(ex);
-                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
+                ex.LogException();
+                return ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred while processing the request.");
             }
         }
 
-        public void GetAllRecord(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    List<RCD01> lstRCD01 = db.Select<RCD01>();
-
-                    if (lstRCD01 == null || lstRCD01.Count == 0)
-                    {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NoContent,
-                            Message = "No Records."
-                        };
-                    }
-                    else
-                    {
-                        response = BLHelper.OkResponse();
-                        response.Data = lstRCD01;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = BLHelper.ISEResponse();
-            }
-        }
-
-        public bool BuyCartItems(List<CRT01> lstItems, string s01F03, out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    int id = 1;
-                    dynamic lstPurchasedItem = new List<dynamic>();
-
-                    foreach (CRT01 item in lstItems)
-                    {
-                        // Check if the product is in stock
-                        PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
-
-                        if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
-                        {
-                            RCD01 objRecord = new RCD01()
-                            {
-                                D01F02 = item.T01F02,
-                                D01F03 = item.T01F03,
-                                D01F04 = item.T01F04,
-                                D01F05 = item.T01F05,
-                                D01F06 = Guid.NewGuid(),
-                                D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
-                            };
-
-                            lstPurchasedItem.Add(new
-                            {
-                                OrderId = id++,
-                                ProductName = sourceProduct.O02F02,
-                                Quantity = objRecord.D01F04,
-                                Price = objRecord.D01F05,
-                                InvoiceId = objRecord.D01F06,
-                                PurchaseTime = objRecord.D01F07
-                            });
-
-                            // Create a new order record
-                            db.Insert(objRecord);
-
-                            // Update the product stock
-                            sourceProduct.O02F05 -= item.T01F04;
-                            if (sourceProduct.O02F05 == 0)
-                            {
-                                sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
-                            }
-
-                            db.Update(sourceProduct);
-                            _pft01Service.UpdateProfit(sourceProduct, objRecord.D01F04);
-
-                            db.DeleteById<CRT01>(item.T01F01);
-                        }
-                    }
-
-                    _emailService.SendAsync(s01F03, lstPurchasedItem);
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = BLHelper.ISEResponse();
-                return false;
-            }
-
-            response = BLHelper.OkResponse();
-            return true;
-        }
+        #endregion
     }
 }

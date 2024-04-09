@@ -1,5 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.Business_Logic;
+using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using System;

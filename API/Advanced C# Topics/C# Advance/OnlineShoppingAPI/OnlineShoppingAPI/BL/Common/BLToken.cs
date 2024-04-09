@@ -13,18 +13,31 @@ using System.Security.Principal;
 using System.Text;
 using System.Web.Caching;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.BL.Common
 {
+    /// <summary>
+    /// Business Logic for JWT Token related functionalities.
+    /// </summary>
     public class BLToken
     {
+        #region Private Fields
+
         // The secret key used for signing and validating JWT tokens
         private const string secretKey = "thisissecuritykeyofcustomjwttokenaut";
 
+        #endregion
+
+        #region Public Methods
+
         /// <summary>
-        /// Generates a JWT token for the provided user.
+        /// Generates a JWT Token for the specified user.
         /// </summary>
-        /// <param name="objUser">The user for whom the token is generated.</param>
-        /// <returns>The generated JWT token as a string.</returns>
+        /// <param name="sessionId">Session id for one user login authentication.</param>
+        /// <param name="objUser">Contains the information of the user.</param>
+        /// <returns>
+        /// <see cref="HttpResponseMessage"/> containing the JWT Token with other session 
+        /// related tokens in Cookie.
+        /// </returns>
         public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
         {
             try
@@ -136,7 +149,7 @@ namespace OnlineShoppingAPI.Business_Logic
             string jwtEncodePayload = token.Split('.')[1];
             int mod = jwtEncodePayload.Length % 4;
             int padding = mod > 0 ? 4 - mod : 0;
-            jwtEncodePayload = jwtEncodePayload + new string('=', padding);
+            jwtEncodePayload += new string('=', padding);
 
             try
             {
@@ -187,9 +200,7 @@ namespace OnlineShoppingAPI.Business_Logic
             // If JWT hash matches the calculated hash, check for expiry time
             if (jwtHash.Equals(digestBase64))
             {
-                // If not expired, return true; otherwise, return false
-
-                // Getting current time
+                // Getting current time in seconds
                 TimeSpan span = DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1, 0, 0, 0));
                 long currTotalSecond = (long)span.TotalSeconds;
 
@@ -205,8 +216,7 @@ namespace OnlineShoppingAPI.Business_Logic
                 var jwtPayloadObj = JwtPayload.Deserialize(decodedData);
 
                 // Getting exp (expiry) claim
-                object expiryTotalSecond;
-                jwtPayloadObj.TryGetValue("exp", out expiryTotalSecond);
+                jwtPayloadObj.TryGetValue("exp", out object expiryTotalSecond);
 
                 long exp = (long)expiryTotalSecond;
 
@@ -223,7 +233,7 @@ namespace OnlineShoppingAPI.Business_Logic
         /// For logging out user from the active session.
         /// </summary>
         /// <param name="username">User's username</param>
-        /// <returns>HttpResponseMessage for logout successful or not.</returns>
+        /// <returns><see cref="HttpResponseMessage"/> containing the expired cookies.</returns>
         public HttpResponseMessage LogOut(string username)
         {
             try
@@ -279,5 +289,7 @@ namespace OnlineShoppingAPI.Business_Logic
                     "An error occurred during logout.");
             }
         }
+
+        #endregion
     }
 }

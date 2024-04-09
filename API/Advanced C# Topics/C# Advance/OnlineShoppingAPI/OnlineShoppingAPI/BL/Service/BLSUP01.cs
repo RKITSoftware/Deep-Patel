@@ -1,5 +1,4 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.Business_Logic;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -11,24 +10,57 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.BL.Service
 {
     public class BLSUP01 : ISUP01Service
     {
+        #region Private Fields
+
         /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
+
+        /// <summary>
+        /// Operation to perform.
+        /// </summary>
         private EnmOperation _operation;
+
+        /// <summary>
+        /// Instance of <see cref="SUP01"/>.
+        /// </summary>
         private SUP01 _objSUP01;
+
+        /// <summary>
+        /// Instance of <see cref="usr01"/>.
+        /// </summary>
         private USR01 _objUSR01;
 
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initialize the <see cref="BLSUP01"/> insatnces.
+        /// </summary>
         public BLSUP01()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Changes the email address of a suplier.
+        /// </summary>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="password">The password of the suplier.</param>
+        /// <param name="newEmail">The new email address.</param>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void ChangeEmail(string username, string password, string newEmail,
             out Response response)
         {
@@ -36,7 +68,7 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    if (BLHelper.GetUser(newEmail) != null)
+                    if (GetUser(newEmail) != null)
                     {
                         response = new Response()
                         {
@@ -63,7 +95,7 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    USR01 objUser = BLHelper.GetUser(username);
+                    USR01 objUser = GetUser(username);
 
                     // Update email and username
                     objSuplier.P01F03 = newEmail;
@@ -74,16 +106,23 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(objUser);
 
                     // Return success response
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        /// <summary>
+        /// Changes the password of a suplier.
+        /// </summary>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="oldPassword">The old password of the suplier.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void ChangePassword(string username, string oldPassword, string newPassword,
             out Response response)
         {
@@ -111,13 +150,13 @@ namespace OnlineShoppingAPI.BL.Service
                     {
                         existingSupplier.P01F04 = newPassword;
                         existingUser.R01F03 = newPassword;
-                        existingUser.R01F05 = BLHelper.GetEncryptPassword(newPassword);
+                        existingUser.R01F05 = GetEncryptPassword(newPassword);
 
                         // Update supplier and user records
                         db.Update(existingSupplier);
                         db.Update(existingUser);
 
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                     }
                     else
                     {
@@ -133,10 +172,15 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        /// <summary>
+        /// Prepares a suplier for saving based on the operation.
+        /// </summary>
+        /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
+        /// <param name="operation">The type of operation (e.g., add, update).</param>
         public void PreSave(DTOSUP01 objSUP01DTO, EnmOperation operation)
         {
             _operation = operation;
@@ -149,11 +193,15 @@ namespace OnlineShoppingAPI.BL.Service
                     R01F02 = _objSUP01.P01F03.Split('@')[0],
                     R01F03 = _objSUP01.P01F04,
                     R01F04 = Roles.Supplier,
-                    R01F05 = BLHelper.GetEncryptPassword(_objSUP01.P01F04)
+                    R01F05 = GetEncryptPassword(_objSUP01.P01F04)
                 };
             }
         }
 
+        /// <summary>
+        /// Saves the changes made to a supplier.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void Save(out Response response)
         {
             if (_operation == EnmOperation.Create)
@@ -162,6 +210,11 @@ namespace OnlineShoppingAPI.BL.Service
                 Update(out response);
         }
 
+        /// <summary>
+        /// Performs validation on the supplier data.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
+        /// <returns>True if validation succeeds, otherwise false.</returns>
         public bool Validation(out Response response)
         {
             try
@@ -187,7 +240,7 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
                 return false;
             }
 
@@ -195,6 +248,11 @@ namespace OnlineShoppingAPI.BL.Service
             return true;
         }
 
+        /// <summary>
+        /// Deletes a suplier.
+        /// </summary>
+        /// <param name="id">The ID of the suplier to delete.</param>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void Delete(int id, out Response response)
         {
             try
@@ -223,18 +281,22 @@ namespace OnlineShoppingAPI.BL.Service
                     db.DeleteById<SUP01>(id);
                     db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
 
-                    BLHelper.ServerCache.Remove("lstSuplier");
+                    ServerCache.Remove("lstSuplier");
 
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        /// <summary>
+        /// Retrieves all suplier.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void GetAll(out Response response)
         {
             try
@@ -253,7 +315,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                         response.Data = lstSUP01;
                     }
                 }
@@ -261,10 +323,15 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        /// <summary>
+        /// Retrieves a suplier by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the suplier to retrieve.</param>
+        /// <param name="response">The response containing the result of the operation.</param>
         public void GetById(int id, out Response response)
         {
             try
@@ -283,7 +350,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                         response.Data = objSUP01;
                     }
                 }
@@ -291,10 +358,18 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Updates the existing suplier information.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
         private void Update(out Response response)
         {
             try
@@ -321,17 +396,21 @@ namespace OnlineShoppingAPI.BL.Service
 
                         db.Update(existingSupplier);
 
-                        response = BLHelper.OkResponse();
+                        response = OkResponse();
                     }
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
+        /// <summary>
+        /// Creates a new suplier.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
         private void Create(out Response response)
         {
             try
@@ -341,14 +420,16 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Insert(_objSUP01);
                     db.Insert(_objUSR01);
 
-                    response = BLHelper.OkResponse();
+                    response = OkResponse();
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
+
+        #endregion
     }
 }

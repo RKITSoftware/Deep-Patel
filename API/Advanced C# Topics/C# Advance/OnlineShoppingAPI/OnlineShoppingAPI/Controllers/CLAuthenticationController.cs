@@ -1,4 +1,4 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Net;
@@ -10,17 +10,18 @@ namespace OnlineShoppingAPI.Controllers
     /// <summary>
     /// Controller class handling authentication-related HTTP requests.
     /// </summary>
+    [RoutePrefix("api/CLAuthentication")]
     public class CLAuthenticationController : ApiController
     {
         /// <summary>
         /// Business logic class instance for handling authentication endpoints.
         /// </summary>
-        private BLAuthentication _authentication;
+        private readonly BLAuthentication _authentication;
 
         /// <summary>
-        /// Business logic class instance for generating jwt token
+        /// Business logic class instance for generating jwt token and validating token.
         /// </summary>
-        private BLToken _blToken;
+        private readonly BLToken _blToken;
 
         /// <summary>
         /// Constructor to initialize the Business Logic instance.
@@ -32,7 +33,7 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Handles HTTP GET request for user login.
+        /// Handles HTTP GET request for user login for basic authentication.
         /// </summary>
         /// <param name="username">The username for login.</param>
         /// <param name="password">The password for login.</param>
@@ -42,9 +43,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpGet]
         [Route("Login")]
         public HttpResponseMessage LogIn(string username, string password)
-        {
-            return _authentication.LogIn(username, password);
-        }
+            => _authentication.LogIn(username, password);
 
         /// <summary>
         /// Handles HTTP GET request for user logout.
@@ -54,10 +53,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </returns>
         [HttpGet]
         [Route("Logout")]
-        public HttpResponseMessage LogOut()
-        {
-            return _authentication.LogOut();
-        }
+        public HttpResponseMessage LogOut() => _authentication.LogOut();
 
         /// <summary>
         /// Handles HTTP GET request for generating jwt token.
@@ -80,16 +76,13 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Handles HTTP GET request for user logout.
+        /// Handles HTTP GET request of jwt token for user logout.
         /// </summary>
         /// <returns>
         /// HTTP response message indicating the success or failure of the logout attempt.
         /// </returns>
         [HttpGet]
         [Route("JWTTokenLogout")]
-        public HttpResponseMessage JwtTokenLogOut(string username)
-        {
-            return _blToken.LogOut(username);
-        }
+        public HttpResponseMessage JwtTokenLogOut(string username) => _blToken.LogOut(username);
     }
 }

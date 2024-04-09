@@ -4,23 +4,24 @@ using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     /// <summary>
-    /// Controller for handling category-related API endpoints.
+    /// Controller for handling <see cref="CAT01"/> opertaions
     /// </summary>
-    [RoutePrefix("api/CLCategory")]
+    [RoutePrefix("api/CLCAT01")]
     public class CLCAT01Controller : ApiController
     {
         /// <summary>
-        /// Instance of Business Logic for helping the controller.
+        /// Instance of <see cref="ICAT01Service"/>.
         /// </summary>
         private readonly ICAT01Service _cat01Service;
 
         /// <summary>
-        /// Constructor to initialize the category business logic.
+        /// Constructor to initialize <see cref="CLCAT01Controller"/>.
         /// </summary>
         public CLCAT01Controller()
         {
@@ -31,6 +32,7 @@ namespace OnlineShoppingAPI.Controllers
         /// Adds a new category.
         /// </summary>
         /// <param name="objDTOCAT01">The DTO object representing the category.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
         [HttpPost]
         [Route("Add")]
         [ValidateModel]
@@ -49,12 +51,12 @@ namespace OnlineShoppingAPI.Controllers
         /// <summary>
         /// Retrieves all categories.
         /// </summary>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
         [HttpGet]
         [Route("GetAll")]
         public IHttpActionResult GetAllCategories()
         {
             _cat01Service.GetAll(out Response response);
-
             return Ok(response);
         }
 
@@ -62,12 +64,12 @@ namespace OnlineShoppingAPI.Controllers
         /// Retrieves a category by its ID.
         /// </summary>
         /// <param name="id">The ID of the category to retrieve.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
         [HttpGet]
         [Route("Get/{id}")]
         public IHttpActionResult GetById(int id)
         {
             _cat01Service.GetById(id, out Response response);
-
             return Ok(response);
         }
 
@@ -75,12 +77,12 @@ namespace OnlineShoppingAPI.Controllers
         /// Deletes a category by its ID.
         /// </summary>
         /// <param name="id">The ID of the category to delete.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
         [HttpDelete]
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteCategory(int id)
         {
             _cat01Service.Delete(id, out Response response);
-
             return Ok(response);
         }
 
@@ -88,6 +90,7 @@ namespace OnlineShoppingAPI.Controllers
         /// Edits an existing category.
         /// </summary>
         /// <param name="objCAT01DTO">The DTO object representing the category.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
         [HttpPut]
         [Route("Edit")]
         public IHttpActionResult Edit(DTOCAT01 objCAT01DTO)

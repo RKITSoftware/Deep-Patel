@@ -1,11 +1,12 @@
 ﻿using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
 {
     /// <summary>
-    /// Interface for Admin related operations.
+    /// Interface for <see cref="ADM01"/> related operations.
     /// </summary>
     public interface IADM01Service
     {

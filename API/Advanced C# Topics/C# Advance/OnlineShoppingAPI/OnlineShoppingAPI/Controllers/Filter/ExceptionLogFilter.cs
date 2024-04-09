@@ -1,4 +1,4 @@
-﻿using OnlineShoppingAPI.Business_Logic;
+﻿using OnlineShoppingAPI.BL.Common;
 using System.Web.Http.Filters;
 
 namespace OnlineShoppingAPI.Controllers.Filter

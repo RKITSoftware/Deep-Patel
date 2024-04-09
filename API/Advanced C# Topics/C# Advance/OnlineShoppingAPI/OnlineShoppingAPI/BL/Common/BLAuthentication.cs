@@ -1,32 +1,29 @@
-﻿using System;
+﻿using OnlineShoppingAPI.Extension;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace OnlineShoppingAPI.Business_Logic
+namespace OnlineShoppingAPI.BL.Common
 {
     /// <summary>
-    /// Business Logic class handling user authentication operations.
+    /// <see cref="BLAuthentication"/> for handling authentication realted api's business logic.
     /// </summary>
     public class BLAuthentication
     {
         #region Public Methods
 
         /// <summary>
-        /// Validates user credentials and generates an authentication token on successful login.
+        /// Creates a <see cref="HttpResponseMessage"/> that contains the cookies for basic authentication.
         /// </summary>
-        /// <param name="username">The username for login.</param>
-        /// <param name="password">The password for login.</param>
-        /// <returns>
-        /// HttpResponseMessage indicating the success or failure of the login attempt,
-        /// including an authentication token in the response headers on success.
-        /// </returns>
+        /// <param name="username">The username of user.</param>
+        /// <param name="password">The password of user.</param>
+        /// <returns><see cref="HttpResponseMessage"/> with cookies header.</returns>
         public HttpResponseMessage LogIn(string username, string password)
         {
             try
             {
-                // Validate user credentials using the IsExist method from BLUser.
                 if (BLHelper.IsExist(username, password))
                 {
                     // Generate an authentication token and set it as a cookie in the response.
@@ -51,20 +48,17 @@ namespace OnlineShoppingAPI.Business_Logic
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
-                BLHelper.LogError(ex);
+                ex.LogException();
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occurred during login.");
             }
         }
 
         /// <summary>
-        /// Handles user logout by expiring the authentication token.
+        /// Removes the authentication cookies from the user's browser.
         /// </summary>
-        /// <returns>
-        /// HttpResponseMessage indicating the success of the logout attempt,
-        /// including an expired authentication token in the response headers.
-        /// </returns>
+        /// <returns><see cref="HttpResponseMessage"/> containing the authentication 
+        /// cookie with expire time -1.</returns>
         public HttpResponseMessage LogOut()
         {
             try

@@ -244,9 +244,9 @@
     <Compile Include="BL\Interface\IPRO02Service.cs" />
     <Compile Include="BL\Interface\IRCD01Service.cs" />
     <Compile Include="BL\Interface\ICRT01Service.cs" />
-    <Compile Include="Business Logic\BLAuthentication.cs" />
-    <Compile Include="Business Logic\BLHelper.cs" />
-    <Compile Include="Business Logic\BLToken.cs" />
+    <Compile Include="BL\Common\BLAuthentication.cs" />
+    <Compile Include="BL\Common\BLHelper.cs" />
+    <Compile Include="BL\Common\BLToken.cs" />
     <Compile Include="Controllers\CLADM01Controller.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCRT01Controller.cs" />

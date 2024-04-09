@@ -4,26 +4,26 @@ using OnlineShoppingAPI.Models.POCO;
 namespace OnlineShoppingAPI.BL.Interface
 {
     /// <summary>
-    /// Interface for service handling profit-related operations.
+    /// Interface for service handling operations of <see cref="PFT01"/>.
     /// </summary>
     public interface IPFT01Service
     {
         /// <summary>
-        /// Retrieves profit data for each day.
+        /// Retrieves profit data for each day of current running month.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with day-wise profit data.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetDayWiseData(out Response response);
 
         /// <summary>
         /// Retrieves aggregated profit data for each month.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with month-wise profit data.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetMonthData(out Response response);
 
         /// <summary>
         /// Retrieves aggregated profit data for each year.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with year-wise profit data.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetYearData(out Response response);
 
         /// <summary>

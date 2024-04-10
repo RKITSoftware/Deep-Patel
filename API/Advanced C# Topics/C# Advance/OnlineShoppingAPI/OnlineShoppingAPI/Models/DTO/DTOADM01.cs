@@ -3,7 +3,7 @@
 namespace OnlineShoppingAPI.Models.DTO
 {
     /// <summary>
-    /// DTO for ADM01
+    /// DTO for ADM01 Model.
     /// </summary>
     public class DTOADM01
     {

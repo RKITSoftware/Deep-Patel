@@ -2,6 +2,9 @@
 
 namespace OnlineShoppingAPI.Models.DTO
 {
+    /// <summary>
+    /// DTO for CRT01 Model
+    /// </summary>
     public class DTOCRT01
     {
         /// <summary>

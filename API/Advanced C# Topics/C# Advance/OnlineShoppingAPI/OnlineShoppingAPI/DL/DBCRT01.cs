@@ -1,15 +1,17 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using System;
 using System.Configuration;
 using System.Data;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.DL
 {
     public class DBCRT01
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -20,19 +22,29 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the DBADM01 class with default connection settings.
+        /// Initialize the <see cref="DBCRT01"/>.
         /// </summary>
         public DBCRT01()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
 
-        internal void GetFullDetailsOfCart(int id, out Response response)
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the full cart information with product name details also.
+        /// </summary>
+        /// <param name="id">Customer id.</param>
+        /// <param name="response"><see cref="Response"/> containing the outcome of the operation.</param>
+        public void GetFullDetailsOfCart(int id, out Response response)
         {
             try
             {
@@ -56,18 +68,20 @@ namespace OnlineShoppingAPI.DL
                 _connection.Open();
                 adapter.Fill(dtResult);
 
-                response = BLHelper.OkResponse();
+                response = OkResponse();
                 response.Data = dtResult;
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
             finally
             {
                 _connection.Close();
             }
         }
+
+        #endregion
     }
 }

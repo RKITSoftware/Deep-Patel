@@ -2,14 +2,20 @@
 using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Configuration;
 using System.Data;
 
 namespace OnlineShoppingAPI.DL
 {
+    /// <summary>
+    /// DB Context for the <see cref="PRO02"/>.
+    /// </summary>
     public class DBPRO02
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -20,18 +26,27 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the DBADM01 class with default connection settings.
+        /// Initializes a new instance of the DBPRO02 class with default connection settings.
         /// </summary>
         public DBPRO02()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the full product information with category and supplier information.
+        /// </summary>
+        /// <param name="response"><see cref="Response"/> containing the outcome of the operation.</param>
         public void GetInformation(out Response response)
         {
             try
@@ -72,5 +87,7 @@ namespace OnlineShoppingAPI.DL
                 response = BLHelper.ISEResponse();
             }
         }
+
+        #endregion
     }
 }

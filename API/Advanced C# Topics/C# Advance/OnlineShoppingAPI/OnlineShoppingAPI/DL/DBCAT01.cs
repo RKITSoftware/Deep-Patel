@@ -1,19 +1,22 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Configuration;
 using System.Data;
 using System.Net;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.DL
 {
     /// <summary>
-    /// Data access class for managing category-related database operations.
+    /// DB Context for <see cref="CAT01"/>.
     /// </summary>
     public class DBCAT01
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -24,17 +27,22 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the DBCAT01 class with default connection settings.
+        /// Initialize the instance of <see cref="DBCAT01"/>.
         /// </summary>
         public DBCAT01()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Retrieves all categories from the database.
@@ -68,18 +76,16 @@ namespace OnlineShoppingAPI.DL
                     return;
                 }
 
-                response = new Response()
-                {
-                    StatusCode = HttpStatusCode.OK,
-                    Message = "Success",
-                    Data = dtCategories
-                };
+                response = OkResponse();
+                response.Data = dtCategories;
             }
             catch (Exception exception)
             {
                 exception.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
+
+        #endregion
     }
 }

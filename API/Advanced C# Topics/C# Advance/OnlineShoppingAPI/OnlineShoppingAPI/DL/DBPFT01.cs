@@ -1,18 +1,21 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.DL
 {
     /// <summary>
-    /// DB for PFT01 Model
+    /// DB for <see cref="PFT01"/> Model.
     /// </summary>
     public class DBPFT01
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -23,20 +26,25 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Initializes a new instance of the DBPFT01 class with default connection settings.
         /// </summary>
         public DBPFT01()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
 
+        #endregion
+
+        #region Public Method
+
         /// <summary>
-        /// Gets thelast 10 years data
+        /// Gets of last 10 years data
         /// </summary>
         /// <param name="response">Response indicating the outcome of this method.</param>
         public void GetData(out Response response)
@@ -71,13 +79,13 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = BLHelper.OkResponse();
+                response = OkResponse();
                 response.Data = lstData;
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -118,13 +126,13 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = BLHelper.OkResponse();
+                response = OkResponse();
                 response.Data = lstData;
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -168,14 +176,16 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = BLHelper.OkResponse();
+                response = OkResponse();
                 response.Data = lstData;
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
+
+        #endregion
     }
 }

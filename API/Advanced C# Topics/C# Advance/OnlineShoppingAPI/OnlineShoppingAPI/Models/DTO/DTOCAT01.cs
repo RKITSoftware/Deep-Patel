@@ -3,7 +3,7 @@
 namespace OnlineShoppingAPI.Models.DTO
 {
     /// <summary>
-    /// DTO for CAT01 POCO Model
+    /// DTO for CAT01 Model
     /// </summary>
     public class DTOCAT01
     {

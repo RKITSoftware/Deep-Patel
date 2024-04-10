@@ -1,13 +1,19 @@
 ﻿using MySql.Data.MySqlClient;
 using OnlineShoppingAPI.Extension;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Configuration;
 using System.Data;
 
 namespace OnlineShoppingAPI.DL
 {
+    /// <summary>
+    /// DB context for <see cref="RCD01"/>.
+    /// </summary>
     public class DBRCD01
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -18,18 +24,28 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the DBADM01 class with default connection settings.
+        /// Initializes a new instance of the DBRCD01 class with default connection settings.
         /// </summary>
         public DBRCD01()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
 
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Gets the customer records data.
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns><see cref="DataTable"/> containing the information about customer records.</returns>
         public DataTable GetCUS01Data(int id)
         {
             DataTable dtResult = new DataTable();
@@ -67,5 +83,7 @@ namespace OnlineShoppingAPI.DL
 
             return dtResult;
         }
+
+        #endregion
     }
 }

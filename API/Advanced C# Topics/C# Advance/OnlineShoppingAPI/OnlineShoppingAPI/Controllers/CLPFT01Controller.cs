@@ -1,14 +1,15 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     /// <summary>
-    /// Controller for handling profit-related data.
+    /// Controller for handling <see cref="PFT01"/> api endpoints.
     /// </summary>
-    [RoutePrefix("api/profit")]
+    [RoutePrefix("api/CLPFT01")]
     public class CLPFT01Controller : ApiController
     {
         /// <summary>
@@ -22,7 +23,7 @@ namespace OnlineShoppingAPI.Controllers
         private Response response;
 
         /// <summary>
-        /// Initializes a new instance of the CLPFT01Controller class.
+        /// Initializes a new instance of the <see cref="CLPFT01Controller"/> class.
         /// </summary>
         public CLPFT01Controller()
         {
@@ -30,8 +31,9 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves profit data for each month.
-        /// </summary>
+        /// Retrieves profit data for each month of current year.
+        /// </summary>        
+        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpGet]
         [Route("monthChartData")]
         public IHttpActionResult GetMonthChartData()
@@ -41,8 +43,9 @@ namespace OnlineShoppingAPI.Controllers
         }
 
         /// <summary>
-        /// Retrieves aggregated profit data for each year.
+        /// Retrieves aggregated profit data for last 10 year.
         /// </summary>
+        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpGet]
         [Route("yearChartData")]
         public IHttpActionResult GetPrevious10YearData()
@@ -54,7 +57,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <summary>
         /// Retrieves profit data for each day of the current month.
         /// </summary>
-        /// <returns>A list of profit data for each day of the current month.</returns>
+        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpGet]
         [Route("dayWiseProfit")]
         public IHttpActionResult GetDayWiseProfit()

@@ -67,6 +67,7 @@ namespace OnlineShoppingAPI.BL.Service
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
             _emailService = new BLEmail();
             _dbCRT01 = new DBCRT01();
+            _rcd01Service = new BLRCD01();
         }
 
         #endregion

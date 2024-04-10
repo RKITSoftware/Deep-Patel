@@ -1,35 +1,33 @@
 ﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
+    /// <summary>
+    /// DTO for SUP01 model.
+    /// </summary>
     public class DTOSUP01
     {
         /// <summary>
         /// Suplier Id
         /// </summary>
-        [Required]
         [JsonProperty("P01F01")]
         public string P01101 { get; set; }
 
         /// <summary>
         /// Suplier name
         /// </summary>
-        [Required]
         [JsonProperty("P01F02")]
         public string P01102 { get; set; }
 
         /// <summary>
         /// Suplier Email Id
         /// </summary>
-        [Required]
         [JsonProperty("P01F03")]
         public string P01103 { get; set; }
 
         /// <summary>
         /// Suplier password
         /// </summary>
-        [Required]
         [JsonProperty("P01F04")]
         public string P01104 { get; set; }
 
@@ -42,7 +40,6 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Suplier GST Number
         /// </summary>
-        [StringLength(maximumLength: 15, MinimumLength = 15)]
         [JsonProperty("P01F06")]
         public string P01106 { get; set; }
     }

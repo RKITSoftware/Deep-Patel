@@ -2,6 +2,9 @@
 
 namespace OnlineShoppingAPI.Models.DTO
 {
+    /// <summary>
+    /// DTO for PRO01 Model.
+    /// </summary>
     public class DTOPRO01
     {
         /// <summary>

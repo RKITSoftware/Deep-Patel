@@ -2,6 +2,7 @@
 using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
+using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Configuration;
 using System.Data;
@@ -10,10 +11,12 @@ using System.Net;
 namespace OnlineShoppingAPI.DL
 {
     /// <summary>
-    /// Data access layer for retrieving profit data from the database.
+    /// DB Context for <see cref="ADM01"/>.
     /// </summary>
     public class DBADM01
     {
+        #region Private Fields
+
         /// <summary>
         /// Connection string for the database connection.
         /// </summary>
@@ -24,17 +27,22 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// Initializes a new instance of the DBADM01 class with default connection settings.
+        /// Initialize the <see cref="DBADM01"/> class instance.
         /// </summary>
         public DBADM01()
         {
-            // Get connection string from configuration file
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-
-            // Initialize MySqlConnection with the connection string
             _connection = new MySqlConnection(_connectionString);
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Retrieves profit data from the database for a specified date.
@@ -86,5 +94,7 @@ namespace OnlineShoppingAPI.DL
                 response = BLHelper.ISEResponse();
             }
         }
+
+        #endregion
     }
 }

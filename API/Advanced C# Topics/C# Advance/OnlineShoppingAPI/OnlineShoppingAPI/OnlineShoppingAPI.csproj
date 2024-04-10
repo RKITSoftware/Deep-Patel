@@ -270,9 +270,9 @@
     <Compile Include="Models\DTO\DTOPRO02.cs" />
     <Compile Include="Models\DTO\DTORCD01.cs" />
     <Compile Include="Models\DTO\DTOSUP01.cs" />
-    <Compile Include="Models\Enum\OnlineShoopingEnums.cs" />
+    <Compile Include="Models\Enum\EnmProductStatus.cs" />
     <Compile Include="Extension\ConvertExtension.cs" />
-    <Compile Include="Extension\OnlineShoppingExtensions.cs" />
+    <Compile Include="Extension\ExceptionLogExtension.cs" />
     <Compile Include="Controllers\Filter\ExceptionLogFilter.cs" />
     <Compile Include="Controllers\Filter\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">

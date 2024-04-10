@@ -1,17 +1,20 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.Controllers.Attribute;
+using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
+using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
 {
     /// <summary>
-    /// Customer controller for handling customer api endpoints
+    /// Customer controller for handling <see cref="CUS01"/> api endpoints.
     /// </summary>
-    [RoutePrefix("api/CLCustomer")]
-    //[CookieBasedAuth]
+    [RoutePrefix("api/CLCUS01")]
+    [BearerAuth]
     public class CLCUS01Controller : ApiController
     {
         /// <summary>
@@ -36,12 +39,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPatch]
         [Route("Change/Email")]
-        //[Authorize(Roles = "Customer,Admin")]
+        [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangeEmail(string username, string password, string newEmail)
         {
-            Response response;
-            _cus01Service.ChangeEmail(username, password, newEmail, out response);
-
+            _cus01Service.ChangeEmail(username, password, newEmail, out Response response);
             return Ok(response);
         }
 
@@ -54,12 +55,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPatch]
         [Route("Change/Password")]
-        //[Authorize(Roles = "Customer,Admin")]
+        [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangePassword(string username, string oldPassword, string newPassword)
         {
-            Response response;
-            _cus01Service.ChangePassword(username, oldPassword, newPassword, out response);
-
+            _cus01Service.ChangePassword(username, oldPassword, newPassword, out Response response);
             return Ok(response);
         }
 
@@ -70,14 +69,13 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPost]
         [Route("CreateCustomer")]
-        //[Authorize(Roles = "Admin")]
-        //[ValidateModel]
+        [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public IHttpActionResult CreateCustomer(DTOCUS01 objCUS01DTO)
         {
-            Response response;
             _cus01Service.PreSave(objCUS01DTO, EnmOperation.Create);
 
-            if (_cus01Service.Validation(out response))
+            if (_cus01Service.Validation(out Response response))
             {
                 _cus01Service.Save(out response);
             }
@@ -92,12 +90,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpDelete]
         [Route("DeleteCustomer/{id}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteCustomer(int id)
         {
-            Response response;
-            _cus01Service.Delete(id, out response);
-
+            _cus01Service.Delete(id, out Response response);
             return Ok(response);
         }
 
@@ -110,9 +106,7 @@ namespace OnlineShoppingAPI.Controllers
         //[Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
-            Response response;
-            _cus01Service.GetAll(out response);
-
+            _cus01Service.GetAll(out Response response);
             return Ok(response);
         }
 
@@ -123,12 +117,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpGet]
         [Route("GetCustomerById/{id}")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomerById(int id)
         {
-            Response response;
-            _cus01Service.GetById(id, out response);
-
+            _cus01Service.GetById(id, out Response response);
             return Ok(response);
         }
 
@@ -139,14 +131,13 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPut]
         [Route("UpdateCustomer")]
-        //[Authorize(Roles = "Customer,Admin")]
-        //[ValidateModel]
+        [Authorize(Roles = "Customer,Admin")]
+        [ValidateModel]
         public IHttpActionResult UpdateCustomer(DTOCUS01 objCUS01DTO)
         {
-            Response response;
             _cus01Service.PreSave(objCUS01DTO, EnmOperation.Update);
 
-            if (_cus01Service.Validation(out response))
+            if (_cus01Service.Validation(out Response response))
             {
                 _cus01Service.Save(out response);
             }

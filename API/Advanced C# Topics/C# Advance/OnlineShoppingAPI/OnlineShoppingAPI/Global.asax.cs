@@ -2,7 +2,6 @@ using ServiceStack.OrmLite;
 using System.Configuration;
 using System.Net;
 using System.Web;
-using System.Web.Hosting;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI
@@ -24,9 +23,6 @@ namespace OnlineShoppingAPI
             Application["Credentials"] = new NetworkCredential(
                 ConfigurationManager.AppSettings["Username"],
                 ConfigurationManager.AppSettings["Password"]);
-            Application["MySQLConnection"] = connectionString;
-
-            string path = HostingEnvironment.MapPath("~/Logs");
 
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }

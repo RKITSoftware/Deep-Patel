@@ -33,11 +33,7 @@ namespace OnlineShoppingAPI.Extension
                 string name = nameAttr.PropertyName;
 
                 PropertyInfo TProp = TType.GetProperty(name);
-
-                if (TProp != null)
-                {
-                    TProp.SetValue(TInstance, objProp.GetValue(obj));
-                }
+                TProp?.SetValue(TInstance, objProp.GetValue(obj));
             }
 
             return TInstance;

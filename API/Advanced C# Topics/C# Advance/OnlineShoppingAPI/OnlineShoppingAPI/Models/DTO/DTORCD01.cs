@@ -2,6 +2,9 @@
 
 namespace OnlineShoppingAPI.Models.DTO
 {
+    /// <summary>
+    /// DTO for RCD01 Model.
+    /// </summary>
     public class DTORCD01
     {
         /// <summary>

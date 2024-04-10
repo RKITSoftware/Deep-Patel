@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
@@ -8,8 +8,11 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for service handling of <see cref="CAT01"/> operations.
     /// </summary>
-    public interface ICAT01Service
+    public interface ICAT01Service : IOperationService, IPreDataHandlerService<DTOCAT01>,
+        IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Deletes a category by its ID.
         /// </summary>
@@ -30,25 +33,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="response">Out parameter containing the response with the requested category.</param>
         void GetById(int id, out Response response);
 
-        /// <summary>
-        /// Prepares category object for saving a category.
-        /// </summary>
-        /// <param name="objDTOCAT01">Data Transfer Object representing the category.</param>
-        /// <param name="operation">Operation type for the save action.</param>
-        void PreSave(DTOCAT01 objDTOCAT01, EnmOperation operation);
-
-        /// <summary>
-        /// Create or Updates the category information.
-        /// </summary>
-        /// <param name="operation">Operation type for the save action.</param>
-        /// <param name="response">Out parameter containing the response status after saving.</param>
-        void Save(EnmOperation operation, out Response response);
-
-        /// <summary>
-        /// Validates category information.
-        /// </summary>
-        /// <param name="response">Out parameter containing the validation result.</param>
-        /// <returns>True if the category information is valid, otherwise false.</returns>
-        bool Validation(out Response response);
+        #endregion
     }
 }

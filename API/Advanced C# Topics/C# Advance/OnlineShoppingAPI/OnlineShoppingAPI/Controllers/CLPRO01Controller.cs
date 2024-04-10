@@ -36,7 +36,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Create")]
         public IHttpActionResult CreateProduct(DTOPRO01 objPRO01DTO)
         {
-            _pro01Service.PreSave(objPRO01DTO, EnmOperation.Create);
+            _pro01Service.Operation = EnmOperation.Create;
+            _pro01Service.PreSave(objPRO01DTO);
 
             if (_pro01Service.Validation(out Response response))
             {
@@ -55,7 +56,8 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Update")]
         public IHttpActionResult Update(DTOPRO01 objDTOPRO01)
         {
-            _pro01Service.PreSave(objDTOPRO01, EnmOperation.Update);
+            _pro01Service.Operation = EnmOperation.Update;
+            _pro01Service.PreSave(objDTOPRO01);
 
             if (_pro01Service.Validation(out Response response))
             {

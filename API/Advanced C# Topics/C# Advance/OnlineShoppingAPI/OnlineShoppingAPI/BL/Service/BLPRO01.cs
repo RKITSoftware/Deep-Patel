@@ -8,7 +8,6 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
@@ -31,10 +30,14 @@ namespace OnlineShoppingAPI.BL.Service
         /// </summary>
         private PRO01 _objPRO01;
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
-        /// Enum to specify which operation is performing.
+        /// Specifies the operation to perform.
         /// </summary>
-        private EnmOperation _operation;
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -56,11 +59,9 @@ namespace OnlineShoppingAPI.BL.Service
         /// Initialize the object of <see cref="PRO01"/> and prepare it for create or delete operation.
         /// </summary>
         /// <param name="objPRO01DTO">DTO of product.</param>
-        /// <param name="operation">Operation to perform.</param>
-        public void PreSave(DTOPRO01 objPRO01DTO, EnmOperation operation)
+        public void PreSave(DTOPRO01 objPRO01DTO)
         {
             _objPRO01 = objPRO01DTO.Convert<PRO01>();
-            _operation = operation;
         }
 
         /// <summary>
@@ -80,7 +81,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
                 Create(out response);
             else
                 Update(out response);
@@ -100,17 +101,12 @@ namespace OnlineShoppingAPI.BL.Service
                     PRO01 product = db.SingleById<PRO01>(id);
                     if (product == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Product Not Found."
-                        };
+                        response = NotFoundResponse("Product not found.");
                     }
                     else
                     {
                         db.DeleteById<PRO01>(id);
-                        response = OkResponse();
+                        response = OkResponse("Product deleted successfully.");
                     }
                 }
             }
@@ -133,7 +129,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     List<PRO01> lstPRO01 = db.Select<PRO01>();
 
-                    response = OkResponse();
+                    response = OkResponse("Success");
                     response.Data = lstPRO01;
                 }
             }
@@ -160,12 +156,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objProduct == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.BadRequest,
-                            Message = "Id doesn't reference to product."
-                        };
+                        response = NotFoundResponse("Product not found.");
                         return;
                     }
 
@@ -173,7 +164,7 @@ namespace OnlineShoppingAPI.BL.Service
                     objProduct.O01F04 += quantity;
                     db.Update(objProduct);
 
-                    response = OkResponse();
+                    response = OkResponse("Quantity updates successfully.");
                 }
             }
             catch (Exception ex)
@@ -201,12 +192,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (existingProduct == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.BadRequest,
-                            Message = "Product id doesn't exist."
-                        };
+                        response = NotFoundResponse("Product not found.");
                         return;
                     }
 
@@ -219,7 +205,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // Perform the database update
                     db.Update(existingProduct);
 
-                    response = OkResponse();
+                    response = OkResponse("Product updated successfully.");
                 }
             }
             catch (Exception ex)
@@ -241,11 +227,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     db.Insert(_objPRO01);
 
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Message = "Product Successfully created."
-                    };
+                    response = OkResponse("Product created successfully.");
                 }
             }
             catch (Exception ex)

@@ -38,7 +38,8 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult Add(DTOPRO02 objPRO02DTO)
         {
-            _pro02Service.PreSave(objPRO02DTO, EnmOperation.Create);
+            _pro02Service.Operation = EnmOperation.Create;
+            _pro02Service.PreSave(objPRO02DTO);
 
             if (_pro02Service.Validation(out Response response))
             {

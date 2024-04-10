@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ServiceStack;
 using ServiceStack.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -17,7 +18,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(50)]
-        [JsonProperty("M01102")]
+        [JsonPropertyName("M01102")]
         public string M01F02 { get; set; }
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [ValidateEmail]
-        [JsonProperty("M01103")]
+        [JsonPropertyName("M01103")]
         public string M01F03 { get; set; }
     }
 }

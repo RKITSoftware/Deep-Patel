@@ -76,7 +76,7 @@ namespace OnlineShoppingAPI.DL
                     return;
                 }
 
-                response = OkResponse();
+                response = OkResponse("Success.");
                 response.Data = dtCategories;
             }
             catch (Exception exception)

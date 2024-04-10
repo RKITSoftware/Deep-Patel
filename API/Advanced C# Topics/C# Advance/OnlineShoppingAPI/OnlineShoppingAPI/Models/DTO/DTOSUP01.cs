@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,37 +10,37 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Suplier Id
         /// </summary>
-        [JsonProperty("P01F01")]
+        [JsonPropertyName("P01F01")]
         public string P01101 { get; set; }
 
         /// <summary>
         /// Suplier name
         /// </summary>
-        [JsonProperty("P01F02")]
+        [JsonPropertyName("P01F02")]
         public string P01102 { get; set; }
 
         /// <summary>
         /// Suplier Email Id
         /// </summary>
-        [JsonProperty("P01F03")]
+        [JsonPropertyName("P01F03")]
         public string P01103 { get; set; }
 
         /// <summary>
         /// Suplier password
         /// </summary>
-        [JsonProperty("P01F04")]
+        [JsonPropertyName("P01F04")]
         public string P01104 { get; set; }
 
         /// <summary>
         /// Suplier Mobile Number
         /// </summary>
-        [JsonProperty("P01F05")]
+        [JsonPropertyName("P01F05")]
         public string P01105 { get; set; }
 
         /// <summary>
         /// Suplier GST Number
         /// </summary>
-        [JsonProperty("P01F06")]
+        [JsonPropertyName("P01F06")]
         public string P01106 { get; set; }
     }
 }

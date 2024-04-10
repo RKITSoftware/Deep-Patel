@@ -290,6 +290,49 @@ namespace OnlineShoppingAPI.BL.Common
         }
 
         /// <summary>
+        /// Retuns the Success response with Success Message.
+        /// </summary>
+        /// <returns><see cref="Response"/> containing the Success response.</returns>
+        public static Response OkResponse(string message)
+        {
+            return new Response()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = message
+            };
+        }
+
+        /// <summary>
+        /// Returns the Notfound response with specified message.
+        /// </summary>
+        /// <param name="message">Message to sent to response.</param>
+        /// <returns>NotFound <see cref="Response"/></returns>
+        public static Response NotFoundResponse(string message)
+        {
+            return new Response()
+            {
+                IsError = true,
+                StatusCode = HttpStatusCode.NotFound,
+                Message = message
+            };
+        }
+
+        /// <summary>
+        /// Returns the PreConditionFailed response with specified message.
+        /// </summary>
+        /// <param name="message">Message to sent to response.</param>
+        /// <returns>PreConditionFailed <see cref="Response"/></returns>
+        public static Response PreConditionFailedResponse(string message)
+        {
+            return new Response()
+            {
+                IsError = true,
+                StatusCode = HttpStatusCode.PreconditionFailed,
+                Message = message
+            };
+        }
+
+        /// <summary>
         /// Creates a InternalServerError <see cref="Response"/> with error message.
         /// </summary>
         /// <returns><see cref="Response"/> Containg InternalServerError response.</returns>
@@ -303,18 +346,6 @@ namespace OnlineShoppingAPI.BL.Common
             };
         }
 
-        /// <summary>
-        /// Retuns the Success response with Success Message.
-        /// </summary>
-        /// <returns><see cref="Response"/> containing the Success response.</returns>
-        public static Response OkResponse()
-        {
-            return new Response()
-            {
-                StatusCode = HttpStatusCode.OK,
-                Message = "Success"
-            };
-        }
         #endregion
     }
 }

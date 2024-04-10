@@ -1,14 +1,16 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 
 namespace OnlineShoppingAPI.BL.Interface
 {
     /// <summary>
     /// Interface for handling CUS01 related operations.
     /// </summary>
-    public interface ICUS01Service
+    public interface ICUS01Service : IOperationService, IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Changes the email address of a customer.
         /// </summary>
@@ -52,19 +54,8 @@ namespace OnlineShoppingAPI.BL.Interface
         /// </summary>
         /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void PreSave(DTOCUS01 objCUS01DTO, EnmOperation operation);
+        void PreSave(DTOCUS01 objCUS01DTO);
 
-        /// <summary>
-        /// Saves changes made to a user.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void Save(out Response response);
-
-        /// <summary>
-        /// Validates customer information.
-        /// </summary>
-        /// <param name="response">Out parameter containing the validation result.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        bool Validation(out Response response);
+        #endregion
     }
 }

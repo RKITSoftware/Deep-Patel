@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using ServiceStack;
+﻿using ServiceStack;
 using ServiceStack.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -12,7 +12,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [AutoIncrement]
         [PrimaryKey]
-        [JsonProperty("O01101")]
+        [JsonPropertyName("O01101")]
         public int O01F01 { get; set; }
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace OnlineShoppingAPI.Models.POCO
         [Required]
         [StringLength(100)]
         [ValidateMaximumLength(100)]
-        [JsonProperty("O01102")]
+        [JsonPropertyName("O01102")]
         public string O01F02 { get; set; }
 
         /// <summary>
@@ -29,26 +29,26 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [DecimalLength(10, 2)]
-        [JsonProperty("O01103")]
+        [JsonPropertyName("O01103")]
         public int O01F03 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
-        [JsonProperty("O01104")]
+        [JsonPropertyName("O01104")]
         public decimal O01F04 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
-        [JsonProperty("O01105")]
+        [JsonPropertyName("O01105")]
         public string O01F05 { get; set; }
 
         /// <summary>
         /// Foreign Key of Suplier Table
         /// </summary>
         [References(typeof(SUP01))]
-        [JsonProperty("O01106")]
+        [JsonPropertyName("O01106")]
         public int O01F06 { get; set; }
     }
 }

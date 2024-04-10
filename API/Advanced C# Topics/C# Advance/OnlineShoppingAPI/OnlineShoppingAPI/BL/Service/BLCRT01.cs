@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Web;
 using System.Web.Caching;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.BL.Service
 {
@@ -36,9 +37,9 @@ namespace OnlineShoppingAPI.BL.Service
         private CRT01 _objCRT01;
 
         /// <summary>
-        /// <see cref="EnmOperation"/> to specify which operation is performing.
+        /// Instance of <see cref="PRO02"/>.
         /// </summary>
-        private EnmOperation _operation;
+        private PRO02 _objPRO02;
 
         /// <summary>
         /// Email services to send the emails.
@@ -54,6 +55,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// Db Context of <see cref="DBCRT01"/> for performing my sql queries.
         /// </summary>
         private readonly DBCRT01 _dbCRT01;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Specifies the operation to perform.
+        /// </summary>
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -75,14 +85,50 @@ namespace OnlineShoppingAPI.BL.Service
         #region Public Methods
 
         /// <summary>
+        /// Validation checks for the primary key's and foreign key of different tables.
+        /// </summary>
+        /// <param name="objDTOCRT01"></param>
+        /// <param name="response"></param>
+        /// <returns></returns>
+        public bool PreValidation(DTOCRT01 objDTOCRT01, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Customer exists or not.
+                    if (!db.Exists<CUS01>(c => c.S01F01 == objDTOCRT01.T01102))
+                    {
+                        response = NotFoundResponse("Customer doesn't exist.");
+                        return false;
+                    }
+
+                    // Product exists or not.
+                    _objPRO02 = db.SingleById<PRO02>(_objCRT01.T01F03);
+                    if (_objPRO02 == null)
+                    {
+                        response = NotFoundResponse("Product doesn't exist.");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
+
+            response = null;
+            return true;
+        }
+
+        /// <summary>
         /// Initialize objects for the creating or updating related operations.
         /// </summary>
         /// <param name="objDTOCRT01">DTO for CRT01.</param>
-        /// <param name="operation">Specifies which operation Create or Update.</param>
-        public void PreSave(DTOCRT01 objDTOCRT01, EnmOperation operation)
+        public void PreSave(DTOCRT01 objDTOCRT01)
         {
             _objCRT01 = objDTOCRT01.Convert<CRT01>();
-            _operation = operation;
         }
 
         /// <summary>
@@ -91,10 +137,21 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
-                Create(out response);
-            else
-                response = BLHelper.OkResponse();
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    _objCRT01.T01F05 = _objPRO02.O02F04;
+                    db.Insert(_objCRT01);
+                }
+
+                response = OkResponse("Item added successfully.");
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
         }
 
         /// <summary>
@@ -104,6 +161,25 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns><see langword="true"/> if validation successful, else <see langword="false"/>.</returns>
         public bool Validation(out Response response)
         {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Quantity Check
+                    if (_objPRO02.O02F05 < _objCRT01.T01F04)
+                    {
+                        response = PreConditionFailedResponse("Product can't be bought because it can't satisfy quantity.");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+                return false;
+            }
+
             response = null;
             return true;
         }
@@ -131,7 +207,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse("Success");
                         response.Data = lstCRT01;
                     }
                 }
@@ -139,7 +215,7 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -159,24 +235,18 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objItem == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Cart doesn't have item."
-                        };
-
+                        response = NotFoundResponse("Item not found.");
                         return;
                     }
 
                     db.DeleteById<CRT01>(id);
-                    response = BLHelper.OkResponse();
+                    response = OkResponse("Item removed successfully.");
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -201,12 +271,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // If the customer's email is not found, return NotFound response.
                     if (string.IsNullOrEmpty(email))
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer not found."
-                        };
+                        response = NotFoundResponse("Customer not found");
                         return;
                     }
 
@@ -214,7 +279,7 @@ namespace OnlineShoppingAPI.BL.Service
                     _emailService.Send(email, otp);
 
                     // Cache the OTP with the customer's email as the key for future validation.
-                    BLHelper.ServerCache.Add(
+                    ServerCache.Add(
                         key: email,
                         value: otp,
                         dependencies: null,
@@ -224,12 +289,12 @@ namespace OnlineShoppingAPI.BL.Service
                         onRemoveCallback: null);
                 }
 
-                response = BLHelper.OkResponse();
+                response = OkResponse("OTP sent successfully.");
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -251,12 +316,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // If no OTP is generated for buying items, return NotFound response.
                     if (existingOTP == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "No OTP is generated for buying or OTP expired."
-                        };
+                        response = PreConditionFailedResponse("No OTP is generated for buying or OTP expired.");
                         return;
                     }
 
@@ -272,17 +332,17 @@ namespace OnlineShoppingAPI.BL.Service
                         return;
                     }
 
-                    BLHelper.ServerCache.Remove(email);
+                    ServerCache.Remove(email);
                     if (BuyAllItems(id, out response))
                     {
-                        response = BLHelper.OkResponse();
+                        response = OkResponse("Items bought successfully.");
                     }
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
@@ -309,12 +369,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objCart == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Item not found."
-                        };
+                        response = NotFoundResponse("Item not found.");
                         return;
                     }
 
@@ -331,61 +386,13 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
             }
         }
 
         #endregion
 
         #region Private Methods
-
-        /// <summary>
-        /// Add the items to the cart.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Retrieve the corresponding source product from the database.
-                    PRO02 sourceProduct = db.SingleById<PRO02>(_objCRT01.T01F03);
-
-                    if (sourceProduct == null)
-                    {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Product not found."
-                        };
-                        return;
-                    }
-
-                    if (sourceProduct.O02F05 < _objCRT01.T01F04)
-                    {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "Product can't be bought because it can't satisfy quantity."
-                        };
-                        return;
-                    }
-
-                    _objCRT01.T01F05 = sourceProduct.O02F04;
-                    db.Insert(_objCRT01);
-
-                    response = BLHelper.OkResponse();
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = BLHelper.ISEResponse();
-            }
-        }
 
         /// <summary>
         /// Buy all items of the customer after successful completion 2-Factor Authentication process.
@@ -404,23 +411,18 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (lstItems == null)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "No cart items for customer."
-                        };
+                        response = NotFoundResponse("No cart items for customer.");
                         return false;
                     }
 
                     CUS01 objCustomer = db.SingleById<CUS01>(id);
-
                     return _rcd01Service.BuyCartItems(lstItems, objCustomer.S01F03, out response);
                 }
             }
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
                 return false;
             }
         }

@@ -39,11 +39,13 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
-            _adm01Service.PreSave(objDTOADM01, EnmOperation.Create);
-
-            if (_adm01Service.Validation(out Response response))
+            _adm01Service.Operation = EnmOperation.Create;
+            if (_adm01Service.PreValidation(objDTOADM01, out Response response))
             {
-                _adm01Service.Save(out response);
+                _adm01Service.PreSave(objDTOADM01);
+
+                if (_adm01Service.Validation(out response))
+                    _adm01Service.Save(out response);
             }
 
             return Ok(response);

@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,8 +10,10 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Service for <see cref="RCD01"/> model.
     /// </summary>
-    public interface IRCD01Service
+    public interface IRCD01Service : IOperationService, IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Buy all items of customer from the cart.
         /// </summary>
@@ -45,20 +47,8 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Initialize objects which are needed for create or update operation.
         /// </summary>
         /// <param name="objDTORCD01">DTO of RCD01</param>
-        /// <param name="operation">Operation to perform.</param>
-        void PreSave(DTORCD01 objDTORCD01, EnmOperation operation);
+        void PreSave(DTORCD01 objDTORCD01);
 
-        /// <summary>
-        /// Performs the create or update operation.
-        /// </summary>
-        /// <param name="response"></param>
-        void Save(out Response response);
-
-        /// <summary>
-        /// Validates the objects before the save process.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        /// <returns>True if validation successful, else false.</returns>
-        bool Validation(out Response response);
+        #endregion
     }
 }

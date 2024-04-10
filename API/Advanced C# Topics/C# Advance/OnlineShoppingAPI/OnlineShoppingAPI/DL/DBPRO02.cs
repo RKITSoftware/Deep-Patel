@@ -78,7 +78,7 @@ namespace OnlineShoppingAPI.DL
                     _connection.Close();
                 }
 
-                response = BLHelper.OkResponse();
+                response = BLHelper.OkResponse("Success.");
                 response.Data = dtResult;
             }
             catch (Exception ex)

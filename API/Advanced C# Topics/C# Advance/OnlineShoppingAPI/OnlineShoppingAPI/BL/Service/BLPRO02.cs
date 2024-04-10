@@ -28,11 +28,6 @@ namespace OnlineShoppingAPI.BL.Service
         private readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
-        /// Operation to perform like create or update.
-        /// </summary>
-        private EnmOperation _operation;
-
-        /// <summary>
         /// Instance of <see cref="PRO02"/> for create or update related operations.
         /// </summary>
         private PRO02 _objPRO02;
@@ -41,6 +36,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// Databse Context of <see cref="DBPRO02"/> for MySQL Queries.
         /// </summary>
         private readonly DBPRO02 _dbPRO02;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Specifies the operation to perform.
+        /// </summary>
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -63,10 +67,8 @@ namespace OnlineShoppingAPI.BL.Service
         /// Performs the Conversion operation and prepares the objects for create or update.
         /// </summary>
         /// <param name="objPRO02DTO">DTO of PRO02.</param>
-        /// <param name="operation">Create or Update operation.</param>
-        public void PreSave(DTOPRO02 objPRO02DTO, EnmOperation operation)
+        public void PreSave(DTOPRO02 objPRO02DTO)
         {
-            _operation = operation;
             _objPRO02 = objPRO02DTO.Convert<PRO02>();
             _objPRO02.O02F08 = DateTime.Now;
 
@@ -94,7 +96,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
                 Create(out response);
             else
                 Update(out response);
@@ -115,17 +117,12 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (!isExist)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Product not found."
-                        };
+                        response = NotFoundResponse("Product not found.");
                         return;
                     }
 
                     db.DeleteById<PRO02>(id);
-                    response = OkResponse();
+                    response = OkResponse("Product created successfully.");
                 }
             }
             catch (Exception ex)
@@ -158,7 +155,7 @@ namespace OnlineShoppingAPI.BL.Service
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Success.");
                         response.Data = lstPRO02;
                     }
                 }
@@ -186,19 +183,14 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (existingProduct == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Product not found."
-                        };
+                        response = NotFoundResponse("Product not found.");
                     }
                     else
                     {
                         existingProduct.O02F04 = sellPrice;
                         db.Update(existingProduct);
 
-                        response = OkResponse();
+                        response = OkResponse("Product sell price updated successfully.");
                     }
                 }
             }
@@ -230,13 +222,8 @@ namespace OnlineShoppingAPI.BL.Service
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     db.Insert(_objPRO02);
-
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Message = "Product successfully created."
-                    };
                 }
+                response = OkResponse("Product created successfully.");
             }
             catch (Exception ex)
             {

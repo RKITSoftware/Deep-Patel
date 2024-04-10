@@ -224,8 +224,11 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BL\Common\Interface\IDataHandlerService.cs" />
+    <Compile Include="BL\Common\Interface\IPreDataHandlerService.cs" />
     <Compile Include="BL\Common\Service\BLEmail.cs" />
     <Compile Include="BL\Common\Interface\IEmailService.cs" />
+    <Compile Include="BL\Common\Interface\IOperationService.cs" />
     <Compile Include="BL\Service\BLADM01.cs" />
     <Compile Include="BL\Interface\IADM01Service.cs" />
     <Compile Include="BL\Service\BLCAT01.cs" />

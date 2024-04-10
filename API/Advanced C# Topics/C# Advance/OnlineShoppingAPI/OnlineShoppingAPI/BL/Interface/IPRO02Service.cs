@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
@@ -8,8 +8,10 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface service for <see cref="PRO02"/>.
     /// </summary>
-    public interface IPRO02Service
+    public interface IPRO02Service : IOperationService, IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Deletes the product specified by id.
         /// </summary>
@@ -33,14 +35,7 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Performs the Conversion operation and prepares the objects for create or update.
         /// </summary>
         /// <param name="objPRO02DTO">DTO of PRO02.</param>
-        /// <param name="operation">Create or Update operation.</param>
-        void PreSave(DTOPRO02 objPRO02DTO, EnmOperation operation);
-
-        /// <summary>
-        /// Save the object information to the database according to opertaion.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void Save(out Response response);
+        void PreSave(DTOPRO02 objPRO02DTO);
 
         /// <summary>
         /// Updates the sell price of the specified product which id is given.
@@ -50,11 +45,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void UpdateSellPrice(int id, int sellPrice, out Response response);
 
-        /// <summary>
-        /// Validates the objects before the save process.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        /// <returns>True if validation Successful, else false.</returns>
-        bool Validation(out Response response);
+        #endregion
     }
 }

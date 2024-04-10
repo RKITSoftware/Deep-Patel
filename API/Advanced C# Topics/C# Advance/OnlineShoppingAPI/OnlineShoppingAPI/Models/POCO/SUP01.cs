@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -9,41 +10,41 @@ namespace OnlineShoppingAPI.Models.POCO
         /// Suplier Id
         /// </summary>
         [AutoIncrement]
-        [JsonProperty("P01101")]
+        [JsonPropertyName("P01101")]
         public int P01F01 { get; set; }
 
         /// <summary>
         /// Suplier name
         /// </summary>
         [Required]
-        [JsonProperty("P01102")]
+        [JsonPropertyName("P01102")]
         public string P01F02 { get; set; }
 
         /// <summary>
         /// Suplier Email Id
         /// </summary>
         [Required]
-        [JsonProperty("P01103")]
+        [JsonPropertyName("P01103")]
         public string P01F03 { get; set; }
 
         /// <summary>
         /// Suplier password
         /// </summary>
         [Required]
-        [JsonProperty("P01104")]
+        [JsonPropertyName("P01104")]
         public string P01F04 { get; set; }
 
         /// <summary>
         /// Suplier Mobile Number
         /// </summary>
-        [JsonProperty("P01105")]
+        [JsonPropertyName("P01105")]
         public string P01F05 { get; set; }
 
         /// <summary>
         /// Suplier GST Number
         /// </summary>
         [StringLength(maximumLength: 15, minimumLength: 15)]
-        [JsonProperty("P01106")]
+        [JsonPropertyName("P01106")]
         public string P01F06 { get; set; }
     }
 }

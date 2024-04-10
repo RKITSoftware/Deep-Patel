@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
@@ -8,8 +8,11 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for <see cref="ADM01"/> related operations.
     /// </summary>
-    public interface IADM01Service
+    public interface IADM01Service : IOperationService, IPreDataHandlerService<DTOADM01>,
+        IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Changes the email address of an admin user.
         /// </summary>
@@ -42,24 +45,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="response">Response indicating the outcome of the operation.</param>
         void GetProfit(string date, out Response response);
 
-        /// <summary>
-        /// Performs pre-save operations for creating or updating an admin.
-        /// </summary>
-        /// <param name="objDTOADM01">DTO object containing admin details.</param>
-        /// <param name="create">Enumeration indicating the operation (Create or Update).</param>
-        void PreSave(DTOADM01 objDTOADM01, EnmOperation create);
-
-        /// <summary>
-        /// Saves the admin details to the database.
-        /// </summary>
-        /// <param name="response">Response indicating the outcome of the operation.</param>
-        void Save(out Response response);
-
-        /// <summary>
-        /// Validates the admin data before saving.
-        /// </summary>
-        /// <param name="response">Response indicating the outcome of the validation.</param>
-        /// <returns>True if validation succeeds, otherwise false.</returns>
-        bool Validation(out Response response);
+        #endregion
     }
 }

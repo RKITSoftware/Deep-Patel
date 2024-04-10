@@ -40,7 +40,8 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult AddOrder(DTORCD01 objDTORCD01)
         {
-            _rcd01Service.PreSave(objDTORCD01, EnmOperation.Create);
+            _rcd01Service.Operation = EnmOperation.Create;
+            _rcd01Service.PreSave(objDTORCD01);
 
             if (_rcd01Service.Validation(out Response response))
             {

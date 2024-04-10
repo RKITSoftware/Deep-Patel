@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
@@ -8,8 +8,11 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for handling <see cref="CRT01"/> related services.
     /// </summary>
-    public interface ICRT01Service
+    public interface ICRT01Service : IOperationService, IPreDataHandlerService<DTOCRT01>,
+        IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// For buying one single item from the cart.
         /// </summary>
@@ -46,31 +49,13 @@ namespace OnlineShoppingAPI.BL.Interface
         void GetFullCRT01InfoOfCUS01(int id, out Response response);
 
         /// <summary>
-        /// Initialize objects for the creating or updating related operations.
-        /// </summary>
-        /// <param name="objDTOCRT01">DTO for CRT01.</param>
-        /// <param name="operation">Specifies which operation Create or Update.</param>
-        void PreSave(DTOCRT01 objDTOCRT01, EnmOperation operation);
-
-        /// <summary>
-        /// Performs the create or update changes to the database.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void Save(out Response response);
-
-        /// <summary>
-        /// Validates the object for creating or updated related operations.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        /// <returns><see langword="true"/> if validation successful, else <see langword="false"/>.</returns>
-        bool Validation(out Response response);
-
-        /// <summary>
         /// Verifies the OTP and Buy items from the cart of customer's.
         /// </summary>
         /// <param name="id">Customer Id.</param>
         /// <param name="otp">OTP (One Time Password) for the verification of buying process.</param>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void VerifyAndBuy(int id, string otp, out Response response);
+
+        #endregion
     }
 }

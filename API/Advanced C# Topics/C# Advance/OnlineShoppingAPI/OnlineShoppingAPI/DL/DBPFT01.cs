@@ -79,7 +79,7 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = OkResponse();
+                response = OkResponse("Success.");
                 response.Data = lstData;
             }
             catch (Exception ex)
@@ -126,7 +126,7 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = OkResponse();
+                response = OkResponse("Success.");
                 response.Data = lstData;
             }
             catch (Exception ex)
@@ -176,7 +176,7 @@ namespace OnlineShoppingAPI.DL
                     }
                 }
 
-                response = OkResponse();
+                response = OkResponse("Success.");
                 response.Data = lstData;
             }
             catch (Exception ex)

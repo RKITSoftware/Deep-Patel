@@ -37,11 +37,6 @@ namespace OnlineShoppingAPI.BL.Service
         private RCD01 _objRCD01;
 
         /// <summary>
-        /// Operations that performes when validation and save process invoke.
-        /// </summary>
-        private EnmOperation _operation;
-
-        /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
@@ -60,6 +55,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// DB Context for MySQL related query execution.
         /// </summary>
         private readonly DBRCD01 _dbRCD01;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Specifies the operation to perform.
+        /// </summary>
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -84,13 +88,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// Initialize objects which are needed for create or update operation.
         /// </summary>
         /// <param name="objDTORCD01">DTO of RCD01</param>
-        /// <param name="operation">Operation to perform.</param>
-        public void PreSave(DTORCD01 objDTORCD01, EnmOperation operation)
+        public void PreSave(DTORCD01 objDTORCD01)
         {
             _objRCD01 = objDTORCD01.Convert<RCD01>();
-            _operation = operation;
 
-            if (operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
             {
                 _objRCD01.D01F06 = Guid.NewGuid();
                 _objRCD01.D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
@@ -103,10 +105,10 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"></param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
                 Create(out response);
             else
-                response = OkResponse();
+                response = OkResponse("Record updated successfully.");
         }
 
         /// <summary>
@@ -135,17 +137,12 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (order == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Record doesn't exist."
-                        };
+                        response = NotFoundResponse("Record not found.");
                         return;
                     }
 
                     db.DeleteById<RCD01>(id);
-                    response = OkResponse();
+                    response = OkResponse("Record deleted successfully.");
                 }
             }
             catch (Exception ex)
@@ -204,13 +201,14 @@ namespace OnlineShoppingAPI.BL.Service
                     {
                         response = new Response()
                         {
+                            IsError = true,
                             StatusCode = HttpStatusCode.NoContent,
                             Message = "No Records."
                         };
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Success.");
                         response.Data = lstRCD01;
                     }
                 }
@@ -288,11 +286,11 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception ex)
             {
                 ex.LogException();
-                response = BLHelper.ISEResponse();
+                response = ISEResponse();
                 return false;
             }
 
-            response = BLHelper.OkResponse();
+            response = OkResponse("Items bought successfully.");
             return true;
         }
 
@@ -414,11 +412,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     _pft01Service.UpdateProfit(sourceProduct, _objRCD01.D01F04);
 
-                    response = new Response()
-                    {
-                        StatusCode = HttpStatusCode.Created,
-                        Message = "Record successfully created."
-                    };
+                    response = OkResponse("Record successfully created.");
                 }
             }
             catch (Exception ex)

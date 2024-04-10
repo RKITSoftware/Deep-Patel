@@ -1,6 +1,6 @@
-﻿using OnlineShoppingAPI.Models;
+﻿using OnlineShoppingAPI.BL.Common.Interface;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 
 namespace OnlineShoppingAPI.BL.Interface
@@ -8,8 +8,10 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for managing <see cref="SUP01"/> operations.
     /// </summary>
-    public interface ISUP01Service
+    public interface ISUP01Service : IOperationService, IDataHandlerService
     {
+        #region Public Methods
+
         /// <summary>
         /// Changes the email address of a suplier.
         /// </summary>
@@ -52,20 +54,8 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Prepares a suplier for saving based on the operation.
         /// </summary>
         /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
-        /// <param name="operation">The type of operation (e.g., add, update).</param>
-        void PreSave(DTOSUP01 objSUP01DTO, EnmOperation operation);
+        void PreSave(DTOSUP01 objSUP01DTO);
 
-        /// <summary>
-        /// Saves the changes made to a supplier.
-        /// </summary>
-        /// <param name="response">The response containing the result of the operation.</param>
-        void Save(out Response response);
-
-        /// <summary>
-        /// Performs validation on the supplier data.
-        /// </summary>
-        /// <param name="response">The response containing the result of the operation.</param>
-        /// <returns>True if validation succeeds, otherwise false.</returns>
-        bool Validation(out Response response);
+        #endregion
     }
 }

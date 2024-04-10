@@ -24,11 +24,6 @@ namespace OnlineShoppingAPI.BL.Service
         private readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
-        /// Operation to perform.
-        /// </summary>
-        private EnmOperation _operation;
-
-        /// <summary>
         /// Instance of <see cref="SUP01"/>.
         /// </summary>
         private SUP01 _objSUP01;
@@ -37,6 +32,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// Instance of <see cref="usr01"/>.
         /// </summary>
         private USR01 _objUSR01;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Specifies the operation to perform.
+        /// </summary>
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -70,12 +74,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     if (GetUser(newEmail) != null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "New email is already exist, choose other email."
-                        };
+                        response = PreConditionFailedResponse("Email already exists.");
                         return;
                     }
 
@@ -87,11 +86,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // If suplier doesn't exist, return Not Found status code.
                     if (objSuplier == null)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Suplier not found."
-                        };
+                        response = NotFoundResponse("Supplier not found.");
                         return;
                     }
 
@@ -106,7 +101,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(objUser);
 
                     // Return success response
-                    response = OkResponse();
+                    response = OkResponse("Email changed successfully.");
                 }
             }
             catch (Exception ex)
@@ -136,12 +131,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (existingSupplier == null || existingUser == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Suplier not found."
-                        };
+                        response = NotFoundResponse("Suplier doesn't exist.");
                         return;
                     }
 
@@ -156,7 +146,7 @@ namespace OnlineShoppingAPI.BL.Service
                         db.Update(existingSupplier);
                         db.Update(existingUser);
 
-                        response = OkResponse();
+                        response = OkResponse("Password changed successfully.");
                     }
                     else
                     {
@@ -181,12 +171,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// </summary>
         /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
         /// <param name="operation">The type of operation (e.g., add, update).</param>
-        public void PreSave(DTOSUP01 objSUP01DTO, EnmOperation operation)
+        public void PreSave(DTOSUP01 objSUP01DTO)
         {
-            _operation = operation;
             _objSUP01 = objSUP01DTO.Convert<SUP01>();
 
-            if (operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
             {
                 _objUSR01 = new USR01()
                 {
@@ -204,7 +193,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response">The response containing the result of the operation.</param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
                 Create(out response);
             else
                 Update(out response);
@@ -221,17 +210,12 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    if (_operation == EnmOperation.Create)
+                    if (Operation == EnmOperation.Create)
                     {
                         // Check if the email already exists in the database
                         if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
                         {
-                            response = new Response()
-                            {
-                                IsError = true,
-                                StatusCode = HttpStatusCode.PreconditionFailed,
-                                Message = "Email already exists."
-                            };
+                            response = PreConditionFailedResponse("Email already exists.");
                             return false;
                         }
                     }
@@ -265,12 +249,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if the supplier exists
                     if (supplier == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Suplier not found."
-                        };
+                        response = NotFoundResponse("Supplier not found.");
                         return;
                     }
 
@@ -283,7 +262,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     ServerCache.Remove("lstSuplier");
 
-                    response = OkResponse();
+                    response = OkResponse("Supplier deleted successfully.");
                 }
             }
             catch (Exception ex)
@@ -309,13 +288,14 @@ namespace OnlineShoppingAPI.BL.Service
                     {
                         response = new Response()
                         {
+                            IsError = true,
                             StatusCode = HttpStatusCode.NoContent,
                             Message = "No suplier data available."
                         };
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Success.");
                         response.Data = lstSUP01;
                     }
                 }
@@ -342,15 +322,11 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objSUP01 == null)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Supplier not found."
-                        };
+                        response = NotFoundResponse("Supplier not found.");
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Success");
                         response.Data = objSUP01;
                     }
                 }
@@ -380,12 +356,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (existingSupplier == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "Suplier doesn't exist"
-                        };
+                        response = PreConditionFailedResponse("Supplier doesn't exist.");
                     }
                     else
                     {
@@ -396,7 +367,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                         db.Update(existingSupplier);
 
-                        response = OkResponse();
+                        response = OkResponse("Supplier information updated successfully.");
                     }
                 }
             }
@@ -420,7 +391,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Insert(_objSUP01);
                     db.Insert(_objUSR01);
 
-                    response = OkResponse();
+                    response = OkResponse("Supplier created successfully.");
                 }
             }
             catch (Exception ex)

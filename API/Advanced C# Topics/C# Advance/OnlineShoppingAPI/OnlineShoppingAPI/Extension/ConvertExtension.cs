@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Extension
 {
@@ -20,7 +20,7 @@ namespace OnlineShoppingAPI.Extension
         {
             // Get properties of the source object that are annotated with JsonPropertyAttribute
             PropertyInfo[] objProperties = obj.GetType().GetProperties()
-                .Where(prop => prop.IsDefined(typeof(JsonPropertyAttribute), false))
+                .Where(prop => prop.IsDefined(typeof(JsonPropertyNameAttribute), false))
                 .ToArray();
 
             Type TType = typeof(T);
@@ -29,8 +29,8 @@ namespace OnlineShoppingAPI.Extension
             // Populate properties of the target type with values from the source object
             foreach (PropertyInfo objProp in objProperties)
             {
-                JsonPropertyAttribute nameAttr = objProp.GetCustomAttribute<JsonPropertyAttribute>();
-                string name = nameAttr.PropertyName;
+                JsonPropertyNameAttribute nameAttr = objProp.GetCustomAttribute<JsonPropertyNameAttribute>();
+                string name = nameAttr.Name;
 
                 PropertyInfo TProp = TType.GetProperty(name);
                 TProp?.SetValue(TInstance, objProp.GetValue(obj));

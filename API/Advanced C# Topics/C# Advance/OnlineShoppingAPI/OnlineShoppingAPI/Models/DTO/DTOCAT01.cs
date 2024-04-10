@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,13 +10,13 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Category Id
         /// </summary>
-        [JsonProperty("T01F01")]
+        [JsonPropertyName("T01F01")]
         public int T01101 { get; set; }
 
         /// <summary>
         /// Category Name
         /// </summary>
-        [JsonProperty("T01F02")]
+        [JsonPropertyName("T01F02")]
         public string T01102 { get; set; }
     }
 }

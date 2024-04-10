@@ -68,7 +68,7 @@ namespace OnlineShoppingAPI.DL
                 _connection.Open();
                 adapter.Fill(dtResult);
 
-                response = OkResponse();
+                response = OkResponse("Success.");
                 response.Data = dtResult;
             }
             catch (Exception ex)

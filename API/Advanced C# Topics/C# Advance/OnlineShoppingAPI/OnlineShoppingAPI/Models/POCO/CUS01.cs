@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ServiceStack;
 using ServiceStack.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -11,7 +12,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// Customer Id
         /// </summary>
         [AutoIncrement]
-        [JsonProperty("S01101")]
+        [JsonPropertyName("S01101")]
         public int S01F01 { get; set; }
 
         /// <summary>
@@ -19,7 +20,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(maximumLength: 50)]
-        [JsonProperty("S01102")]
+        [JsonPropertyName("S01102")]
         public string S01F02 { get; set; }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [ValidateEmail]
-        [JsonProperty("S01103")]
+        [JsonPropertyName("S01103")]
         public string S01F03 { get; set; }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(minimumLength: 8, maximumLength: 16)]
-        [JsonProperty("S01104")]
+        [JsonPropertyName("S01104")]
         public string S01F04 { get; set; }
 
         /// <summary>
@@ -43,14 +44,14 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(minimumLength: 10, maximumLength: 10)]
-        [JsonProperty("S01105")]
+        [JsonPropertyName("S01105")]
         public string S01F05 { get; set; }
 
         /// <summary>
         /// Customer Address
         /// </summary>
         [Required]
-        [JsonProperty("S01106")]
+        [JsonPropertyName("S01106")]
         public string S01F06 { get; set; }
     }
 }

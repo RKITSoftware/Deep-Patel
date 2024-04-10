@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack.DataAnnotations;
 using System;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -12,7 +12,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [AutoIncrement]
         [PrimaryKey]
-        [JsonProperty("O02101")]
+        [JsonPropertyName("O02101")]
         public int O02F01 { get; set; }
 
         /// <summary>
@@ -20,7 +20,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(100)]
-        [JsonProperty("O02102")]
+        [JsonPropertyName("O02102")]
         public string O02F02 { get; set; }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [DecimalLength(10, 2)]
-        [JsonProperty("O02103")]
+        [JsonPropertyName("O02103")]
         public int O02F03 { get; set; }
 
         /// <summary>
@@ -36,20 +36,20 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [DecimalLength(10, 2)]
-        [JsonProperty("O02104")]
+        [JsonPropertyName("O02104")]
         public int O02F04 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
         [Required]
-        [JsonProperty("O02105")]
+        [JsonPropertyName("O02105")]
         public decimal O02F05 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
-        [JsonProperty("O02106")]
+        [JsonPropertyName("O02106")]
         public string O02F06 { get; set; }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [References(typeof(CAT01))]
-        [JsonProperty("O02109")]
+        [JsonPropertyName("O02109")]
         public int O02F09 { get; set; }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [References(typeof(SUP01))]
-        [JsonProperty("O02110")]
+        [JsonPropertyName("O02110")]
         public int O02F10 { get; set; }
     }
 }

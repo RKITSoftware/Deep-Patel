@@ -8,7 +8,6 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
@@ -36,10 +35,14 @@ namespace OnlineShoppingAPI.BL.Service
         /// </summary>
         private USR01 _objUSR01;
 
+        #endregion
+
+        #region Public Properties
+
         /// <summary>
-        /// The operation being performed create or update.
+        /// Specifies the operation to perform.
         /// </summary>
-        private EnmOperation _operation;
+        public EnmOperation Operation { get; set; }
 
         #endregion
 
@@ -73,12 +76,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     if (GetUser(newEmail) != null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "Use another email, this email is already exists."
-                        };
+                        response = NotFoundResponse("Use another email, this email is already exists.");
                         return;
                     }
 
@@ -89,12 +87,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objCustomer == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer doesn't exist"
-                        };
+                        response = NotFoundResponse("Customer doesn't exist");
                         return;
                     }
 
@@ -108,7 +101,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(objCustomer);
                     db.Update(objUser);
 
-                    response = OkResponse();
+                    response = OkResponse("Email changes successfully.");
                 }
             }
             catch (Exception ex)
@@ -139,23 +132,14 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if the customer and user exist.
                     if (existingCustomer == null && existingUser == null)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer not found."
-                        };
+                        response = NotFoundResponse("Customer not found.");
                         return;
                     }
 
                     // Check if the provided old password matches the existing customer password.
                     if (!existingCustomer.S01F04.Equals(oldPassword))
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.PreconditionFailed,
-                            Message = "Password doesn't match."
-                        };
+                        response = PreConditionFailedResponse("Password doesn't match.");
                         return;
                     }
 
@@ -169,7 +153,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(existingUser);
 
                     // Return a success response.
-                    response = OkResponse();
+                    response = OkResponse("Password changed successfully.");
                 }
             }
             catch (Exception ex)
@@ -184,12 +168,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// Prepares the objects for create or update operation.
         /// </summary>
         /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
-        /// <param name="operation">The operation type for the save action.</param>
-        public void PreSave(DTOCUS01 objCUS01DTO, EnmOperation operation)
+        public void PreSave(DTOCUS01 objCUS01DTO)
         {
             _objCUS01 = objCUS01DTO.Convert<CUS01>();
 
-            if (operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
             {
                 _objUSR01 = new USR01()
                 {
@@ -199,8 +182,6 @@ namespace OnlineShoppingAPI.BL.Service
                     R01F05 = GetEncryptPassword(_objCUS01.S01F04)
                 };
             }
-
-            _operation = operation;
         }
 
         /// <summary>
@@ -214,17 +195,12 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    if (_operation == EnmOperation.Create)
+                    if (Operation == EnmOperation.Create)
                     {
                         // Check if the email already exists in the database
                         if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
                         {
-                            response = new Response()
-                            {
-                                IsError = true,
-                                StatusCode = HttpStatusCode.PreconditionFailed,
-                                Message = "Email already exists."
-                            };
+                            response = PreConditionFailedResponse("Email already exists.");
                             return false;
                         }
                     }
@@ -247,7 +223,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (_operation == EnmOperation.Create)
+            if (Operation == EnmOperation.Create)
                 Create(out response);
             else
                 Update(out response);
@@ -270,12 +246,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if the customer exists.
                     if (customer == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer not found."
-                        };
+                        response = NotFoundResponse("Customer not found.");
                         return;
                     }
 
@@ -287,7 +258,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Delete<USR01>(u => u.R01F02 == username);
 
                     // Return a success response.
-                    response = OkResponse();
+                    response = OkResponse("Customer deleted successfully.");
                 }
             }
             catch (Exception ex)
@@ -313,15 +284,11 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (lstCUS01 == null || lstCUS01.Count == 0)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "There are no customer data found"
-                        };
+                        response = NotFoundResponse("There are no customer data found");
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Successfully get data.");
                         response.Data = lstCUS01;
                     }
                 }
@@ -348,15 +315,11 @@ namespace OnlineShoppingAPI.BL.Service
 
                     if (objCUS01 == null)
                     {
-                        response = new Response()
-                        {
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer not found."
-                        };
+                        response = NotFoundResponse("Customer not found.");
                     }
                     else
                     {
-                        response = OkResponse();
+                        response = OkResponse("Customer found successfully.");
                         response.Data = objCUS01;
                     }
                 }
@@ -388,12 +351,7 @@ namespace OnlineShoppingAPI.BL.Service
                     // Check if the customer exists.
                     if (existingCustomer == null)
                     {
-                        response = new Response()
-                        {
-                            IsError = true,
-                            StatusCode = HttpStatusCode.NotFound,
-                            Message = "Customer not found."
-                        };
+                        response = NotFoundResponse("Customer not found.");
                         return;
                     }
 
@@ -404,7 +362,7 @@ namespace OnlineShoppingAPI.BL.Service
 
                     // Perform the database update.
                     db.Update(existingCustomer);
-                    response = OkResponse();
+                    response = OkResponse("Data updated successfully.");
                 }
             }
             catch (Exception ex)
@@ -427,7 +385,7 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Insert(_objCUS01);
                     db.Insert(_objUSR01);
 
-                    response = OkResponse();
+                    response = OkResponse("Customer created successfully.");
                 }
             }
             catch (Exception ex)

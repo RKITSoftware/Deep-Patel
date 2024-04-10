@@ -73,7 +73,8 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateSuplier(DTOSUP01 objSUP01DTO)
         {
-            _sup01Service.PreSave(objSUP01DTO, EnmOperation.Create);
+            _sup01Service.Operation = EnmOperation.Create;
+            _sup01Service.PreSave(objSUP01DTO);
 
             if (_sup01Service.Validation(out Response response))
             {
@@ -135,7 +136,8 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult UpdateCustomer(DTOSUP01 objDTOSUP01)
         {
-            _sup01Service.PreSave(objDTOSUP01, EnmOperation.Update);
+            _sup01Service.Operation = EnmOperation.Update;
+            _sup01Service.PreSave(objDTOSUP01);
 
             if (_sup01Service.Validation(out Response response))
             {

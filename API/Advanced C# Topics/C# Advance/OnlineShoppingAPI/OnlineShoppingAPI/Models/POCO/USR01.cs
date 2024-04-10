@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ServiceStack.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -22,7 +23,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// </summary>
         [Required]
         [StringLength(minimumLength: 8, maximumLength: 16)]
-        [JsonProperty("R01103")]
+        [JsonPropertyName("R01103")]
         public string R01F03 { get; set; }
 
         /// <summary>

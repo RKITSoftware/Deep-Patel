@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,18 +10,19 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Admin Name
         /// </summary>
+        [JsonPropertyName("M01102")]
         public string M01102 { get; set; }
 
         /// <summary>
         /// Admin Email
         /// </summary>
-        [JsonProperty("M01F03")]
+        [JsonPropertyName("M01F03")]
         public string M01103 { get; set; }
 
         /// <summary>
         /// Admin Password
         /// </summary>
-        [JsonProperty("R01F03")]
+        [JsonPropertyName("R01F03")]
         public string R01103 { get; set; }
     }
 }

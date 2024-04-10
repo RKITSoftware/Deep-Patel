@@ -38,11 +38,14 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult Add(DTOCAT01 objDTOCAT01)
         {
-            _cat01Service.PreSave(objDTOCAT01, EnmOperation.Create);
+            _cat01Service.Operation = EnmOperation.Create;
 
-            if (_cat01Service.Validation(out Response response))
+            if (_cat01Service.PreValidation(objDTOCAT01, out Response response))
             {
-                _cat01Service.Save(EnmOperation.Create, out response);
+                _cat01Service.PreSave(objDTOCAT01);
+
+                if (_cat01Service.Validation(out response))
+                    _cat01Service.Save(out response);
             }
 
             return Ok(response);
@@ -95,11 +98,14 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Edit")]
         public IHttpActionResult Edit(DTOCAT01 objCAT01DTO)
         {
-            _cat01Service.PreSave(objCAT01DTO, EnmOperation.Update);
+            _cat01Service.Operation = EnmOperation.Update;
 
-            if (_cat01Service.Validation(out Response response))
+            if (_cat01Service.PreValidation(objCAT01DTO, out Response response))
             {
-                _cat01Service.Save(EnmOperation.Update, out response);
+                _cat01Service.PreSave(objCAT01DTO);
+
+                if (_cat01Service.Validation(out response))
+                    _cat01Service.Save(out response);
             }
 
             return Ok(response);

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack.DataAnnotations;
 using System;
+using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -20,20 +20,20 @@ namespace OnlineShoppingAPI.Models.POCO
         /// Foreign key of Customer
         /// </summary>
         [References(typeof(CUS01))]
-        [JsonProperty("D01102")]
+        [JsonPropertyName("D01102")]
         public int D01F02 { get; set; }
 
         /// <summary>
         /// Foreign key of Product
         /// </summary>
         [References(typeof(PRO02))]
-        [JsonProperty("D01103")]
+        [JsonPropertyName("D01103")]
         public int D01F03 { get; set; }
 
         /// <summary>
         /// Quantity of product that customer want to by it.
         /// </summary>
-        [JsonProperty("D01104")]
+        [JsonPropertyName("D01104")]
         public int D01F04 { get; set; }
 
         /// <summary>

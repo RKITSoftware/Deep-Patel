@@ -3,10 +3,9 @@ using OnlineShoppingAPI.Extension;
 using System;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
@@ -25,63 +24,39 @@ namespace OnlineShoppingAPI.Controllers.Attribute
         {
             try
             {
-                string token = actionContext.Request.Headers.Authorization?.ToString();
-
-                // Getting Cookie Value
-                // CookieHeaderValue cookieJwtToken = actionContext.Request.Headers
-                // .GetCookies().FirstOrDefault();
-
-                // Checking if Token is provided
-                if (token == null || token == "")
+                if (!CheckAllowAnonymousAttribute(actionContext))
                 {
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Please provide a token.");
-                    return;
+                    string token = actionContext.Request.Headers.Authorization?.ToString();
+
+                    // Checking if Token is provided
+                    if (string.IsNullOrEmpty(token))
+                    {
+                        actionContext.Response = BLHelper.ResponseMessage(
+                            HttpStatusCode.Unauthorized, "Please provide a token.");
+                        return;
+                    }
+
+                    // Validating JWT Token
+                    if (!BLToken.IsJwtValid(token))
+                    {
+                        actionContext.Response = BLHelper.ResponseMessage(
+                            HttpStatusCode.Unauthorized, "Token has been altered.");
+                        return;
+                    }
+
+
+                    // Setting the authenticated user in HttpContext
+                    IPrincipal principal = BLToken.GetPrincipal(token);
+
+                    if (principal == null)
+                    {
+                        actionContext.Response = BLHelper.ResponseMessage(
+                            HttpStatusCode.Unauthorized, "Unauthorized user.");
+                        return;
+                    }
+
+                    HttpContext.Current.User = principal;
                 }
-
-                // Validating JWT Token
-                if (!BLToken.IsJwtValid(token))
-                {
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Token has been altered.");
-                    return;
-                }
-
-                // Retrieving Login Session ID from Cookie
-                CookieHeaderValue cookieLoginSessionId = actionContext.Request.Headers
-                    .GetCookies("LoginSessionId").FirstOrDefault();
-                string sessionId = cookieLoginSessionId["LoginSessionId"]?.Value;
-
-                // Retrieving JWT Token from Server Cache
-                string jwtToken = (string)BLHelper.ServerCache.Get(sessionId);
-
-                // Checking for Login Session Expiry
-                if (jwtToken == null)
-                {
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Login session expired, please log in again.");
-                    return;
-                }
-
-                // Checking for Token Modification Error
-                if (jwtToken != token)
-                {
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Token modification error.");
-                    return;
-                }
-
-                // Setting the authenticated user in HttpContext
-                IPrincipal principal = BLToken.GetPrincipal(jwtToken);
-
-                if (principal == null)
-                {
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.Unauthorized, "Unauthorized user.");
-                    return;
-                }
-
-                HttpContext.Current.User = principal;
             }
             catch (Exception ex)
             {
@@ -89,6 +64,18 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                 actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
                     "An error occurred during authentication.");
             }
+        }
+
+        /// <summary>
+        /// Checks the AllowAnonymous Attribute Exists or not.
+        /// </summary>
+        /// <param name="actionContext">The context for the action.</param>
+        /// <returns>True if exists else false.</returns>
+        private bool CheckAllowAnonymousAttribute(HttpActionContext actionContext)
+        {
+            return actionContext.ActionDescriptor
+                .GetCustomAttributes<AllowAnonymousAttribute>().Any() || actionContext.ControllerContext
+                .ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -14,7 +13,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Customer controller for handling <see cref="CUS01"/> api endpoints.
     /// </summary>
     [RoutePrefix("api/CLCUS01")]
-    [BearerAuth]
     public class CLCUS01Controller : ApiController
     {
         /// <summary>
@@ -103,7 +101,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpGet]
         [Route("GetCustomers")]
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
             _cus01Service.GetAll(out Response response);

@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -14,7 +13,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller to handle <see cref="SUP01"/> related api endpoints.
     /// </summary>
     [RoutePrefix("api/CLSUP01")]
-    [BearerAuth]
     public class CLSUP01Controller : ApiController
     {
         /// <summary>

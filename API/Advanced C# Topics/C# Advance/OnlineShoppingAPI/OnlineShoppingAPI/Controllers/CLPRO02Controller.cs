@@ -13,7 +13,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller to handle <see cref="PRO02"/> related api endpoints.
     /// </summary>
     [RoutePrefix("api/CLPRO02")]
-    //[CookieBasedAuth]
     public class CLPRO02Controller : ApiController
     {
         /// <summary>

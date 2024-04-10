@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -14,7 +13,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller for handling <see cref="ADM01"/> related api's
     /// </summary>
     [RoutePrefix("api/CLADM01")]
-    [BearerAuth]
     [Authorize(Roles = "Admin")]
     public class CLADM01Controller : ApiController
     {

@@ -1,17 +1,16 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
-using System.Web.Caching;
 
 namespace OnlineShoppingAPI.BL.Common
 {
@@ -42,14 +41,6 @@ namespace OnlineShoppingAPI.BL.Common
         {
             try
             {
-                if (BLHelper.ServerCache.Get(objUser.R01F02) != null)
-                {
-                    return BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                        "User is already login");
-                }
-
-                TimeSpan slidingExpiration = new TimeSpan(0, 20, 0);
-
                 string issuer = "CustomJWTBearerTokenAPI";
 
                 // Creating SymmetricSecurityKey and SigningCredentials
@@ -68,71 +59,22 @@ namespace OnlineShoppingAPI.BL.Common
 
                 // Creating JWT token with claims and signing credentials
                 JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
-                    expires: DateTime.Now.AddMinutes(20),
+                    expires: DateTime.Now.AddDays(7),
                     signingCredentials: credentials);
 
                 JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
                 string jwtToken = handler.WriteToken(token);
 
-                // Adding information to the ServeerCache for 20 minute session.
-                string userDataSessionId = Guid.NewGuid().ToString();
-
-                BLHelper.ServerCache.Add(objUser.R01F02,
-                                        value: new string[] { jwtToken, sessionId.ToString(),
-                                            userDataSessionId },
-                                        dependencies: null,
-                                        absoluteExpiration: DateTime.MaxValue,
-                                        slidingExpiration: slidingExpiration,
-                                        CacheItemPriority.Normal,
-                                        onRemoveCallback: null);
-
-                BLHelper.ServerCache.Add(sessionId.ToString(),
-                                         value: jwtToken,
-                                         dependencies: null,
-                                         absoluteExpiration: DateTime.MaxValue,
-                                         slidingExpiration: slidingExpiration,
-                                         priority: CacheItemPriority.Normal,
-                                         onRemoveCallback: null);
-
-                BLHelper.ServerCache.Add(userDataSessionId,
-                                         value: "Testing",
-                                         dependencies: null,
-                                         absoluteExpiration: DateTime.MaxValue,
-                                         slidingExpiration: slidingExpiration,
-                                         priority: CacheItemPriority.Normal,
-                                         onRemoveCallback: null);
-
-                // Cookies send to user for authentication, active sessioin purpose.
-                CookieHeaderValue[] cookies =
-                {
-                    new CookieHeaderValue("LoginSessionId", sessionId.ToString())
-                    {
-                        Path = "/",
-                        HttpOnly = true
-                    },
-                    new CookieHeaderValue("UserDataSessionId", userDataSessionId)
-                    {
-                        Path = "/",
-                        HttpOnly = true
-                    },
-                    new CookieHeaderValue("Token", jwtToken)
-                    {
-                        Path = "/",
-                        HttpOnly = true
-                    },
-                };
-
                 HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
                 {
                     Content = new StringContent(jwtToken)
                 };
-                response.Headers.AddCookies(cookies);
 
                 return response;
             }
             catch (Exception ex)
             {
-                BLHelper.LogError(ex);
+                ex.LogException();
                 return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
                     "An error occured during generating token.");
             }
@@ -168,7 +110,7 @@ namespace OnlineShoppingAPI.BL.Common
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine(ex.Message);
+                ex.LogException();
                 return null;
             }
         }
@@ -227,67 +169,6 @@ namespace OnlineShoppingAPI.BL.Common
                 }
             }
             return false;
-        }
-
-        /// <summary>
-        /// For logging out user from the active session.
-        /// </summary>
-        /// <param name="username">User's username</param>
-        /// <returns><see cref="HttpResponseMessage"/> containing the expired cookies.</returns>
-        public HttpResponseMessage LogOut(string username)
-        {
-            try
-            {
-                // Generate a response for logout by expiring the authentication token cookie.
-                HttpResponseMessage response =
-                    BLHelper.ResponseMessage(HttpStatusCode.OK,
-                        "Successfully logout.");
-
-                // Removing cookies from user browser.
-                CookieHeaderValue[] expiredCookie =
-                {
-                    new CookieHeaderValue("LoginSessionId", "")
-                    {
-                        Path = "/",
-                        HttpOnly = true,
-                        Expires = DateTime.Now.AddMinutes(-1)
-                    },
-                    new CookieHeaderValue("UserDataSessionId", "")
-                    {
-                        Path = "/",
-                        HttpOnly = true,
-                        Expires = DateTime.Now.AddMinutes(-1)
-
-                    },
-                    new CookieHeaderValue("Token", "")
-                    {
-                        Path = "/",
-                        HttpOnly = true,
-                        Expires = DateTime.Now.AddMinutes(-1)
-                    },
-                };
-
-                response.Headers.AddCookies(expiredCookie);
-
-                // Getting cache data from server and removing it.
-                string[] userSessionIds = (string[])BLHelper.ServerCache.Get(username);
-
-                if (userSessionIds != null)
-                {
-                    BLHelper.ServerCache.Remove(userSessionIds[1]);
-                    BLHelper.ServerCache.Remove(userSessionIds[2]);
-                    BLHelper.ServerCache.Remove(username);
-                }
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                BLHelper.LogError(ex);
-                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
-                    "An error occurred during logout.");
-            }
         }
 
         #endregion

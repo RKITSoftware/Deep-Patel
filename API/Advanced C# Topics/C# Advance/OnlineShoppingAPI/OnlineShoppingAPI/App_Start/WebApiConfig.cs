@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.Controllers.Filter;
+﻿using OnlineShoppingAPI.Controllers.Attribute;
+using OnlineShoppingAPI.Controllers.Filter;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -13,6 +14,7 @@ namespace OnlineShoppingAPI
 
             // Web API configuration and services
             config.Filters.Add(new ExceptionLogFilter());
+            config.Filters.Add(new BearerAuthAttribute());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -15,7 +14,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller to handle <see cref="RCD01"/> related api endpoints.
     /// </summary>
     [RoutePrefix("api/CLRCD01")]
-    [BearerAuth]
     public class CLRCD01Controller : ApiController
     {
         /// <summary>

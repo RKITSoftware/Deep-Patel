@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.Enum;
@@ -13,7 +12,6 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller for handling <see cref="CRT01"/> related HTTP requests.
     /// </summary>
     [RoutePrefix("api/CLCRT01")]
-    [BearerAuth]
     public class CLCRT01Controller : ApiController
     {
         /// <summary>

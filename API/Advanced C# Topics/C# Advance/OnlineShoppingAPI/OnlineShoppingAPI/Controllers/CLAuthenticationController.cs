@@ -11,6 +11,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller class handling authentication-related HTTP requests.
     /// </summary>
     [RoutePrefix("api/CLAuthentication")]
+    [AllowAnonymous]
     public class CLAuthenticationController : ApiController
     {
         /// <summary>
@@ -74,15 +75,5 @@ namespace OnlineShoppingAPI.Controllers
 
             return _blToken.GenerateToken(Guid.NewGuid(), objUser);
         }
-
-        /// <summary>
-        /// Handles HTTP GET request of jwt token for user logout.
-        /// </summary>
-        /// <returns>
-        /// HTTP response message indicating the success or failure of the logout attempt.
-        /// </returns>
-        [HttpGet]
-        [Route("JWTTokenLogout")]
-        public HttpResponseMessage JwtTokenLogOut(string username) => _blToken.LogOut(username);
     }
 }

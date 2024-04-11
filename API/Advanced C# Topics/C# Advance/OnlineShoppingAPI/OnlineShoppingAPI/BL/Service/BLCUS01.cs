@@ -165,6 +165,41 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
+        /// Checks the model records exists or not.
+        /// </summary>
+        /// <param name="objDTOCUS01">DTO containing the customer information.</param>
+        /// <param name="response">Response indicating the outcome of the operation.</param>
+        /// <returns>True if successful validation, else false.</returns>
+        public bool PreValidation(DTOCUS01 objDTOCUS01, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // PreValidation for update operation.
+                    if (Operation == EnmOperation.Update)
+                    {
+                        // Check Customer exists or not.
+                        if (db.SingleById<CUS01>(objDTOCUS01.S01101) == null)
+                        {
+                            response = NotFoundResponse("Customer not found.");
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+                return false;
+            }
+
+            response = null;
+            return true;
+        }
+
+        /// <summary>
         /// Prepares the objects for create or update operation.
         /// </summary>
         /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
@@ -223,10 +258,37 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (Operation == EnmOperation.Create)
-                Create(out response);
-            else
-                Update(out response);
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (Operation == EnmOperation.Create)
+                    {
+                        db.Insert(_objCUS01);
+                        db.Insert(_objUSR01);
+
+                        response = OkResponse("Customer created successfully.");
+                    }
+                    else
+                    {
+                        CUS01 existingCustomer = db.SingleById<CUS01>(_objCUS01.S01F01);
+
+                        // Update customer properties with the provided data.
+                        existingCustomer.S01F02 = _objCUS01.S01F02;
+                        existingCustomer.S01F05 = _objCUS01.S01F05;
+                        existingCustomer.S01F06 = _objCUS01.S01F06;
+
+                        // Perform the database update.
+                        db.Update(existingCustomer);
+                        response = OkResponse("Data updated successfully.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
         }
 
         /// <summary>
@@ -327,70 +389,6 @@ namespace OnlineShoppingAPI.BL.Service
             catch (Exception exception)
             {
                 exception.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Updates an existing customer in the database.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Update(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Retrieve the existing customer by id.
-                    CUS01 existingCustomer = db.SingleById<CUS01>(_objCUS01.S01F01);
-
-                    // Check if the customer exists.
-                    if (existingCustomer == null)
-                    {
-                        response = NotFoundResponse("Customer not found.");
-                        return;
-                    }
-
-                    // Update customer properties with the provided data.
-                    existingCustomer.S01F02 = _objCUS01.S01F02;
-                    existingCustomer.S01F05 = _objCUS01.S01F05;
-                    existingCustomer.S01F06 = _objCUS01.S01F06;
-
-                    // Perform the database update.
-                    db.Update(existingCustomer);
-                    response = OkResponse("Data updated successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        /// <summary>
-        /// Creates a new customer in the database.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.Insert(_objCUS01);
-                    db.Insert(_objUSR01);
-
-                    response = OkResponse("Customer created successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
                 response = ISEResponse();
             }
         }

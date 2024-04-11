@@ -41,11 +41,12 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult AddOrder(DTORCD01 objDTORCD01)
         {
             _rcd01Service.Operation = EnmOperation.Create;
-            _rcd01Service.PreSave(objDTORCD01);
-
-            if (_rcd01Service.Validation(out Response response))
+            if (_rcd01Service.PreValidation(objDTORCD01, out Response response))
             {
-                _rcd01Service.Save(out response);
+                _rcd01Service.PreSave(objDTORCD01);
+
+                if (_rcd01Service.Validation(out response))
+                    _rcd01Service.Save(out response);
             }
 
             return Ok(response);

@@ -167,6 +167,41 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
+        /// Checks the records exists or not for operation.
+        /// </summary>
+        /// <param name="objDTOSUP01">DTO containing the Supplier information.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        /// <returns>True if pre validation successful else false.</returns>
+        public bool PreValidation(DTOSUP01 objDTOSUP01, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Pre Validation for Update operation.
+                    if (Operation == EnmOperation.Update)
+                    {
+                        // Check supplier exist or not.
+                        if (db.SingleById<SUP01>(objDTOSUP01.P01101) == null)
+                        {
+                            response = NotFoundResponse("Supplier not found.");
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+                return false;
+            }
+
+            response = null;
+            return true;
+        }
+
+        /// <summary>
         /// Prepares a suplier for saving based on the operation.
         /// </summary>
         /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
@@ -185,18 +220,6 @@ namespace OnlineShoppingAPI.BL.Service
                     R01F05 = GetEncryptPassword(_objSUP01.P01F04)
                 };
             }
-        }
-
-        /// <summary>
-        /// Saves the changes made to a supplier.
-        /// </summary>
-        /// <param name="response">The response containing the result of the operation.</param>
-        public void Save(out Response response)
-        {
-            if (Operation == EnmOperation.Create)
-                Create(out response);
-            else
-                Update(out response);
         }
 
         /// <summary>
@@ -230,6 +253,36 @@ namespace OnlineShoppingAPI.BL.Service
 
             response = null;
             return true;
+        }
+
+        /// <summary>
+        /// Saves the changes made to a supplier.
+        /// </summary>
+        /// <param name="response">The response containing the result of the operation.</param>
+        public void Save(out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (Operation == EnmOperation.Create)
+                    {
+                        db.Insert(_objSUP01);
+                        db.Insert(_objUSR01);
+                        response = OkResponse("Supplier created successfully.");
+                    }
+                    else
+                    {
+                        db.Update(_objSUP01);
+                        response = OkResponse("Supplier information updated successfully.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
         }
 
         /// <summary>
@@ -329,69 +382,6 @@ namespace OnlineShoppingAPI.BL.Service
                         response = OkResponse("Success");
                         response.Data = objSUP01;
                     }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Updates the existing suplier information.
-        /// </summary>
-        /// <param name="response">The response containing the result of the operation.</param>
-        private void Update(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    SUP01 existingSupplier = db.SingleById<SUP01>(_objSUP01.P01F01);
-
-                    if (existingSupplier == null)
-                    {
-                        response = PreConditionFailedResponse("Supplier doesn't exist.");
-                    }
-                    else
-                    {
-
-                        existingSupplier.P01F02 = _objSUP01.P01F02;
-                        existingSupplier.P01F05 = _objSUP01.P01F05;
-                        existingSupplier.P01F06 = _objSUP01.P01F06;
-
-                        db.Update(existingSupplier);
-
-                        response = OkResponse("Supplier information updated successfully.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        /// <summary>
-        /// Creates a new suplier.
-        /// </summary>
-        /// <param name="response">The response containing the result of the operation.</param>
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.Insert(_objSUP01);
-                    db.Insert(_objUSR01);
-
-                    response = OkResponse("Supplier created successfully.");
                 }
             }
             catch (Exception ex)

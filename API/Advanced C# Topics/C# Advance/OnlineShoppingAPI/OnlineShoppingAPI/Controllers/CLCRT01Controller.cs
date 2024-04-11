@@ -37,11 +37,14 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult AddItemToCart(DTOCRT01 objDTOCRT01)
         {
             _crt01Service.Operation = EnmOperation.Create;
-            _crt01Service.PreSave(objDTOCRT01);
 
-            if (_crt01Service.Validation(out Response response))
+            if (_crt01Service.PreValidation(objDTOCRT01, out Response response))
             {
-                _crt01Service.Save(out response);
+                _crt01Service.PreSave(objDTOCRT01);
+                if (_crt01Service.Validation(out response))
+                {
+                    _crt01Service.Save(out response);
+                }
             }
 
             return Ok(response);

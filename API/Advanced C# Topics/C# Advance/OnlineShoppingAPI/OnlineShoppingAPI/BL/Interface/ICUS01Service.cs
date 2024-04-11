@@ -7,7 +7,8 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for handling CUS01 related operations.
     /// </summary>
-    public interface ICUS01Service : IOperationService, IDataHandlerService
+    public interface ICUS01Service : IOperationService, IPreDataHandlerService<DTOCUS01>,
+        IDataHandlerService
     {
         #region Public Methods
 
@@ -48,13 +49,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="id">The ID of the user to retrieve.</param>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetById(int id, out Response response);
-
-        /// <summary>
-        /// Prepares for saving a user.
-        /// </summary>
-        /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void PreSave(DTOCUS01 objCUS01DTO);
 
         #endregion
     }

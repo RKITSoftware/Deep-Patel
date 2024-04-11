@@ -11,18 +11,18 @@ namespace OnlineShoppingAPI.Models.DTO
         /// Foreign key of Customer
         /// </summary>
         [JsonPropertyName("D01F02")]
-        public int D01F02 { get; set; }
+        public int D01102 { get; set; }
 
         /// <summary>
         /// Foreign key of Product
         /// </summary>
         [JsonPropertyName("D01F03")]
-        public int D01F03 { get; set; }
+        public int D01103 { get; set; }
 
         /// <summary>
         /// Quantity of product that customer want to by it.
         /// </summary>
         [JsonPropertyName("D01F04")]
-        public int D01F04 { get; set; }
+        public int D01104 { get; set; }
     }
 }

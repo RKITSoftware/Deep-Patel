@@ -8,7 +8,8 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for managing <see cref="SUP01"/> operations.
     /// </summary>
-    public interface ISUP01Service : IOperationService, IDataHandlerService
+    public interface ISUP01Service : IOperationService, IPreDataHandlerService<DTOSUP01>,
+        IDataHandlerService
     {
         #region Public Methods
 
@@ -49,12 +50,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="id">The ID of the suplier to retrieve.</param>
         /// <param name="response">The response containing the result of the operation.</param>
         void GetById(int id, out Response response);
-
-        /// <summary>
-        /// Prepares a suplier for saving based on the operation.
-        /// </summary>
-        /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
-        void PreSave(DTOSUP01 objSUP01DTO);
 
         #endregion
     }

@@ -53,6 +53,6 @@ namespace OnlineShoppingAPI.Models.DTO
         /// Foreign Key of Suplier Table
         /// </summary>
         [JsonPropertyName("O02F10")]
-        public int O01110 { get; set; }
+        public int O02110 { get; set; }
     }
 }

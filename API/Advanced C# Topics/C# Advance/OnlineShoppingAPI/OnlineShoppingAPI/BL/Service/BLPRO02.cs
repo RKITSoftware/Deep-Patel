@@ -64,6 +64,44 @@ namespace OnlineShoppingAPI.BL.Service
         #region Public Methods
 
         /// <summary>
+        /// Checks the record exists or not for operation.
+        /// </summary>
+        /// <param name="objDTOPRO02">DTO containing the Product information.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        /// <returns>True if pre validation successful else false.</returns>
+        public bool PreValidation(DTOPRO02 objDTOPRO02, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Checks category exists or not.
+                    if (db.SingleById<CAT01>(objDTOPRO02.O02109) == null)
+                    {
+                        response = NotFoundResponse("Category doesn't exist.");
+                        return false;
+                    }
+
+                    // Checks supplier exists or not.
+                    if (db.SingleById<SUP01>(objDTOPRO02.O02110) == null)
+                    {
+                        response = NotFoundResponse("Supplier doesn't exist.");
+                        return false;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+                return false;
+            }
+
+            response = null;
+            return true;
+        }
+
+        /// <summary>
         /// Performs the Conversion operation and prepares the objects for create or update.
         /// </summary>
         /// <param name="objPRO02DTO">DTO of PRO02.</param>
@@ -96,10 +134,20 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (Operation == EnmOperation.Create)
-                Create(out response);
-            else
-                Update(out response);
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Create
+                    db.Insert(_objPRO02);
+                    response = OkResponse("Product created successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
         }
 
         /// <summary>
@@ -113,9 +161,7 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    bool isExist = db.Exists<PRO02>(p => p.O02F01 == id);
-
-                    if (!isExist)
+                    if (!db.Exists<PRO02>(p => p.O02F01 == id))
                     {
                         response = NotFoundResponse("Product not found.");
                         return;
@@ -206,41 +252,6 @@ namespace OnlineShoppingAPI.BL.Service
         /// </summary>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void GetInformation(out Response response) => _dbPRO02.GetInformation(out response);
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Creates a new product of version 2.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.Insert(_objPRO02);
-                }
-                response = OkResponse("Product created successfully.");
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        /// <summary>
-        /// Updates the product information.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        /// <exception cref="NotImplementedException"></exception>
-        private void Update(out Response response)
-        {
-            throw new NotImplementedException();
-        }
 
         #endregion
     }

@@ -8,6 +8,12 @@ namespace OnlineShoppingAPI.Models.DTO
     public class DTOPRO01
     {
         /// <summary>
+        /// Product Id
+        /// </summary>
+        [JsonPropertyName("O01F01")]
+        public int O01101 { get; set; }
+
+        /// <summary>
         /// Product Name
         /// </summary>
         [JsonPropertyName("O01F02")]
@@ -16,25 +22,25 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Product Price
         /// </summary>
-        [JsonPropertyName("O01103")]
+        [JsonPropertyName("O01F03")]
         public int O01103 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
-        [JsonPropertyName("O01104")]
+        [JsonPropertyName("O01F04")]
         public decimal O01104 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
-        [JsonPropertyName("O01105")]
+        [JsonPropertyName("O01F05")]
         public string O01105 { get; set; }
 
         /// <summary>
         /// Foreign Key of Suplier Table
         /// </summary>
-        [JsonPropertyName("O01106")]
-        public int O01F06 { get; set; }
+        [JsonPropertyName("O01F06")]
+        public int O01106 { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Service for <see cref="RCD01"/> model.
     /// </summary>
-    public interface IRCD01Service : IOperationService, IDataHandlerService
+    public interface IRCD01Service : IOperationService, IPreDataHandlerService<DTORCD01>,
+        IDataHandlerService
     {
         #region Public Methods
 
@@ -42,12 +43,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// </summary>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetAllRecord(out Response response);
-
-        /// <summary>
-        /// Initialize objects which are needed for create or update operation.
-        /// </summary>
-        /// <param name="objDTORCD01">DTO of RCD01</param>
-        void PreSave(DTORCD01 objDTORCD01);
 
         #endregion
     }

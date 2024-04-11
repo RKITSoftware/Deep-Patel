@@ -8,7 +8,8 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface service for <see cref="PRO01"/>.
     /// </summary>
-    public interface IPRO01Service : IOperationService, IDataHandlerService
+    public interface IPRO01Service : IOperationService, IPreDataHandlerService<DTOPRO01>,
+        IDataHandlerService
     {
         #region Public Methods
 
@@ -24,12 +25,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// </summary>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetAll(out Response response);
-
-        /// <summary>
-        /// Initialize the object of <see cref="PRO01"/> and prepare it for create or delete operation.
-        /// </summary>
-        /// <param name="objPRO01DTO">DTO of product.</param>
-        void PreSave(DTOPRO01 objPRO01DTO);
 
         /// <summary>
         /// Update the quantity of product.

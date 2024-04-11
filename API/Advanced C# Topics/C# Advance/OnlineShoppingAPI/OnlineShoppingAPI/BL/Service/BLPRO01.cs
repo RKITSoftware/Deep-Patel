@@ -56,6 +56,47 @@ namespace OnlineShoppingAPI.BL.Service
         #region Public Methods
 
         /// <summary>
+        /// Checks the record exists or not for operation.
+        /// </summary>
+        /// <param name="objDTOPRO01">DTO containing the Product information.</param>
+        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
+        /// <returns>True if pre validation successful else false.</returns>
+        public bool PreValidation(DTOPRO01 objDTOPRO01, out Response response)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    // Checks supplier exists or not.
+                    if (db.SingleById<SUP01>(objDTOPRO01.O01106) == null)
+                    {
+                        response = NotFoundResponse("Supplier doesn't exist.");
+                        return false;
+                    }
+
+                    // Update operation prevalidation
+                    if (Operation == EnmOperation.Update)
+                    {
+                        if (db.SingleById<PRO01>(objDTOPRO01.O01101) == null)
+                        {
+                            response = NotFoundResponse("Product doesn't exist.");
+                            return false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+                return false;
+            }
+
+            response = null;
+            return true;
+        }
+
+        /// <summary>
         /// Initialize the object of <see cref="PRO01"/> and prepare it for create or delete operation.
         /// </summary>
         /// <param name="objPRO01DTO">DTO of product.</param>
@@ -81,10 +122,27 @@ namespace OnlineShoppingAPI.BL.Service
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         public void Save(out Response response)
         {
-            if (Operation == EnmOperation.Create)
-                Create(out response);
-            else
-                Update(out response);
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (Operation == EnmOperation.Create)
+                    {
+                        db.Insert(_objPRO01);
+                        response = OkResponse("Product created successfully.");
+                    }
+                    else
+                    {
+                        db.Update(_objPRO01);
+                        response = OkResponse("Product updated successfully.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.LogException();
+                response = ISEResponse();
+            }
         }
 
         /// <summary>
@@ -102,12 +160,11 @@ namespace OnlineShoppingAPI.BL.Service
                     if (product == null)
                     {
                         response = NotFoundResponse("Product not found.");
+                        return;
                     }
-                    else
-                    {
-                        db.DeleteById<PRO01>(id);
-                        response = OkResponse("Product deleted successfully.");
-                    }
+
+                    db.DeleteById<PRO01>(id);
+                    response = OkResponse("Product deleted successfully.");
                 }
             }
             catch (Exception ex)
@@ -165,69 +222,6 @@ namespace OnlineShoppingAPI.BL.Service
                     db.Update(objProduct);
 
                     response = OkResponse("Quantity updates successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Updates the existing customer information.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Update(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PRO01 existingProduct = db.SingleById<PRO01>(_objPRO01.O01F01);
-
-                    if (existingProduct == null)
-                    {
-                        response = NotFoundResponse("Product not found.");
-                        return;
-                    }
-
-                    // Update product properties
-                    existingProduct.O01F02 = _objPRO01.O01F02;
-                    existingProduct.O01F03 = _objPRO01.O01F03;
-                    existingProduct.O01F04 = _objPRO01.O01F04;
-                    existingProduct.O01F05 = _objPRO01.O01F05;
-
-                    // Perform the database update
-                    db.Update(existingProduct);
-
-                    response = OkResponse("Product updated successfully.");
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                response = ISEResponse();
-            }
-        }
-
-        /// <summary>
-        /// Creates a new customer.
-        /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        private void Create(out Response response)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.Insert(_objPRO01);
-
-                    response = OkResponse("Product created successfully.");
                 }
             }
             catch (Exception ex)

@@ -8,7 +8,8 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface service for <see cref="PRO02"/>.
     /// </summary>
-    public interface IPRO02Service : IOperationService, IDataHandlerService
+    public interface IPRO02Service : IOperationService, IPreDataHandlerService<DTOPRO02>,
+        IDataHandlerService
     {
         #region Public Methods
 
@@ -30,12 +31,6 @@ namespace OnlineShoppingAPI.BL.Interface
         /// </summary>
         /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
         void GetInformation(out Response response);
-
-        /// <summary>
-        /// Performs the Conversion operation and prepares the objects for create or update.
-        /// </summary>
-        /// <param name="objPRO02DTO">DTO of PRO02.</param>
-        void PreSave(DTOPRO02 objPRO02DTO);
 
         /// <summary>
         /// Updates the sell price of the specified product which id is given.

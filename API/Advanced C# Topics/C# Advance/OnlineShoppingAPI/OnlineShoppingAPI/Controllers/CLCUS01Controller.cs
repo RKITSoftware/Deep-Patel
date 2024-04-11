@@ -72,11 +72,13 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult CreateCustomer(DTOCUS01 objCUS01DTO)
         {
             _cus01Service.Operation = EnmOperation.Create;
-            _cus01Service.PreSave(objCUS01DTO);
-
-            if (_cus01Service.Validation(out Response response))
+            if (_cus01Service.PreValidation(objCUS01DTO, out Response response))
             {
-                _cus01Service.Save(out response);
+                _cus01Service.PreSave(objCUS01DTO);
+                if (_cus01Service.Validation(out response))
+                {
+                    _cus01Service.Save(out response);
+                }
             }
 
             return Ok(response);
@@ -135,11 +137,13 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult UpdateCustomer(DTOCUS01 objCUS01DTO)
         {
             _cus01Service.Operation = EnmOperation.Update;
-            _cus01Service.PreSave(objCUS01DTO);
-
-            if (_cus01Service.Validation(out Response response))
+            if (_cus01Service.PreValidation(objCUS01DTO, out Response response))
             {
-                _cus01Service.Save(out response);
+                _cus01Service.PreSave(objCUS01DTO);
+                if (_cus01Service.Validation(out response))
+                {
+                    _cus01Service.Save(out response);
+                }
             }
 
             return Ok(response);

@@ -7,6 +7,13 @@ namespace OnlineShoppingAPI.Models
     /// </summary>
     public class Response
     {
+        #region Public Properties
+
+        /// <summary>
+        /// The data associated with the response.
+        /// </summary>
+        public dynamic Data { get; set; }
+
         /// <summary>
         /// Indicates whether the response represents an error.
         /// </summary>
@@ -22,9 +29,6 @@ namespace OnlineShoppingAPI.Models
         /// </summary>
         public HttpStatusCode StatusCode { get; set; }
 
-        /// <summary>
-        /// The data associated with the response.
-        /// </summary>
-        public dynamic Data { get; set; }
+        #endregion Public Properties
     }
 }

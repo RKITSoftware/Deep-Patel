@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -25,7 +24,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLSUP01Controller()
         {
-            _sup01Service = new BLSUP01();
+            _sup01Service = new BLSUP01Handler();
         }
 
         /// <summary>
@@ -41,7 +40,7 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangeEmail(string username,
             string password, string newEmail)
         {
-            _sup01Service.ChangeEmail(username, password, newEmail, out Response response);
+            Response response = _sup01Service.ChangeEmail(username, password, newEmail);
             return Ok(response);
         }
 
@@ -58,7 +57,7 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangePassword(string username,
             string oldPassword, string newPassword)
         {
-            _sup01Service.ChangePassword(username, oldPassword, newPassword, out Response response);
+            Response response = _sup01Service.ChangePassword(username, oldPassword, newPassword);
             return Ok(response);
         }
 
@@ -73,13 +72,16 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateSuplier(DTOSUP01 objSUP01DTO)
         {
-            _sup01Service.Operation = EnmOperation.Create;
-            if (_sup01Service.PreValidation(objSUP01DTO, out Response response))
+            _sup01Service.Operation = EnmOperation.A;
+            Response response = _sup01Service.PreValidation(objSUP01DTO);
+
+            if (!response.IsError)
             {
                 _sup01Service.PreSave(objSUP01DTO);
+                response = _sup01Service.Validation();
 
-                if (_sup01Service.Validation(out response))
-                    _sup01Service.Save(out response);
+                if (!response.IsError)
+                    _sup01Service.Save();
             }
 
             return Ok(response);
@@ -95,7 +97,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteSuplier(int id)
         {
-            _sup01Service.Delete(id, out Response response);
+            Response response = _sup01Service.Delete(id);
             return Ok(response);
         }
 
@@ -108,7 +110,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetSupliers()
         {
-            _sup01Service.GetAll(out Response response);
+            Response response = _sup01Service.GetAll();
             return Ok(response);
         }
 
@@ -122,7 +124,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetSuplierById(int id)
         {
-            _sup01Service.GetById(id, out Response response);
+            Response response = _sup01Service.GetById(id);
             return Ok(response);
         }
 
@@ -137,13 +139,16 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult UpdateCustomer(DTOSUP01 objDTOSUP01)
         {
-            _sup01Service.Operation = EnmOperation.Update;
-            if (_sup01Service.PreValidation(objDTOSUP01, out Response response))
+            _sup01Service.Operation = EnmOperation.E;
+            Response response = _sup01Service.PreValidation(objDTOSUP01);
+
+            if (!response.IsError)
             {
                 _sup01Service.PreSave(objDTOSUP01);
+                response = _sup01Service.Validation();
 
-                if (_sup01Service.Validation(out response))
-                    _sup01Service.Save(out response);
+                if (!response.IsError)
+                    _sup01Service.Save();
             }
 
             return Ok(response);

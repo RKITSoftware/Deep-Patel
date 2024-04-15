@@ -1,6 +1,5 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
-using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Collections.Generic;
@@ -24,61 +23,9 @@ namespace OnlineShoppingAPI.BL.Common
         // The secret key used for signing and validating JWT tokens
         private const string secretKey = "thisissecuritykeyofcustomjwttokenaut";
 
-        #endregion
+        #endregion Private Fields
 
         #region Public Methods
-
-        /// <summary>
-        /// Generates a JWT Token for the specified user.
-        /// </summary>
-        /// <param name="sessionId">Session id for one user login authentication.</param>
-        /// <param name="objUser">Contains the information of the user.</param>
-        /// <returns>
-        /// <see cref="HttpResponseMessage"/> containing the JWT Token with other session 
-        /// related tokens in Cookie.
-        /// </returns>
-        public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
-        {
-            try
-            {
-                string issuer = "CustomJWTBearerTokenAPI";
-
-                // Creating SymmetricSecurityKey and SigningCredentials
-                SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(secretKey));
-
-                SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
-                    SecurityAlgorithms.HmacSha256);
-
-                // Creating claims for the user
-                List<Claim> claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Sid, sessionId.ToString()),
-                    new Claim("Id", objUser.R01F01.ToString())
-                };
-
-                // Creating JWT token with claims and signing credentials
-                JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
-                    expires: DateTime.Now.AddDays(7),
-                    signingCredentials: credentials);
-
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                string jwtToken = handler.WriteToken(token);
-
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(jwtToken)
-                };
-
-                return response;
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                return BLHelper.ResponseMessage(HttpStatusCode.InternalServerError,
-                    "An error occured during generating token.");
-            }
-        }
 
         /// <summary>
         /// Gets the IPrincipal object from the provided JWT token.
@@ -108,11 +55,7 @@ namespace OnlineShoppingAPI.BL.Common
 
                 return principal;
             }
-            catch (Exception ex)
-            {
-                ex.LogException();
-                return null;
-            }
+            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -171,6 +114,53 @@ namespace OnlineShoppingAPI.BL.Common
             return false;
         }
 
-        #endregion
+        /// <summary>
+        /// Generates a JWT Token for the specified user.
+        /// </summary>
+        /// <param name="sessionId">Session id for one user login authentication.</param>
+        /// <param name="objUser">Contains the information of the user.</param>
+        /// <returns>
+        /// <see cref="HttpResponseMessage"/> containing the JWT Token with other session
+        /// related tokens in Cookie.
+        /// </returns>
+        public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
+        {
+            try
+            {
+                string issuer = "CustomJWTBearerTokenAPI";
+
+                // Creating SymmetricSecurityKey and SigningCredentials
+                SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(secretKey));
+
+                SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
+                    SecurityAlgorithms.HmacSha256);
+
+                // Creating claims for the user
+                List<Claim> claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Sid, sessionId.ToString()),
+                    new Claim("Id", objUser.R01F01.ToString())
+                };
+
+                // Creating JWT token with claims and signing credentials
+                JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
+                    expires: DateTime.Now.AddDays(7),
+                    signingCredentials: credentials);
+
+                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+                string jwtToken = handler.WriteToken(token);
+
+                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
+                {
+                    Content = new StringContent(jwtToken)
+                };
+
+                return response;
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        #endregion Public Methods
     }
 }

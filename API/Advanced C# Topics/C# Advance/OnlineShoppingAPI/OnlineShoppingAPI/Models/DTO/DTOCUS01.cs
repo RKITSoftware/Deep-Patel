@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,37 +11,46 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Customer Id
         /// </summary>
-        [JsonPropertyName("S01F01")]
-        public int S01101 { get; set; }
+        [Required(ErrorMessage = "Id is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Id's value can't be negative.")]
+        [JsonProperty("S01101")]
+        public int S01F01 { get; set; }
 
         /// <summary>
         /// Customer Name
         /// </summary>
-        [JsonPropertyName("S01F02")]
-        public string S01102 { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [JsonProperty("S01102")]
+        public string S01F02 { get; set; }
 
         /// <summary>
         /// Customer Email Address
         /// </summary>
-        [JsonPropertyName("S01F03")]
-        public string S01103 { get; set; }
+        [Required(ErrorMessage = "Email is required.")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email is invalid.")]
+        [JsonProperty("S01103")]
+        public string S01F03 { get; set; }
 
         /// <summary>
         /// Customer Password
         /// </summary>
-        [JsonPropertyName("S01F04")]
-        public string S01104 { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password, ErrorMessage = "Password is in incorrect form.")]
+        [JsonProperty("S01104")]
+        public string S01F04 { get; set; }
 
         /// <summary>
         /// Customer Mobile Number
         /// </summary>
-        [JsonPropertyName("S01F05")]
-        public string S01105 { get; set; }
+        [Required(ErrorMessage = "Mobile number is required.")]
+        [DataType(DataType.PhoneNumber)]
+        [JsonProperty("S01105")]
+        public string S01F05 { get; set; }
 
         /// <summary>
         /// Customer Address
         /// </summary>
-        [JsonPropertyName("S01F06")]
-        public string S01106 { get; set; }
+        [JsonProperty("S01106")]
+        public string S01F06 { get; set; }
     }
 }

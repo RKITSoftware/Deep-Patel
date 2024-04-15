@@ -8,19 +8,19 @@ namespace VerificationDemo.BL.Common.Service
     /// </summary>
     public static class BLHelper
     {
-        #region Public Methods 
+        #region Public Methods
 
         /// <summary>
-        /// Returns the Ok Response for the api request.
+        /// Returns the Internal Server Error Response for the api request.
         /// </summary>
-        /// <param name="message">Message to return during api request.</param>
-        /// <returns>Ok Response.</returns>
-        public static Response OkResponse(string message = "Success")
+        /// <returns>Internal Server Error Response.</returns>
+        public static Response InternalServerErrorResponse()
         {
             return new Response()
             {
-                StatusCode = HttpStatusCode.OK,
-                Message = message
+                IsError = true,
+                StatusCode = HttpStatusCode.InternalServerError,
+                Message = "An Internal Server Error occur during Request."
             };
         }
 
@@ -40,6 +40,20 @@ namespace VerificationDemo.BL.Common.Service
         }
 
         /// <summary>
+        /// Returns the Ok Response for the api request.
+        /// </summary>
+        /// <param name="message">Message to return during api request.</param>
+        /// <returns>Ok Response.</returns>
+        public static Response OkResponse(string message = "Success")
+        {
+            return new Response()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = message
+            };
+        }
+
+        /// <summary>
         /// Returns the PreConditionFailed Response for the api request.
         /// </summary>
         /// <param name="message">Message to return during api request.</param>
@@ -54,20 +68,6 @@ namespace VerificationDemo.BL.Common.Service
             };
         }
 
-        /// <summary>
-        /// Returns the Internal Server Error Response for the api request.
-        /// </summary>
-        /// <returns>Internal Server Error Response.</returns>
-        public static Response InternalServerErrorResponse()
-        {
-            return new Response()
-            {
-                IsError = true,
-                StatusCode = HttpStatusCode.InternalServerError,
-                Message = "An Internal Server Error occur during Request."
-            };
-        }
-
-        #endregion
+        #endregion Public Methods
     }
 }

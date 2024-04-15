@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Configuration;
@@ -10,7 +9,7 @@ namespace OnlineShoppingAPI.DL
     /// <summary>
     /// DB context for <see cref="RCD01"/>.
     /// </summary>
-    public class DBRCD01
+    public class DBRCD01Context
     {
         #region Private Fields
 
@@ -31,7 +30,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// Initializes a new instance of the DBRCD01 class with default connection settings.
         /// </summary>
-        public DBRCD01()
+        public DBRCD01Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
             _connection = new MySqlConnection(_connectionString);
@@ -50,9 +49,7 @@ namespace OnlineShoppingAPI.DL
         {
             DataTable dtResult = new DataTable();
 
-            try
-            {
-                string query = string.Format(@"SELECT 
+            string query = string.Format(@"SELECT 
                                                     d01.D01F01 AS 'OrderId',
                                                     s01.S01F02 AS 'CustomerName',
                                                     o02.O02F02 AS 'ProductName',
@@ -69,17 +66,16 @@ namespace OnlineShoppingAPI.DL
                                                 WHERE
                                                     s01.S01F01 = {0};", id);
 
-                MySqlCommand command = new MySqlCommand(query, _connection);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+            MySqlCommand command = new MySqlCommand(query, _connection);
+            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
 
+            try
+            {
                 _connection.Open();
                 adapter.Fill(dtResult);
-                _connection.Close();
             }
-            catch (Exception ex)
-            {
-                ex.LogException();
-            }
+            catch (Exception ex) { throw ex; }
+            finally { _connection.Close(); }
 
             return dtResult;
         }

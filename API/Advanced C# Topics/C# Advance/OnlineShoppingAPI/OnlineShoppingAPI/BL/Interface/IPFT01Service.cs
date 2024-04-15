@@ -11,20 +11,20 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <summary>
         /// Retrieves profit data for each day of current running month.
         /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetDayWiseData(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetDayWiseData();
 
         /// <summary>
         /// Retrieves aggregated profit data for each month.
         /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetMonthData(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetMonthData();
 
         /// <summary>
         /// Retrieves aggregated profit data for each year.
         /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetYearData(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetYearData();
 
         /// <summary>
         /// Updates profit information based on the provided product and quantity.

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,19 +11,25 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Foreign key of Customer
         /// </summary>
-        [JsonPropertyName("D01F02")]
-        public int D01102 { get; set; }
+        [Required(ErrorMessage = "Customer id is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Value need to be greater than 0.")]
+        [JsonProperty("D01102")]
+        public int D01F02 { get; set; }
 
         /// <summary>
         /// Foreign key of Product
         /// </summary>
-        [JsonPropertyName("D01F03")]
-        public int D01103 { get; set; }
+        [Required(ErrorMessage = "Product id is required.")]
+        [Range(1, int.MaxValue, ErrorMessage = "Value need to be greater than 0.")]
+        [JsonProperty("D01103")]
+        public int D01F03 { get; set; }
 
         /// <summary>
         /// Quantity of product that customer want to by it.
         /// </summary>
-        [JsonPropertyName("D01F04")]
-        public int D01104 { get; set; }
+        [Required(ErrorMessage = "Please specify quantity.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Quantity value can't be negative.")]
+        [JsonProperty("D01104")]
+        public int D01F04 { get; set; }
     }
 }

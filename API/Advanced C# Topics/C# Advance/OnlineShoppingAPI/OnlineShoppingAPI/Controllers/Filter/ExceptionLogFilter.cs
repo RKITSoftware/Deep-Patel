@@ -1,4 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Common;
+using System.Net;
+using System.Net.Http;
 using System.Web.Http.Filters;
 
 namespace OnlineShoppingAPI.Controllers.Filter
@@ -15,6 +17,10 @@ namespace OnlineShoppingAPI.Controllers.Filter
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             BLHelper.LogError(actionExecutedContext.Exception);
+            actionExecutedContext.Response = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent("An internal server error occured during request.")
+            };
         }
     }
 }

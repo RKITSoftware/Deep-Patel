@@ -16,7 +16,7 @@ namespace VerificationDemo.DL
         /// </summary>
         private readonly MySqlConnection _connection;
 
-        #endregion
+        #endregion Private Fields
 
         #region Constructor
 
@@ -29,7 +29,7 @@ namespace VerificationDemo.DL
             _connection = new MySqlConnection(connectionString);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Methods
 
@@ -43,7 +43,7 @@ namespace VerificationDemo.DL
 
             try
             {
-                string query = string.Format(@"SELECT 
+                string query = string.Format(@"SELECT
                                                     r01f02 AS 'Name', r01f03 AS 'Age'
                                                 FROM
                                                     usr01;");
@@ -66,6 +66,6 @@ namespace VerificationDemo.DL
             return dtResult;
         }
 
-        #endregion
+        #endregion Public Methods
     }
 }

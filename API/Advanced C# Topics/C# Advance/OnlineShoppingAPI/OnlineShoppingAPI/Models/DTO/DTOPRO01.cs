@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,37 +11,41 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Product Id
         /// </summary>
-        [JsonPropertyName("O01F01")]
-        public int O01101 { get; set; }
+        [Required(ErrorMessage = "Id is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Id can't be negative.")]
+        [JsonProperty("O01101")]
+        public int O01F01 { get; set; }
 
         /// <summary>
         /// Product Name
         /// </summary>
-        [JsonPropertyName("O01F02")]
-        public string O01102 { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [JsonProperty("O01102")]
+        public string O01F02 { get; set; }
 
         /// <summary>
         /// Product Price
         /// </summary>
-        [JsonPropertyName("O01F03")]
-        public int O01103 { get; set; }
+        [JsonProperty("O01103")]
+        public int O01F03 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
-        [JsonPropertyName("O01F04")]
+        [JsonProperty("O01104")]
         public decimal O01104 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
-        [JsonPropertyName("O01F05")]
-        public string O01105 { get; set; }
+        [JsonProperty("O01105")]
+        public string O01F05 { get; set; }
 
         /// <summary>
         /// Foreign Key of Suplier Table
         /// </summary>
-        [JsonPropertyName("O01F06")]
-        public int O01106 { get; set; }
+        [Required(ErrorMessage = "Supplier id is required.")]
+        [JsonProperty("O01106")]
+        public int O01F06 { get; set; }
     }
 }

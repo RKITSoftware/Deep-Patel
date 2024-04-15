@@ -1,42 +1,44 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
-using System.Text.Json.Serialization;
 
 namespace OnlineShoppingAPI.Extension
 {
     /// <summary>
-    /// Provides extension methods for object conversion.
+    /// Provides extension methods for object conversion from DTO -> POCO.
     /// </summary>
     public static class ConvertExtension
     {
+        #region Extension Methods
+
         /// <summary>
-        /// Converts the properties of an object to another type with matching properties annotated with JsonPropertyAttribute.
+        /// Converts the DTO model to POCO Model.
         /// </summary>
-        /// <typeparam name="T">The type to convert the object to.</typeparam>
-        /// <param name="obj">The object to convert.</param>
-        /// <returns>An instance of type T with properties populated from the source object.</returns>
-        public static T Convert<T>(this object obj)
+        /// <typeparam name="POCO">POCO model.</typeparam>
+        /// <param name="dto">DTO model reference</param>
+        /// <returns>Poco model.</returns>
+        public static POCO Convert<POCO>(this object dto)
         {
-            // Get properties of the source object that are annotated with JsonPropertyAttribute
-            PropertyInfo[] objProperties = obj.GetType().GetProperties()
-                .Where(prop => prop.IsDefined(typeof(JsonPropertyNameAttribute), false))
-                .ToArray();
+            Type pocoType = typeof(POCO);
+            POCO pocoInstance = (POCO)Activator.CreateInstance(pocoType);
 
-            Type TType = typeof(T);
-            T TInstance = (T)Activator.CreateInstance(TType);
+            // Get properties
+            PropertyInfo[] dtoProperties = dto.GetType().GetProperties();
+            PropertyInfo[] pocoProperties = pocoType.GetProperties();
 
-            // Populate properties of the target type with values from the source object
-            foreach (PropertyInfo objProp in objProperties)
+            foreach (PropertyInfo dtoProperty in dtoProperties)
             {
-                JsonPropertyNameAttribute nameAttr = objProp.GetCustomAttribute<JsonPropertyNameAttribute>();
-                string name = nameAttr.Name;
+                PropertyInfo pocoProperty = Array.Find(pocoProperties, p => p.Name == dtoProperty.Name);
 
-                PropertyInfo TProp = TType.GetProperty(name);
-                TProp?.SetValue(TInstance, objProp.GetValue(obj));
+                if (pocoProperty != null && dtoProperty.PropertyType == pocoProperty.PropertyType)
+                {
+                    object value = dtoProperty.GetValue(dto);
+                    pocoProperty.SetValue(pocoInstance, value);
+                }
             }
 
-            return TInstance;
+            return pocoInstance;
         }
+
+        #endregion
     }
 }

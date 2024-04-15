@@ -10,6 +10,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller for handling <see cref="PFT01"/> api endpoints.
     /// </summary>
     [RoutePrefix("api/CLPFT01")]
+    [Authorize(Roles = "Admin")]
     public class CLPFT01Controller : ApiController
     {
         /// <summary>
@@ -18,16 +19,23 @@ namespace OnlineShoppingAPI.Controllers
         private readonly IPFT01Service _pft01Service;
 
         /// <summary>
-        /// Response object contains the informations about request's response.
-        /// </summary>
-        private Response response;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="CLPFT01Controller"/> class.
         /// </summary>
         public CLPFT01Controller()
         {
-            _pft01Service = new BLPFT01();
+            _pft01Service = new BLPFT01Handler();
+        }
+
+        /// <summary>
+        /// Retrieves profit data for each day of the current month.
+        /// </summary>
+        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
+        [HttpGet]
+        [Route("dayWiseProfit")]
+        public IHttpActionResult GetDayWiseProfit()
+        {
+            Response response = _pft01Service.GetDayWiseData();
+            return Ok(response);
         }
 
         /// <summary>
@@ -38,7 +46,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("monthChartData")]
         public IHttpActionResult GetMonthChartData()
         {
-            _pft01Service.GetMonthData(out response);
+            Response response = _pft01Service.GetMonthData();
             return Ok(response);
         }
 
@@ -50,19 +58,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("yearChartData")]
         public IHttpActionResult GetPrevious10YearData()
         {
-            _pft01Service.GetYearData(out response);
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Retrieves profit data for each day of the current month.
-        /// </summary>
-        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
-        [HttpGet]
-        [Route("dayWiseProfit")]
-        public IHttpActionResult GetDayWiseProfit()
-        {
-            _pft01Service.GetDayWiseData(out response);
+            Response response = _pft01Service.GetYearData();
             return Ok(response);
         }
     }

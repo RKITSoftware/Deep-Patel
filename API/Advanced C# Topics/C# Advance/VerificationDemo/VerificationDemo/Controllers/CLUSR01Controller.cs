@@ -20,7 +20,7 @@ namespace VerificationDemo.Controllers
         /// </summary>
         private readonly IUSR01Service _usr01Service;
 
-        #endregion
+        #endregion Private Fields
 
         #region Constructors
 
@@ -32,7 +32,7 @@ namespace VerificationDemo.Controllers
             _usr01Service = new BLUSR01Handler();
         }
 
-        #endregion
+        #endregion Constructors
 
         #region API Endpoints
 
@@ -63,6 +63,31 @@ namespace VerificationDemo.Controllers
         }
 
         /// <summary>
+        /// Deletes the user record specified by given id.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>Response containing the outcome of the operation.</returns>
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public IHttpActionResult DeleteUSR01(int id)
+        {
+            Response response = _usr01Service.Delete(id);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Get all the USR01 model's record information.
+        /// </summary>
+        /// <returns>Response containing the data.</returns>
+        [HttpGet]
+        [Route("GetAll")]
+        public IHttpActionResult GetAllUSR01()
+        {
+            Response response = _usr01Service.GetAll();
+            return Ok(response);
+        }
+
+        /// <summary>
         /// Update the user records.
         /// </summary>
         /// <param name="objDTOUSR01">Updated USR01 model information.</param>
@@ -88,31 +113,6 @@ namespace VerificationDemo.Controllers
             return Ok(response);
         }
 
-        /// <summary>
-        /// Get all the USR01 model's record information.
-        /// </summary>
-        /// <returns>Response containing the data.</returns>
-        [HttpGet]
-        [Route("GetAll")]
-        public IHttpActionResult GetAllUSR01()
-        {
-            Response response = _usr01Service.GetAll();
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Deletes the user record specified by given id.
-        /// </summary>
-        /// <param name="id">User id.</param>
-        /// <returns>Response containing the outcome of the operation.</returns>
-        [HttpDelete]
-        [Route("Delete/{id}")]
-        public IHttpActionResult DeleteUSR01(int id)
-        {
-            Response response = _usr01Service.Delete(id);
-            return Ok(response);
-        }
-
-        #endregion
+        #endregion API Endpoints
     }
 }

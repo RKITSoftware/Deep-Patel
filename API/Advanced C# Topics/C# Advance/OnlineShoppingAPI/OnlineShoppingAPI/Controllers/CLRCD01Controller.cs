@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Net.Http;
 using System.Web.Http;
@@ -26,7 +25,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLRCD01Controller()
         {
-            _rcd01Service = new BLRCD01();
+            _rcd01Service = new BLRCD01Handler();
         }
 
         /// <summary>
@@ -40,15 +39,17 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult AddOrder(DTORCD01 objDTORCD01)
         {
-            _rcd01Service.Operation = EnmOperation.Create;
-            if (_rcd01Service.PreValidation(objDTORCD01, out Response response))
+            _rcd01Service.Operation = EnmOperation.A;
+            Response response = _rcd01Service.PreValidation(objDTORCD01);
+
+            if (!response.IsError)
             {
                 _rcd01Service.PreSave(objDTORCD01);
+                response = _rcd01Service.Validation();
 
-                if (_rcd01Service.Validation(out response))
-                    _rcd01Service.Save(out response);
+                if (!response.IsError)
+                    _rcd01Service.Save();
             }
-
             return Ok(response);
         }
 
@@ -62,7 +63,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteRecord(int id)
         {
-            _rcd01Service.Delete(id, out Response response);
+            Response response = _rcd01Service.Delete(id);
             return Ok(response);
         }
 
@@ -89,7 +90,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetOrders()
         {
-            _rcd01Service.GetAllRecord(out Response response);
+            Response response = _rcd01Service.GetAllRecord();
             return Ok(response);
         }
     }

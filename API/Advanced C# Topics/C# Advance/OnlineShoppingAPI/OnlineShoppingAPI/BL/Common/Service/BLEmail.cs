@@ -1,6 +1,5 @@
 ﻿using OfficeOpenXml;
 using OnlineShoppingAPI.BL.Common.Interface;
-using OnlineShoppingAPI.Extension;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,6 +18,44 @@ namespace OnlineShoppingAPI.BL.Common.Service
     public class BLEmail : IEmailService
     {
         #region Public Methods
+
+        /// <summary>
+        /// Send the OTP to the user.
+        /// </summary>
+        /// <param name="email">Customer email address.</param>
+        /// <param name="otp">OTP(One Time Password) for the user.</param>
+        public void Send(string email, string otp)
+        {
+            try
+            {
+                // Initialize SMTP client with Office 365 settings.
+                SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587)
+                {
+                    Credentials = HttpContext.Current
+                        .Application["Credentials"] as NetworkCredential,
+
+                    DeliveryMethod = SmtpDeliveryMethod.Network,
+                    EnableSsl = true
+                };
+
+                // Create a mail message with sender, recipient, subject, and body.
+                MailMessage mailMessage = new MailMessage
+                {
+                    From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel")
+                };
+                mailMessage.To.Add(new MailAddress(email));
+
+                mailMessage.Subject = "OTP for Buying";
+                mailMessage.Body = $"OTP for buying items in your cart: {otp}";
+
+                // Send the mail message.
+                smtpClient.Send(mailMessage);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         /// <summary>
         /// Send the order attachment to the user.
@@ -67,7 +104,7 @@ namespace OnlineShoppingAPI.BL.Common.Service
                 }
                 catch (Exception ex)
                 {
-                    ex.LogException();
+                    throw ex;
                 }
                 finally
                 {
@@ -78,50 +115,12 @@ namespace OnlineShoppingAPI.BL.Common.Service
             }
         }
 
-        /// <summary>
-        /// Send the OTP to the user.
-        /// </summary>
-        /// <param name="email">Customer email address.</param>
-        /// <param name="otp">OTP(One Time Password) for the user.</param>
-        public void Send(string email, string otp)
-        {
-            try
-            {
-                // Initialize SMTP client with Office 365 settings.
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587)
-                {
-                    Credentials = HttpContext.Current
-                        .Application["Credentials"] as NetworkCredential,
-
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    EnableSsl = true
-                };
-
-                // Create a mail message with sender, recipient, subject, and body.
-                MailMessage mailMessage = new MailMessage
-                {
-                    From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel")
-                };
-                mailMessage.To.Add(new MailAddress(email));
-
-                mailMessage.Subject = "OTP for Buying";
-                mailMessage.Body = $"OTP for buying items in your cart: {otp}";
-
-                // Send the mail message.
-                smtpClient.Send(mailMessage);
-            }
-            catch (Exception ex)
-            {
-                ex.LogException();
-            }
-        }
-
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
         /// <summary>
-        /// Generates an <see cref="HttpResponseMessage"/> that contains the 
+        /// Generates an <see cref="HttpResponseMessage"/> that contains the
         /// excel response as attachment.
         /// </summary>
         /// <param name="lstItems">List of items that user bought.</param>
@@ -195,6 +194,6 @@ namespace OnlineShoppingAPI.BL.Common.Service
             }
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

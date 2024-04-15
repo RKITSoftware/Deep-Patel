@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,49 +11,56 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Product Id
         /// </summary>
-        [JsonPropertyName("O02F01")]
-        public int O02101 { get; set; }
+        [Required(ErrorMessage = "Id is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Id can't be negative.")]
+        [JsonProperty("O01101")]
+        public int O01F01 { get; set; }
 
         /// <summary>
         /// Product Name
         /// </summary>
-        [JsonPropertyName("O02F02")]
-        public string O02102 { get; set; }
+        [Required(ErrorMessage = "Enter the product name.")]
+        [JsonProperty("O02102")]
+        public string O01F02 { get; set; }
 
         /// <summary>
         /// Product Buy Price
         /// </summary>
-        [JsonPropertyName("O02F03")]
-        public int O02103 { get; set; }
+        [Required(ErrorMessage = "Enter the buy price.")]
+        [JsonProperty("O02F03")]
+        public int O01F03 { get; set; }
 
         /// <summary>
         /// Product Sell Price
         /// </summary>
-        [JsonPropertyName("O02F04")]
-        public int O02104 { get; set; }
+        [JsonProperty("O02104")]
+        public int O01F04 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
-        [JsonPropertyName("O02F05")]
-        public decimal O02105 { get; set; }
+        [Required]
+        [JsonProperty("O02105")]
+        public decimal O01F05 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
-        [JsonPropertyName("O02F06")]
-        public string O02106 { get; set; }
+        [JsonProperty("O02106")]
+        public string O01F06 { get; set; }
 
         /// <summary>
         /// Foreign Key of Category Table
         /// </summary>
-        [JsonPropertyName("O02F09")]
-        public int O02109 { get; set; }
+        [Required(ErrorMessage = "Category id is required.")]
+        [JsonProperty("O02109")]
+        public int O01F09 { get; set; }
 
         /// <summary>
         /// Foreign Key of Suplier Table
         /// </summary>
-        [JsonPropertyName("O02F10")]
-        public int O02110 { get; set; }
+        [Required(ErrorMessage = "Supplier id is required.")]
+        [JsonProperty("O02110")]
+        public int O01F10 { get; set; }
     }
 }

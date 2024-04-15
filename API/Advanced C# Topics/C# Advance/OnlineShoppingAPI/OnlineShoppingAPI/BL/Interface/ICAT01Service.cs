@@ -8,8 +8,7 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for service handling of <see cref="CAT01"/> operations.
     /// </summary>
-    public interface ICAT01Service : IOperationService, IPreDataHandlerService<DTOCAT01>,
-        IDataHandlerService
+    public interface ICAT01Service : ICommonDataHandlerService<DTOCAT01>
     {
         #region Public Methods
 
@@ -17,22 +16,22 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Deletes a category by its ID.
         /// </summary>
         /// <param name="id">The ID of the category to be deleted.</param>
-        /// <param name="response">Out parameter containing the response status after deletion.</param>
-        void Delete(int id, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response Delete(int id);
 
         /// <summary>
         /// Retrieves all categories.
         /// </summary>
-        /// <param name="response">Out parameter containing the response with all categories.</param>
-        void GetAll(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetAll();
 
         /// <summary>
         /// Retrieves a category by its ID.
         /// </summary>
         /// <param name="id">The ID of the category to retrieve.</param>
-        /// <param name="response">Out parameter containing the response with the requested category.</param>
-        void GetById(int id, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetById(int id);
 
-        #endregion
+        #endregion Public Methods
     }
 }

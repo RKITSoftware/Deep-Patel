@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -25,7 +24,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLPRO02Controller()
         {
-            _pro02Service = new BLPRO02();
+            _pro02Service = new BLPRO02Handler();
         }
 
         /// <summary>
@@ -35,16 +34,20 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpPost]
         [Route("Add")]
+        [Authorize(Roles = "Admin")]
         [ValidateModel]
         public IHttpActionResult Add(DTOPRO02 objPRO02DTO)
         {
-            _pro02Service.Operation = EnmOperation.Create;
-            if (_pro02Service.PreValidation(objPRO02DTO, out Response response))
+            _pro02Service.Operation = EnmOperation.A;
+            Response response = _pro02Service.PreValidation(objPRO02DTO);
+
+            if (!response.IsError)
             {
                 _pro02Service.PreSave(objPRO02DTO);
+                response = _pro02Service.Validation();
 
-                if (_pro02Service.Validation(out response))
-                    _pro02Service.Save(out response);
+                if (!response.IsError)
+                    _pro02Service.Save();
             }
 
             return Ok(response);
@@ -57,9 +60,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpDelete]
         [Route("DeleteProductV2")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteProductV2(int id)
         {
-            _pro02Service.Delete(id, out Response response);
+            Response response = _pro02Service.Delete(id);
             return Ok(response);
         }
 
@@ -71,7 +75,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetProductV2")]
         public IHttpActionResult GetPRO02()
         {
-            _pro02Service.GetAll(out Response response);
+            Response response = _pro02Service.GetAll();
             return Ok(response);
         }
 
@@ -83,9 +87,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpPatch]
         [Route("UpdateSellPrice")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateSellPrice(int id, int sellPrice)
         {
-            _pro02Service.UpdateSellPrice(id, sellPrice, out Response response);
+            Response response = _pro02Service.UpdateSellPrice(id, sellPrice);
             return Ok(response);
         }
 
@@ -97,7 +102,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetAllProductsInfo")]
         public IHttpActionResult GetAllProductInfo()
         {
-            _pro02Service.GetInformation(out Response response);
+            Response response = _pro02Service.GetInformation();
             return Ok(response);
         }
     }

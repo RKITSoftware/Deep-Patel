@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,13 +11,16 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Category Id
         /// </summary>
-        [JsonPropertyName("T01F01")]
-        public int T01101 { get; set; }
+        [Required(ErrorMessage = "Category id is required.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Id can't be negative.")]
+        [JsonProperty("T01101")]
+        public int T01F01 { get; set; }
 
         /// <summary>
         /// Category Name
         /// </summary>
-        [JsonPropertyName("T01F02")]
-        public string T01102 { get; set; }
+        [Required(ErrorMessage = "Category name is required.")]
+        [JsonProperty("T01102")]
+        public string T01F02 { get; set; }
     }
 }

@@ -22,16 +22,6 @@ namespace VerificationDemo.BL.Master.Service
         #region Private Fields
 
         /// <summary>
-        /// Instance of <see cref="USR01"/> model foe create and update operation.
-        /// </summary>
-        private USR01 _objUSR01;
-
-        /// <summary>
-        /// Connection string for the development environment.
-        /// </summary>
-        private readonly string _devConnectionString;
-
-        /// <summary>
         /// Orm Lite connection interface.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
@@ -41,7 +31,17 @@ namespace VerificationDemo.BL.Master.Service
         /// </summary>
         private readonly DBUSR01 _dbUSR01;
 
-        #endregion
+        /// <summary>
+        /// Connection string for the development environment.
+        /// </summary>
+        private readonly string _devConnectionString;
+
+        /// <summary>
+        /// Instance of <see cref="USR01"/> model foe create and update operation.
+        /// </summary>
+        private USR01 _objUSR01;
+
+        #endregion Private Fields
 
         #region Public Properties
 
@@ -50,7 +50,7 @@ namespace VerificationDemo.BL.Master.Service
         /// </summary>
         public EnmOperation Operation { get; set; }
 
-        #endregion
+        #endregion Public Properties
 
         #region Constructor
 
@@ -65,9 +65,60 @@ namespace VerificationDemo.BL.Master.Service
             _dbUSR01 = new DBUSR01(_devConnectionString);
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Methods
+
+        /// <summary>
+        /// Delete the user record.
+        /// </summary>
+        /// <param name="id">User id.</param>
+        /// <returns>Response indicating the outcome of the operation.</returns>
+        public Response Delete(int id)
+        {
+            if (id <= 0)
+            {
+                return PreConditionFailedResponse("Id can't be negative nor zero.");
+            }
+
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    if (db.SingleById<USR01>(id) == null)
+                    {
+                        return NotFoundResponse("User doesn't exist.");
+                    }
+
+                    db.DeleteById<USR01>(id);
+                }
+            }
+            catch (Exception)
+            {
+                return InternalServerErrorResponse();
+            }
+
+            return OkResponse();
+        }
+
+        /// <summary>
+        /// Get all user data from the database using MySqlConnection.
+        /// </summary>
+        /// <returns>Response with the data.</returns>
+        public Response GetAll()
+        {
+            DataTable dtUSR01 = _dbUSR01.GetAllData();
+
+            if (dtUSR01.Rows.Count == 0)
+            {
+                return NotFoundResponse("No data available.");
+            }
+
+            Response response = OkResponse();
+            response.Data = dtUSR01;
+
+            return response;
+        }
 
         /// <summary>
         /// Converts the dto to poco model conversion and other sets the date-time related fields.
@@ -158,57 +209,6 @@ namespace VerificationDemo.BL.Master.Service
             return OkResponse();
         }
 
-        /// <summary>
-        /// Get all user data from the database using MySqlConnection.
-        /// </summary>
-        /// <returns>Response with the data.</returns>
-        public Response GetAll()
-        {
-            DataTable dtUSR01 = _dbUSR01.GetAllData();
-
-            if (dtUSR01.Rows.Count == 0)
-            {
-                return NotFoundResponse("No data available.");
-            }
-
-            Response response = OkResponse();
-            response.Data = dtUSR01;
-
-            return response;
-        }
-
-        /// <summary>
-        /// Delete the user record.
-        /// </summary>
-        /// <param name="id">User id.</param>
-        /// <returns>Response indicating the outcome of the operation.</returns>
-        public Response Delete(int id)
-        {
-            if (id <= 0)
-            {
-                return PreConditionFailedResponse("Id can't be negative nor zero.");
-            }
-
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (db.SingleById<USR01>(id) == null)
-                    {
-                        return NotFoundResponse("User doesn't exist.");
-                    }
-
-                    db.DeleteById<USR01>(id);
-                }
-            }
-            catch (Exception)
-            {
-                return InternalServerErrorResponse();
-            }
-
-            return OkResponse();
-        }
-
-        #endregion
+        #endregion Public Methods
     }
 }

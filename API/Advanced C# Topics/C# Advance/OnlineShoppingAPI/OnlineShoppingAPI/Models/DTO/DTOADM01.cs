@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,19 +11,24 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Admin Name
         /// </summary>
-        [JsonPropertyName("M01102")]
-        public string M01102 { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [JsonProperty("M01102")]
+        public string M01F02 { get; set; }
 
         /// <summary>
         /// Admin Email
         /// </summary>
-        [JsonPropertyName("M01F03")]
-        public string M01103 { get; set; }
+        [Required(ErrorMessage = "Email is required.")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Email is invalid.")]
+        [JsonProperty("M01103")]
+        public string M01F03 { get; set; }
 
         /// <summary>
         /// Admin Password
         /// </summary>
-        [JsonPropertyName("R01F03")]
-        public string R01103 { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password, ErrorMessage = "Password is in incorrect form.")]
+        [JsonProperty("R01103")]
+        public string R01F03 { get; set; }
     }
 }

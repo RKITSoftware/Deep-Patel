@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -26,29 +25,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLADM01Controller()
         {
-            _adm01Service = new BLADM01();
-        }
-
-        /// <summary>
-        /// Creates a new admin.
-        /// </summary>
-        /// <param name="objDTOADM01">DTO containing admin data.</param>
-        /// <returns>Response indicating the outcome of the operation.</returns>
-        [HttpPost]
-        [Route("Add")]
-        [ValidateModel]
-        public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
-        {
-            _adm01Service.Operation = EnmOperation.Create;
-            if (_adm01Service.PreValidation(objDTOADM01, out Response response))
-            {
-                _adm01Service.PreSave(objDTOADM01);
-
-                if (_adm01Service.Validation(out response))
-                    _adm01Service.Save(out response);
-            }
-
-            return Ok(response);
+            _adm01Service = new BLADM01Handler();
         }
 
         /// <summary>
@@ -63,7 +40,7 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangeEmail(string username,
             string password, string newEmail)
         {
-            _adm01Service.ChangeEmail(username, password, newEmail, out Response response);
+            Response response = _adm01Service.ChangeEmail(username, password, newEmail);
             return Ok(response);
         }
 
@@ -79,10 +56,34 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangePassword(string username,
             string oldPassword, string newPassword)
         {
-            _adm01Service.ChangePassword(username, oldPassword, newPassword, out Response response);
+            Response response = _adm01Service.ChangePassword(username, oldPassword, newPassword);
             return Ok(response);
         }
 
+        /// <summary>
+        /// Creates a new admin.
+        /// </summary>
+        /// <param name="objDTOADM01">DTO containing admin data.</param>
+        /// <returns>Response indicating the outcome of the operation.</returns>
+        [HttpPost]
+        [Route("Add")]
+        [ValidateModel]
+        public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
+        {
+            _adm01Service.Operation = EnmOperation.A;
+
+            Response response = _adm01Service.PreValidation(objDTOADM01);
+            if (!response.IsError)
+            {
+                _adm01Service.PreSave(objDTOADM01);
+                response = _adm01Service.Validation();
+
+                if (!response.IsError)
+                    response = _adm01Service.Save();
+            }
+
+            return Ok(response);
+        }
         /// <summary>
         /// Deletes an admin by ID.
         /// </summary>
@@ -92,8 +93,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteAdmin(int id)
         {
-            _adm01Service.Delete(id, out Response response);
-
+            Response response = _adm01Service.Delete(id);
             return Ok(response);
         }
 
@@ -106,7 +106,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("ShowProfit")]
         public IHttpActionResult GetProfit(string date)
         {
-            _adm01Service.GetProfit(date, out Response response);
+            Response response = _adm01Service.GetProfit(date);
             return Ok(response);
         }
     }

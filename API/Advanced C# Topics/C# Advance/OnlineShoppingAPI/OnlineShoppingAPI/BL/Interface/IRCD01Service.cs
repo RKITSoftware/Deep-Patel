@@ -10,8 +10,7 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Service for <see cref="RCD01"/> model.
     /// </summary>
-    public interface IRCD01Service : IOperationService, IPreDataHandlerService<DTORCD01>,
-        IDataHandlerService
+    public interface IRCD01Service : ICommonDataHandlerService<DTORCD01>
     {
         #region Public Methods
 
@@ -20,16 +19,15 @@ namespace OnlineShoppingAPI.BL.Interface
         /// </summary>
         /// <param name="lstItems">List of items that customer wants to buy.</param>
         /// <param name="s01F03">customer Email Address.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        /// <returns>True for successful completion, else false if error occurs.</returns>
-        bool BuyCartItems(List<CRT01> lstItems, string s01F03, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response BuyCartItems(List<CRT01> lstItems, string s01F03);
 
         /// <summary>
         /// Deletes the record from the database.
         /// </summary>
         /// <param name="id">Record Id.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void Delete(int id, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response Delete(int id);
 
         /// <summary>
         /// Generate a <see cref="HttpResponseMessage"/> containing the download response as attachment.
@@ -41,9 +39,9 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <summary>
         /// Retrieves all records information.
         /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetAllRecord(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetAllRecord();
 
-        #endregion
+        #endregion Public Methods
     }
 }

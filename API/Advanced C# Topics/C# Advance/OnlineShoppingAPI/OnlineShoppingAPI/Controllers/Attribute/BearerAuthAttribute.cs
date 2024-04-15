@@ -1,5 +1,4 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.Extension;
 using System;
 using System.Linq;
 using System.Net;
@@ -16,6 +15,8 @@ namespace OnlineShoppingAPI.Controllers.Attribute
     /// </summary>
     public class BearerAuthAttribute : AuthorizationFilterAttribute
     {
+        #region Public Methods
+
         /// <summary>
         /// Overrides the default OnAuthorization method to perform Bearer Token Authentication.
         /// </summary>
@@ -44,7 +45,6 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                         return;
                     }
 
-
                     // Setting the authenticated user in HttpContext
                     IPrincipal principal = BLToken.GetPrincipal(token);
 
@@ -60,11 +60,13 @@ namespace OnlineShoppingAPI.Controllers.Attribute
             }
             catch (Exception ex)
             {
-                ex.LogException();
-                actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.BadRequest,
-                    "An error occurred during authentication.");
+                throw ex;
             }
         }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Checks the AllowAnonymous Attribute Exists or not.
@@ -77,5 +79,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                 .GetCustomAttributes<AllowAnonymousAttribute>().Any() || actionContext.ControllerContext
                 .ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
         }
+
+        #endregion Private Methods
     }
 }

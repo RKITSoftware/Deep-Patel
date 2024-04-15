@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -13,6 +12,7 @@ namespace OnlineShoppingAPI.Controllers
     /// Controller for handling <see cref="CAT01"/> opertaions
     /// </summary>
     [RoutePrefix("api/CLCAT01")]
+    [Authorize(Roles = "Admin")]
     public class CLCAT01Controller : ApiController
     {
         /// <summary>
@@ -25,7 +25,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLCAT01Controller()
         {
-            _cat01Service = new BLCAT01();
+            _cat01Service = new BLCAT01Handler();
         }
 
         /// <summary>
@@ -38,14 +38,54 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult Add(DTOCAT01 objDTOCAT01)
         {
-            _cat01Service.Operation = EnmOperation.Create;
+            _cat01Service.Operation = EnmOperation.A;
+            Response response = _cat01Service.PreValidation(objDTOCAT01);
 
-            if (_cat01Service.PreValidation(objDTOCAT01, out Response response))
+            if (!response.IsError)
             {
                 _cat01Service.PreSave(objDTOCAT01);
+                response = _cat01Service.Validation();
 
-                if (_cat01Service.Validation(out response))
-                    _cat01Service.Save(out response);
+                if (!response.IsError)
+                    response = _cat01Service.Save();
+            }
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Deletes a category by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the category to delete.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
+        [HttpDelete]
+        [Route("Delete/{id}")]
+        public IHttpActionResult DeleteCategory(int id)
+        {
+            Response response = _cat01Service.Delete(id);
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Edits an existing category.
+        /// </summary>
+        /// <param name="objCAT01DTO">The DTO object representing the category.</param>
+        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
+        [HttpPut]
+        [Route("Edit")]
+        [ValidateModel]
+        public IHttpActionResult Edit(DTOCAT01 objCAT01DTO)
+        {
+            _cat01Service.Operation = EnmOperation.E;
+            Response response = _cat01Service.PreValidation(objCAT01DTO);
+
+            if (!response.IsError)
+            {
+                _cat01Service.PreSave(objCAT01DTO);
+                response = _cat01Service.Validation();
+
+                if (!response.IsError)
+                    response = _cat01Service.Save();
             }
 
             return Ok(response);
@@ -59,7 +99,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("GetAll")]
         public IHttpActionResult GetAllCategories()
         {
-            _cat01Service.GetAll(out Response response);
+            Response response = _cat01Service.GetAll();
             return Ok(response);
         }
 
@@ -72,42 +112,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Get/{id}")]
         public IHttpActionResult GetById(int id)
         {
-            _cat01Service.GetById(id, out Response response);
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Deletes a category by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the category to delete.</param>
-        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
-        [HttpDelete]
-        [Route("Delete/{id}")]
-        public IHttpActionResult DeleteCategory(int id)
-        {
-            _cat01Service.Delete(id, out Response response);
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Edits an existing category.
-        /// </summary>
-        /// <param name="objCAT01DTO">The DTO object representing the category.</param>
-        /// <returns><see cref="Response"/> indicating the outcome of the operation.</returns>
-        [HttpPut]
-        [Route("Edit")]
-        public IHttpActionResult Edit(DTOCAT01 objCAT01DTO)
-        {
-            _cat01Service.Operation = EnmOperation.Update;
-
-            if (_cat01Service.PreValidation(objCAT01DTO, out Response response))
-            {
-                _cat01Service.PreSave(objCAT01DTO);
-
-                if (_cat01Service.Validation(out response))
-                    _cat01Service.Save(out response);
-            }
-
+            Response response = _cat01Service.GetById(id);
             return Ok(response);
         }
     }

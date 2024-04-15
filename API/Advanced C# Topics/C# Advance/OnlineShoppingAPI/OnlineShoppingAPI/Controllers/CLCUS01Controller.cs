@@ -3,7 +3,6 @@ using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -25,7 +24,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLCUS01Controller()
         {
-            _cus01Service = new BLCUS01();
+            _cus01Service = new BLCUS01Handler();
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangeEmail(string username, string password, string newEmail)
         {
-            _cus01Service.ChangeEmail(username, password, newEmail, out Response response);
+            Response response = _cus01Service.ChangeEmail(username, password, newEmail);
             return Ok(response);
         }
 
@@ -56,7 +55,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangePassword(string username, string oldPassword, string newPassword)
         {
-            _cus01Service.ChangePassword(username, oldPassword, newPassword, out Response response);
+            Response response = _cus01Service.ChangePassword(username, oldPassword, newPassword);
             return Ok(response);
         }
 
@@ -71,14 +70,16 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateCustomer(DTOCUS01 objCUS01DTO)
         {
-            _cus01Service.Operation = EnmOperation.Create;
-            if (_cus01Service.PreValidation(objCUS01DTO, out Response response))
+            _cus01Service.Operation = EnmOperation.A;
+            Response response = _cus01Service.PreValidation(objCUS01DTO);
+
+            if (!response.IsError)
             {
                 _cus01Service.PreSave(objCUS01DTO);
-                if (_cus01Service.Validation(out response))
-                {
-                    _cus01Service.Save(out response);
-                }
+                response = _cus01Service.Validation();
+
+                if (!response.IsError)
+                    response = _cus01Service.Save();
             }
 
             return Ok(response);
@@ -94,7 +95,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteCustomer(int id)
         {
-            _cus01Service.Delete(id, out Response response);
+            Response response = _cus01Service.Delete(id);
             return Ok(response);
         }
 
@@ -107,7 +108,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetCustomers()
         {
-            _cus01Service.GetAll(out Response response);
+            Response response = _cus01Service.GetAll();
             return Ok(response);
         }
 
@@ -118,10 +119,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpGet]
         [Route("GetCustomerById/{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult GetCustomerById(int id)
         {
-            _cus01Service.GetById(id, out Response response);
+            Response response = _cus01Service.GetById(id);
             return Ok(response);
         }
 
@@ -136,14 +137,16 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult UpdateCustomer(DTOCUS01 objCUS01DTO)
         {
-            _cus01Service.Operation = EnmOperation.Update;
-            if (_cus01Service.PreValidation(objCUS01DTO, out Response response))
+            _cus01Service.Operation = EnmOperation.E;
+            Response response = _cus01Service.PreValidation(objCUS01DTO);
+
+            if (!response.IsError)
             {
                 _cus01Service.PreSave(objCUS01DTO);
-                if (_cus01Service.Validation(out response))
-                {
-                    _cus01Service.Save(out response);
-                }
+                response = _cus01Service.Validation();
+
+                if (!response.IsError)
+                    response = _cus01Service.Save();
             }
 
             return Ok(response);

@@ -7,8 +7,7 @@ namespace OnlineShoppingAPI.BL.Interface
     /// <summary>
     /// Interface for handling CUS01 related operations.
     /// </summary>
-    public interface ICUS01Service : IOperationService, IPreDataHandlerService<DTOCUS01>,
-        IDataHandlerService
+    public interface ICUS01Service : ICommonDataHandlerService<DTOCUS01>
     {
         #region Public Methods
 
@@ -18,8 +17,8 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
         /// <param name="newEmail">The new email address to set.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void ChangeEmail(string username, string password, string newEmail, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangeEmail(string username, string password, string newEmail);
 
         /// <summary>
         /// Changes the password of a customer.
@@ -27,29 +26,29 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="username">The username of the user.</param>
         /// <param name="oldPassword">The old password of the user.</param>
         /// <param name="newPassword">The new password to set.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void ChangePassword(string username, string oldPassword, string newPassword, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangePassword(string username, string oldPassword, string newPassword);
 
         /// <summary>
         /// Deletes a user by their ID.
         /// </summary>
         /// <param name="id">The ID of the user to be deleted.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void Delete(int id, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response Delete(int id);
 
         /// <summary>
         /// Retrieves all users.
         /// </summary>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetAll(out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetAll();
 
         /// <summary>
         /// Retrieves a user by their ID.
         /// </summary>
         /// <param name="id">The ID of the user to retrieve.</param>
-        /// <param name="response"><see cref="Response"/> indicating the outcome of the operation.</param>
-        void GetById(int id, out Response response);
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response GetById(int id);
 
-        #endregion
+        #endregion Public Methods
     }
 }

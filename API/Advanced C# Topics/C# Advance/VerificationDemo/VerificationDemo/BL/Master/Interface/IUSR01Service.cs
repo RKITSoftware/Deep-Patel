@@ -24,6 +24,6 @@ namespace VerificationDemo.BL.Master.Interface
         /// <returns>Response containing the outcome of the operation.</returns>
         Response GetAll();
 
-        #endregion
+        #endregion Public Methods
     }
 }

@@ -1,8 +1,8 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.Controllers.Filter;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
-using OnlineShoppingAPI.Models.Enum;
 using OnlineShoppingAPI.Models.POCO;
 using System.Web.Http;
 
@@ -24,7 +24,7 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLPRO01Controller()
         {
-            _pro01Service = new BLPRO01();
+            _pro01Service = new BLPRO01Handler();
         }
 
         /// <summary>
@@ -34,36 +34,20 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpPost]
         [Route("Create")]
+        [Authorize(Roles = "Admin")]
+        [ValidateModel]
         public IHttpActionResult CreateProduct(DTOPRO01 objPRO01DTO)
         {
-            _pro01Service.Operation = EnmOperation.Create;
-            if (_pro01Service.PreValidation(objPRO01DTO, out Response response))
+            _pro01Service.Operation = EnmOperation.A;
+            Response response = _pro01Service.PreValidation(objPRO01DTO);
+
+            if (!response.IsError)
             {
                 _pro01Service.PreSave(objPRO01DTO);
+                response = _pro01Service.Validation();
 
-                if (_pro01Service.Validation(out response))
-                    _pro01Service.Save(out response);
-            }
-
-            return Ok(response);
-        }
-
-        /// <summary>
-        /// Updates the product infomration.
-        /// </summary>
-        /// <param name="objDTOPRO01">DTO containing the updated informtion of <see cref="PRO01"/></param>
-        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
-        [HttpPut]
-        [Route("Update")]
-        public IHttpActionResult Update(DTOPRO01 objDTOPRO01)
-        {
-            _pro01Service.Operation = EnmOperation.Update;
-            if (_pro01Service.PreValidation(objDTOPRO01, out Response response))
-            {
-                _pro01Service.PreSave(objDTOPRO01);
-
-                if (_pro01Service.Validation(out response))
-                    _pro01Service.Save(out response);
+                if (!response.IsError)
+                    _pro01Service.Save();
             }
 
             return Ok(response);
@@ -76,9 +60,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpDelete]
         [Route("Delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult Delete(int id)
         {
-            _pro01Service.Delete(id, out Response response);
+            Response response = _pro01Service.Delete(id);
             return Ok(response);
         }
 
@@ -90,10 +75,35 @@ namespace OnlineShoppingAPI.Controllers
         [Route("All")]
         public IHttpActionResult GetAll()
         {
-            _pro01Service.GetAll(out Response response);
+            Response response = _pro01Service.GetAll();
             return Ok(response);
         }
 
+        /// <summary>
+        /// Updates the product infomration.
+        /// </summary>
+        /// <param name="objDTOPRO01">DTO containing the updated informtion of <see cref="PRO01"/></param>
+        /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
+        [HttpPut]
+        [Route("Update")]
+        [Authorize(Roles = "Admin")]
+        [ValidateModel]
+        public IHttpActionResult Update(DTOPRO01 objDTOPRO01)
+        {
+            _pro01Service.Operation = EnmOperation.E;
+            Response response = _pro01Service.PreValidation(objDTOPRO01);
+
+            if (!response.IsError)
+            {
+                _pro01Service.PreSave(objDTOPRO01);
+                response = _pro01Service.Validation();
+
+                if (!response.IsError)
+                    _pro01Service.Save();
+            }
+
+            return Ok(response);
+        }
         /// <summary>
         /// Updates the quantity of the product.
         /// </summary>
@@ -102,9 +112,10 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpPatch]
         [Route("UpdateQuantity/{id}")]
+        [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateQuantity(int id, int quantity)
         {
-            _pro01Service.UpdateQuantity(id, quantity, out Response response);
+            Response response = _pro01Service.UpdateQuantity(id, quantity);
             return Ok(response);
         }
     }

@@ -39,6 +39,6 @@ namespace VerificationDemo.Extension
             return pocoInstance;
         }
 
-        #endregion
+        #endregion Extension Methods
     }
 }

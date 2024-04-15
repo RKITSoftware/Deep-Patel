@@ -1,16 +1,13 @@
-﻿using Newtonsoft.Json;
-using ServiceStack.DataAnnotations;
-using System.Text.Json.Serialization;
-
-namespace OnlineShoppingAPI.Models.POCO
+﻿namespace OnlineShoppingAPI.Models.POCO
 {
-    [Alias("USR01")]
+    /// <summary>
+    /// USR01 model to store user's credentials
+    /// </summary>
     public class USR01
     {
         /// <summary>
         /// User Id
         /// </summary>
-        [AutoIncrement]
         public int R01F01 { get; set; }
 
         /// <summary>
@@ -21,9 +18,6 @@ namespace OnlineShoppingAPI.Models.POCO
         /// <summary>
         /// User Password
         /// </summary>
-        [Required]
-        [StringLength(minimumLength: 8, maximumLength: 16)]
-        [JsonPropertyName("R01103")]
         public string R01F03 { get; set; }
 
         /// <summary>

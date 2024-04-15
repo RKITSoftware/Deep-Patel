@@ -26,26 +26,26 @@ namespace OnlineShoppingAPI.BL.Common
         private static readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
+        /// Stores the file path where log information of exception want to store.
+        /// </summary>
+        private static readonly string _logFolderPath;
+
+        /// <summary>
         /// AES (Advanced Encryption Standard) encryption object for secure password handling.
         /// </summary>
         private static readonly Aes _objAes;
+
+        /// <summary>
+        /// Initialization Vector (IV) used for AES encryption.
+        /// </summary>
+        private static readonly string iv = "0123456789ABCDEF";
 
         /// <summary>
         /// Key used for AES encryption.
         /// </summary>
         private static readonly string key = "0123456789ABCDEF0123456789ABCDEF";
 
-        /// <summary>
-        /// Initialization Vector (IV) used for AES encryption. 
-        /// </summary>
-        private static readonly string iv = "0123456789ABCDEF";
-
-        /// <summary>
-        /// Stores the file path where log information of exception want to store.
-        /// </summary>
-        private static readonly string _logFolderPath;
-
-        #endregion
+        #endregion Private Fields
 
         #region Public Properties
 
@@ -54,7 +54,7 @@ namespace OnlineShoppingAPI.BL.Common
         /// </summary>
         public static Cache ServerCache;
 
-        #endregion
+        #endregion Public Properties
 
         #region Constructors
 
@@ -79,122 +79,9 @@ namespace OnlineShoppingAPI.BL.Common
             }
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Public Methods
-
-        /// <summary>
-        /// Retrieves user details using user id.
-        /// </summary>
-        /// <param name="username">User id of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(int id)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.SingleById<USR01>(id);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves user details using username.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(string username)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Single<USR01>(u => u.R01F02.Equals(username));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Retrieves user details using username and password.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <param name="password">Password of the user.</param>
-        /// <returns>User details. Null if the user is not found.</returns>
-        public static USR01 GetUser(string username, string password)
-        {
-            try
-            {
-                string encryptedPassword = GetEncryptPassword(password);
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Single<USR01>(u =>
-                        u.R01F02.Equals(username) &&
-                        u.R01F05.Equals(encryptedPassword));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a user exists using username only.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <returns>True if the user exists, false otherwise.</returns>
-        public static bool IsExist(string username)
-        {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Exists<USR01>(u => u.R01F02.Equals(username));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Checks if a user exists using username and password.
-        /// </summary>
-        /// <param name="username">Username of the user.</param>
-        /// <param name="password">Password of the user.</param>
-        /// <returns>True if the user exists, false otherwise.</returns>
-        public static bool IsExist(string username, string password)
-        {
-            try
-            {
-                string encryptedPassword = GetEncryptPassword(password);
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Exists<USR01>(u =>
-                        u.R01F02.Equals(username) &&
-                        u.R01F05.Equals(encryptedPassword));
-                }
-            }
-            catch (Exception ex)
-            {
-                LogError(ex);
-                return false;
-            }
-        }
 
         /// <summary>
         /// Encrypts a password using AES encryption.
@@ -221,11 +108,84 @@ namespace OnlineShoppingAPI.BL.Common
                     return Convert.ToBase64String(msEncrypt.ToArray());
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) { throw ex; }
+        }
+
+        /// <summary>
+        /// Retrieves user details using user id.
+        /// </summary>
+        /// <param name="username">User id of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(int id)
+        {
+            try
             {
-                LogError(ex);
-                return string.Empty;
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.SingleById<USR01>(id);
+                }
             }
+            catch (Exception ex) { throw ex; }
+        }
+
+        /// <summary>
+        /// Retrieves user details using username.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(string username)
+        {
+            try
+            {
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.Single<USR01>(u => u.R01F02.Equals(username));
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        /// <summary>
+        /// Retrieves user details using username and password.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="password">Password of the user.</param>
+        /// <returns>User details. Null if the user is not found.</returns>
+        public static USR01 GetUser(string username, string password)
+        {
+            try
+            {
+                string encryptedPassword = GetEncryptPassword(password);
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.Single<USR01>(u =>
+                        u.R01F02.Equals(username) &&
+                        u.R01F05.Equals(encryptedPassword));
+                }
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+
+        /// <summary>
+        /// Checks if a user exists using username and password.
+        /// </summary>
+        /// <param name="username">Username of the user.</param>
+        /// <param name="password">Password of the user.</param>
+        /// <returns>True if the user exists, false otherwise.</returns>
+        public static bool IsExist(string username, string password)
+        {
+            try
+            {
+                string encryptedPassword = GetEncryptPassword(password);
+                using (var db = _dbFactory.OpenDbConnection())
+                {
+                    return db.Exists<USR01>(u =>
+                        u.R01F02.Equals(username) &&
+                        u.R01F05.Equals(encryptedPassword));
+                }
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -273,31 +233,16 @@ namespace OnlineShoppingAPI.BL.Common
         }
 
         /// <summary>
-        /// Creates an <see cref="HttpResponseMessage"/> with the specified HTTP status code 
-        /// and message content.
+        /// Returns the NoContent response with the message.
         /// </summary>
-        /// <param name="statusCode">The HTTP status code for the response.</param>
-        /// <param name="message">The content message to be included in the response.</param>
-        /// <returns>
-        /// An <see cref="HttpResponseMessage"/> with the specified status code and message content.
-        /// </returns>
-        public static HttpResponseMessage ResponseMessage(HttpStatusCode statusCode, string message)
-        {
-            return new HttpResponseMessage(statusCode)
-            {
-                Content = new StringContent(message)
-            };
-        }
-
-        /// <summary>
-        /// Retuns the Success response with Success Message.
-        /// </summary>
-        /// <returns><see cref="Response"/> containing the Success response.</returns>
-        public static Response OkResponse(string message)
+        /// <param name="message">Message to sent to response.</param>
+        /// <returns>PreConditionFailed <see cref="Response"/></returns>
+        public static Response NoContentResponse(string message = "No data available.")
         {
             return new Response()
             {
-                StatusCode = HttpStatusCode.OK,
+                IsError = true,
+                StatusCode = HttpStatusCode.NoContent,
                 Message = message
             };
         }
@@ -318,6 +263,20 @@ namespace OnlineShoppingAPI.BL.Common
         }
 
         /// <summary>
+        /// Retuns the Success response with Success Message.
+        /// </summary>
+        /// <returns><see cref="Response"/> containing the Success response.</returns>
+        public static Response OkResponse(string message = "Success", dynamic data = null)
+        {
+            return new Response()
+            {
+                StatusCode = HttpStatusCode.OK,
+                Message = message,
+                Data = data
+            };
+        }
+
+        /// <summary>
         /// Returns the PreConditionFailed response with specified message.
         /// </summary>
         /// <param name="message">Message to sent to response.</param>
@@ -331,21 +290,23 @@ namespace OnlineShoppingAPI.BL.Common
                 Message = message
             };
         }
-
         /// <summary>
-        /// Creates a InternalServerError <see cref="Response"/> with error message.
+        /// Creates an <see cref="HttpResponseMessage"/> with the specified HTTP status code
+        /// and message content.
         /// </summary>
-        /// <returns><see cref="Response"/> Containg InternalServerError response.</returns>
-        public static Response ISEResponse()
+        /// <param name="statusCode">The HTTP status code for the response.</param>
+        /// <param name="message">The content message to be included in the response.</param>
+        /// <returns>
+        /// An <see cref="HttpResponseMessage"/> with the specified status code and message content.
+        /// </returns>
+        public static HttpResponseMessage ResponseMessage(HttpStatusCode statusCode, string message)
         {
-            return new Response()
+            return new HttpResponseMessage(statusCode)
             {
-                IsError = true,
-                StatusCode = HttpStatusCode.InternalServerError,
-                Message = "An internal error occured during request."
+                Content = new StringContent(message)
             };
         }
 
-        #endregion
+        #endregion Public Methods
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineShoppingAPI.Models.DTO
 {
@@ -10,37 +11,48 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Suplier Id
         /// </summary>
-        [JsonPropertyName("P01F01")]
-        public string P01101 { get; set; }
+        [Required(ErrorMessage = "Supplier id is required for the operation specifying.")]
+        [Range(0, int.MaxValue, ErrorMessage = "Id's value needs to be greater than or equal to zero.")]
+        [JsonProperty("P01101")]
+        public string P01F01 { get; set; }
 
         /// <summary>
         /// Suplier name
         /// </summary>
-        [JsonPropertyName("P01F02")]
-        public string P01102 { get; set; }
+        [Required(ErrorMessage = "Please provide supplier name.")]
+        [StringLength(50, ErrorMessage = "Name length can't be more than 50.")]
+        [JsonProperty("P01102")]
+        public string P01F02 { get; set; }
 
         /// <summary>
         /// Suplier Email Id
         /// </summary>
-        [JsonPropertyName("P01F03")]
-        public string P01103 { get; set; }
+        [Required(ErrorMessage = "Please provide email id.")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid email address.")]
+        [JsonProperty("P01103")]
+        public string P01F03 { get; set; }
 
         /// <summary>
         /// Suplier password
         /// </summary>
-        [JsonPropertyName("P01F04")]
-        public string P01104 { get; set; }
+        [Required(ErrorMessage = "Plase enter password.")]
+        [DataType(DataType.Password, ErrorMessage = "Password is in incorrect form.")]
+        [JsonProperty("P01104")]
+        public string P01F04 { get; set; }
 
         /// <summary>
         /// Suplier Mobile Number
         /// </summary>
-        [JsonPropertyName("P01F05")]
-        public string P01105 { get; set; }
+        [Required(ErrorMessage = "Mobile number is required.")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Mobile number is invalid.")]
+        [JsonProperty("P01105")]
+        public string P01F05 { get; set; }
 
         /// <summary>
         /// Suplier GST Number
         /// </summary>
-        [JsonPropertyName("P01F06")]
-        public string P01106 { get; set; }
+        [Required(ErrorMessage = "GST number is required.")]
+        [JsonProperty("P01106")]
+        public string P01F06 { get; set; }
     }
 }

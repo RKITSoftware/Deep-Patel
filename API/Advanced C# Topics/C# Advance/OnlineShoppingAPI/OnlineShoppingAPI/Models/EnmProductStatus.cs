@@ -1,4 +1,4 @@
-﻿namespace OnlineShoppingAPI.Models.Enum
+﻿namespace OnlineShoppingAPI.Models
 {
     /// <summary>
     /// Enumeration representing the status of a product.

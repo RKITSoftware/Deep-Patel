@@ -1,39 +1,30 @@
-﻿using ServiceStack.DataAnnotations;
-using System;
-using System.Text.Json.Serialization;
+﻿using System;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// Containing the order details of which customer by which product
     /// </summary>
-    [Alias("RCD01")]
     public class RCD01
     {
         /// <summary>
         /// Order Id
         /// </summary>
-        [AutoIncrement]
         public int D01F01 { get; set; }
 
         /// <summary>
         /// Foreign key of Customer
         /// </summary>
-        [References(typeof(CUS01))]
-        [JsonPropertyName("D01102")]
         public int D01F02 { get; set; }
 
         /// <summary>
         /// Foreign key of Product
         /// </summary>
-        [References(typeof(PRO02))]
-        [JsonPropertyName("D01103")]
         public int D01F03 { get; set; }
 
         /// <summary>
         /// Quantity of product that customer want to by it.
         /// </summary>
-        [JsonPropertyName("D01104")]
         public int D01F04 { get; set; }
 
         /// <summary>

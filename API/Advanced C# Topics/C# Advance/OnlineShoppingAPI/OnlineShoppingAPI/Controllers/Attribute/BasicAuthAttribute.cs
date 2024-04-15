@@ -1,5 +1,4 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Net;
@@ -18,6 +17,8 @@ namespace OnlineShoppingAPI.Controllers.Attribute
     /// </summary>
     public class BasicAuthAttribute : AuthorizationFilterAttribute
     {
+        #region Public Methods
+
         /// <summary>
         /// Overrides the default OnAuthorization method to perform Basic Authentication.
         /// </summary>
@@ -85,13 +86,11 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                 }
                 catch (Exception ex)
                 {
-                    ex.LogException();
-
-                    actionContext.Response = BLHelper.ResponseMessage(
-                        HttpStatusCode.InternalServerError,
-                        "Internal Server Error - Please Try After Some Time");
+                    throw ex;
                 }
             }
         }
+
+        #endregion Public Methods
     }
 }

@@ -63,7 +63,11 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteRecord(int id)
         {
-            Response response = _rcd01Service.Delete(id);
+            Response response = _rcd01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+                response = _rcd01Service.Delete(id);
+
             return Ok(response);
         }
 

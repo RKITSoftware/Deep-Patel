@@ -30,6 +30,13 @@ namespace OnlineShoppingAPI.BL.Interface
         Response Delete(int id);
 
         /// <summary>
+        /// Performs the data exists validation.
+        /// </summary>
+        /// <param name="id">Id</param>
+        /// <returns>Success response if data exists else notfound response.</returns>
+        Response DeleteValidation(int id);
+
+        /// <summary>
         /// Generate a <see cref="HttpResponseMessage"/> containing the download response as attachment.
         /// </summary>
         /// <param name="id">Customer Id</param>

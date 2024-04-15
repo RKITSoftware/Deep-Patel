@@ -30,6 +30,11 @@ namespace OnlineShoppingAPI.BL.Service
         #region Private Fields
 
         /// <summary>
+        /// Backup database connection using ormlite.
+        /// </summary>
+        private readonly IDbConnectionFactory _backupDbFactory;
+
+        /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
@@ -78,6 +83,8 @@ namespace OnlineShoppingAPI.BL.Service
         public BLRCD01Handler()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
+            _backupDbFactory = HttpContext.Current.Application["BackupDBFactory"] as IDbConnectionFactory;
+
             _pft01Service = new BLPFT01Handler();
             _emailService = new BLEmail();
             _dbRCD01Context = new DBRCD01Context();
@@ -159,21 +166,51 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
+            IDbConnection db = _dbFactory.OpenDbConnection();
+            IDbTransaction transcation = db.BeginTransaction();
+
+            IDbConnection backupDb = _backupDbFactory.OpenDbConnection();
+            IDbTransaction backupTranscation = backupDb.BeginTransaction();
+
+            try
+            {
+                RCD01 objRCD01 = db.SingleById<RCD01>(id);
+
+                backupDb.Insert(objRCD01);
+                db.Delete(objRCD01);
+
+                backupTranscation.Commit();
+                transcation.Commit();
+            }
+            catch (Exception ex)
+            {
+                backupTranscation.Rollback();
+                transcation.Rollback();
+
+                throw ex;
+            }
+
+            return OkResponse();
+        }
+
+        /// <summary>
+        /// Validate the data exists using id.
+        /// </summary>
+        /// <param name="id">Delete record id.</param>
+        /// <returns>Success response if record exists else not found.</returns>
+        public Response DeleteValidation(int id)
+        {
             try
             {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
-                    RCD01 order = db.SingleById<RCD01>(id);
-
-                    if (order == null)
-                        return NotFoundResponse("Record not found.");
-
-                    db.DeleteById<RCD01>(id);
+                    if (db.SingleById<RCD01>(id) == null)
+                        return NotFoundResponse("Record not exits.");
                 }
             }
             catch (Exception ex) { throw ex; }
 
-            return OkResponse("Record deleted successfully.");
+            return OkResponse();
         }
 
         /// <summary>
@@ -186,7 +223,6 @@ namespace OnlineShoppingAPI.BL.Service
         {
             if (filetype.Equals("Json"))
                 return JSONResponse(id);
-
             else if (filetype.Equals("Excel"))
                 return ExcelResponse(id);
 
@@ -329,7 +365,6 @@ namespace OnlineShoppingAPI.BL.Service
                     "No data found for the specified criteria.");
 
             return HttpExcelResponse(result);
-
         }
 
         /// <summary>

@@ -52,6 +52,24 @@ namespace ORMToolDemo.Business_Logic
         /// <returns>The customer with the specified identifier.</returns>
         public Customer GetById(int id)
         {
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                db.Dispose();
+
+                using (var transaction = db.OpenTransaction())
+                {
+                    try
+                    {
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 Customer customer = db.SingleById<Customer>(id);

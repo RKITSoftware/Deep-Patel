@@ -40,22 +40,18 @@ namespace OnlineShoppingAPI.BL.Common
             int padding = mod > 0 ? 4 - mod : 0;
             jwtEncodePayload += new string('=', padding);
 
-            try
-            {
-                string decodedPayloadBytes = Encoding.UTF8.GetString(
-                    Convert.FromBase64String(jwtEncodePayload));
-                JObject json = JObject.Parse(decodedPayloadBytes);
+            string decodedPayloadBytes = Encoding.UTF8.GetString(
+                Convert.FromBase64String(jwtEncodePayload));
+            JObject json = JObject.Parse(decodedPayloadBytes);
 
-                // Retrieving user information based on the decoded payload
-                USR01 user = BLHelper.GetUser(int.Parse(json["Id"].ToString()));
+            // Retrieving user information based on the decoded payload
+            USR01 user = BLHelper.GetUser(int.Parse(json["Id"].ToString()));
 
-                // Creating GenericIdentity and GenericPrincipal objects for the user
-                GenericIdentity identity = new GenericIdentity(user.R01F02);
-                IPrincipal principal = new GenericPrincipal(identity, user.R01F04.Split(','));
+            // Creating GenericIdentity and GenericPrincipal objects for the user
+            GenericIdentity identity = new GenericIdentity(user.R01F02);
+            IPrincipal principal = new GenericPrincipal(identity, user.R01F04.Split(','));
 
-                return principal;
-            }
-            catch (Exception ex) { throw ex; }
+            return principal;
         }
 
         /// <summary>
@@ -125,40 +121,37 @@ namespace OnlineShoppingAPI.BL.Common
         /// </returns>
         public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
         {
-            try
-            {
-                string issuer = "CustomJWTBearerTokenAPI";
 
-                // Creating SymmetricSecurityKey and SigningCredentials
-                SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(secretKey));
+            string issuer = "CustomJWTBearerTokenAPI";
 
-                SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
-                    SecurityAlgorithms.HmacSha256);
+            // Creating SymmetricSecurityKey and SigningCredentials
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(secretKey));
 
-                // Creating claims for the user
-                List<Claim> claims = new List<Claim>
+            SigningCredentials credentials = new SigningCredentials(symmetricSecurityKey,
+                SecurityAlgorithms.HmacSha256);
+
+            // Creating claims for the user
+            List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Sid, sessionId.ToString()),
                     new Claim("Id", objUser.R01F01.ToString())
                 };
 
-                // Creating JWT token with claims and signing credentials
-                JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
-                    expires: DateTime.Now.AddDays(7),
-                    signingCredentials: credentials);
+            // Creating JWT token with claims and signing credentials
+            JwtSecurityToken token = new JwtSecurityToken(issuer, issuer, claims,
+                expires: DateTime.Now.AddDays(7),
+                signingCredentials: credentials);
 
-                JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
-                string jwtToken = handler.WriteToken(token);
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            string jwtToken = handler.WriteToken(token);
 
-                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-                {
-                    Content = new StringContent(jwtToken)
-                };
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(jwtToken)
+            };
 
-                return response;
-            }
-            catch (Exception ex) { throw ex; }
+            return response;
         }
 
         #endregion Public Methods

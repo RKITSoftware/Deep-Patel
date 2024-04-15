@@ -80,25 +80,32 @@ namespace OnlineShoppingAPI.BL.Service
             if (GetUser(newEmail) != null)
                 return PreConditionFailedResponse("New email is already exists, use another email.");
 
-            try
+            using (var db = _dbFactory.OpenDbConnection())
+            using (var transaction = db.BeginTransaction())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                USR01 objUser = GetUser(username, password);
+                if (objUser == null)
+                    return NotFoundResponse("User not found.");
+
+                ADM01 objAdmin = db.Single(db.From<ADM01>()
+                    .Where(a => a.M01F03.StartsWith(username)));
+
+                objAdmin.M01F03 = newEmail;
+                objUser.R01F02 = newEmail.Split('@')[0];
+
+                try
                 {
-                    USR01 objUser = GetUser(username, password);
-                    if (objUser == null)
-                        return NotFoundResponse("User not found.");
-
-                    ADM01 objAdmin = db.Single(db.From<ADM01>()
-                        .Where(a => a.M01F03.StartsWith(username)));
-
-                    objAdmin.M01F03 = newEmail;
-                    objUser.R01F02 = newEmail.Split('@')[0];
-
                     db.Update(objAdmin);
                     db.Update(objUser);
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
                 }
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Email changed successfully.");
         }
@@ -120,12 +127,8 @@ namespace OnlineShoppingAPI.BL.Service
             objUser.R01F03 = newPassword;
             objUser.R01F05 = GetEncryptPassword(newPassword);
 
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                    db.Update(objUser);
-            }
-            catch (Exception ex) { throw ex; }
+            using (var db = _dbFactory.OpenDbConnection())
+                db.Update(objUser);
 
             return OkResponse("Password changed successfully.");
         }
@@ -137,22 +140,29 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
+            using (var transaction = db.BeginTransaction())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                ADM01 objADM01 = db.SingleById<ADM01>(id);
+
+                if (objADM01 == null)
+                    return NotFoundResponse("Admin not found.");
+
+                string username = objADM01.M01F03.Split('@')[0];
+
+                try
                 {
-                    ADM01 objADM01 = db.SingleById<ADM01>(id);
-
-                    if (objADM01 == null)
-                        return NotFoundResponse("Admin not found.");
-
-                    string username = objADM01.M01F03.Split('@')[0];
-
                     db.DeleteById<ADM01>(objADM01.M01F01);
                     db.Delete<USR01>(u => u.R01F02 == username);
+
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    transaction.Rollback();
+                    throw;
                 }
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Admin deleted successfully.");
         }
@@ -202,15 +212,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if data saved successfully else response according to error.</returns>
         public Response Save()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    db.Insert(_objADM01);
-                    db.Insert(_objUSR01);
-                }
+                db.Insert(_objADM01);
+                db.Insert(_objUSR01);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Customer created successfully.");
         }
@@ -221,16 +227,12 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response according to error.</returns>
         public Response Validation()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Check if the email already exists in the database
-                    if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
-                        return PreConditionFailedResponse("Username already exists");
-                }
+                // Check if the email already exists in the database
+                if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
+                    return PreConditionFailedResponse("Username already exists");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }

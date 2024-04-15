@@ -26,35 +26,28 @@ namespace OnlineShoppingAPI.BL.Common.Service
         /// <param name="otp">OTP(One Time Password) for the user.</param>
         public void Send(string email, string otp)
         {
-            try
+            // Initialize SMTP client with Office 365 settings.
+            SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587)
             {
-                // Initialize SMTP client with Office 365 settings.
-                SmtpClient smtpClient = new SmtpClient("smtp.office365.com", 587)
-                {
-                    Credentials = HttpContext.Current
-                        .Application["Credentials"] as NetworkCredential,
+                Credentials = HttpContext.Current
+                    .Application["Credentials"] as NetworkCredential,
 
-                    DeliveryMethod = SmtpDeliveryMethod.Network,
-                    EnableSsl = true
-                };
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                EnableSsl = true
+            };
 
-                // Create a mail message with sender, recipient, subject, and body.
-                MailMessage mailMessage = new MailMessage
-                {
-                    From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel")
-                };
-                mailMessage.To.Add(new MailAddress(email));
-
-                mailMessage.Subject = "OTP for Buying";
-                mailMessage.Body = $"OTP for buying items in your cart: {otp}";
-
-                // Send the mail message.
-                smtpClient.Send(mailMessage);
-            }
-            catch (Exception ex)
+            // Create a mail message with sender, recipient, subject, and body.
+            MailMessage mailMessage = new MailMessage
             {
-                throw ex;
-            }
+                From = new MailAddress("deeppatel2513@outlook.com", "Deep Patel")
+            };
+            mailMessage.To.Add(new MailAddress(email));
+
+            mailMessage.Subject = "OTP for Buying";
+            mailMessage.Body = $"OTP for buying items in your cart: {otp}";
+
+            // Send the mail message.
+            smtpClient.Send(mailMessage);
         }
 
         /// <summary>
@@ -101,10 +94,6 @@ namespace OnlineShoppingAPI.BL.Common.Service
                 {
                     smtpClient.Send(mail);
                     Console.WriteLine("Email sent successfully.");
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
                 }
                 finally
                 {

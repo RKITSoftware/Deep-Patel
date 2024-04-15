@@ -74,7 +74,6 @@ namespace OnlineShoppingAPI.DL
                         lstData.Add(0);
                 }
             }
-            catch (Exception ex) { throw ex; }
             finally { _connection.Close(); }
 
             return lstData;
@@ -114,7 +113,6 @@ namespace OnlineShoppingAPI.DL
                         lstData.Add(0);
                 }
             }
-            catch (Exception ex) { throw ex; }
             finally { _connection.Close(); }
 
             return lstData;
@@ -158,7 +156,6 @@ namespace OnlineShoppingAPI.DL
                         lstData.Add(0);
                 }
             }
-            catch (Exception ex) { throw ex; }
             finally { _connection.Close(); }
 
             return lstData;

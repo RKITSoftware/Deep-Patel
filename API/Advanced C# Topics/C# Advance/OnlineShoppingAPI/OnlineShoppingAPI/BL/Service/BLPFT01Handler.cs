@@ -19,16 +19,16 @@ namespace OnlineShoppingAPI.BL.Service
         #region Private Fields
 
         /// <summary>
-        /// Database Context for Mysql queries of <see cref="BLPFT01Handler"/>.
-        /// </summary>
-        private readonly DBPFT01Context _dbPFT01Context;
-
-        /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
 
-        #endregion
+        /// <summary>
+        /// Database Context for Mysql queries of <see cref="BLPFT01Handler"/>.
+        /// </summary>
+        private readonly DBPFT01Context _dbPFT01Context;
+
+        #endregion Private Fields
 
         #region Constructors
 
@@ -41,7 +41,9 @@ namespace OnlineShoppingAPI.BL.Service
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
         }
 
-        #endregion
+        #endregion Constructors
+
+        #region Public Methods
 
         /// <summary>
         /// Retrieves profit data for each day of current running month.
@@ -97,29 +99,28 @@ namespace OnlineShoppingAPI.BL.Service
         public void UpdateProfit(PRO02 objPRO02, int quantity)
         {
             string currentDate = DateTime.Now.ToString("dd-MM-yyyy");
+            decimal profitChange = (objPRO02.O02F04 - objPRO02.O02F03) * quantity;
 
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PFT01 objProfit = db.Single<PFT01>(p => p.T01F02 == currentDate);
+                PFT01 objProfit = db.Single<PFT01>(p => p.T01F02 == currentDate);
 
-                    if (objProfit != null)
+                if (objProfit != null)
+                {
+                    objProfit.T01F03 += profitChange;
+                    db.Update(objProfit);
+                }
+                else
+                {
+                    db.Insert(new PFT01()
                     {
-                        objProfit.T01F03 += (objPRO02.O02F04 - objPRO02.O02F03) * quantity;
-                        db.Update(objProfit);
-                    }
-                    else
-                    {
-                        db.Insert(new PFT01()
-                        {
-                            T01F02 = currentDate,
-                            T01F03 = (objPRO02.O02F04 - objPRO02.O02F03) * quantity
-                        });
-                    }
+                        T01F02 = currentDate,
+                        T01F03 = profitChange
+                    });
                 }
             }
-            catch (Exception ex) { throw ex; }
         }
+
+        #endregion Public Methods
     }
 }

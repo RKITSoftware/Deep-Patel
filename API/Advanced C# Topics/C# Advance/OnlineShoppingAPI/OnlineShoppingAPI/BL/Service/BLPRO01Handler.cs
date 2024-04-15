@@ -5,7 +5,6 @@ using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System;
 using System.Collections.Generic;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
@@ -61,19 +60,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PRO01 existingPRO01 = db.SingleById<PRO01>(id);
+                PRO01 existingPRO01 = db.SingleById<PRO01>(id);
 
-                    if (existingPRO01 == null)
-                        return NotFoundResponse("Product not found.");
+                if (existingPRO01 == null)
+                    return NotFoundResponse("Product not found.");
 
-                    db.Delete(existingPRO01);
-                }
+                db.Delete(existingPRO01);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Product deleted successfully.");
         }
@@ -86,12 +81,8 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<PRO01> lstPRO01;
 
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                    lstPRO01 = db.Select<PRO01>();
-            }
-            catch (Exception ex) { throw ex; }
+            using (var db = _dbFactory.OpenDbConnection())
+                lstPRO01 = db.Select<PRO01>();
 
             if (lstPRO01 == null || lstPRO01.Count == 0)
                 return NoContentResponse();
@@ -126,23 +117,19 @@ namespace OnlineShoppingAPI.BL.Service
                     return PreConditionFailedResponse("Id needs to greater than zero for update operation.");
             }
 
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                // Update operation prevalidation
+                if (Operation == EnmOperation.E)
                 {
-                    // Update operation prevalidation
-                    if (Operation == EnmOperation.E)
-                    {
-                        if (db.SingleById<PRO01>(objDTOPRO01.O01F01) == null)
-                            return NotFoundResponse("Product doesn't exist.");
-                    }
-
-                    // Checks supplier exists or not.
-                    if (db.SingleById<SUP01>(objDTOPRO01.O01F06) == null)
-                        return NotFoundResponse("Supplier doesn't exist.");
+                    if (db.SingleById<PRO01>(objDTOPRO01.O01F01) == null)
+                        return NotFoundResponse("Product doesn't exist.");
                 }
+
+                // Checks supplier exists or not.
+                if (db.SingleById<SUP01>(objDTOPRO01.O01F06) == null)
+                    return NotFoundResponse("Supplier doesn't exist.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }
@@ -153,21 +140,17 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                if (Operation == EnmOperation.A)
                 {
-                    if (Operation == EnmOperation.A)
-                    {
-                        db.Insert(_objPRO01);
-                        return OkResponse("Product created successfully.");
-                    }
-
-                    db.Update(_objPRO01);
-                    return OkResponse("Product updated successfully.");
+                    db.Insert(_objPRO01);
+                    return OkResponse("Product created successfully.");
                 }
+
+                db.Update(_objPRO01);
+                return OkResponse("Product updated successfully.");
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -178,21 +161,17 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response UpdateQuantity(int id, int quantity)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PRO01 objProduct = db.SingleById<PRO01>(id);
+                PRO01 objProduct = db.SingleById<PRO01>(id);
 
-                    if (objProduct == null)
-                        return NotFoundResponse("Product not found.");
+                if (objProduct == null)
+                    return NotFoundResponse("Product not found.");
 
-                    // Update product quantity
-                    objProduct.O01F04 += quantity;
-                    db.Update(objProduct);
-                }
+                // Update product quantity
+                objProduct.O01F04 += quantity;
+                db.Update(objProduct);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Quantity updates successfully.");
         }
@@ -203,15 +182,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (db.Exists<PRO01>(p => p.O01F02 == _objPRO01.O01F02 && p.O01F06 == _objPRO01.O01F06))
-                        return PreConditionFailedResponse("Product can't be created because it already exists.");
-                }
+                if (db.Exists<PRO01>(p => p.O01F02 == _objPRO01.O01F02 && p.O01F06 == _objPRO01.O01F06))
+                    return PreConditionFailedResponse("Product can't be created because it already exists.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }

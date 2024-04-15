@@ -6,7 +6,6 @@ using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
-using System;
 using System.Data;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
@@ -68,19 +67,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    CAT01 category = db.SingleById<CAT01>(id);
+                CAT01 category = db.SingleById<CAT01>(id);
 
-                    if (category == null)
-                        return NotFoundResponse("Category not found.");
+                if (category == null)
+                    return NotFoundResponse("Category not found.");
 
-                    db.Delete(category);
-                }
+                db.Delete(category);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Category deleted successfully.");
         }
@@ -106,19 +101,15 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetById(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    CAT01 objCategory = db.Single<CAT01>(c => c.T01F01 == id);
+                CAT01 objCategory = db.Single<CAT01>(c => c.T01F01 == id);
 
-                    if (objCategory == null)
-                        return NotFoundResponse("Category not found.");
+                if (objCategory == null)
+                    return NotFoundResponse("Category not found.");
 
-                    return OkResponse("", objCategory);
-                }
+                return OkResponse("", objCategory);
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -145,16 +136,12 @@ namespace OnlineShoppingAPI.BL.Service
                 if (objDTOCAT01.T01F01 <= 0)
                     return PreConditionFailedResponse("Id can't be zero nor less than zero for updating the category.");
 
-                try
+                using (var db = _dbFactory.OpenDbConnection())
                 {
-                    using (var db = _dbFactory.OpenDbConnection())
-                    {
-                        // Checks the category exists or not.
-                        if (db.SingleById<CAT01>(objDTOCAT01.T01F01) == null)
-                            return NotFoundResponse("Category not found.");
-                    }
+                    // Checks the category exists or not.
+                    if (db.SingleById<CAT01>(objDTOCAT01.T01F01) == null)
+                        return NotFoundResponse("Category not found.");
                 }
-                catch (Exception ex) { throw ex; }
             }
 
             return OkResponse();
@@ -166,21 +153,17 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                if (Operation == EnmOperation.A)
                 {
-                    if (Operation == EnmOperation.A)
-                    {
-                        db.Insert(_objCAT01);
-                        return OkResponse("Category created successfully.");
-                    }
-
-                    db.Update(_objCAT01);
-                    return OkResponse("Category updated successfully.");
+                    db.Insert(_objCAT01);
+                    return OkResponse("Category created successfully.");
                 }
+
+                db.Update(_objCAT01);
+                return OkResponse("Category updated successfully.");
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -189,15 +172,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (db.Exists<CAT01>(c => c.T01F02 == _objCAT01.T01F02))
-                        return PreConditionFailedResponse("Category name already exists choose another name.");
-                }
+                if (db.Exists<CAT01>(c => c.T01F02 == _objCAT01.T01F02))
+                    return PreConditionFailedResponse("Category name already exists choose another name.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }

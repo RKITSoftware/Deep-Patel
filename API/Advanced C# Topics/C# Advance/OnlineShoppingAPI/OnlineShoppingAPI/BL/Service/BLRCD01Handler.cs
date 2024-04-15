@@ -105,56 +105,52 @@ namespace OnlineShoppingAPI.BL.Service
             int id = 1;
             dynamic lstPurchasedItem = new List<dynamic>();
 
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                foreach (CRT01 item in lstItems)
                 {
-                    foreach (CRT01 item in lstItems)
+                    // Check if the product is in stock
+                    PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
+
+                    if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
                     {
-                        // Check if the product is in stock
-                        PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
-
-                        if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
+                        RCD01 objRecord = new RCD01()
                         {
-                            RCD01 objRecord = new RCD01()
-                            {
-                                D01F02 = item.T01F02,
-                                D01F03 = item.T01F03,
-                                D01F04 = item.T01F04,
-                                D01F05 = item.T01F05,
-                                D01F06 = Guid.NewGuid(),
-                                D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
-                            };
+                            D01F02 = item.T01F02,
+                            D01F03 = item.T01F03,
+                            D01F04 = item.T01F04,
+                            D01F05 = item.T01F05,
+                            D01F06 = Guid.NewGuid(),
+                            D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+                        };
 
-                            lstPurchasedItem.Add(new
-                            {
-                                OrderId = id++,
-                                ProductName = sourceProduct.O02F02,
-                                Quantity = objRecord.D01F04,
-                                Price = objRecord.D01F05,
-                                InvoiceId = objRecord.D01F06,
-                                PurchaseTime = objRecord.D01F07
-                            });
+                        lstPurchasedItem.Add(new
+                        {
+                            OrderId = id++,
+                            ProductName = sourceProduct.O02F02,
+                            Quantity = objRecord.D01F04,
+                            Price = objRecord.D01F05,
+                            InvoiceId = objRecord.D01F06,
+                            PurchaseTime = objRecord.D01F07
+                        });
 
-                            // Create a new order record
-                            db.Insert(objRecord);
+                        // Create a new order record
+                        db.Insert(objRecord);
 
-                            // Update the product stock
-                            sourceProduct.O02F05 -= item.T01F04;
-                            if (sourceProduct.O02F05 == 0)
-                                sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
+                        // Update the product stock
+                        sourceProduct.O02F05 -= item.T01F04;
+                        if (sourceProduct.O02F05 == 0)
+                            sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
 
-                            db.Update(sourceProduct);
-                            _pft01Service.UpdateProfit(sourceProduct, objRecord.D01F04);
+                        db.Update(sourceProduct);
+                        _pft01Service.UpdateProfit(sourceProduct, objRecord.D01F04);
 
-                            db.DeleteById<CRT01>(item.T01F01);
-                        }
+                        db.DeleteById<CRT01>(item.T01F01);
                     }
-
-                    _emailService.SendAsync(s01F03, lstPurchasedItem);
                 }
+
+                _emailService.SendAsync(s01F03, lstPurchasedItem);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Items bought successfully.");
         }
@@ -166,28 +162,27 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            IDbConnection db = _dbFactory.OpenDbConnection();
-            IDbTransaction transcation = db.BeginTransaction();
-
-            IDbConnection backupDb = _backupDbFactory.OpenDbConnection();
-            IDbTransaction backupTranscation = backupDb.BeginTransaction();
-
-            try
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            using (IDbTransaction transaction = db.BeginTransaction())
+            using (IDbConnection backupDb = _backupDbFactory.OpenDbConnection())
+            using (IDbTransaction backupTransaction = backupDb.BeginTransaction())
             {
-                RCD01 objRCD01 = db.SingleById<RCD01>(id);
+                try
+                {
+                    RCD01 objRCD01 = db.SingleById<RCD01>(id);
 
-                backupDb.Insert(objRCD01);
-                db.Delete(objRCD01);
+                    backupDb.Insert(objRCD01);
+                    db.Delete(objRCD01);
 
-                backupTranscation.Commit();
-                transcation.Commit();
-            }
-            catch (Exception ex)
-            {
-                backupTranscation.Rollback();
-                transcation.Rollback();
-
-                throw ex;
+                    backupTransaction.Commit();
+                    transaction.Commit();
+                }
+                catch (Exception)
+                {
+                    backupTransaction.Rollback();
+                    transaction.Rollback();
+                    throw;
+                }
             }
 
             return OkResponse();
@@ -200,15 +195,13 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if record exists else not found.</returns>
         public Response DeleteValidation(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                if (db.SingleById<RCD01>(id) == null)
                 {
-                    if (db.SingleById<RCD01>(id) == null)
-                        return NotFoundResponse("Record not exits.");
+                    return NotFoundResponse("Record not exits.");
                 }
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }
@@ -238,17 +231,10 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<RCD01> lstRCD01;
 
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                    lstRCD01 = db.Select<RCD01>();
-            }
-            catch (Exception ex) { throw ex; }
+            using (var db = _dbFactory.OpenDbConnection())
+                lstRCD01 = db.Select<RCD01>();
 
-            Response response = OkResponse();
-            response.Data = lstRCD01;
-
-            return response;
+            return OkResponse("", lstRCD01);
         }
 
         /// <summary>
@@ -274,22 +260,18 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTORCD01 objDTORCD01)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Checks customer exists or not.
-                    if (db.SingleById<CUS01>(objDTORCD01.D01F02) == null)
-                        return NotFoundResponse("Customer doesn't exist.");
+                // Checks customer exists or not.
+                if (db.SingleById<CUS01>(objDTORCD01.D01F02) == null)
+                    return NotFoundResponse("Customer doesn't exist.");
 
-                    // Checks product exists or not.
-                    _objPRO02 = db.SingleById<PRO02>(objDTORCD01.D01F03);
+                // Checks product exists or not.
+                _objPRO02 = db.SingleById<PRO02>(objDTORCD01.D01F03);
 
-                    if (_objPRO02 == null)
-                        return NotFoundResponse("Product doesn't exist.");
-                }
+                if (_objPRO02 == null)
+                    return NotFoundResponse("Product doesn't exist.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }
@@ -300,35 +282,42 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
+            using (var transaction = db.BeginTransaction())
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                // Update source product quantity and calculate total cost
+                _objPRO02.O02F05 -= _objRCD01.D01F04;
+
+                if (_objPRO02.O02F05 == 0)
+                    _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
+
+                List<dynamic> lstItems = new List<dynamic>();
+                string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
+                lstItems.Add(new
                 {
-                    // Update source product quantity and calculate total cost
-                    _objPRO02.O02F05 -= _objRCD01.D01F04;
+                    ProductName = _objPRO02.O02F02,
+                    Quantity = _objRCD01.D01F04,
+                    Price = _objRCD01.D01F05,
+                    InvoiceId = _objRCD01.D01F06,
+                    PurchaseTime = _objRCD01.D01F07
+                });
 
-                    if (_objPRO02.O02F05 == 0)
-                        _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
+                _emailService.SendAsync(customerEmail, lstItems);
 
-                    List<dynamic> lstItems = new List<dynamic>();
-                    string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
-                    lstItems.Add(new
-                    {
-                        ProductName = _objPRO02.O02F02,
-                        Quantity = _objRCD01.D01F04,
-                        Price = _objRCD01.D01F05,
-                        InvoiceId = _objRCD01.D01F06,
-                        PurchaseTime = _objRCD01.D01F07
-                    });
-
-                    _emailService.SendAsync(customerEmail, lstItems);
-
+                try
+                {
                     // Insert order record and update source product
                     db.Insert(_objRCD01);
                     db.Update(_objPRO02);
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    throw ex;
                 }
             }
-            catch (Exception ex) { throw ex; }
 
             _pft01Service.UpdateProfit(_objPRO02, _objRCD01.D01F04);
             return OkResponse("Record successfully created.");

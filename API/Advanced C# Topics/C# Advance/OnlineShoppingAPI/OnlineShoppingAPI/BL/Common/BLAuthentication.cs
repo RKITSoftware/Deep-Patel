@@ -21,31 +21,27 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns><see cref="HttpResponseMessage"/> with cookies header.</returns>
         public HttpResponseMessage LogIn(string username, string password)
         {
-            try
+            if (BLHelper.IsExist(username, password))
             {
-                if (BLHelper.IsExist(username, password))
+                // Generate an authentication token and set it as a cookie in the response.
+                string encodedAuthToken = Convert.ToBase64String(
+                    Encoding.UTF8.GetBytes($"{username}:{password}"));
+
+                HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
+                    $"{username} successfully login.");
+
+                CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
                 {
-                    // Generate an authentication token and set it as a cookie in the response.
-                    string encodedAuthToken = Convert.ToBase64String(
-                        Encoding.UTF8.GetBytes($"{username}:{password}"));
+                    Expires = DateTime.Now.AddMinutes(20),
+                    Path = "/"
+                };
 
-                    HttpResponseMessage response = BLHelper.ResponseMessage(HttpStatusCode.OK,
-                        $"{username} successfully login.");
-
-                    CookieHeaderValue cookie = new CookieHeaderValue("MyAuth", encodedAuthToken)
-                    {
-                        Expires = DateTime.Now.AddMinutes(20),
-                        Path = "/"
-                    };
-
-                    response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
-                    return response;
-                }
-
-                // Return a NotFound response if the user credentials are not valid.
-                return new HttpResponseMessage(HttpStatusCode.NotFound);
+                response.Headers.AddCookies(new CookieHeaderValue[] { cookie });
+                return response;
             }
-            catch (Exception ex) { throw ex; }
+
+            // Return a NotFound response if the user credentials are not valid.
+            return new HttpResponseMessage(HttpStatusCode.NotFound);
         }
 
         /// <summary>

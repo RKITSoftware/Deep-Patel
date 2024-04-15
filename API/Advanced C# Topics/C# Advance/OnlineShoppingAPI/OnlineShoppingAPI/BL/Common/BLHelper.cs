@@ -90,25 +90,21 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns>Encrypted ciphertext.</returns>
         public static string GetEncryptPassword(string plaintext)
         {
-            try
+            ICryptoTransform encryptor = _objAes.CreateEncryptor(_objAes.Key, _objAes.IV);
+
+            using (MemoryStream msEncrypt = new MemoryStream())
             {
-                ICryptoTransform encryptor = _objAes.CreateEncryptor(_objAes.Key, _objAes.IV);
-
-                using (MemoryStream msEncrypt = new MemoryStream())
+                using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor,
+                    CryptoStreamMode.Write))
                 {
-                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor,
-                        CryptoStreamMode.Write))
+                    using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
                     {
-                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                        {
-                            swEncrypt.Write(plaintext);
-                        }
+                        swEncrypt.Write(plaintext);
                     }
-
-                    return Convert.ToBase64String(msEncrypt.ToArray());
                 }
+
+                return Convert.ToBase64String(msEncrypt.ToArray());
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -118,14 +114,10 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns>User details. Null if the user is not found.</returns>
         public static USR01 GetUser(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.SingleById<USR01>(id);
-                }
+                return db.SingleById<USR01>(id);
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -135,14 +127,10 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns>User details. Null if the user is not found.</returns>
         public static USR01 GetUser(string username)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Single<USR01>(u => u.R01F02.Equals(username));
-                }
+                return db.Single<USR01>(u => u.R01F02.Equals(username));
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -153,17 +141,14 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns>User details. Null if the user is not found.</returns>
         public static USR01 GetUser(string username, string password)
         {
-            try
+            string encryptedPassword = GetEncryptPassword(password);
+
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                string encryptedPassword = GetEncryptPassword(password);
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Single<USR01>(u =>
-                        u.R01F02.Equals(username) &&
-                        u.R01F05.Equals(encryptedPassword));
-                }
+                return db.Single<USR01>(u =>
+                    u.R01F02.Equals(username) &&
+                    u.R01F05.Equals(encryptedPassword));
             }
-            catch (Exception ex) { throw ex; }
         }
 
 
@@ -175,17 +160,13 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns>True if the user exists, false otherwise.</returns>
         public static bool IsExist(string username, string password)
         {
-            try
+            string encryptedPassword = GetEncryptPassword(password);
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                string encryptedPassword = GetEncryptPassword(password);
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    return db.Exists<USR01>(u =>
-                        u.R01F02.Equals(username) &&
-                        u.R01F05.Equals(encryptedPassword));
-                }
+                return db.Exists<USR01>(u =>
+                    u.R01F02.Equals(username) &&
+                    u.R01F05.Equals(encryptedPassword));
             }
-            catch (Exception ex) { throw ex; }
         }
 
         /// <summary>
@@ -194,41 +175,34 @@ namespace OnlineShoppingAPI.BL.Common
         /// <param name="exception">The exception that occurred.</param>
         public static void LogError(Exception exception)
         {
-            try
+            // Checks directory exists or not.
+            if (!Directory.Exists(_logFolderPath))
             {
-                // Checks directory exists or not.
-                if (!Directory.Exists(_logFolderPath))
-                {
-                    Directory.CreateDirectory(_logFolderPath);
-                }
-
-                string filePath = Path.Combine(_logFolderPath, $"{DateTime.Today:dd-MM-yy}.txt");
-
-                // Checks the log file exists or not.
-                if (!File.Exists(filePath))
-                {
-                    File.Create(filePath).Dispose();
-                }
-
-                string line = Environment.NewLine;
-                string _errorMsg = exception.GetType().Name;
-                string _exType = exception.GetType().ToString();
-
-                using (StreamWriter writer = File.AppendText(filePath))
-                {
-                    // Error message creation
-                    string error = $"Time: {DateTime.Now:HH:mm:ss}{line}" +
-                                   $"Error Message: {_errorMsg}{line}" +
-                                   $"Exception Type: {_exType}{line}" +
-                                   $"Error Stack Trace: {exception.StackTrace}{line}";
-
-                    writer.WriteLine(error);
-                    writer.Flush();
-                }
+                Directory.CreateDirectory(_logFolderPath);
             }
-            catch (Exception ex)
+
+            string filePath = Path.Combine(_logFolderPath, $"{DateTime.Today:dd-MM-yy}.txt");
+
+            // Checks the log file exists or not.
+            if (!File.Exists(filePath))
             {
-                Console.WriteLine($"An error occurred while logging: {ex}");
+                File.Create(filePath).Dispose();
+            }
+
+            string line = Environment.NewLine;
+            string _errorMsg = exception.GetType().Name;
+            string _exType = exception.GetType().ToString();
+
+            using (StreamWriter writer = File.AppendText(filePath))
+            {
+                // Error message creation
+                string error = $"Time: {DateTime.Now:HH:mm:ss}{line}" +
+                               $"Error Message: {_errorMsg}{line}" +
+                               $"Exception Type: {_exType}{line}" +
+                               $"Error Stack Trace: {exception.StackTrace}{line}";
+
+                writer.WriteLine(error);
+                writer.Flush();
             }
         }
 

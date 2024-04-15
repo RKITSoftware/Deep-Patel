@@ -69,17 +69,13 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (!db.Exists<PRO02>(p => p.O02F01 == id))
-                        return NotFoundResponse("Product not found.");
+                if (!db.Exists<PRO02>(p => p.O02F01 == id))
+                    return NotFoundResponse("Product not found.");
 
-                    db.DeleteById<PRO02>(id);
-                }
+                db.DeleteById<PRO02>(id);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Product created successfully.");
         }
@@ -92,12 +88,8 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<PRO02> lstPRO02;
 
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                    lstPRO02 = db.Select<PRO02>();
-            }
-            catch (Exception ex) { throw ex; }
+            using (var db = _dbFactory.OpenDbConnection())
+                lstPRO02 = db.Select<PRO02>();
 
             return OkResponse("", lstPRO02);
         }
@@ -139,20 +131,16 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOPRO02 objDTOPRO02)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Checks category exists or not.
-                    if (db.SingleById<CAT01>(objDTOPRO02.O01F09) == null)
-                        return NotFoundResponse("Category doesn't exist.");
+                // Checks category exists or not.
+                if (db.SingleById<CAT01>(objDTOPRO02.O01F09) == null)
+                    return NotFoundResponse("Category doesn't exist.");
 
-                    // Checks supplier exists or not.
-                    if (db.SingleById<SUP01>(objDTOPRO02.O01F10) == null)
-                        return NotFoundResponse("Supplier doesn't exist.");
-                }
+                // Checks supplier exists or not.
+                if (db.SingleById<SUP01>(objDTOPRO02.O01F10) == null)
+                    return NotFoundResponse("Supplier doesn't exist.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }
@@ -163,12 +151,8 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            try
-            {
-                using (var db = _dbFactory.OpenDbConnection())
-                    db.Insert(_objPRO02);
-            }
-            catch (Exception ex) { throw ex; }
+            using (var db = _dbFactory.OpenDbConnection())
+                db.Insert(_objPRO02);
 
             return OkResponse("Product created successfully.");
         }
@@ -181,20 +165,16 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response UpdateSellPrice(int id, int sellPrice)
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    PRO02 existingProduct = db.SingleById<PRO02>(id);
+                PRO02 existingProduct = db.SingleById<PRO02>(id);
 
-                    if (existingProduct == null)
-                        return NotFoundResponse("Product not found.");
+                if (existingProduct == null)
+                    return NotFoundResponse("Product not found.");
 
-                    existingProduct.O02F04 = sellPrice;
-                    db.Update(existingProduct);
-                }
+                existingProduct.O02F04 = sellPrice;
+                db.Update(existingProduct);
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse("Product sell price updated successfully.");
         }
@@ -205,17 +185,13 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
-            try
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    if (db.Exists<PRO02>(p => p.O02F02 == _objPRO02.O02F02
-                        && p.O02F09 == _objPRO02.O02F09
-                        && p.O02F10 == _objPRO02.O02F10))
-                        return PreConditionFailedResponse("Product can't be created because it already exists.");
-                }
+                if (db.Exists<PRO02>(p => p.O02F02 == _objPRO02.O02F02
+                    && p.O02F09 == _objPRO02.O02F09
+                    && p.O02F10 == _objPRO02.O02F10))
+                    return PreConditionFailedResponse("Product can't be created because it already exists.");
             }
-            catch (Exception ex) { throw ex; }
 
             return OkResponse();
         }

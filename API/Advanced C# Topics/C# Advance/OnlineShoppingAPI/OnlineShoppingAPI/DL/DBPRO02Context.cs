@@ -1,6 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
 using OnlineShoppingAPI.Models.POCO;
-using System;
 using System.Configuration;
 using System.Data;
 
@@ -73,7 +72,6 @@ namespace OnlineShoppingAPI.DL
                 _connection.Open();
                 adapter.Fill(dtResult);
             }
-            catch (Exception ex) { throw ex; }
             finally { _connection.Close(); }
 
             return dtResult;

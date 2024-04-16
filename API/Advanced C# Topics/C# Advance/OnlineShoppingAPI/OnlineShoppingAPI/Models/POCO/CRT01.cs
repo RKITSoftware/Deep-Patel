@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// CRT01 model to store the cart information of customer.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Cart id
         /// </summary>
+        [PrimaryKey]
         public int T01F01 { get; set; }
 
         /// <summary>

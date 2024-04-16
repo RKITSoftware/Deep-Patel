@@ -11,20 +11,22 @@ namespace PlacementCellManagementAPI.Extensions
     /// </summary>
     public static class ConfigureServiceExtension
     {
+        #region Extension Methods
+
         /// <summary>
         /// Adds transient services for various interfaces and their corresponding implementations.
         /// </summary>
         /// <param name="services">The collection of services to add to.</param>
         public static void AddInterfaceServices(this IServiceCollection services)
         {
-            services.AddTransient<IAdminService, BLAdmin>();
-            services.AddTransient<IUserService, BLUser>();
+            services.AddTransient<IADM01Service, BLADM01Handler>();
+            services.AddTransient<IUSR01Service, BLUSR01Handler>();
 
-            services.AddTransient<IStudentService, BLStudent>();
-            services.AddTransient<ICompanyService, BLCompany>();
+            services.AddTransient<ISTU01Service, BLSTU01Handler>();
+            services.AddTransient<ICMP01Service, BLCMP01Handler>();
 
-            services.AddTransient<IJobService, BLJob>();
-            services.AddTransient<ITokenService, BLToken>();
+            services.AddTransient<IJOB01Service, BLJOB01Handler>();
+            services.AddTransient<ITokenService, BLTokenHandler>();
         }
 
         /// <summary>
@@ -52,5 +54,7 @@ namespace PlacementCellManagementAPI.Extensions
                     };
                 });
         }
+
+        #endregion
     }
 }

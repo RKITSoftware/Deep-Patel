@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// PRO01 model to store the product information.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Product Id
         /// </summary>
+        [PrimaryKey]
         public int O01F01 { get; set; }
 
         /// <summary>

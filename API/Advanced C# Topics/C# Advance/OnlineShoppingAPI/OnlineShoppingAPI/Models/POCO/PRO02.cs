@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ServiceStack.DataAnnotations;
+using System;
 
 namespace OnlineShoppingAPI.Models.POCO
 {
@@ -10,6 +11,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// <summary>
         /// Product Id
         /// </summary>
+        [PrimaryKey]
         public int O02F01 { get; set; }
 
         /// <summary>

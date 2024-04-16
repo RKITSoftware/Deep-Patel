@@ -1,54 +1,51 @@
-﻿using Newtonsoft.Json;
+﻿using ServiceStack.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.POCO
 {
+    /// <summary>
+    /// Represents a job posting.
+    /// </summary>
     public class JOB01
     {
         /// <summary>
-        /// Job Id
+        /// Gets or sets the Job Id.
         /// </summary>
-        public int? B01F01 { get; set; }
+        [PrimaryKey]
+        public int B01F01 { get; set; }
 
         /// <summary>
-        /// Job Title
+        /// Gets or sets the Job Title.
         /// </summary>
-        [JsonProperty("B01102")]
-        public string B01F02 { get; set; }
+        public string? B01F02 { get; set; }
 
         /// <summary>
-        ///  Job Capacity
+        /// Gets or sets the Job Capacity.
         /// </summary>
-        [JsonProperty("B01103")]
         public int B01F03 { get; set; }
 
         /// <summary>
-        /// Salary Starting Range
+        /// Gets or sets the Starting salary range for the job.
         /// </summary>
-        [JsonProperty("B01104")]
         public int B01F04 { get; set; }
 
         /// <summary>
-        /// Salary Ending Range
+        /// Gets or sets the Ending salary range for the job.
         /// </summary>
-        [JsonProperty("B01105")]
         public int B01F05 { get; set; }
 
         /// <summary>
-        /// Company Id
+        /// Gets or sets the Company Id associated with the job.
         /// </summary>
-        [JsonProperty("B01106")]
         public int B01F06 { get; set; }
 
         /// <summary>
-        /// Form Fill Last Date
+        /// Gets or sets the last date for filling the job form.
         /// </summary>
-        [JsonProperty("B01107")]
         public DateTime B01F07 { get; set; }
 
         /// <summary>
-        /// Link
+        /// Gets or sets the link for the job.
         /// </summary>
-        [JsonProperty("B01108")]
-        public string B01F08 { get; set; }
+        public string? B01F08 { get; set; }
     }
 }

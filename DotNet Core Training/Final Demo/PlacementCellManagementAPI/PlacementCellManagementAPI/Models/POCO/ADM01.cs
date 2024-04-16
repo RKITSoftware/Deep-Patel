@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using ServiceStack.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.POCO
 {
@@ -8,38 +8,34 @@ namespace PlacementCellManagementAPI.Models.POCO
     public class ADM01
     {
         /// <summary>
-        /// Admin Id
+        /// Gets or sets the Admin Id.
         /// </summary>
+        [PrimaryKey]
         public int M01F01 { get; set; }
 
         /// <summary>
-        /// Admin First name
+        /// Gets or sets the Admin's First Name.
         /// </summary>
-        [JsonProperty("M01102")]
-        public string M01F02 { get; set; }
+        public string? M01F02 { get; set; }
 
         /// <summary>
-        /// Admin Last name
+        /// Gets or sets the Admin's Last Name.
         /// </summary>
-        [JsonProperty("M01103")]
-        public string M01F03 { get; set; }
+        public string? M01F03 { get; set; }
 
         /// <summary>
-        /// Admin's Date of Birth
+        /// Gets or sets the Admin's Date of Birth.
         /// </summary>
-        [JsonProperty("M01104")]
         public DateTime M01F04 { get; set; }
 
         /// <summary>
-        /// Admin's Gender
+        /// Gets or sets the Admin's Gender.
         /// </summary>
-        [JsonProperty("M01105")]
-        public string M01F05 { get; set; }
+        public string? M01F05 { get; set; }
 
         /// <summary>
-        /// Foreign Key of User
+        /// Gets or sets the Foreign Key of the associated User.
         /// </summary>
-        [JsonProperty("M01106")]
         public int M01F06 { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// Profit table contains the details about specific date's profit
@@ -8,6 +10,7 @@
         /// <summary>
         /// Id
         /// </summary>
+        [PrimaryKey]
         public int T01F01 { get; set; }
 
         /// <summary>

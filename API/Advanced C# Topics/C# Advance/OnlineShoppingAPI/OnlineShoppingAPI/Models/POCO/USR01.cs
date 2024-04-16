@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// USR01 model to store user's credentials
@@ -8,6 +10,7 @@
         /// <summary>
         /// User Id
         /// </summary>
+        [PrimaryKey]
         public int R01F01 { get; set; }
 
         /// <summary>

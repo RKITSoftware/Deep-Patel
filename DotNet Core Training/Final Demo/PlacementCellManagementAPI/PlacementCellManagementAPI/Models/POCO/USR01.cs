@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using ServiceStack.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.POCO
 {
@@ -8,31 +8,29 @@ namespace PlacementCellManagementAPI.Models.POCO
     public class USR01
     {
         /// <summary>
-        /// User Id
+        /// Gets or sets the User Id.
         /// </summary>
-        public int? R01F01 { get; set; }
+        [PrimaryKey]
+        public int R01F01 { get; set; }
 
         /// <summary>
-        /// Username
+        /// Gets or sets the Username.
         /// </summary>
-        [JsonProperty("R01102")]
-        public string R01F02 { get; set; }
+        public string? R01F02 { get; set; }
 
         /// <summary>
-        /// User's Email
+        /// Gets or sets the User's Email.
         /// </summary>
-        [JsonProperty("R01103")]
-        public string R01F03 { get; set; }
+        public string? R01F03 { get; set; }
 
         /// <summary>
-        /// User's Secured Password
+        /// Gets or sets the User's Secured Password.
         /// </summary>
-        [JsonProperty("R01104")]
-        public string R01F04 { get; set; }
+        public string? R01F04 { get; set; }
 
         /// <summary>
-        /// Roles
+        /// Gets or sets the User's Roles.
         /// </summary>
-        public string R01F05 { get; set; }
+        public string? R01F05 { get; set; }
     }
 }

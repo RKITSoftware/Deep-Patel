@@ -1,9 +1,9 @@
 ﻿using NLog;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
+using PlacementCellManagementAPI.Controllers.Filters;
+using PlacementCellManagementAPI.Controllers.Middleware;
 using PlacementCellManagementAPI.Extensions;
-using PlacementCellManagementAPI.Filters;
-using PlacementCellManagementAPI.Middleware;
 
 namespace PlacementCellManagementAPI
 {
@@ -56,7 +56,7 @@ namespace PlacementCellManagementAPI
                 });
             });
 
-            services.AddSingleton<IExceptionLogger, BLException>();
+            services.AddSingleton<IExceptionLoggerService, BLExceptionHandler>();
             services.AddScoped<AuthenticationMiddleware>();
 
             services.AddInterfaceServices();

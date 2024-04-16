@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// Category POCO Model
@@ -8,6 +10,7 @@
         /// <summary>
         /// Category Id
         /// </summary>
+        [PrimaryKey]
         public int T01F01 { get; set; }
 
         /// <summary>

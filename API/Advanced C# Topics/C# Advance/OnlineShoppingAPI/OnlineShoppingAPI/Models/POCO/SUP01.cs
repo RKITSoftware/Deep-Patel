@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// SUP01 model for stopring the supplier's details.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Suplier Id
         /// </summary>
+        [PrimaryKey]
         public int P01F01 { get; set; }
 
         /// <summary>

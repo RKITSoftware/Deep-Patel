@@ -1,23 +1,26 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.Dtos
 {
     /// <summary>
-    /// Data transfer object for Company
+    /// Data transfer object for Company.
     /// </summary>
-    public class DtoCMP01
+    public class DTOCMP01
     {
         /// <summary>
-        /// Company Name
+        /// Gets or sets the Company Name.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Company name is required.")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Company name must be between 5 to 50 characters.")]
-        public string P01101 { get; set; }
+        [JsonProperty("P01102")]
+        public string? P01F02 { get; set; }
 
         /// <summary>
-        /// Company Location
+        /// Gets or sets the Company Location.
         /// </summary>
-        [Required]
-        public string P01102 { get; set; }
+        [Required(ErrorMessage = "Company location is required.")]
+        [JsonProperty("P01103")]
+        public string? P01F03 { get; set; }
     }
 }

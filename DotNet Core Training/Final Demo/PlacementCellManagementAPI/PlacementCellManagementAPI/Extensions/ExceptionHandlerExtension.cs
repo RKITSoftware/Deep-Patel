@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
-using PlacementCellManagementAPI.Models.POCO;
+using PlacementCellManagementAPI.Models;
 using System.Net;
 
 namespace PlacementCellManagementAPI.Extensions
 {
+    /// <summary>
+    /// Extension class for handling exceptions.
+    /// </summary>
     public static class ExceptionHandlerExtension
     {
         /// <summary>
@@ -24,7 +27,7 @@ namespace PlacementCellManagementAPI.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        IExceptionLogger logger = new BLException();
+                        IExceptionLoggerService logger = new BLExceptionHandler();
                         logger.Log($"Something went wrong: {contextFeature.Error}");
 
                         await context.Response.WriteAsync(new ErrorDetail()

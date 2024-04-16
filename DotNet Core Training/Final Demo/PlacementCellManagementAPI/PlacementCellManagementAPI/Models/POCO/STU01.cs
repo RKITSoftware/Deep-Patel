@@ -1,51 +1,46 @@
-﻿using Newtonsoft.Json;
+﻿using ServiceStack.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.POCO
 {
     /// <summary>
-    /// Student POCO Model for storing the information of student.
+    /// Student POCO Model for storing the information of a student.
     /// </summary>
     public class STU01
     {
         /// <summary>
-        /// Student Id
+        /// Gets or sets the Student Id.
         /// </summary>
-        public int? U01F01 { get; set; }
+        [PrimaryKey]
+        public int U01F01 { get; set; }
 
         /// <summary>
-        /// Student's First Name
+        /// Gets or sets the Student's First Name.
         /// </summary>
-        [JsonProperty("U01102")]
-        public string U01F02 { get; set; }
+        public string? U01F02 { get; set; }
 
         /// <summary>
-        /// Student's Last Name
+        /// Gets or sets the Student's Last Name.
         /// </summary>
-        [JsonProperty("U01103")]
-        public string U01F03 { get; set; }
+        public string? U01F03 { get; set; }
 
         /// <summary>
-        /// Student's Date of Birth
+        /// Gets or sets the Student's Date of Birth.
         /// </summary>
-        [JsonProperty("U01104")]
         public DateTime U01F04 { get; set; }
 
         /// <summary>
-        /// Student's Gender
+        /// Gets or sets the Student's Gender.
         /// </summary>
-        [JsonProperty("U01105")]
-        public string U01F05 { get; set; }
+        public string? U01F05 { get; set; }
 
         /// <summary>
-        /// Student's Aadhar Card Number
+        /// Gets or sets the Student's Aadhar Card Number.
         /// </summary>
-        [JsonProperty("U01106")]
-        public string U01F06 { get; set; }
+        public string? U01F06 { get; set; }
 
         /// <summary>
-        /// Foreign Key of User
+        /// Gets or sets the Foreign Key of the associated User.
         /// </summary>
-        [JsonProperty("U01107")]
         public int U01F07 { get; set; }
     }
 }

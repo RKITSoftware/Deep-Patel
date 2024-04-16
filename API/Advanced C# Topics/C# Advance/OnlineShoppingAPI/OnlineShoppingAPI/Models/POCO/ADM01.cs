@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// ADM01 model to store the admin details.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Admin Id
         /// </summary>
+        [PrimaryKey]
         public int M01F01 { get; set; }
 
         /// <summary>

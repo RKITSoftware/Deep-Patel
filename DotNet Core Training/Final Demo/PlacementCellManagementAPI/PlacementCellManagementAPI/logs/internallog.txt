@@ -295,3 +295,197 @@
 2024-04-10 14:50:02.3912 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
 2024-04-10 14:50:02.4308 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
 2024-04-10 14:50:02.4609 Info Configuration initialized.
+2024-04-16 09:41:07.0917 Debug Message Template Auto Format enabled
+2024-04-16 09:41:07.8883 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 09:41:08.8087 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:41:08.8334 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:41:08.9000 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 09:41:08.9128 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 09:41:08.9128 Debug --- NLog configuration dump ---
+2024-04-16 09:41:08.9128 Debug Targets:
+2024-04-16 09:41:08.9399 Debug FileTarget(Name=logfile)
+2024-04-16 09:41:08.9399 Debug Rules:
+2024-04-16 09:41:08.9399 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 09:41:08.9399 Debug --- End of NLog configuration dump ---
+2024-04-16 09:41:08.9909 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 09:41:08.9909 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 09:41:09.0050 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 09:41:09.0251 Info Configuration initialized.
+2024-04-16 09:59:30.6930 Debug Message Template Auto Format enabled
+2024-04-16 09:59:30.8686 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 09:59:30.9664 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:59:30.9664 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 09:59:31.0151 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 09:59:31.0302 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 09:59:31.0302 Debug --- NLog configuration dump ---
+2024-04-16 09:59:31.0302 Debug Targets:
+2024-04-16 09:59:31.0373 Debug FileTarget(Name=logfile)
+2024-04-16 09:59:31.0373 Debug Rules:
+2024-04-16 09:59:31.0373 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 09:59:31.0373 Debug --- End of NLog configuration dump ---
+2024-04-16 09:59:31.0620 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 09:59:31.0683 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 09:59:31.0843 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 09:59:31.1029 Info Configuration initialized.
+2024-04-16 12:24:01.9212 Debug Message Template Auto Format enabled
+2024-04-16 12:24:02.1673 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 12:24:02.5026 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:24:02.5026 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:24:02.8983 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 12:24:02.9124 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 12:24:02.9124 Debug --- NLog configuration dump ---
+2024-04-16 12:24:02.9124 Debug Targets:
+2024-04-16 12:24:02.9124 Debug FileTarget(Name=logfile)
+2024-04-16 12:24:02.9124 Debug Rules:
+2024-04-16 12:24:02.9245 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 12:24:02.9245 Debug --- End of NLog configuration dump ---
+2024-04-16 12:24:02.9484 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 12:24:02.9602 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 12:24:02.9814 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 12:24:03.0224 Info Configuration initialized.
+2024-04-16 12:27:49.9056 Debug Targets configured when LogLevel >= Debug for Logger: PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler
+2024-04-16 12:27:49.9892 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Debug] => logfile
+2024-04-16 12:27:49.9892 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Info] => logfile
+2024-04-16 12:27:49.9892 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Warn] => logfile
+2024-04-16 12:27:49.9892 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Error] => logfile
+2024-04-16 12:27:49.9892 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Fatal] => logfile
+2024-04-16 12:27:50.0674 Debug FileTarget(Name=logfile): Preparing for new file: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 12:27:50.2166 Debug FileTarget(Name=logfile): Creating file appender: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 12:34:00.4125 Debug Message Template Auto Format enabled
+2024-04-16 12:34:00.8504 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 12:34:00.9683 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:34:00.9683 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:34:01.0710 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 12:34:01.0847 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 12:34:01.0847 Debug --- NLog configuration dump ---
+2024-04-16 12:34:01.0847 Debug Targets:
+2024-04-16 12:34:01.0902 Debug FileTarget(Name=logfile)
+2024-04-16 12:34:01.0902 Debug Rules:
+2024-04-16 12:34:01.0902 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 12:34:01.0902 Debug --- End of NLog configuration dump ---
+2024-04-16 12:34:01.1170 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 12:34:01.1317 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 12:34:01.1384 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 12:34:01.1548 Info Configuration initialized.
+2024-04-16 12:35:31.3565 Debug Targets configured when LogLevel >= Debug for Logger: PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler
+2024-04-16 12:35:31.3647 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Debug] => logfile
+2024-04-16 12:35:31.3647 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Info] => logfile
+2024-04-16 12:35:31.3922 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Warn] => logfile
+2024-04-16 12:35:31.3922 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Error] => logfile
+2024-04-16 12:35:31.3922 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Fatal] => logfile
+2024-04-16 12:35:31.4634 Debug FileTarget(Name=logfile): Preparing for new file: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 12:35:31.4868 Debug FileTarget(Name=logfile): Creating file appender: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 12:41:05.4904 Debug Message Template Auto Format enabled
+2024-04-16 12:41:05.7120 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 12:41:05.9599 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:41:05.9599 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 12:41:06.0087 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 12:41:06.0216 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 12:41:06.0216 Debug --- NLog configuration dump ---
+2024-04-16 12:41:06.0216 Debug Targets:
+2024-04-16 12:41:06.0216 Debug FileTarget(Name=logfile)
+2024-04-16 12:41:06.0216 Debug Rules:
+2024-04-16 12:41:06.0216 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 12:41:06.0308 Debug --- End of NLog configuration dump ---
+2024-04-16 12:41:06.0508 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 12:41:06.0508 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 12:41:06.0674 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 12:41:06.0856 Info Configuration initialized.
+2024-04-16 14:54:27.3249 Debug Message Template Auto Format enabled
+2024-04-16 14:54:27.5190 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 14:54:27.7119 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 14:54:27.7137 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 14:54:27.7532 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 14:54:27.7649 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 14:54:27.7649 Debug --- NLog configuration dump ---
+2024-04-16 14:54:27.7649 Debug Targets:
+2024-04-16 14:54:27.7649 Debug FileTarget(Name=logfile)
+2024-04-16 14:54:27.7649 Debug Rules:
+2024-04-16 14:54:27.7649 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 14:54:27.7649 Debug --- End of NLog configuration dump ---
+2024-04-16 14:54:27.7896 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 14:54:27.7949 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 14:54:27.7949 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 14:54:27.8162 Info Configuration initialized.
+2024-04-16 14:55:34.5894 Debug Message Template Auto Format enabled
+2024-04-16 14:55:34.7206 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 14:55:34.8252 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 14:55:34.8277 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 14:55:34.9535 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 14:55:34.9661 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 14:55:34.9661 Debug --- NLog configuration dump ---
+2024-04-16 14:55:34.9661 Debug Targets:
+2024-04-16 14:55:34.9661 Debug FileTarget(Name=logfile)
+2024-04-16 14:55:34.9661 Debug Rules:
+2024-04-16 14:55:34.9661 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 14:55:34.9661 Debug --- End of NLog configuration dump ---
+2024-04-16 14:55:34.9985 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 14:55:34.9985 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 14:55:34.9985 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 14:55:35.0282 Info Configuration initialized.
+2024-04-16 15:02:25.6397 Debug Targets configured when LogLevel >= Debug for Logger: PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler
+2024-04-16 15:02:25.6397 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Debug] => logfile
+2024-04-16 15:02:25.6397 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Info] => logfile
+2024-04-16 15:02:25.6397 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Warn] => logfile
+2024-04-16 15:02:25.6397 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Error] => logfile
+2024-04-16 15:02:25.6397 Debug Logger PlacementCellManagementAPI.Business_Logic.Services.BLExceptionHandler [Fatal] => logfile
+2024-04-16 15:02:25.6855 Debug FileTarget(Name=logfile): Preparing for new file: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 15:02:25.6855 Debug FileTarget(Name=logfile): Creating file appender: 'F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\logs\16-04-2024.txt'
+2024-04-16 15:09:44.5495 Debug Message Template Auto Format enabled
+2024-04-16 15:09:44.7967 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 15:09:44.9076 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:09:44.9076 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:09:44.9852 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 15:09:45.0177 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 15:09:45.0177 Debug --- NLog configuration dump ---
+2024-04-16 15:09:45.0177 Debug Targets:
+2024-04-16 15:09:45.0225 Debug FileTarget(Name=logfile)
+2024-04-16 15:09:45.0225 Debug Rules:
+2024-04-16 15:09:45.0225 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 15:09:45.0225 Debug --- End of NLog configuration dump ---
+2024-04-16 15:09:45.0456 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 15:09:45.0456 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 15:09:45.0579 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 15:09:45.0770 Info Configuration initialized.
+2024-04-16 15:12:57.4328 Debug Message Template Auto Format enabled
+2024-04-16 15:12:57.5618 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 15:12:57.6238 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:12:57.6238 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:12:57.6602 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 15:12:57.6708 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 15:12:57.6708 Debug --- NLog configuration dump ---
+2024-04-16 15:12:57.6708 Debug Targets:
+2024-04-16 15:12:57.6708 Debug FileTarget(Name=logfile)
+2024-04-16 15:12:57.6708 Debug Rules:
+2024-04-16 15:12:57.6799 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 15:12:57.6799 Debug --- End of NLog configuration dump ---
+2024-04-16 15:12:57.6970 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 15:12:57.6970 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 15:12:57.7118 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 15:12:57.7118 Info Configuration initialized.
+2024-04-16 15:29:10.7170 Debug Message Template Auto Format enabled
+2024-04-16 15:29:10.9237 Warn Error has been raised. Exception: NLog.NLogConfigurationException: 'FileTarget' cannot assign unknown property 'autoReload'='true'
+   at NLog.Config.LoggingConfigurationParser.SetPropertyValueFromString[T](T targetObject, String propertyName, String propertyValue, ValidatedConfigurationElement element)
+2024-04-16 15:29:11.5550 Debug Adding target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:29:11.5550 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2024-04-16 15:29:11.5920 Info NLog, Version=5.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 5.2.8.2366. Product version: 5.2.8+f586f1341c46fa38aaaff4c641e7f0fa7e813943. GlobalAssemblyCache: False
+2024-04-16 15:29:11.6048 Debug Start watching file-filter 'nlog.config' in directory: F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI
+2024-04-16 15:29:11.6048 Debug --- NLog configuration dump ---
+2024-04-16 15:29:11.6048 Debug Targets:
+2024-04-16 15:29:11.6048 Debug FileTarget(Name=logfile)
+2024-04-16 15:29:11.6048 Debug Rules:
+2024-04-16 15:29:11.6134 Debug logNamePattern: (:All) levels: [ Debug Info Warn Error Fatal ] writeTo: [ logfile ]
+2024-04-16 15:29:11.6134 Debug --- End of NLog configuration dump ---
+2024-04-16 15:29:11.6299 Info Validating config: TargetNames=logfile, ConfigItems=11, FilePath=F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\nlog.config
+2024-04-16 15:29:11.6299 Debug Unused target checking is started... Rule Count: 1, Target Count: 1
+2024-04-16 15:29:11.6439 Debug Unused target checking is completed. Total Rule Count: 1, Total Target Count: 1, Unused Target Count: 0
+2024-04-16 15:29:11.6620 Info Configuration initialized.

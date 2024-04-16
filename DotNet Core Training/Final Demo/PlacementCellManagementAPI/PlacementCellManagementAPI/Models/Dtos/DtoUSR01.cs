@@ -1,25 +1,25 @@
 ﻿using Newtonsoft.Json;
-using ServiceStack.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.Dtos
 {
     /// <summary>
-    /// DTO for User Login
+    /// Data Transfer Object (DTO) for User Login.
     /// </summary>
-    public class DtoUSR01
+    public class DTOUSR01
     {
         /// <summary>
-        /// Username
+        /// Gets or sets the Username.
         /// </summary>
-        [Required]
-        [JsonProperty("R01F02")]
-        public string R01102 { get; set; }
+        [Required(ErrorMessage = "Username is required.")]
+        [JsonProperty("R01102")]
+        public string? R01F02 { get; set; }
 
         /// <summary>
-        /// Password
+        /// Gets or sets the Password.
         /// </summary>
-        [Required]
-        [JsonProperty("R01F04")]
-        public string R01104 { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [JsonProperty("R01104")]
+        public string? R01F04 { get; set; }
     }
 }

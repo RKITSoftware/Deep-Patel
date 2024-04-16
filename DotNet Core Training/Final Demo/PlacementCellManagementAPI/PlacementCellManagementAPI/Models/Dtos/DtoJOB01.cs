@@ -1,43 +1,58 @@
-﻿namespace PlacementCellManagementAPI.Models.Dtos
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+
+namespace PlacementCellManagementAPI.Models.Dtos
 {
     /// <summary>
-    /// Job Dto for handling data transfer for job related information.
+    /// Job DTO for handling data transfer for job related information.
     /// </summary>
-    public class DtoJOB01
+    public class DTOJOB01
     {
         /// <summary>
-        /// Job Title
+        /// Gets or sets the Job Title.
         /// </summary>
-        public string B01101 { get; set; }
+        [Required(ErrorMessage = "Job title is required.")]
+        [JsonProperty("B01102")]
+        public string? B01F02 { get; set; }
 
         /// <summary>
-        /// Job Capacity
+        /// Gets or sets the Job Capacity.
         /// </summary>
-        public int B01102 { get; set; }
+        [Required(ErrorMessage = "Job capacity is required.")]
+        [JsonProperty("B01103")]
+        public int B01F03 { get; set; }
 
         /// <summary>
-        /// Salary Starting Range
+        /// Gets or sets the Salary Starting Range.
         /// </summary>
-        public int B01103 { get; set; }
+        [Required(ErrorMessage = "Starting salary range is required.")]
+        [JsonProperty("B01104")]
+        public int B01F04 { get; set; }
 
         /// <summary>
-        /// Salary Ending Range
+        /// Gets or sets the Salary Ending Range.
         /// </summary>
-        public int B01104 { get; set; }
+        [Required(ErrorMessage = "Ending salary range is required.")]
+        [JsonProperty("B01105")]
+        public int B01F05 { get; set; }
 
         /// <summary>
-        /// Last date for form fill
+        /// Gets or sets the Company Id.
         /// </summary>
-        public DateTime B01105 { get; set; }
+        [Required(ErrorMessage = "Company Id is required.")]
+        [JsonProperty("B01106")]
+        public int B01F06 { get; set; }
 
         /// <summary>
-        /// Form Link
+        /// Gets or sets the Last date for form fill.
         /// </summary>
-        public string B01106 { get; set; }
+        [JsonProperty("B01107")]
+        public DateTime? B01F07 { get; set; }
 
         /// <summary>
-        /// Company Id
+        /// Gets or sets the Form Link.
         /// </summary>
-        public int B01107 { get; set; }
+        [JsonProperty("B01108")]
+        public string? B01F08 { get; set; }
     }
 }

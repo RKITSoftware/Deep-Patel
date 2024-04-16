@@ -4,66 +4,69 @@ using System.ComponentModel.DataAnnotations;
 namespace PlacementCellManagementAPI.Models.Dtos
 {
     /// <summary>
-    /// Dto for STU01 Poco model
+    /// DTO for STU01 POCO model.
     /// </summary>
-    public class DtoSTU01
+    public class DTOSTU01
     {
         /// <summary>
-        /// Student Full Name
+        /// Gets or sets the Student's First Name.
         /// </summary>
-        [Required]
-        [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
-        [JsonProperty("U01F02")]
-        public string U01102 { get; set; }
+        [Required(ErrorMessage = "Student's first name is required.")]
+        [StringLength(50, ErrorMessage = "Name length must be less than or equal to 50 characters.")]
+        [JsonProperty("U01102")]
+        public string? U01F02 { get; set; }
 
         /// <summary>
-        /// Student Full Name
+        /// Gets or sets the Student's Last Name.
         /// </summary>
-        [Required]
-        [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
-        [JsonProperty("U01F03")]
-        public string U01103 { get; set; }
+        [Required(ErrorMessage = "Student's last name is required.")]
+        [StringLength(50, ErrorMessage = "Name length must be less than or equal to 50 characters.")]
+        [JsonProperty("U01103")]
+        public string? U01F03 { get; set; }
 
         /// <summary>
-        /// Date of Birth
+        /// Gets or sets the Date of Birth.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Date of birth is required.")]
         [DataType(DataType.Date, ErrorMessage = "Enter the date in correct format.")]
-        [JsonProperty("U01F04")]
-        public DateTime U01104 { get; set; }
+        [JsonProperty("U01104")]
+        public DateTime U01F04 { get; set; }
 
         /// <summary>
-        /// Gender
+        /// Gets or sets the Gender.
         /// </summary>
-        [StringLength(1, MinimumLength = 1, ErrorMessage = "M for Male and F For Female")]
-        [JsonProperty("U01F05")]
-        public string U01105 { get; set; }
+        [StringLength(1, MinimumLength = 1, ErrorMessage = "Gender must be 'M' for Male and 'F' for Female.")]
+        [JsonProperty("U01105")]
+        public string? U01F05 { get; set; }
 
         /// <summary>
-        /// Student's Aadhar Card Number
+        /// Gets or sets the Student's Aadhar Card Number.
         /// </summary>
-        [Required]
-        [StringLength(12, MinimumLength = 12, ErrorMessage = "Aadhar card number's length is 12")]
-        [JsonProperty("U01F06")]
-        public string U01106 { get; set; }
+        [Required(ErrorMessage = "Aadhar card number is required.")]
+        [StringLength(12, MinimumLength = 12, ErrorMessage = "Aadhar card number's length must be 12 characters.")]
+        [JsonProperty("U01106")]
+        public string? U01F06 { get; set; }
 
         /// <summary>
-        /// Student's Username
+        /// Gets or sets the Student's Username.
         /// </summary>
-        [JsonProperty("R01F02")]
-        public string R01102 { get; set; }
+        [Required(ErrorMessage = "Username is required.")]
+        [JsonProperty("R01102")]
+        public string? R01F02 { get; set; }
 
         /// <summary>
-        /// Student's Email
+        /// Gets or sets the Student's Email.
         /// </summary>
-        [DataType(DataType.EmailAddress)]
-        [JsonProperty("R01F03")]
-        public string R01103 { get; set; }
+        [Required(ErrorMessage = "Email address is required.")]
+        [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        [JsonProperty("R01103")]
+        public string? R01F03 { get; set; }
 
         /// <summary>
-        /// Student's Password
+        /// Gets or sets the Student's Password.
         /// </summary>
-        [JsonProperty("R01F04")]
-        public string R01104 { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [JsonProperty("R01104")]
+        public string? R01F04 { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Models;
 using PlacementCellManagementAPI.Models.Dtos;
 
 namespace PlacementCellManagementAPI.Controllers
@@ -29,17 +30,17 @@ namespace PlacementCellManagementAPI.Controllers
         /// </summary>
         /// <param name="objUserDto">The user data object</param>
         [HttpPost("Generate")]
-        public IActionResult GenerateToken(DtoUSR01 objUserDto)
+        public IActionResult GenerateToken(DTOUSR01 objUserDto)
         {
             _tokenService.PreSave(objUserDto);
 
-            if (!_tokenService.IsExist())
+            Response response = _tokenService.IsExist();
+            if (!response.IsError)
             {
-                return NotFound();
+                response = _tokenService.GenerateToken();
             }
 
-            // Generate and return the token
-            return Ok(_tokenService.GenerateToken());
+            return Ok(response);
         }
     }
 }

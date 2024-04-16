@@ -1,4 +1,6 @@
-﻿namespace OnlineShoppingAPI.Models.POCO
+﻿using ServiceStack.DataAnnotations;
+
+namespace OnlineShoppingAPI.Models.POCO
 {
     /// <summary>
     /// CUS01 model to store the customer's information.
@@ -8,6 +10,7 @@
         /// <summary>
         /// Customer Id
         /// </summary>
+        [PrimaryKey]
         public int S01F01 { get; set; }
 
         /// <summary>

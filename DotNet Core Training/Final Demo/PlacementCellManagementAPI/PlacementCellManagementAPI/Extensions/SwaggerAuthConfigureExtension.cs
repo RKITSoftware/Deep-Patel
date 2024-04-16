@@ -8,37 +8,7 @@ namespace PlacementCellManagementAPI.Extensions
     /// </summary>
     public static class SwaggerAuthConfigureExtension
     {
-        /// <summary>
-        /// Configures JWT authentication for Swagger.
-        /// </summary>
-        /// <param name="options">The Swagger generation options to configure.</param>
-        public static void JwtConfiguration(this SwaggerGenOptions options)
-        {
-            // Add security definition for JWT token-based authentication
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Description = "Jwt Token Based Authentication",
-                In = ParameterLocation.Header,
-                Name = "Authorization",
-                Type = SecuritySchemeType.ApiKey
-            });
-
-            // Add security requirement for JWT authentication
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Id = "Bearer",
-                            Type = ReferenceType.SecurityScheme
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
-        }
+        #region Public Methods
 
         /// <summary>
         /// Configures basic authentication for Swagger.
@@ -72,5 +42,39 @@ namespace PlacementCellManagementAPI.Extensions
                 }
             });
         }
+
+        /// <summary>
+        /// Configures JWT authentication for Swagger.
+        /// </summary>
+        /// <param name="options">The Swagger generation options to configure.</param>
+        public static void JwtConfiguration(this SwaggerGenOptions options)
+        {
+            // Add security definition for JWT token-based authentication
+            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                Description = "Jwt Token Based Authentication",
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            // Add security requirement for JWT authentication
+            options.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },
+                    Array.Empty<string>()
+                }
+            });
+        }
+
+        #endregion Public Methods
     }
 }

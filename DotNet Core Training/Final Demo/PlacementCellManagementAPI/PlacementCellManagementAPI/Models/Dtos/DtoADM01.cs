@@ -6,56 +6,60 @@ namespace PlacementCellManagementAPI.Models.Dtos
     /// <summary>
     /// Data Transfer Object (DTO) for admin.
     /// </summary>
-    public class DtoADM01
+    public class DTOADM01
     {
         /// <summary>
         /// Admin First Name
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "First name is required.")]
         [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
-        [JsonProperty("M01F02")]
-        public string M01102 { get; set; }
+        [JsonProperty("M01102")]
+        public string? M01F02 { get; set; }
 
         /// <summary>
         /// Admin Last Name
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Last name is required.")]
         [StringLength(50, ErrorMessage = "Name length must be less than 50.")]
-        [JsonProperty("M01F03")]
-        public string M01103 { get; set; }
+        [JsonProperty("M01103")]
+        public string? M01F03 { get; set; }
 
         /// <summary>
         /// Date of Birth
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Date of birth is required.")]
         [DataType(DataType.Date, ErrorMessage = "Enter the date in correct format.")]
-        [JsonProperty("M01F04")]
-        public DateTime M01104 { get; set; }
+        [JsonProperty("M01104")]
+        public DateTime M01F04 { get; set; }
 
         /// <summary>
         /// Gender
         /// </summary>
         [StringLength(1, MinimumLength = 1, ErrorMessage = "M for Male and F For Female")]
-        [JsonProperty("M01F05")]
-        public string M01105 { get; set; }
+        [JsonProperty("M01105")]
+        public string? M01F05 { get; set; }
 
         /// <summary>
         /// Admin's Username
         /// </summary>
-        [JsonProperty("R01F02")]
-        public string R01102 { get; set; }
+        [Required(ErrorMessage = "User name is required.")]
+        [JsonProperty("R01102")]
+        public string? R01F02 { get; set; }
 
         /// <summary>
         /// Admin's Email
         /// </summary>
+        [Required(ErrorMessage = "Email is required.")]
         [DataType(DataType.EmailAddress)]
-        [JsonProperty("R01F03")]
-        public string R01103 { get; set; }
+        [JsonProperty("R01103")]
+        public string? R01F03 { get; set; }
 
         /// <summary>
         /// Admin's Password
         /// </summary>
-        [JsonProperty("R01F04")]
-        public string R01104 { get; set; }
+        [Required(ErrorMessage = "Password is required.")]
+        [DataType(DataType.Password)]
+        [JsonProperty("R01104")]
+        public string? R01F04 { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using ServiceStack.DataAnnotations;
 
 namespace PlacementCellManagementAPI.Models.POCO
 {
@@ -8,20 +8,19 @@ namespace PlacementCellManagementAPI.Models.POCO
     public class CMP01
     {
         /// <summary>
-        /// Company Id
+        /// Gets or sets the Company Id.
         /// </summary>
-        public int? P01F01 { get; set; }
+        [PrimaryKey]
+        public int P01F01 { get; set; }
 
         /// <summary>
-        /// Company Name
+        /// Gets or sets the Company Name.
         /// </summary>
-        [JsonProperty("P01102")]
-        public string P01F02 { get; set; }
+        public string? P01F02 { get; set; }
 
         /// <summary>
-        /// Company Location
+        /// Gets or sets the Company Location.
         /// </summary>
-        [JsonProperty("P01103")]
-        public string P01F03 { get; set; }
+        public string? P01F03 { get; set; }
     }
 }

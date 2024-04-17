@@ -44,7 +44,7 @@ namespace OnlineShoppingAPI.DL
         /// Gets of last 10 years data
         /// </summary>
         /// <returns>List of last 10 years profit data.</returns>
-        public List<decimal> GetData()
+        public List<decimal> GetYearData()
         {
             List<decimal> lstData = new List<decimal>();
             int currentYear = DateTime.Now.Year;
@@ -84,7 +84,7 @@ namespace OnlineShoppingAPI.DL
         /// </summary>
         /// <param name="year">Current year</param>
         /// <returns>List of this year's months profit data.</returns>
-        public List<decimal> GetData(int year)
+        public List<decimal> GetMonthData(int year)
         {
             List<decimal> lstData = new List<decimal>();
 
@@ -124,7 +124,7 @@ namespace OnlineShoppingAPI.DL
         /// <param name="month">Current month.</param>
         /// <param name="year">Current year.</param>
         /// <returns>List of this month's daywise profit.</returns>
-        public List<decimal> GetData(int month, int year)
+        public List<decimal> GetDayWiseData(int month, int year)
         {
             int days = DateTime.DaysInMonth(year, month);
             List<decimal> lstData = new List<decimal>();

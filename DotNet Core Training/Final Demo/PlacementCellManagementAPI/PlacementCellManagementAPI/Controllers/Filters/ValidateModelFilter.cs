@@ -18,15 +18,12 @@ namespace PlacementCellManagementAPI.Controllers.Filters
         /// <returns>A task that represents the asynchronous on action execution operation.</returns>
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            // Check if the model state is invalid.
             if (!context.ModelState.IsValid)
             {
-                // If the model state is invalid, return a BadRequest response containing the model state errors.
-                context.Result = new BadRequestObjectResult(context.ModelState);
+                context.Result = new UnprocessableEntityObjectResult(context.ModelState);
                 return;
             }
 
-            // If the model state is valid, proceed to the next action.
             await next();
         }
 

@@ -40,7 +40,13 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangeEmail(string username,
             string password, string newEmail)
         {
-            Response response = _sup01Service.ChangeEmail(username, password, newEmail);
+            Response response = _sup01Service.ChangeEmailValidation(username, password, newEmail);
+
+            if (!response.IsError)
+            {
+                response = _sup01Service.ChangeEmail(username, newEmail);
+            }
+
             return Ok(response);
         }
 
@@ -57,7 +63,13 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangePassword(string username,
             string oldPassword, string newPassword)
         {
-            Response response = _sup01Service.ChangePassword(username, oldPassword, newPassword);
+            Response response = _sup01Service.ChangePasswordValidation(username, oldPassword);
+
+            if (!response.IsError)
+            {
+                response = _sup01Service.ChangePassword(newPassword);
+            }
+
             return Ok(response);
         }
 
@@ -97,7 +109,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteSuplier(int id)
         {
-            Response response = _sup01Service.Delete(id);
+            Response response = _sup01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _sup01Service.Delete(id);
+            }
+
             return Ok(response);
         }
 
@@ -125,6 +143,12 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult GetSuplierById(int id)
         {
             Response response = _sup01Service.GetById(id);
+
+            if (!response.IsError)
+            {
+                response = _sup01Service.Delete(id);
+            }
+
             return Ok(response);
         }
 

@@ -1,4 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Net;
@@ -20,6 +22,11 @@ namespace OnlineShoppingAPI.Controllers
         private readonly BLAuthentication _authentication;
 
         /// <summary>
+        /// USR01 model services.
+        /// </summary>
+        private readonly IUSR01Service _usr01Service;
+
+        /// <summary>
         /// Business logic class instance for generating jwt token and validating token.
         /// </summary>
         private readonly BLToken _blToken;
@@ -31,6 +38,7 @@ namespace OnlineShoppingAPI.Controllers
         {
             _authentication = new BLAuthentication();
             _blToken = new BLToken();
+            _usr01Service = new BLUSR01Handler();
         }
 
         /// <summary>
@@ -68,7 +76,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Generate")]
         public HttpResponseMessage GenerateToken(string username, string password)
         {
-            USR01 objUser = BLHelper.GetUser(username, password);
+            USR01 objUser = _usr01Service.GetUser(username, password);
 
             if (objUser == null)
                 return BLHelper.ResponseMessage(HttpStatusCode.NotFound, "Credentials are invalid.");

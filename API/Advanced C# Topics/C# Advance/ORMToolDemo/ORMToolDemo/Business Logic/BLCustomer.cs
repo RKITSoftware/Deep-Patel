@@ -33,6 +33,34 @@ namespace ORMToolDemo.Business_Logic
         }
 
         /// <summary>
+        /// Adds a new customer to the database.
+        /// </summary>
+        /// <param name="objCustomer">The customer object to be added.</param>
+        /// <returns>A message indicating the result of the operation.</returns>
+        public string Add(Customer objCustomer)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                db.Insert(objCustomer);
+                return "Added Successfully";
+            }
+        }
+
+        /// <summary>
+        /// Deletes a customer from the database by their unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the customer to be deleted.</param>
+        /// <returns>A message indicating the result of the operation.</returns>
+        public string Delete(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                db.DeleteById<Customer>(id);
+                return "Deleted Successfully";
+            }
+        }
+
+        /// <summary>
         /// Retrieves all customers from the database.
         /// </summary>
         /// <returns>A list of all customers.</returns>
@@ -74,34 +102,6 @@ namespace ORMToolDemo.Business_Logic
             {
                 Customer customer = db.SingleById<Customer>(id);
                 return customer;
-            }
-        }
-
-        /// <summary>
-        /// Adds a new customer to the database.
-        /// </summary>
-        /// <param name="objCustomer">The customer object to be added.</param>
-        /// <returns>A message indicating the result of the operation.</returns>
-        public string Add(Customer objCustomer)
-        {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
-            {
-                db.Insert(objCustomer);
-                return "Added Successfully";
-            }
-        }
-
-        /// <summary>
-        /// Deletes a customer from the database by their unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of the customer to be deleted.</param>
-        /// <returns>A message indicating the result of the operation.</returns>
-        public string Delete(int id)
-        {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
-            {
-                db.DeleteById<Customer>(id);
-                return "Deleted Successfully";
             }
         }
 

@@ -89,22 +89,21 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response BuySingleItem(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            string s01F03;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                CRT01 objCart = db.SingleById<CRT01>(id);
+                _objCRT01 = db.SingleById<CRT01>(id);
 
-                if (objCart == null)
+                if (_objCRT01 == null)
+                {
                     return NotFoundResponse("Item not found.");
+                }
 
-                CUS01 objCustomer = db.SingleById<CUS01>(objCart.T01F02);
-
-                List<CRT01> lstCart = new List<CRT01>()
-                    {
-                        objCart
-                    };
-
-                return _rcd01Service.BuyCartItems(lstCart, objCustomer.S01F03);
+                s01F03 = db.SingleById<CUS01>(_objCRT01.T01F02).S01F03;
             }
+
+            return _rcd01Service.BuyCartItems(new List<CRT01>() { _objCRT01 }, s01F03);
         }
 
         /// <summary>
@@ -114,14 +113,16 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                CRT01 objItem = db.SingleById<CRT01>(id);
+                _objCRT01 = db.SingleById<CRT01>(id);
 
-                if (objItem == null)
+                if (_objCRT01 == null)
+                {
                     return NotFoundResponse("Item not found.");
+                }
 
-                db.Delete(objItem);
+                db.Delete(_objCRT01);
             }
 
             return OkResponse("Item removed successfully.");
@@ -134,32 +135,32 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Generate(int id)
         {
+            string s01F03;
+
             // Generate a random OTP.
             Random random = new Random();
             string otp = random.Next(0, 999999).ToString("000000");
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                // Retrieve the customer's email address from the database.
-                string email = db.SingleById<CUS01>(id)?.S01F03;
-
-                // If the customer's email is not found, return NotFound response.
-                if (string.IsNullOrEmpty(email))
-                    return NotFoundResponse("Customer not found");
-
-                // Send the OTP to the customer's registered email.
-                _emailService.Send(email, otp);
-
-                // Cache the OTP with the customer's email as the key for future validation.
-                ServerCache.Add(
-                    key: email,
-                    value: otp,
-                    dependencies: null,
-                    absoluteExpiration: DateTime.Now.AddMinutes(5),
-                    slidingExpiration: TimeSpan.Zero,
-                    priority: CacheItemPriority.Default,
-                    onRemoveCallback: null);
+                s01F03 = db.SingleById<CUS01>(id)?.S01F03;
             }
+
+            if (string.IsNullOrEmpty(s01F03))
+            {
+                return NotFoundResponse("Customer not found");
+            }
+
+            _emailService.Send(s01F03, otp);
+
+            ServerCache.Add(
+                key: s01F03,
+                value: otp,
+                dependencies: null,
+                absoluteExpiration: DateTime.Now.AddMinutes(5),
+                slidingExpiration: TimeSpan.Zero,
+                priority: CacheItemPriority.Default,
+                onRemoveCallback: null);
 
             return OkResponse("OTP sent successfully.");
         }
@@ -173,11 +174,15 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<CRT01> lstCRT01;
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
                 lstCRT01 = db.Where<CRT01>("T01F02", id);
+            }
 
-            if (lstCRT01 == null || lstCRT01.Count == 0)
+            if (lstCRT01 == null)
+            {
                 return NoContentResponse();
+            }
 
             return OkResponse("", lstCRT01);
         }
@@ -192,7 +197,9 @@ namespace OnlineShoppingAPI.BL.Service
             DataTable dtData = _dbCRT01Context.GetFullDetailsOfCart(id);
 
             if (dtData.Rows.Count == 0)
+            {
                 return NoContentResponse();
+            }
 
             return OkResponse("", dtData);
         }
@@ -237,7 +244,9 @@ namespace OnlineShoppingAPI.BL.Service
         public Response Save()
         {
             using (var db = _dbFactory.OpenDbConnection())
+            {
                 db.Insert(_objCRT01);
+            }
 
             return OkResponse("Item added successfully.");
         }
@@ -248,11 +257,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            // Quantity Check
+            if (_objPRO02.O02F05 < _objCRT01.T01F04)
             {
-                // Quantity Check
-                if (_objPRO02.O02F05 < _objCRT01.T01F04)
-                    return PreConditionFailedResponse("Product can't be bought because it can't satisfy quantity.");
+                return PreConditionFailedResponse(
+                    "Product can't be bought because it can't satisfy quantity.");
             }
 
             return OkResponse();
@@ -266,22 +275,27 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response VerifyAndBuy(int id, string otp)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            string email;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                string email = db.SingleById<CUS01>(id)?.S01F03;
-                string existingOTP = ServerCache.Get(email)?.ToString();
-
-                // If no OTP is generated for buying items, return NotFound response.
-                if (existingOTP == null)
-                    return PreConditionFailedResponse("No OTP is generated for buying or OTP expired.");
-
-                // Check if the provided OTP matches the existing OTP for verification.
-                if (!existingOTP.Equals(otp))
-                    return PreConditionFailedResponse("Incorrect OTP.");
-
-                ServerCache.Remove(email);
+                email = db.SingleById<CUS01>(id)?.S01F03;
             }
 
+            string existingOTP = ServerCache.Get(email)?.ToString();
+
+            if (existingOTP == null)
+            {
+                return PreConditionFailedResponse("No OTP is generated for buying or OTP expired.");
+
+            }
+
+            if (!existingOTP.Equals(otp))
+            {
+                return PreConditionFailedResponse("Incorrect OTP.");
+            }
+
+            ServerCache.Remove(email);
             return BuyAllItems(id);
         }
 
@@ -301,7 +315,9 @@ namespace OnlineShoppingAPI.BL.Service
                 List<CRT01> lstItems = db.Where<CRT01>("T01F02", id);
 
                 if (lstItems == null)
+                {
                     return PreConditionFailedResponse("No cart items for customer.");
+                }
 
                 CUS01 objCustomer = db.SingleById<CUS01>(id);
                 return _rcd01Service.BuyCartItems(lstItems, objCustomer.S01F03);

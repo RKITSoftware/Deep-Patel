@@ -30,3 +30,7 @@ F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\Exception
 F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\obj\Debug\net6.0\ExceptionHandlingDemo.pdb
 F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\obj\Debug\net6.0\ExceptionHandlingDemo.genruntimeconfig.cache
 F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\obj\Debug\net6.0\ref\ExceptionHandlingDemo.dll
+F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\bin\Debug\net6.0\System.Net.Http.Formatting.dll
+F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\bin\Debug\net6.0\System.Web.Http.dll
+F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\bin\Debug\net6.0\Newtonsoft.Json.dll
+F:\Deep - 380\Training\DotNet Core Training\Demo\ExceptionHandlingDemo\ExceptionHandlingDemo\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll

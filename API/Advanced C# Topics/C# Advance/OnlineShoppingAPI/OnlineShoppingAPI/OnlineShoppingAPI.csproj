@@ -224,6 +224,7 @@
   <ItemGroup>
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BL\Common\BLEncryption.cs" />
     <Compile Include="BL\Common\Interface\ICommonDataHandlerService.cs" />
     <Compile Include="BL\Common\Service\BLEmail.cs" />
     <Compile Include="BL\Common\Interface\IEmailService.cs" />
@@ -236,25 +237,24 @@
     <Compile Include="BL\Interface\ICUS01Service.cs" />
     <Compile Include="BL\Service\BLPFT01Handler.cs" />
     <Compile Include="BL\Interface\IPFT01Service.cs" />
-    <Compile Include="BL\Service\BLPRO01Handler.cs" />
     <Compile Include="BL\Service\BLPRO02Handler.cs" />
     <Compile Include="BL\Service\BLRCD01Handler.cs" />
     <Compile Include="BL\Service\BLSUP01Handler.cs" />
     <Compile Include="BL\Interface\ISUP01Service.cs" />
-    <Compile Include="BL\Interface\IPRO01Service.cs" />
     <Compile Include="BL\Interface\IPRO02Service.cs" />
     <Compile Include="BL\Interface\IRCD01Service.cs" />
     <Compile Include="BL\Interface\ICRT01Service.cs" />
     <Compile Include="BL\Common\BLAuthentication.cs" />
     <Compile Include="BL\Common\BLHelper.cs" />
     <Compile Include="BL\Common\BLToken.cs" />
+    <Compile Include="BL\Service\BLUSR01Handler.cs" />
+    <Compile Include="BL\Interface\IUSR01Service.cs" />
     <Compile Include="Controllers\CLADM01Controller.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCRT01Controller.cs" />
     <Compile Include="Controllers\CLCAT01Controller.cs" />
     <Compile Include="Controllers\CLCUS01Controller.cs" />
     <Compile Include="Controllers\CLPFT01Controller.cs" />
-    <Compile Include="Controllers\CLPRO01Controller.cs" />
     <Compile Include="Controllers\CLRCD01Controller.cs" />
     <Compile Include="Controllers\CLPRO02Controller.cs" />
     <Compile Include="Controllers\CLSUP01Controller.cs" />
@@ -267,27 +267,24 @@
     <Compile Include="Models\DTO\DTOCAT01.cs" />
     <Compile Include="Models\DTO\DTOCRT01.cs" />
     <Compile Include="Models\DTO\DTOCUS01.cs" />
-    <Compile Include="Models\DTO\DTOPRO01.cs" />
     <Compile Include="Models\DTO\DTOPRO02.cs" />
     <Compile Include="Models\DTO\DTORCD01.cs" />
     <Compile Include="Models\DTO\DTOSUP01.cs" />
-    <Compile Include="Models\EnmProductStatus.cs" />
     <Compile Include="Extension\ConvertExtension.cs" />
     <Compile Include="Controllers\Filter\ExceptionLogFilter.cs" />
     <Compile Include="Controllers\Filter\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\POCO\ADM01.cs" />
     <Compile Include="Models\POCO\CAT01.cs" />
     <Compile Include="Models\POCO\CRT01.cs" />
     <Compile Include="Models\POCO\CUS01.cs" />
     <Compile Include="Models\DTO\DTOADM01.cs" />
-    <Compile Include="Models\EnmOperation.cs" />
     <Compile Include="Models\POCO\PFT01.cs" />
     <Compile Include="Models\POCO\PRO02.cs" />
     <Compile Include="Models\POCO\RCD01.cs" />
-    <Compile Include="Models\POCO\PRO01.cs" />
     <Compile Include="Models\Response.cs" />
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\POCO\SUP01.cs" />

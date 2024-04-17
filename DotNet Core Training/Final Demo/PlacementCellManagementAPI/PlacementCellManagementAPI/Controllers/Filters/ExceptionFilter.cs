@@ -14,9 +14,9 @@ namespace PlacementCellManagementAPI.Controllers.Filters
         #region Private Fields
 
         /// <summary>
-        /// Instance of <see cref="IExceptionLoggerService"/> for logging excepions.
+        /// Instance of <see cref="ILoggerService"/> for logging excepions.
         /// </summary>
-        private readonly IExceptionLoggerService _exceptionLogger;
+        private readonly ILoggerService _exceptionLogger;
 
         #endregion Private Fields
 
@@ -26,7 +26,7 @@ namespace PlacementCellManagementAPI.Controllers.Filters
         /// Initializes a new instance of the <see cref="ExceptionFilter"/> class.
         /// </summary>
         /// <param name="exceptionLogger">The logger used to log exceptions.</param>
-        public ExceptionFilter(IExceptionLoggerService exceptionLogger)
+        public ExceptionFilter(ILoggerService exceptionLogger)
         {
             _exceptionLogger = exceptionLogger;
         }
@@ -42,14 +42,14 @@ namespace PlacementCellManagementAPI.Controllers.Filters
         public void OnException(ExceptionContext context)
         {
             // Log the exception using the provided logger.
-            _exceptionLogger.Log(context.Exception);
+            _exceptionLogger.Error(context.Exception);
 
             // Set the result to return an error message with status code 500 (Internal Server Error).
             context.Result = new ObjectResult(new Response()
             {
                 IsError = true,
                 StatusCode = HttpStatusCode.InternalServerError,
-                Message = "Internla server error."
+                Message = "Internal Server Error."
             });
         }
 

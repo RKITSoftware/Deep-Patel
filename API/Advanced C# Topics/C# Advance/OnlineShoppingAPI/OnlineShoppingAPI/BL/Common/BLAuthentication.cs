@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Service;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -11,6 +13,27 @@ namespace OnlineShoppingAPI.BL.Common
     /// </summary>
     public class BLAuthentication
     {
+        #region Private Fields
+
+        /// <summary>
+        /// User services for the authentication.
+        /// </summary>
+        private readonly IUSR01Service _usr01Service;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor to initialize the instance of <see cref="BLAuthentication"/>.
+        /// </summary>
+        public BLAuthentication()
+        {
+            _usr01Service = new BLUSR01Handler();
+        }
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -21,7 +44,7 @@ namespace OnlineShoppingAPI.BL.Common
         /// <returns><see cref="HttpResponseMessage"/> with cookies header.</returns>
         public HttpResponseMessage LogIn(string username, string password)
         {
-            if (BLHelper.IsExist(username, password))
+            if (_usr01Service.IsExist(username, password))
             {
                 // Generate an authentication token and set it as a cookie in the response.
                 string encodedAuthToken = Convert.ToBase64String(

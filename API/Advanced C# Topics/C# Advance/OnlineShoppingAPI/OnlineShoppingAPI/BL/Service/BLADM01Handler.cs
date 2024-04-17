@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -32,6 +33,11 @@ namespace OnlineShoppingAPI.BL.Service
         private readonly IDbConnectionFactory _dbFactory;
 
         /// <summary>
+        /// USR01 model services.
+        /// </summary>
+        private readonly IUSR01Service _usr01Service;
+
+        /// <summary>
         /// Instance of <see cref="ADM01"/>.
         /// </summary>
         private ADM01 _objADM01;
@@ -61,6 +67,7 @@ namespace OnlineShoppingAPI.BL.Service
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
             _dbADM01Context = new DBADM01Context();
+            _usr01Service = new BLUSR01Handler();
         }
 
         #endregion Constructor
@@ -71,43 +78,59 @@ namespace OnlineShoppingAPI.BL.Service
         /// Changes the email address associated with the admin account.
         /// </summary>
         /// <param name="username">Username of the admin.</param>
-        /// <param name="password">Password of the admin.</param>
         /// <param name="newEmail">New email address to be associated with the admin account.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response ChangeEmail(string username, string password, string newEmail)
+        public Response ChangeEmail(string username, string newEmail)
         {
-            // Check if the new email already exists
-            if (GetUser(newEmail) != null)
-                return PreConditionFailedResponse("New email is already exists, use another email.");
-
             using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
             {
-                USR01 objUser = GetUser(username, password);
-                if (objUser == null)
-                    return NotFoundResponse("User not found.");
-
                 ADM01 objAdmin = db.Single(db.From<ADM01>()
                     .Where(a => a.M01F03.StartsWith(username)));
 
                 objAdmin.M01F03 = newEmail;
-                objUser.R01F02 = newEmail.Split('@')[0];
+                _objUSR01.R01F02 = newEmail.Split('@')[0];
 
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    db.Update(objAdmin);
-                    db.Update(objUser);
+                    try
+                    {
+                        db.Update(objAdmin);
+                        db.Update(_objUSR01);
 
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
             return OkResponse("Email changed successfully.");
+        }
+
+        /// <summary>
+        /// Validate the data is correct or not for the change email process.
+        /// </summary>
+        /// <param name="username">Username of the admin.</param>
+        /// <param name="password">Password of the admin.</param>
+        /// <param name="newEmail">New email address to set.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response ChangeEmailValidation(string username, string password, string newEmail)
+        {
+            if (_usr01Service.GetUser(newEmail) != null)
+            {
+                return PreConditionFailedResponse("New email is already exists, use another email.");
+            }
+
+            _objUSR01 = _usr01Service.GetUser(username, password);
+            if (_objUSR01 == null)
+            {
+                return NotFoundResponse("User not found.");
+            }
+
+            return OkResponse();
         }
 
         /// <summary>
@@ -119,16 +142,20 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangePassword(string username, string oldPassword, string newPassword)
         {
-            USR01 objUser = GetUser(username, oldPassword);
+            _objUSR01 = _usr01Service.GetUser(username, oldPassword);
 
-            if (objUser == null)
+            if (_objUSR01 == null)
+            {
                 return NotFoundResponse("User not found.");
+            }
 
-            objUser.R01F03 = newPassword;
-            objUser.R01F05 = GetEncryptPassword(newPassword);
+            _objUSR01.R01F03 = newPassword;
+            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
 
-            using (var db = _dbFactory.OpenDbConnection())
-                db.Update(objUser);
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                db.Update(_objUSR01);
+            }
 
             return OkResponse("Password changed successfully.");
         }
@@ -140,31 +167,48 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
+            string r01F02 = _objADM01.M01F03.Split('@')[0];
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                ADM01 objADM01 = db.SingleById<ADM01>(id);
-
-                if (objADM01 == null)
-                    return NotFoundResponse("Admin not found.");
-
-                string username = objADM01.M01F03.Split('@')[0];
-
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    db.DeleteById<ADM01>(objADM01.M01F01);
-                    db.Delete<USR01>(u => u.R01F02 == username);
+                    try
+                    {
+                        db.Delete(_objADM01);
+                        db.Delete<USR01>(u => u.R01F02 == r01F02);
 
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
             return OkResponse("Admin deleted successfully.");
+        }
+
+        /// <summary>
+        /// Checks the record is exists for deletion or not.
+        /// </summary>
+        /// <param name="id">ID of the admin to delete.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response DeleteValidation(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                _objADM01 = db.SingleById<ADM01>(id);
+            }
+
+            if (_objADM01 == null)
+            {
+                return NotFoundResponse("Admin not found.");
+            }
+
+            return OkResponse();
         }
 
         /// <summary>
@@ -177,7 +221,9 @@ namespace OnlineShoppingAPI.BL.Service
             DataTable dtProfit = _dbADM01Context.GetProfit(date);
 
             if (dtProfit.Rows.Count == 0)
+            {
                 return NoContentResponse();
+            }
 
             return OkResponse("", dtProfit);
         }
@@ -193,7 +239,7 @@ namespace OnlineShoppingAPI.BL.Service
 
             _objUSR01.R01F02 = _objADM01.M01F03.Split('@')[0];
             _objUSR01.R01F04 = Roles.Admin;
-            _objUSR01.R01F05 = GetEncryptPassword(_objUSR01.R01F03);
+            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(_objUSR01.R01F03);
         }
 
         /// <summary>
@@ -212,7 +258,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if data saved successfully else response according to error.</returns>
         public Response Save()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 db.Insert(_objADM01);
                 db.Insert(_objUSR01);
@@ -227,11 +273,13 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response according to error.</returns>
         public Response Validation()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 // Check if the email already exists in the database
                 if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
+                {
                     return PreConditionFailedResponse("Username already exists");
+                }
             }
 
             return OkResponse();

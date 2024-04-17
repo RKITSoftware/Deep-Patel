@@ -1,5 +1,4 @@
-﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.BL.Interface;
+﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.POCO;
@@ -7,7 +6,9 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Web;
+using static OnlineShoppingAPI.BL.Common.BLHelper;
 
 namespace OnlineShoppingAPI.BL.Service
 {
@@ -54,12 +55,14 @@ namespace OnlineShoppingAPI.BL.Service
             int month = DateTime.Now.Month;
             int year = DateTime.Now.Year;
 
-            List<decimal> lstData = _dbPFT01Context.GetData(month, year);
+            List<decimal> lstData = _dbPFT01Context.GetDayWiseData(month, year);
 
-            if (lstData == null || lstData.Count == 0)
-                return BLHelper.NoContentResponse();
+            if (lstData == null)
+            {
+                return NoContentResponse();
+            }
 
-            return BLHelper.OkResponse("", lstData);
+            return OkResponse("", lstData);
         }
 
         /// <summary>
@@ -69,12 +72,14 @@ namespace OnlineShoppingAPI.BL.Service
         public Response GetMonthData()
         {
             int year = DateTime.Now.Year;
-            List<decimal> lstData = _dbPFT01Context.GetData(year);
+            List<decimal> lstData = _dbPFT01Context.GetMonthData(year);
 
-            if (lstData == null || lstData.Count == 0)
-                return BLHelper.NoContentResponse();
+            if (lstData == null)
+            {
+                return NoContentResponse();
+            }
 
-            return BLHelper.OkResponse("", lstData);
+            return OkResponse("", lstData);
         }
 
         /// <summary>
@@ -83,12 +88,14 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetYearData()
         {
-            List<decimal> lstData = _dbPFT01Context.GetData();
+            List<decimal> lstData = _dbPFT01Context.GetYearData();
 
-            if (lstData == null || lstData.Count == 0)
-                return BLHelper.NoContentResponse();
+            if (lstData == null)
+            {
+                return NoContentResponse();
+            }
 
-            return BLHelper.OkResponse("", lstData);
+            return OkResponse("", lstData);
         }
 
         /// <summary>
@@ -101,23 +108,22 @@ namespace OnlineShoppingAPI.BL.Service
             string currentDate = DateTime.Now.ToString("dd-MM-yyyy");
             decimal profitChange = (objPRO02.O02F04 - objPRO02.O02F03) * quantity;
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 PFT01 objProfit = db.Single<PFT01>(p => p.T01F02 == currentDate);
 
-                if (objProfit != null)
-                {
-                    objProfit.T01F03 += profitChange;
-                    db.Update(objProfit);
-                }
-                else
+                if (objProfit == null)
                 {
                     db.Insert(new PFT01()
                     {
                         T01F02 = currentDate,
                         T01F03 = profitChange
                     });
+                    return;
                 }
+
+                objProfit.T01F03 += profitChange;
+                db.Update(objProfit);
             }
         }
 

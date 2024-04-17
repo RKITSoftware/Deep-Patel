@@ -1,4 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Linq;
@@ -20,6 +22,27 @@ namespace OnlineShoppingAPI.Controllers.Attribute
     /// </summary>
     public class CookieBasedAuthAttribute : AuthorizationFilterAttribute
     {
+        #region Private Fields
+
+        /// <summary>
+        /// USR01 model services.
+        /// </summary>
+        private readonly IUSR01Service _usr01Service;
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Constructor to initialize the <see cref="CookieBasedAuthAttribute"/>.
+        /// </summary>
+        public CookieBasedAuthAttribute()
+        {
+            _usr01Service = new BLUSR01Handler();
+        }
+
+        #endregion
+
         #region Public Methods
 
         /// <summary>
@@ -54,10 +77,10 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                 string password = usernamePassword[1];
 
                 // Validate user credentials using the BLUser class.
-                if (BLHelper.IsExist(username, password))
+                if (_usr01Service.IsExist(username, password))
                 {
                     // If credentials are valid, create a user identity.
-                    USR01 userDetail = BLHelper.GetUser(username);
+                    USR01 userDetail = _usr01Service.GetUser(username);
                     GenericIdentity identity = new GenericIdentity(username);
 
                     // Adding claims to the user identity.

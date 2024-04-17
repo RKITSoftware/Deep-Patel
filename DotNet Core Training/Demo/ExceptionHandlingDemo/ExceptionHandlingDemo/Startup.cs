@@ -1,4 +1,6 @@
-﻿namespace ExceptionHandlingDemo
+﻿using ExceptionHandlingDemo.Controllers.Middleware;
+
+namespace ExceptionHandlingDemo
 {
     /// <summary>
     /// Startup class for configuring middleware and services.
@@ -30,6 +32,7 @@
 
             // Swagger Service
             services.AddSwaggerGen();
+            services.AddTransient<ExceptionHandlerMiddleware>();
         }
 
         /// <summary>
@@ -46,19 +49,12 @@
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                //DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions()
-                //{
-                //    SourceCodeLineCount = 2,
-                //};
-
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/api/CLHome/Error");
+                // app.UseDeveloperExceptionPage();
             }
 
-            //app.Run(context => throw new Exception("Exception from startup file."));
+            // app.UseExceptionHandler("/api/CLHome/Error");
+            // app.UseCustomExceptionHandler();
+            // app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             // Redirect HTTP requests to HTTPS.
             app.UseHttpsRedirection();

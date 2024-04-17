@@ -68,7 +68,7 @@ namespace OnlineShoppingAPI
                         // NOTE: You must also configure 'EnableApiKeySupport' below in the SwaggerUI section
 
                         c.ApiKey("apiKey")
-                            .Description("API Key Authentication")
+                            .Description("JWT Token Authentication")
                             .Name("Authorization")
                             .In("header");
 

@@ -27,8 +27,8 @@ namespace PlacementCellManagementAPI.Extensions
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
                     {
-                        IExceptionLoggerService logger = new BLExceptionHandler();
-                        logger.Log($"Something went wrong: {contextFeature.Error}");
+                        ILoggerService logger = new LoggerService();
+                        logger.Error($"Something went wrong: {contextFeature.Error}");
 
                         await context.Response.WriteAsync(new ErrorDetail()
                         {

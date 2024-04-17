@@ -69,15 +69,17 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 if (!db.Exists<PRO02>(p => p.O02F01 == id))
+                {
                     return NotFoundResponse("Product not found.");
+                }
 
                 db.DeleteById<PRO02>(id);
             }
 
-            return OkResponse("Product created successfully.");
+            return OkResponse("Product deleted successfully.");
         }
 
         /// <summary>
@@ -88,8 +90,15 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<PRO02> lstPRO02;
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
                 lstPRO02 = db.Select<PRO02>();
+            }
+
+            if (lstPRO02 == null)
+            {
+                return NoContentResponse();
+            }
 
             return OkResponse("", lstPRO02);
         }
@@ -103,7 +112,9 @@ namespace OnlineShoppingAPI.BL.Service
             DataTable dtInfo = _dbPRO02Context.GetInformation();
 
             if (dtInfo.Rows.Count == 0)
+            {
                 return NoContentResponse();
+            }
 
             return OkResponse("", dtInfo);
         }
@@ -151,8 +162,10 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
                 db.Insert(_objPRO02);
+            }
 
             return OkResponse("Product created successfully.");
         }
@@ -165,15 +178,17 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response UpdateSellPrice(int id, int sellPrice)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                PRO02 existingProduct = db.SingleById<PRO02>(id);
+                _objPRO02 = db.SingleById<PRO02>(id);
 
-                if (existingProduct == null)
+                if (_objPRO02 == null)
+                {
                     return NotFoundResponse("Product not found.");
+                }
 
-                existingProduct.O02F04 = sellPrice;
-                db.Update(existingProduct);
+                _objPRO02.O02F04 = sellPrice;
+                db.Update(_objPRO02);
             }
 
             return OkResponse("Product sell price updated successfully.");
@@ -185,12 +200,14 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 if (db.Exists<PRO02>(p => p.O02F02 == _objPRO02.O02F02
                     && p.O02F09 == _objPRO02.O02F09
                     && p.O02F10 == _objPRO02.O02F10))
+                {
                     return PreConditionFailedResponse("Product can't be created because it already exists.");
+                }
             }
 
             return OkResponse();

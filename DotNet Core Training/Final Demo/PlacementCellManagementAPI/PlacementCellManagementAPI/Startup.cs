@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLog;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Controllers.Filters;
@@ -34,7 +35,12 @@ namespace PlacementCellManagementAPI
             services.AddControllers(configure =>
             {
                 configure.Filters.Add(typeof(ExceptionFilter));
-                configure.Filters.Add(typeof(ValidateModelFilter));
+            });
+
+            // Disable ApiController ModelState Validation Behaviour
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             services.AddEndpointsApiExplorer();
@@ -56,7 +62,7 @@ namespace PlacementCellManagementAPI
                 });
             });
 
-            services.AddSingleton<IExceptionLoggerService, BLExceptionHandler>();
+            services.AddSingleton<ILoggerService, LoggerService>();
             services.AddScoped<AuthenticationMiddleware>();
 
             services.AddInterfaceServices();

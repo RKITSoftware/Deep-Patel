@@ -40,7 +40,13 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangeEmail(string username,
             string password, string newEmail)
         {
-            Response response = _adm01Service.ChangeEmail(username, password, newEmail);
+            Response response = _adm01Service.ChangeEmailValidation(username, password, newEmail);
+
+            if (!response.IsError)
+            {
+                response = _adm01Service.ChangeEmail(username, newEmail);
+            }
+
             return Ok(response);
         }
 
@@ -70,17 +76,14 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
+            Response response;
             _adm01Service.Operation = EnmOperation.A;
 
-            Response response = _adm01Service.PreValidation(objDTOADM01);
-            if (!response.IsError)
-            {
-                _adm01Service.PreSave(objDTOADM01);
-                response = _adm01Service.Validation();
+            _adm01Service.PreSave(objDTOADM01);
+            response = _adm01Service.Validation();
 
-                if (!response.IsError)
-                    response = _adm01Service.Save();
-            }
+            if (!response.IsError)
+                response = _adm01Service.Save();
 
             return Ok(response);
         }
@@ -93,7 +96,13 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteAdmin(int id)
         {
-            Response response = _adm01Service.Delete(id);
+            Response response = _adm01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _adm01Service.Delete(id);
+            }
+
             return Ok(response);
         }
 
@@ -106,8 +115,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("ShowProfit")]
         public IHttpActionResult GetProfit(string date)
         {
-            Response response = _adm01Service.GetProfit(date);
-            return Ok(response);
+            return Ok(_adm01Service.GetProfit(date));
         }
     }
 }

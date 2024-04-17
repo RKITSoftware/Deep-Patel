@@ -15,7 +15,7 @@ namespace OnlineShoppingAPI.Models.POCO
 
         /// <summary>
         /// User username
-        /// </summary>
+        /// </summary>`
         public string R01F02 { get; set; }
 
         /// <summary>

@@ -39,7 +39,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangeEmail(string username, string password, string newEmail)
         {
-            Response response = _cus01Service.ChangeEmail(username, password, newEmail);
+            Response response = _cus01Service.ChangeEmailValidation(username, password, newEmail);
+
+            if (!response.IsError)
+            {
+                response = _cus01Service.ChangeEmail(username, newEmail);
+            }
+
             return Ok(response);
         }
 
@@ -55,7 +61,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer,Admin")]
         public IHttpActionResult ChangePassword(string username, string oldPassword, string newPassword)
         {
-            Response response = _cus01Service.ChangePassword(username, oldPassword, newPassword);
+            Response response = _cus01Service.ChangePasswordValidation(username, oldPassword);
+
+            if (!response.IsError)
+            {
+                response = _cus01Service.ChangePassword(newPassword);
+            }
+
             return Ok(response);
         }
 
@@ -95,7 +107,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteCustomer(int id)
         {
-            Response response = _cus01Service.Delete(id);
+            Response response = _cus01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _cus01Service.Delete();
+            }
+
             return Ok(response);
         }
 
@@ -146,7 +164,9 @@ namespace OnlineShoppingAPI.Controllers
                 response = _cus01Service.Validation();
 
                 if (!response.IsError)
+                {
                     response = _cus01Service.Save();
+                }
             }
 
             return Ok(response);

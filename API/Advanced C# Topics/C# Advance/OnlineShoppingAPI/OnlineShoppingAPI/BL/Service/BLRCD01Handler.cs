@@ -105,7 +105,7 @@ namespace OnlineShoppingAPI.BL.Service
             int id = 1;
             dynamic lstPurchasedItem = new List<dynamic>();
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 foreach (CRT01 item in lstItems)
                 {
@@ -195,7 +195,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if record exists else not found.</returns>
         public Response DeleteValidation(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 if (db.SingleById<RCD01>(id) == null)
                 {
@@ -231,8 +231,13 @@ namespace OnlineShoppingAPI.BL.Service
         {
             List<RCD01> lstRCD01;
 
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
                 lstRCD01 = db.Select<RCD01>();
+
+            if (lstRCD01 == null || lstRCD01.Count == 0)
+            {
+                return NoContentResponse();
+            }
 
             return OkResponse("", lstRCD01);
         }
@@ -264,13 +269,17 @@ namespace OnlineShoppingAPI.BL.Service
             {
                 // Checks customer exists or not.
                 if (db.SingleById<CUS01>(objDTORCD01.D01F02) == null)
+                {
                     return NotFoundResponse("Customer doesn't exist.");
+                }
 
                 // Checks product exists or not.
                 _objPRO02 = db.SingleById<PRO02>(objDTORCD01.D01F03);
 
                 if (_objPRO02 == null)
+                {
                     return NotFoundResponse("Product doesn't exist.");
+                }
             }
 
             return OkResponse();
@@ -282,40 +291,43 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
+            // Update source product quantity and calculate total cost
+            _objPRO02.O02F05 -= _objRCD01.D01F04;
+
+            if (_objPRO02.O02F05 == 0)
             {
-                // Update source product quantity and calculate total cost
-                _objPRO02.O02F05 -= _objRCD01.D01F04;
+                _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
+            }
 
-                if (_objPRO02.O02F05 == 0)
-                    _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
+            List<dynamic> lstItems = new List<dynamic>();
+            lstItems.Add(new
+            {
+                ProductName = _objPRO02.O02F02,
+                Quantity = _objRCD01.D01F04,
+                Price = _objRCD01.D01F05,
+                InvoiceId = _objRCD01.D01F06,
+                PurchaseTime = _objRCD01.D01F07
+            });
 
-                List<dynamic> lstItems = new List<dynamic>();
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
                 string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
-                lstItems.Add(new
-                {
-                    ProductName = _objPRO02.O02F02,
-                    Quantity = _objRCD01.D01F04,
-                    Price = _objRCD01.D01F05,
-                    InvoiceId = _objRCD01.D01F06,
-                    PurchaseTime = _objRCD01.D01F07
-                });
 
-                _emailService.SendAsync(customerEmail, lstItems);
-
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    // Insert order record and update source product
-                    db.Insert(_objRCD01);
-                    db.Update(_objPRO02);
+                    try
+                    {
+                        db.Insert(_objRCD01);
+                        db.Update(_objPRO02);
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw ex;
+                        transaction.Commit();
+                        _emailService.SendAsync(customerEmail, lstItems);
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
@@ -350,8 +362,10 @@ namespace OnlineShoppingAPI.BL.Service
 
             // Check if any data is found for the specified criteria
             if (result.Count == 0)
+            {
                 return ResponseMessage(HttpStatusCode.NotFound,
                     "No data found for the specified criteria.");
+            }
 
             return HttpExcelResponse(result);
         }
@@ -367,7 +381,7 @@ namespace OnlineShoppingAPI.BL.Service
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             // Create an Excel package
-            using (var package = new ExcelPackage())
+            using (ExcelPackage package = new ExcelPackage())
             {
                 // Add a worksheet named "DataSheet"
                 ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DataSheet");
@@ -433,7 +447,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <summary>
         /// Gets the customer records using OrmLite.
         /// </summary>
-        /// <param name="customerId">Customer id</param>
+        /// <param name="id">Customer id</param>
         /// <returns>A dynamic result containing the customer records.</returns>
         private dynamic JoinOfRcdProCus(int id)
         {
@@ -475,17 +489,14 @@ namespace OnlineShoppingAPI.BL.Service
                 return ResponseMessage(HttpStatusCode.NotFound,
                     "No data found for the specified criteria.");
 
-            // Serialize the result to JSON format
             string jsonData = JsonConvert.SerializeObject(dtCUS01RCD01Data, Formatting.Indented);
 
-            // Create an HTTP response with JSON content
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(jsonData)
             };
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 
-            // Set content disposition for attachment with a filename based on the customer name
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
                 FileName = "Records.json"

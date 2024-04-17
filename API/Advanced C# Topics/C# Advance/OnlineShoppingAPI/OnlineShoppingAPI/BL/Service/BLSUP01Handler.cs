@@ -1,4 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
+﻿using OnlineShoppingAPI.BL.Common;
+using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -7,6 +8,7 @@ using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
@@ -23,6 +25,11 @@ namespace OnlineShoppingAPI.BL.Service
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
+
+        /// <summary>
+        /// USR01 model services.
+        /// </summary>
+        private readonly IUSR01Service _usr01Service;
 
         /// <summary>
         /// Instance of <see cref="SUP01"/>.
@@ -53,6 +60,7 @@ namespace OnlineShoppingAPI.BL.Service
         public BLSUP01Handler()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
+            _usr01Service = new BLUSR01Handler();
         }
 
         #endregion Constructor
@@ -63,48 +71,32 @@ namespace OnlineShoppingAPI.BL.Service
         /// Changes the email address of a suplier.
         /// </summary>
         /// <param name="username">The username of the suplier.</param>
-        /// <param name="password">The password of the suplier.</param>
         /// <param name="newEmail">The new email address.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response ChangeEmail(string username, string password, string newEmail)
+        public Response ChangeEmail(string username, string newEmail)
         {
-            if (GetUser(newEmail) != null)
+            _objUSR01 = _usr01Service.GetUser(username);
+
+            // Update email and username
+            _objSUP01.P01F03 = newEmail;
+            _objUSR01.R01F02 = newEmail.Split('@')[0];
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                return PreConditionFailedResponse("Email already exists.");
-            }
-
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
-            {
-                // Retrieve admin details.
-                SUP01 objSuplier = db.Single(db.From<SUP01>()
-                    .Where(s => s.P01F03.StartsWith(username) &&
-                                s.P01F04.Equals(password)));
-
-                // If suplier doesn't exist, return Not Found status code.
-                if (objSuplier == null)
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    return NotFoundResponse("Supplier not found.");
-                }
+                    try
+                    {
+                        db.Update(_objSUP01);
+                        db.Update(_objUSR01);
 
-                USR01 objUser = GetUser(username);
-
-                // Update email and username
-                objSuplier.P01F03 = newEmail;
-                objUser.R01F02 = newEmail.Split('@')[0];
-
-                try
-                {
-                    // Update data in the database.
-                    db.Update(objSuplier);
-                    db.Update(objUser);
-
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw ex;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
@@ -112,48 +104,93 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Changes the password of a suplier.
+        /// Validates the parameters before the changing email.
         /// </summary>
         /// <param name="username">The username of the suplier.</param>
-        /// <param name="oldPassword">The old password of the suplier.</param>
+        /// <param name="password">The password of the suplier.</param>
+        /// <param name="newEmail">The new email address.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response ChangeEmailValidation(string username, string password, string newEmail)
+        {
+            if (_usr01Service.GetUser(newEmail) != null)
+            {
+                return PreConditionFailedResponse("Email already exists.");
+            }
+
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                _objSUP01 = db.Single(db.From<SUP01>()
+                    .Where(s => s.P01F03.StartsWith(username) &&
+                                s.P01F04.Equals(password)));
+            }
+
+            if (_objSUP01 == null)
+            {
+                return NotFoundResponse("Supplier not found.");
+            }
+
+            return OkResponse();
+        }
+
+        /// <summary>
+        /// Changes the password of a suplier.
+        /// </summary>
         /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response ChangePassword(string username, string oldPassword, string newPassword)
+        public Response ChangePassword(string newPassword)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
+            _objSUP01.P01F04 = newPassword;
+            _objUSR01.R01F03 = newPassword;
+            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                // Check if the user is a supplier or a regular user
-                SUP01 existingSupplier = db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
-                USR01 existingUser = db.SingleWhere<USR01>("R01F02", username);
-
-                if (existingSupplier == null || existingUser == null)
-                    return NotFoundResponse("Suplier doesn't exist.");
-
-                // Verify the old password and update if correct
-                if (existingSupplier.P01F04 != oldPassword)
-                    return PreConditionFailedResponse("Password is incorrect.");
-
-                existingSupplier.P01F04 = newPassword;
-                existingUser.R01F03 = newPassword;
-                existingUser.R01F05 = GetEncryptPassword(newPassword);
-
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    // Update supplier and user records
-                    db.Update(existingSupplier);
-                    db.Update(existingUser);
+                    try
+                    {
+                        db.Update(_objSUP01);
+                        db.Update(_objUSR01);
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw ex;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
             return OkResponse("Password changed successfully.");
+        }
+
+        /// <summary>
+        /// Validation before the change password.
+        /// </summary>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="oldPassword">The old password of the suplier.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response ChangePasswordValidation(string username, string oldPassword)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                _objSUP01 = db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
+                _objUSR01 = db.SingleWhere<USR01>("R01F02", username);
+            }
+
+            if (_objSUP01 == null || _objUSR01 == null)
+            {
+                return NotFoundResponse("Suplier doesn't exist.");
+            }
+
+            // Verify the old password and update if correct
+            if (_objSUP01.P01F04 != oldPassword)
+            {
+                return PreConditionFailedResponse("Password is incorrect.");
+            }
+
+            return OkResponse();
         }
 
         /// <summary>
@@ -163,35 +200,48 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
+            string r01F02 = _objSUP01.P01F03.Split('@')[0];
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                // Retrieve supplier information by id
-                SUP01 supplier = db.SingleById<SUP01>(id);
-
-                // Check if the supplier exists
-                if (supplier == null)
-                    return NotFoundResponse("Supplier not found.");
-
-                // Extract username from email
-                string username = supplier.P01F03.Split('@')[0];
-
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    // Delete supplier and associated user account
-                    db.DeleteById<SUP01>(id);
-                    db.DeleteWhere<USR01>("R01F02 = {0}", new object[] { username });
+                    try
+                    {
+                        db.DeleteById<SUP01>(id);
+                        db.Delete<USR01>(u => u.R01F02 == r01F02);
 
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    throw ex;
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
             return OkResponse("Supplier deleted successfully.");
+        }
+
+        /// <summary>
+        /// Delete Validation
+        /// </summary>
+        /// <param name="id">The ID of the suplier to delete.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response DeleteValidation(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                _objSUP01 = db.SingleById<SUP01>(id);
+            }
+
+            if (_objSUP01 == null)
+            {
+                return NotFoundResponse("Supplier not found.");
+            }
+
+            return OkResponse();
         }
 
         /// <summary>
@@ -200,15 +250,19 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetAll()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            List<SUP01> lstSUP01;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                List<SUP01> lstSUP01 = db.Select<SUP01>();
-
-                if (lstSUP01 == null || lstSUP01.Count == 0)
-                    return NoContentResponse();
-
-                return OkResponse("", lstSUP01);
+                lstSUP01 = db.Select<SUP01>();
             }
+
+            if (lstSUP01 == null || lstSUP01.Count == 0)
+            {
+                return NoContentResponse();
+            }
+
+            return OkResponse("", lstSUP01);
         }
 
         /// <summary>
@@ -218,7 +272,7 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetById(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 SUP01 objSUP01 = db.SingleById<SUP01>(id);
                 return objSUP01 != null ? OkResponse("", objSUP01) : NotFoundResponse("Supplier not found.");
@@ -240,7 +294,7 @@ namespace OnlineShoppingAPI.BL.Service
                     R01F02 = _objSUP01.P01F03.Split('@')[0],
                     R01F03 = _objSUP01.P01F04,
                     R01F04 = Roles.Supplier,
-                    R01F05 = GetEncryptPassword(_objSUP01.P01F04)
+                    R01F05 = BLEncryption.GetEncryptPassword(_objSUP01.P01F04)
                 };
             }
         }
@@ -254,7 +308,7 @@ namespace OnlineShoppingAPI.BL.Service
         {
             if (Operation == EnmOperation.E)
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
                     if (db.SingleById<SUP01>(objDTOSUP01.P01F01) == null)
                         return NotFoundResponse("Supplier not found.");
@@ -270,23 +324,26 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            using (var db = _dbFactory.OpenDbConnection())
-            using (var transaction = db.BeginTransaction())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 if (Operation == EnmOperation.A)
                 {
-                    try
+                    using (IDbTransaction transaction = db.BeginTransaction())
                     {
-                        db.Insert(_objSUP01);
-                        db.Insert(_objUSR01);
+                        try
+                        {
+                            db.Insert(_objSUP01);
+                            db.Insert(_objUSR01);
 
-                        transaction.Commit();
+                            transaction.Commit();
+                        }
+                        catch (Exception)
+                        {
+                            transaction.Rollback();
+                            throw;
+                        }
+
                         return OkResponse("Supplier created successfully.");
-                    }
-                    catch (Exception)
-                    {
-                        transaction.Rollback();
-                        throw;
                     }
                 }
 
@@ -303,11 +360,9 @@ namespace OnlineShoppingAPI.BL.Service
         {
             if (Operation == EnmOperation.A)
             {
-                using (var db = _dbFactory.OpenDbConnection())
+                if (_usr01Service.IsExist(_objUSR01.R01F02, _objUSR01.R01F03))
                 {
-                    // Check if the email already exists in the database
-                    if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
-                        return PreConditionFailedResponse("Email already exists.");
+                    return PreConditionFailedResponse("Username already exists choose another.");
                 }
             }
 

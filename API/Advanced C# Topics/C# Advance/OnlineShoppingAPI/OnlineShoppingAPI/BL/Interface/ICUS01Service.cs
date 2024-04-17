@@ -15,26 +15,46 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Changes the email address of a customer.
         /// </summary>
         /// <param name="username">The username of the user.</param>
+        /// <param name="newEmail">The new email address to set.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangeEmail(string username, string newEmail);
+
+        /// <summary>
+        /// Validation for changing email.
+        /// </summary>
+        /// <param name="username">The username of the user.</param>
         /// <param name="password">The password of the user.</param>
         /// <param name="newEmail">The new email address to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangeEmail(string username, string password, string newEmail);
+        Response ChangeEmailValidation(string username, string password, string newEmail);
 
         /// <summary>
         /// Changes the password of a customer.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <param name="oldPassword">The old password of the user.</param>
         /// <param name="newPassword">The new password to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangePassword(string username, string oldPassword, string newPassword);
+        Response ChangePassword(string newPassword);
 
         /// <summary>
-        /// Deletes a user by their ID.
+        /// Validation for change password.
+        /// </summary>
+        /// <param name="username">The username of the user.</param>
+        /// <param name="oldPassword">The old password of the user.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangePasswordValidation(string username, string oldPassword);
+
+        /// <summary>
+        /// Deletes customer record.
+        /// </summary>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response Delete();
+
+        /// <summary>
+        /// Validate delete record id.
         /// </summary>
         /// <param name="id">The ID of the user to be deleted.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response Delete(int id);
+        Response DeleteValidation(int id);
 
         /// <summary>
         /// Retrieves all users.

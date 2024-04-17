@@ -16,19 +16,34 @@ namespace OnlineShoppingAPI.BL.Interface
         /// Changes the email address of a suplier.
         /// </summary>
         /// <param name="username">The username of the suplier.</param>
+        /// <param name="newEmail">The new email address.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangeEmail(string username, string newEmail);
+
+        /// <summary>
+        /// Validates the parameters before the changing email.
+        /// </summary>
+        /// <param name="username">The username of the suplier.</param>
         /// <param name="password">The password of the suplier.</param>
         /// <param name="newEmail">The new email address.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangeEmail(string username, string password, string newEmail);
+        Response ChangeEmailValidation(string username, string password, string newEmail);
 
         /// <summary>
         /// Changes the password of a suplier.
+        /// </summary>
+        /// <param name="newPassword">The new password.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response ChangePassword(string newPassword);
+
+        /// <summary>
+        /// Validation before the change password.
         /// </summary>
         /// <param name="username">The username of the suplier.</param>
         /// <param name="oldPassword">The old password of the suplier.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangePassword(string username, string oldPassword, string newPassword);
+        Response ChangePasswordValidation(string username, string oldPassword);
 
         /// <summary>
         /// Deletes a suplier.
@@ -36,6 +51,13 @@ namespace OnlineShoppingAPI.BL.Interface
         /// <param name="id">The ID of the suplier to delete.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response Delete(int id);
+
+        /// <summary>
+        /// Delete Validation
+        /// </summary>
+        /// <param name="id">The ID of the suplier to delete.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response DeleteValidation(int id);
 
         /// <summary>
         /// Retrieves all suplier.

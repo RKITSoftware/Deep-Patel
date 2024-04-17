@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.Controllers.Filters;
 using PlacementCellManagementAPI.Models;
 using PlacementCellManagementAPI.Models.Dtos;
 using PlacementCellManagementAPI.Models.POCO;
@@ -35,6 +36,7 @@ namespace PlacementCellManagementAPI.Controllers
         /// <param name="objDTOADM01">DTO containing admin information.</param>
         /// <returns>Returns HTTP status code indicating the result of the operation.</returns>
         [HttpPost("")]
+        [ServiceFilter(typeof(ValidateModelFilter))]
         public IActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
             _adm01Service.Operation = EnmOperation.A;

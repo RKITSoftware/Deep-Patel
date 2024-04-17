@@ -1,5 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Linq;
+using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Service;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Collections.Generic;
@@ -20,7 +22,9 @@ namespace OnlineShoppingAPI.BL.Common
     {
         #region Private Fields
 
-        // The secret key used for signing and validating JWT tokens
+        /// <summary>
+        /// The secret key used for signing and validating JWT tokens
+        /// </summary>
         private const string secretKey = "thisissecuritykeyofcustomjwttokenaut";
 
         #endregion Private Fields
@@ -44,8 +48,8 @@ namespace OnlineShoppingAPI.BL.Common
                 Convert.FromBase64String(jwtEncodePayload));
             JObject json = JObject.Parse(decodedPayloadBytes);
 
-            // Retrieving user information based on the decoded payload
-            USR01 user = BLHelper.GetUser(int.Parse(json["Id"].ToString()));
+            IUSR01Service usr01Service = new BLUSR01Handler();
+            USR01 user = usr01Service.GetUser(int.Parse(json["Id"].ToString()));
 
             // Creating GenericIdentity and GenericPrincipal objects for the user
             GenericIdentity identity = new GenericIdentity(user.R01F02);
@@ -121,7 +125,6 @@ namespace OnlineShoppingAPI.BL.Common
         /// </returns>
         public HttpResponseMessage GenerateToken(Guid sessionId, USR01 objUser)
         {
-
             string issuer = "CustomJWTBearerTokenAPI";
 
             // Creating SymmetricSecurityKey and SigningCredentials

@@ -18,9 +18,9 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         private readonly string _connectionString;
 
         /// <summary>
-        /// Instance of a <see cref="IExceptionLoggerService"/> to log the exceptions handles by the developer.
+        /// Instance of a <see cref="ILoggerService"/> to log the exceptions handles by the developer.
         /// </summary>
-        private readonly IExceptionLoggerService _exceptionLogger;
+        private readonly ILoggerService _exceptionLogger;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// </summary>
         /// <param name="configuration">Configuration object for retrieving connection string.</param>
         /// <param name="exceptionLogger">Exception logger for logging errors.</param>
-        public BLUSR01Handler(IConfiguration configuration, IExceptionLoggerService exceptionLogger)
+        public BLUSR01Handler(IConfiguration configuration, ILoggerService exceptionLogger)
         {
             _connectionString = configuration.GetConnectionString("Default");
             _exceptionLogger = exceptionLogger;
@@ -101,7 +101,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
             catch (Exception exception)
             {
                 // Log exception and return empty DataTable
-                _exceptionLogger.Log(exception);
+                _exceptionLogger.Error(exception);
                 return new DataTable();
             }
         }

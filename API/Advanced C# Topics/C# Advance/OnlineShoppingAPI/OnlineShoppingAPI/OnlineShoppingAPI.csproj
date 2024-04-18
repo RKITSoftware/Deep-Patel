@@ -249,6 +249,7 @@
     <Compile Include="BL\Common\BLToken.cs" />
     <Compile Include="BL\Service\BLUSR01Handler.cs" />
     <Compile Include="BL\Interface\IUSR01Service.cs" />
+    <Compile Include="Controllers\Attribute\ValidationIdAttribute.cs" />
     <Compile Include="Controllers\CLADM01Controller.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCRT01Controller.cs" />
@@ -272,7 +273,7 @@
     <Compile Include="Models\DTO\DTOSUP01.cs" />
     <Compile Include="Extension\ConvertExtension.cs" />
     <Compile Include="Controllers\Filter\ExceptionLogFilter.cs" />
-    <Compile Include="Controllers\Filter\ValidateModelAttribute.cs" />
+    <Compile Include="Controllers\Attribute\ValidateModelAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

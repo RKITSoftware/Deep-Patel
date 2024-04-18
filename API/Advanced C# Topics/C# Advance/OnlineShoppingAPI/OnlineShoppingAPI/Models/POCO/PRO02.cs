@@ -32,7 +32,7 @@ namespace OnlineShoppingAPI.Models.POCO
         /// <summary>
         /// Product Quantity
         /// </summary>
-        public decimal O02F05 { get; set; }
+        public int O02F05 { get; set; }
 
         /// <summary>
         /// Product Image

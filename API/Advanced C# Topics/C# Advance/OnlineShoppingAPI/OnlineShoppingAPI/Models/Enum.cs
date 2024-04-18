@@ -11,11 +11,6 @@
         A,
 
         /// <summary>
-        /// Represents a delete operation.
-        /// </summary>
-        D,
-
-        /// <summary>
         /// Represents a edit operation.
         /// </summary>
         E

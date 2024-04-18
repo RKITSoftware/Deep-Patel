@@ -142,15 +142,34 @@ namespace OnlineShoppingAPI.BL.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOPRO02 objDTOPRO02)
         {
+            if (Operation == EnmOperation.A)
+            {
+                if (objDTOPRO02.O02F01 != 0)
+                {
+                    return PreConditionFailedResponse("Id needs to be zero for add operation");
+                }
+            }
+            else
+            {
+                if (objDTOPRO02.O02F01 <= 0)
+                {
+                    return PreConditionFailedResponse("Id needs to greater than zero for edit operation.");
+                }
+            }
+
             using (var db = _dbFactory.OpenDbConnection())
             {
                 // Checks category exists or not.
-                if (db.SingleById<CAT01>(objDTOPRO02.O01F09) == null)
+                if (db.SingleById<CAT01>(objDTOPRO02.O02F09) == null)
+                {
                     return NotFoundResponse("Category doesn't exist.");
+                }
 
                 // Checks supplier exists or not.
-                if (db.SingleById<SUP01>(objDTOPRO02.O01F10) == null)
+                if (db.SingleById<SUP01>(objDTOPRO02.O02F10) == null)
+                {
                     return NotFoundResponse("Supplier doesn't exist.");
+                }
             }
 
             return OkResponse();

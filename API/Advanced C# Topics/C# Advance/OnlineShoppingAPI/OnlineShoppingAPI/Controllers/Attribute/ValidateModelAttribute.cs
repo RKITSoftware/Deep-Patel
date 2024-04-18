@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace OnlineShoppingAPI.Controllers.Filter
+namespace OnlineShoppingAPI.Controllers.Attribute
 {
     /// <summary>
     /// Action filter attribute for validating model state before executing an action in Web API.

@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Filter;
+using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;

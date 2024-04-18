@@ -14,53 +14,53 @@ namespace OnlineShoppingAPI.Models.DTO
         [Required(ErrorMessage = "Id is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Id can't be negative.")]
         [JsonProperty("O01101")]
-        public int O01F01 { get; set; }
+        public int O02F01 { get; set; }
 
         /// <summary>
         /// Product Name
         /// </summary>
         [Required(ErrorMessage = "Enter the product name.")]
         [JsonProperty("O02102")]
-        public string O01F02 { get; set; }
+        public string O02F02 { get; set; }
 
         /// <summary>
         /// Product Buy Price
         /// </summary>
         [Required(ErrorMessage = "Enter the buy price.")]
         [JsonProperty("O02F03")]
-        public int O01F03 { get; set; }
+        public int O02F03 { get; set; }
 
         /// <summary>
         /// Product Sell Price
         /// </summary>
         [JsonProperty("O02104")]
-        public int O01F04 { get; set; }
+        public int O02F04 { get; set; }
 
         /// <summary>
         /// Product Quantity
         /// </summary>
         [Required]
         [JsonProperty("O02105")]
-        public decimal O01F05 { get; set; }
+        public int O02F05 { get; set; }
 
         /// <summary>
         /// Product Image
         /// </summary>
         [JsonProperty("O02106")]
-        public string O01F06 { get; set; }
+        public string O02F06 { get; set; }
 
         /// <summary>
         /// Foreign Key of Category Table
         /// </summary>
         [Required(ErrorMessage = "Category id is required.")]
         [JsonProperty("O02109")]
-        public int O01F09 { get; set; }
+        public int O02F09 { get; set; }
 
         /// <summary>
         /// Foreign Key of Suplier Table
         /// </summary>
         [Required(ErrorMessage = "Supplier id is required.")]
         [JsonProperty("O02110")]
-        public int O01F10 { get; set; }
+        public int O02F10 { get; set; }
     }
 }

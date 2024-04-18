@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Interface;
 using OnlineShoppingAPI.BL.Service;
-using OnlineShoppingAPI.Controllers.Filter;
+using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
@@ -36,6 +36,7 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [ValidateModel]
+        [ValidationId(EnmOperation.A)]
         public IHttpActionResult Add(DTOCAT01 objDTOCAT01)
         {
             _cat01Service.Operation = EnmOperation.A;

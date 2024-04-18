@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Common.Interface;
 using OnlineShoppingAPI.BL.Common.Service;
-using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -15,7 +15,7 @@ using System.Web;
 using System.Web.Caching;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
     /// Service implementation of <see cref="ICRT01Service"/>.

@@ -1,4 +1,4 @@
-﻿using OnlineShoppingAPI.BL.Interface;
+﻿using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -12,7 +12,7 @@ using System.Data;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
     /// Service implementation of <see cref="IPRO02Service"/>.

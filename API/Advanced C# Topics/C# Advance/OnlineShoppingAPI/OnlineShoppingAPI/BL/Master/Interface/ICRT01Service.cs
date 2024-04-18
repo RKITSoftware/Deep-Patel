@@ -3,7 +3,7 @@ using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
 
-namespace OnlineShoppingAPI.BL.Interface
+namespace OnlineShoppingAPI.BL.Master.Interface
 {
     /// <summary>
     /// Interface for handling <see cref="CRT01"/> related services.

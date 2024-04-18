@@ -2,7 +2,7 @@
 using OfficeOpenXml;
 using OnlineShoppingAPI.BL.Common.Interface;
 using OnlineShoppingAPI.BL.Common.Service;
-using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -20,7 +20,7 @@ using System.Net.Http.Headers;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
     /// Service implementation of <see cref="IRCD01Service"/> interface.

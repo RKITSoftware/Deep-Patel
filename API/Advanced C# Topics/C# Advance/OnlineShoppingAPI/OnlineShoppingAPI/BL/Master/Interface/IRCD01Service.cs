@@ -5,7 +5,7 @@ using OnlineShoppingAPI.Models.POCO;
 using System.Collections.Generic;
 using System.Net.Http;
 
-namespace OnlineShoppingAPI.BL.Interface
+namespace OnlineShoppingAPI.BL.Master.Interface
 {
     /// <summary>
     /// Service for <see cref="RCD01"/> model.

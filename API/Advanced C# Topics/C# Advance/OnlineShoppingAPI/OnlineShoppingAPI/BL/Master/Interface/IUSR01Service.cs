@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.Models.POCO;
 
-namespace OnlineShoppingAPI.BL.Interface
+namespace OnlineShoppingAPI.BL.Master.Interface
 {
     /// <summary>
     /// Services for <see cref="USR01"/>.

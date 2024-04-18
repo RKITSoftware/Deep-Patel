@@ -1,6 +1,6 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.BL.Service;
+using OnlineShoppingAPI.BL.Master.Interface;
+using OnlineShoppingAPI.BL.Master.Service;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Linq;

@@ -1,71 +1,74 @@
 ﻿using OnlineShoppingAPI.BL.Common.Interface;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
+using OnlineShoppingAPI.Models.POCO;
 
-namespace OnlineShoppingAPI.BL.Interface
+namespace OnlineShoppingAPI.BL.Master.Interface
 {
     /// <summary>
-    /// Interface for handling CUS01 related operations.
+    /// Interface for managing <see cref="SUP01"/> operations.
     /// </summary>
-    public interface ICUS01Service : ICommonDataHandlerService<DTOCUS01>
+    public interface ISUP01Service : ICommonDataHandlerService<DTOSUP01>
     {
         #region Public Methods
 
         /// <summary>
-        /// Changes the email address of a customer.
+        /// Changes the email address of a suplier.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <param name="newEmail">The new email address to set.</param>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="newEmail">The new email address.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response ChangeEmail(string username, string newEmail);
 
         /// <summary>
-        /// Validation for changing email.
+        /// Validates the parameters before the changing email.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <param name="password">The password of the user.</param>
-        /// <param name="newEmail">The new email address to set.</param>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="password">The password of the suplier.</param>
+        /// <param name="newEmail">The new email address.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response ChangeEmailValidation(string username, string password, string newEmail);
 
         /// <summary>
-        /// Changes the password of a customer.
+        /// Changes the password of a suplier.
         /// </summary>
-        /// <param name="newPassword">The new password to set.</param>
+        /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response ChangePassword(string newPassword);
 
         /// <summary>
-        /// Validation for change password.
+        /// Validation before the change password.
         /// </summary>
-        /// <param name="username">The username of the user.</param>
-        /// <param name="oldPassword">The old password of the user.</param>
+        /// <param name="username">The username of the suplier.</param>
+        /// <param name="oldPassword">The old password of the suplier.</param>
+        /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response ChangePasswordValidation(string username, string oldPassword);
 
         /// <summary>
-        /// Deletes customer record.
+        /// Deletes a suplier.
         /// </summary>
+        /// <param name="id">The ID of the suplier to delete.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response Delete();
+        Response Delete(int id);
 
         /// <summary>
-        /// Validate delete record id.
+        /// Delete Validation
         /// </summary>
-        /// <param name="id">The ID of the user to be deleted.</param>
+        /// <param name="id">The ID of the suplier to delete.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response DeleteValidation(int id);
 
         /// <summary>
-        /// Retrieves all users.
+        /// Retrieves all suplier.
         /// </summary>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response GetAll();
 
         /// <summary>
-        /// Retrieves a user by their ID.
+        /// Retrieves a suplier by its ID.
         /// </summary>
-        /// <param name="id">The ID of the user to retrieve.</param>
+        /// <param name="id">The ID of the suplier to retrieve.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response GetById(int id);
 

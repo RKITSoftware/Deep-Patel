@@ -1,5 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.BL.Service;
+﻿using OnlineShoppingAPI.BL.Master.Interface;
+using OnlineShoppingAPI.BL.Master.Service;
 using OnlineShoppingAPI.Controllers.Attribute;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;

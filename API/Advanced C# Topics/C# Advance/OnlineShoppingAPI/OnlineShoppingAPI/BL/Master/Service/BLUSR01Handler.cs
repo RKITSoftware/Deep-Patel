@@ -1,12 +1,12 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System.Data;
 using System.Web;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
     /// Service implementation of <see cref="IUSR01Service"/> for <see cref="USR01"/>.

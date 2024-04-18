@@ -1,5 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
     /// Service for <see cref="ADM01"/> model.

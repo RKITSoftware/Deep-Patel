@@ -1,5 +1,5 @@
-﻿using OnlineShoppingAPI.BL.Interface;
-using OnlineShoppingAPI.BL.Service;
+﻿using OnlineShoppingAPI.BL.Master.Interface;
+using OnlineShoppingAPI.BL.Master.Service;
 using System;
 using System.Net;
 using System.Net.Http;

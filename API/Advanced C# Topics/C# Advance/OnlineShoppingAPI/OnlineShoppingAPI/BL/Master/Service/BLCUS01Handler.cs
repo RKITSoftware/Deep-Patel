@@ -1,5 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Common;
-using OnlineShoppingAPI.BL.Interface;
+using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -12,34 +12,34 @@ using System.Data;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
-namespace OnlineShoppingAPI.BL.Service
+namespace OnlineShoppingAPI.BL.Master.Service
 {
     /// <summary>
-    /// BL Handler for SUP01 model.
+    /// Service implementation of <see cref="ICUS01Service"/>.
     /// </summary>
-    public class BLSUP01Handler : ISUP01Service
+    public class BLCUS01Handler : ICUS01Service
     {
         #region Private Fields
 
         /// <summary>
-        /// Orm Lite Connection.
+        /// OrmLite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
+
+        /// <summary>
+        /// Insatnce of <see cref="CUS01"/>.
+        /// </summary>
+        private CUS01 _objCUS01;
+
+        /// <summary>
+        /// Instance of <see cref="USR01"/>.
+        /// </summary>
+        private USR01 _objUSR01;
 
         /// <summary>
         /// USR01 model services.
         /// </summary>
         private readonly IUSR01Service _usr01Service;
-
-        /// <summary>
-        /// Instance of <see cref="SUP01"/>.
-        /// </summary>
-        private SUP01 _objSUP01;
-
-        /// <summary>
-        /// Instance of <see cref="usr01"/>.
-        /// </summary>
-        private USR01 _objUSR01;
 
         #endregion Private Fields
 
@@ -52,34 +52,33 @@ namespace OnlineShoppingAPI.BL.Service
 
         #endregion Public Properties
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
-        /// Initialize the <see cref="BLSUP01Handler"/> insatnces.
+        /// Initializes a new instance of the <see cref="BLCUS01Handler"/>.
         /// </summary>
-        public BLSUP01Handler()
+        public BLCUS01Handler()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
             _usr01Service = new BLUSR01Handler();
         }
 
-        #endregion Constructor
+        #endregion Constructors
 
         #region Public Methods
 
         /// <summary>
-        /// Changes the email address of a suplier.
+        /// Changes the email address of a customer.
         /// </summary>
-        /// <param name="username">The username of the suplier.</param>
-        /// <param name="newEmail">The new email address.</param>
+        /// <param name="username">The username of the user.</param>
+        /// <param name="newEmail">The new email address to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmail(string username, string newEmail)
         {
-            _objUSR01 = _usr01Service.GetUser(username);
+            USR01 objUser = _usr01Service.GetUser(username);
 
-            // Update email and username
-            _objSUP01.P01F03 = newEmail;
-            _objUSR01.R01F02 = newEmail.Split('@')[0];
+            _objCUS01.S01F03 = newEmail;
+            objUser.R01F02 = newEmail.Split('@')[0];
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
@@ -87,8 +86,8 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     try
                     {
-                        db.Update(_objSUP01);
-                        db.Update(_objUSR01);
+                        db.Update(_objCUS01);
+                        db.Update(objUser);
 
                         transaction.Commit();
                     }
@@ -104,42 +103,37 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Validates the parameters before the changing email.
+        /// Validation for changing email.
         /// </summary>
-        /// <param name="username">The username of the suplier.</param>
-        /// <param name="password">The password of the suplier.</param>
-        /// <param name="newEmail">The new email address.</param>
+        /// <param name="username">The username of the user.</param>
+        /// <param name="password">The password of the user.</param>
+        /// <param name="newEmail">The new email address to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmailValidation(string username, string password, string newEmail)
         {
             if (_usr01Service.GetUser(newEmail) != null)
-            {
-                return PreConditionFailedResponse("Email already exists.");
-            }
+                return NotFoundResponse("Use another email, this email is already exists.");
 
             using (var db = _dbFactory.OpenDbConnection())
             {
-                _objSUP01 = db.Single(db.From<SUP01>()
-                    .Where(s => s.P01F03.StartsWith(username) &&
-                                s.P01F04.Equals(password)));
+                _objCUS01 = db.Single(db.From<CUS01>()
+                    .Where(c => c.S01F03.StartsWith(username) && c.S01F04.Equals(password)));
             }
 
-            if (_objSUP01 == null)
-            {
-                return NotFoundResponse("Supplier not found.");
-            }
+            if (_objCUS01 == null)
+                return NotFoundResponse("Customer doesn't exist");
 
             return OkResponse();
         }
 
         /// <summary>
-        /// Changes the password of a suplier.
+        /// Changes the password of a customer.
         /// </summary>
-        /// <param name="newPassword">The new password.</param>
+        /// <param name="newPassword">The new password to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangePassword(string newPassword)
         {
-            _objSUP01.P01F04 = newPassword;
+            _objCUS01.S01F04 = newPassword;
             _objUSR01.R01F03 = newPassword;
             _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
 
@@ -149,7 +143,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     try
                     {
-                        db.Update(_objSUP01);
+                        db.Update(_objCUS01);
                         db.Update(_objUSR01);
 
                         transaction.Commit();
@@ -166,41 +160,39 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Validation before the change password.
+        /// Validation for change password.
         /// </summary>
-        /// <param name="username">The username of the suplier.</param>
-        /// <param name="oldPassword">The old password of the suplier.</param>
+        /// <param name="username">The username of the user.</param>
+        /// <param name="oldPassword">The old password of the user.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangePasswordValidation(string username, string oldPassword)
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objSUP01 = db.SingleWhere<SUP01>("P01F03", username + "@gmail.com");
+                _objCUS01 = db.SingleWhere<CUS01>("S01F03", username + "@gmail.com");
                 _objUSR01 = db.SingleWhere<USR01>("R01F02", username);
             }
 
-            if (_objSUP01 == null || _objUSR01 == null)
+            if (_objCUS01 == null)
             {
-                return NotFoundResponse("Suplier doesn't exist.");
+                return NotFoundResponse("Customer not found.");
             }
 
-            // Verify the old password and update if correct
-            if (_objSUP01.P01F04 != oldPassword)
+            if (_objCUS01.S01F04 != oldPassword)
             {
-                return PreConditionFailedResponse("Password is incorrect.");
+                return PreConditionFailedResponse("Password doesn't match.");
             }
 
             return OkResponse();
         }
 
         /// <summary>
-        /// Deletes a suplier.
+        /// Deletes a customer.
         /// </summary>
-        /// <param name="id">The ID of the suplier to delete.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response Delete(int id)
+        public Response Delete()
         {
-            string r01F02 = _objSUP01.P01F03.Split('@')[0];
+            string r01F02 = _objCUS01.S01F03.Split('@')[0];
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
@@ -208,7 +200,7 @@ namespace OnlineShoppingAPI.BL.Service
                 {
                     try
                     {
-                        db.DeleteById<SUP01>(id);
+                        db.Delete(_objCUS01);
                         db.Delete<USR01>(u => u.R01F02 == r01F02);
 
                         transaction.Commit();
@@ -221,97 +213,111 @@ namespace OnlineShoppingAPI.BL.Service
                 }
             }
 
-            return OkResponse("Supplier deleted successfully.");
+            return OkResponse("Customer deleted successfully.");
         }
 
         /// <summary>
-        /// Delete Validation
+        /// Validate delete record id.
         /// </summary>
-        /// <param name="id">The ID of the suplier to delete.</param>
+        /// <param name="id">The ID of the user to be deleted.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response DeleteValidation(int id)
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objSUP01 = db.SingleById<SUP01>(id);
+                _objCUS01 = db.SingleById<CUS01>(id);
             }
 
-            if (_objSUP01 == null)
+            if (_objCUS01 == null)
             {
-                return NotFoundResponse("Supplier not found.");
+                return NotFoundResponse("Customer not found.");
             }
 
             return OkResponse();
         }
 
         /// <summary>
-        /// Retrieves all suplier.
+        /// Retrieves all customers information.
         /// </summary>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetAll()
         {
-            List<SUP01> lstSUP01;
+            List<CUS01> lstCUS01;
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                lstSUP01 = db.Select<SUP01>();
+                lstCUS01 = db.Select<CUS01>();
             }
 
-            if (lstSUP01 == null || lstSUP01.Count == 0)
+            if (lstCUS01 == null)
             {
                 return NoContentResponse();
             }
 
-            return OkResponse("", lstSUP01);
+            return OkResponse("", lstCUS01);
         }
 
         /// <summary>
-        /// Retrieves a suplier by its ID.
+        /// Retrieves a customer by their ID.
         /// </summary>
-        /// <param name="id">The ID of the suplier to retrieve.</param>
+        /// <param name="id">The ID of the customer to retrieve.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetById(int id)
         {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            using (var db = _dbFactory.OpenDbConnection())
             {
-                SUP01 objSUP01 = db.SingleById<SUP01>(id);
-                return objSUP01 != null ? OkResponse("", objSUP01) : NotFoundResponse("Supplier not found.");
+                _objCUS01 = db.SingleById<CUS01>(id);
             }
+
+            if (_objCUS01 == null)
+            {
+                return NotFoundResponse("Customer not found.");
+            }
+
+            return OkResponse("", _objCUS01);
         }
 
         /// <summary>
-        /// Prepares a suplier for saving based on the operation.
+        /// Prepares the objects for create or update operation.
         /// </summary>
-        /// <param name="objSUP01DTO">The DTO object representing the suplier.</param>
-        public void PreSave(DTOSUP01 objSUP01DTO)
+        /// <param name="objCUS01DTO">The DTO object representing the customer.</param>
+        public void PreSave(DTOCUS01 objCUS01DTO)
         {
-            _objSUP01 = objSUP01DTO.Convert<SUP01>();
+            _objCUS01 = objCUS01DTO.Convert<CUS01>();
 
             if (Operation == EnmOperation.A)
             {
                 _objUSR01 = new USR01()
                 {
-                    R01F02 = _objSUP01.P01F03.Split('@')[0],
-                    R01F03 = _objSUP01.P01F04,
-                    R01F04 = Roles.Supplier,
-                    R01F05 = BLEncryption.GetEncryptPassword(_objSUP01.P01F04)
+                    R01F02 = _objCUS01.S01F03.Split('@')[0],
+                    R01F03 = _objCUS01.S01F04,
+                    R01F04 = Roles.Customer,
+                    R01F05 = BLEncryption.GetEncryptPassword(_objCUS01.S01F04)
                 };
             }
         }
 
         /// <summary>
-        /// Checks the records exists or not for operation.
+        /// Checks the model records exists or not.
         /// </summary>
-        /// <param name="objDTOSUP01">DTO containing the Supplier information.</param>
+        /// <param name="objDTOCUS01">DTO containing the customer information.</param>
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
-        public Response PreValidation(DTOSUP01 objDTOSUP01)
+        public Response PreValidation(DTOCUS01 objDTOCUS01)
         {
-            if (Operation == EnmOperation.E)
+            if (Operation == EnmOperation.A)
             {
+                if (objDTOCUS01.S01F01 != 0)
+                    return PreConditionFailedResponse("Id needs to be zero for add operation.");
+            }
+            else
+            {
+                if (objDTOCUS01.S01F01 <= 0)
+                    return PreConditionFailedResponse("Id needs to be greater than zero update operation.");
+
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
-                    if (db.SingleById<SUP01>(objDTOSUP01.P01F01) == null)
-                        return NotFoundResponse("Supplier not found.");
+                    if (db.SingleById<CUS01>(objDTOCUS01.S01F01) == null)
+                        return NotFoundResponse("Customer not found.");
                 }
             }
 
@@ -319,7 +325,7 @@ namespace OnlineShoppingAPI.BL.Service
         }
 
         /// <summary>
-        /// Saves the changes made to a supplier.
+        /// Saves changes according to the operation.
         /// </summary>
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
@@ -332,7 +338,7 @@ namespace OnlineShoppingAPI.BL.Service
                     {
                         try
                         {
-                            db.Insert(_objSUP01);
+                            db.Insert(_objCUS01);
                             db.Insert(_objUSR01);
 
                             transaction.Commit();
@@ -342,27 +348,37 @@ namespace OnlineShoppingAPI.BL.Service
                             transaction.Rollback();
                             throw;
                         }
-
-                        return OkResponse("Supplier created successfully.");
                     }
+
+                    return OkResponse("Customer created successfully.");
                 }
 
-                db.Update(_objSUP01);
-                return OkResponse("Supplier information updated successfully.");
+                CUS01 existingCUS01 = db.SingleById<CUS01>(_objCUS01.S01F01);
+
+                // Update customer properties with the provided data.
+                existingCUS01.S01F02 = _objCUS01.S01F02;
+                existingCUS01.S01F05 = _objCUS01.S01F05;
+                existingCUS01.S01F06 = _objCUS01.S01F06;
+
+                // Perform the database update.
+                db.Update(existingCUS01);
+                return OkResponse("Data updated successfully.");
             }
         }
 
         /// <summary>
-        /// Performs validation on the supplier data.
+        /// Validates customer information.
         /// </summary>
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
             if (Operation == EnmOperation.A)
             {
-                if (_usr01Service.IsExist(_objUSR01.R01F02, _objUSR01.R01F03))
+                using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
-                    return PreConditionFailedResponse("Username already exists choose another.");
+                    // Check if the email already exists in the database
+                    if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
+                        return PreConditionFailedResponse("Email already exists.");
                 }
             }
 

@@ -33,7 +33,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
 
             if (Operation == EnmOperation.E)
             {
-                if (id <= 0)
+                if (id == 0)
                 {
                     actionContext.Response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                     return;

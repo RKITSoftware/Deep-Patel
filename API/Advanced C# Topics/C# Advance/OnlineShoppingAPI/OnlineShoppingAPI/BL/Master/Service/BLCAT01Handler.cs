@@ -132,20 +132,13 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOCAT01 objDTOCAT01)
         {
-            if (Operation == EnmOperation.A)
+            if (!IsIDValid(Operation, objDTOCAT01.T01F01))
             {
-                if (objDTOCAT01.T01F01 != 0)
-                {
-                    return PreConditionFailedResponse("Id needs to be zero when creating a category.");
-                }
+                return PreConditionFailedResponse("Id id invalid for operation");
             }
-            else
-            {
-                if (objDTOCAT01.T01F01 <= 0)
-                {
-                    return PreConditionFailedResponse("Id can't be zero nor less than zero for updating the category.");
-                }
 
+            if (Operation == EnmOperation.E)
+            {
                 using (var db = _dbFactory.OpenDbConnection())
                 {
                     // Checks the category exists or not.

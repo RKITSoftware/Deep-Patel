@@ -34,6 +34,33 @@ namespace OnlineShoppingAPI.BL.Common
         #region Public Methods
 
         /// <summary>
+        /// Checks the id for add and edit operation.
+        /// </summary>
+        /// <param name="operation">Add or Edit operation.</param>
+        /// <param name="id">Create or Update id</param>
+        /// <returns>True if id is valid else False.</returns>
+        public static bool IsIDValid(EnmOperation operation, int id)
+        {
+            if (operation == EnmOperation.A)
+            {
+                if (id > 0)
+                {
+                    return false;
+                }
+            }
+
+            if (operation == EnmOperation.E)
+            {
+                if (id == 0)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Returns the NoContent response with the message.
         /// </summary>
         /// <param name="message">Message to sent to response.</param>
@@ -91,6 +118,7 @@ namespace OnlineShoppingAPI.BL.Common
                 Message = message
             };
         }
+
         /// <summary>
         /// Creates an <see cref="HttpResponseMessage"/> with the specified HTTP status code
         /// and message content.

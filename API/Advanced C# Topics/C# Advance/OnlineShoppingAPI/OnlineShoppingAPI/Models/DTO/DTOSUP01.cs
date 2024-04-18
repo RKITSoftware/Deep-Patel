@@ -14,7 +14,7 @@ namespace OnlineShoppingAPI.Models.DTO
         [Required(ErrorMessage = "Supplier id is required for the operation specifying.")]
         [Range(0, int.MaxValue, ErrorMessage = "Id's value needs to be greater than or equal to zero.")]
         [JsonProperty("P01101")]
-        public string P01F01 { get; set; }
+        public int P01F01 { get; set; }
 
         /// <summary>
         /// Suplier name

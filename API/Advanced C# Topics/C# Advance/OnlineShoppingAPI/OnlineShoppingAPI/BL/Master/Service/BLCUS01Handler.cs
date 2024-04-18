@@ -304,16 +304,13 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOCUS01 objDTOCUS01)
         {
-            if (Operation == EnmOperation.A)
+            if (!IsIDValid(Operation, objDTOCUS01.S01F01))
             {
-                if (objDTOCUS01.S01F01 != 0)
-                    return PreConditionFailedResponse("Id needs to be zero for add operation.");
+                return PreConditionFailedResponse("Id id invalid for operation");
             }
-            else
-            {
-                if (objDTOCUS01.S01F01 <= 0)
-                    return PreConditionFailedResponse("Id needs to be greater than zero update operation.");
 
+            if (Operation == EnmOperation.E)
+            {
                 using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
                     if (db.SingleById<CUS01>(objDTOCUS01.S01F01) == null)

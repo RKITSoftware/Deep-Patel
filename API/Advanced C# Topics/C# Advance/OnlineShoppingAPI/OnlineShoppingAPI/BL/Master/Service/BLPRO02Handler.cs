@@ -142,19 +142,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOPRO02 objDTOPRO02)
         {
-            if (Operation == EnmOperation.A)
+            if (!IsIDValid(Operation, objDTOPRO02.O02F01))
             {
-                if (objDTOPRO02.O02F01 != 0)
-                {
-                    return PreConditionFailedResponse("Id needs to be zero for add operation");
-                }
-            }
-            else
-            {
-                if (objDTOPRO02.O02F01 <= 0)
-                {
-                    return PreConditionFailedResponse("Id needs to greater than zero for edit operation.");
-                }
+                return PreConditionFailedResponse("Is id invalid for operation.");
             }
 
             using (var db = _dbFactory.OpenDbConnection())

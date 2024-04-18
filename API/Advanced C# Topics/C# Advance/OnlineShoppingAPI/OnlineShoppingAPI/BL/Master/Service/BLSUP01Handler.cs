@@ -306,6 +306,11 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOSUP01 objDTOSUP01)
         {
+            if (!IsIDValid(Operation, objDTOSUP01.P01F01))
+            {
+                return PreConditionFailedResponse("Id is invalid for the operation.");
+            }
+
             if (Operation == EnmOperation.E)
             {
                 using (IDbConnection db = _dbFactory.OpenDbConnection())

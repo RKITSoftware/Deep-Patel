@@ -36,7 +36,6 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPost]
         [Route("Add")]
         [ValidateModel]
-        [ValidationId(EnmOperation.A)]
         public IHttpActionResult Add(DTOCAT01 objDTOCAT01)
         {
             _cat01Service.Operation = EnmOperation.A;

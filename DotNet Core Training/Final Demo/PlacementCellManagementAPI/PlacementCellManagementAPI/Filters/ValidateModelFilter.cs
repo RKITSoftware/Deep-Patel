@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace PlacementCellManagementAPI.Controllers.Filters
+namespace PlacementCellManagementAPI.Filters
 {
     /// <summary>
     /// Represents a filter that validates the model state before executing an action.

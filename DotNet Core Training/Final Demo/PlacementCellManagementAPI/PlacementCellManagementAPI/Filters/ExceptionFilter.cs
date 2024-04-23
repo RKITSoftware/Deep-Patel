@@ -4,7 +4,7 @@ using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Models;
 using System.Net;
 
-namespace PlacementCellManagementAPI.Controllers.Filters
+namespace PlacementCellManagementAPI.Filters
 {
     /// <summary>
     /// Represents a filter that handles exceptions occurring during HTTP request processing.

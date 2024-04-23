@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PlacementCellManagementAPI.Business_Logic.Interface;
-using PlacementCellManagementAPI.Controllers.Filters;
+using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Models;
 using PlacementCellManagementAPI.Models.Dtos;
 using PlacementCellManagementAPI.Models.POCO;

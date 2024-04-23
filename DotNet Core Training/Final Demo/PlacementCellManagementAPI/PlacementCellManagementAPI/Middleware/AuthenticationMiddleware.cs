@@ -4,7 +4,7 @@ using PlacementCellManagementAPI.Models.POCO;
 using System.Security.Claims;
 using System.Text;
 
-namespace PlacementCellManagementAPI.Controllers.Middleware
+namespace PlacementCellManagementAPI.Middleware
 {
     /// <summary>
     /// Middleware responsible for authenticating private APIs.

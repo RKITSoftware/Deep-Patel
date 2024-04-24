@@ -17,11 +17,6 @@ namespace OnlineShoppingAPI.Controllers
     public class CLAuthenticationController : ApiController
     {
         /// <summary>
-        /// Business logic class instance for handling authentication endpoints.
-        /// </summary>
-        private readonly BLAuthentication _authentication;
-
-        /// <summary>
         /// USR01 model services.
         /// </summary>
         private readonly IUSR01Service _usr01Service;
@@ -36,33 +31,9 @@ namespace OnlineShoppingAPI.Controllers
         /// </summary>
         public CLAuthenticationController()
         {
-            _authentication = new BLAuthentication();
             _blToken = new BLToken();
             _usr01Service = new BLUSR01Handler();
         }
-
-        /// <summary>
-        /// Handles HTTP GET request for user login for basic authentication.
-        /// </summary>
-        /// <param name="username">The username for login.</param>
-        /// <param name="password">The password for login.</param>
-        /// <returns>
-        /// HTTP response message indicating the success or failure of the login attempt.
-        /// </returns>
-        [HttpGet]
-        [Route("Login")]
-        public HttpResponseMessage LogIn(string username, string password)
-            => _authentication.LogIn(username, password);
-
-        /// <summary>
-        /// Handles HTTP GET request for user logout.
-        /// </summary>
-        /// <returns>
-        /// HTTP response message indicating the success or failure of the logout attempt.
-        /// </returns>
-        [HttpGet]
-        [Route("Logout")]
-        public HttpResponseMessage LogOut() => _authentication.LogOut();
 
         /// <summary>
         /// Handles HTTP GET request for generating jwt token.

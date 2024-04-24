@@ -21,6 +21,11 @@ namespace OnlineShoppingAPI.Controllers
         private readonly IRCD01Service _rcd01Service;
 
         /// <summary>
+        /// Response for storing api request response.
+        /// </summary>
+        private Response _response;
+
+        /// <summary>
         /// Controller to initialize the <see cref="CLPRO02Controller"/>.
         /// </summary>
         public CLRCD01Controller()
@@ -40,17 +45,19 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult AddOrder(DTORCD01 objDTORCD01)
         {
             _rcd01Service.Operation = EnmOperation.A;
-            Response response = _rcd01Service.PreValidation(objDTORCD01);
+            _response = _rcd01Service.PreValidation(objDTORCD01);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
                 _rcd01Service.PreSave(objDTORCD01);
-                response = _rcd01Service.Validation();
+                _response = _rcd01Service.Validation();
 
-                if (!response.IsError)
-                    _rcd01Service.Save();
+                if (!_response.IsError)
+                {
+                    _response = _rcd01Service.Save();
+                }
             }
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -63,12 +70,14 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteRecord(int id)
         {
-            Response response = _rcd01Service.DeleteValidation(id);
+            _response = _rcd01Service.DeleteValidation(id);
 
-            if (!response.IsError)
-                response = _rcd01Service.Delete(id);
+            if (!_response.IsError)
+            {
+                _response = _rcd01Service.Delete(id);
+            }
 
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -94,8 +103,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetOrders()
         {
-            Response response = _rcd01Service.GetAllRecord();
-            return Ok(response);
+            return Ok(_rcd01Service.GetAllRecord());
         }
     }
 }

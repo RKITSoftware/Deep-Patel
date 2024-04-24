@@ -32,11 +32,17 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <summary>
         /// Changes the password of an admin user.
         /// </summary>
-        /// <param name="username">Username of the admin.</param>
-        /// <param name="oldPassword">Old password of the admin.</param>
         /// <param name="newPassword">New password to set.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangePassword(string username, string oldPassword, string newPassword);
+        Response ChangePassword(string newPassword);
+
+        /// <summary>
+        /// Valiation before the change password
+        /// </summary>
+        /// <param name="username">Username of the admin.</param>
+        /// <param name="oldPassword">Current password of admin.</param>
+        /// <returns>Success response if validation succesful else error response.</returns>
+        Response ChangePasswordValidation(string username, string oldPassword);
 
         /// <summary>
         /// Deletes an admin user by ID.

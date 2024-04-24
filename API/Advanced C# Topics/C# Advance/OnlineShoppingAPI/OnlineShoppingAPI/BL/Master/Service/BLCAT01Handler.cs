@@ -67,19 +67,25 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response Delete(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objCAT01 = db.SingleById<CAT01>(id);
-
-                if (_objCAT01 == null)
-                {
-                    return NotFoundResponse("Category not found.");
-                }
-
-                db.Delete(_objCAT01);
+                db.DeleteById<CAT01>(_objCAT01);
             }
 
             return OkResponse("Category deleted successfully.");
+        }
+
+        /// <summary>
+        /// Validate the id before the delete process.
+        /// </summary>
+        /// <param name="id">The ID of the category to be deleted.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response DeleteValidation(int id)
+        {
+            if (IsCAT01Exist(id))
+                return OkResponse();
+
+            return NotFoundResponse("Category not found.");
         }
 
         /// <summary>
@@ -91,9 +97,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
             DataTable dtCAT01 = _dbCAT01Context.GetAll();
 
             if (dtCAT01.Rows.Count == 0)
-            {
                 return NoContentResponse();
-            }
 
             return OkResponse("", dtCAT01);
         }
@@ -105,17 +109,17 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetById(int id)
         {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            if (IsCAT01Exist(id))
             {
-                _objCAT01 = db.Single<CAT01>(c => c.T01F01 == id);
+                using (IDbConnection db = _dbFactory.OpenDbConnection())
+                {
+                    _objCAT01 = db.SingleById<CAT01>(id);
+                }
+
+                return OkResponse("", _objCAT01);
             }
 
-            if (_objCAT01 == null)
-            {
-                return NotFoundResponse("Category not found.");
-            }
-
-            return OkResponse("", _objCAT01);
+            return NotFoundResponse("Category not found.");
         }
 
         /// <summary>
@@ -123,7 +127,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// </summary>
         /// <param name="objDTOCAT01">Data Transfer Object representing the category.</param>
         public void PreSave(DTOCAT01 objDTOCAT01)
-            => _objCAT01 = objDTOCAT01.Convert<CAT01>();
+        {
+            _objCAT01 = objDTOCAT01.Convert<CAT01>();
+        }
 
         /// <summary>
         /// Checking the id exists or not for category.
@@ -132,21 +138,10 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOCAT01 objDTOCAT01)
         {
-            if (!IsIDValid(Operation, objDTOCAT01.T01F01))
-            {
-                return PreConditionFailedResponse("Id id invalid for operation");
-            }
-
             if (Operation == EnmOperation.E)
             {
-                using (var db = _dbFactory.OpenDbConnection())
-                {
-                    // Checks the category exists or not.
-                    if (db.SingleById<CAT01>(objDTOCAT01.T01F01) == null)
-                    {
-                        return NotFoundResponse("Category not found.");
-                    }
-                }
+                if (!IsCAT01Exist(objDTOCAT01.T01F01))
+                    return NotFoundResponse("Category not found.");
             }
 
             return OkResponse();
@@ -158,17 +153,12 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Save()
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                if (Operation == EnmOperation.A)
-                {
-                    db.Insert(_objCAT01);
-                    return OkResponse("Category created successfully.");
-                }
-
-                db.Update(_objCAT01);
-                return OkResponse("Category updated successfully.");
+                db.Save(_objCAT01);
             }
+
+            return OkResponse();
         }
 
         /// <summary>
@@ -177,17 +167,40 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response Validation()
         {
+            bool isDuplicateT01F02;
+
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                if (db.Exists<CAT01>(c => c.T01F02 == _objCAT01.T01F02))
-                {
-                    return PreConditionFailedResponse("Category name already exists choose another name.");
-                }
+                isDuplicateT01F02 = db.Exists<CAT01>(c => c.T01F02 == _objCAT01.T01F02);
             }
+
+            if (isDuplicateT01F02)
+                return PreConditionFailedResponse("Category name already exists choose another name.");
 
             return OkResponse();
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        /// <summary>
+        /// Checks the category exists or not.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private bool IsCAT01Exist(int id)
+        {
+            bool isExist;
+
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                isExist = db.Exists<CAT01>(c => c.T01F01 == id);
+            }
+
+            return isExist;
+        }
+
+        #endregion
     }
 }

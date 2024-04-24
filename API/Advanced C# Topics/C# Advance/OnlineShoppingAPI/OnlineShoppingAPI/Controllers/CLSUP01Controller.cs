@@ -20,6 +20,11 @@ namespace OnlineShoppingAPI.Controllers
         private readonly ISUP01Service _sup01Service;
 
         /// <summary>
+        /// Response contains the api request result.
+        /// </summary>
+        private Response _response;
+
+        /// <summary>
         /// Constructor to initialize the <see cref="CLSUP01Controller"/>.
         /// </summary>
         public CLSUP01Controller()
@@ -37,17 +42,16 @@ namespace OnlineShoppingAPI.Controllers
         [HttpPatch]
         [Route("Change/Email")]
         [Authorize(Roles = "Suplier,Admin")]
-        public IHttpActionResult ChangeEmail(string username,
-            string password, string newEmail)
+        public IHttpActionResult ChangeEmail(string username, string password, string newEmail)
         {
-            Response response = _sup01Service.ChangeEmailValidation(username, password, newEmail);
+            _response = _sup01Service.ChangeEmailValidation(username, password, newEmail);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
-                response = _sup01Service.ChangeEmail(username, newEmail);
+                _response = _sup01Service.ChangeEmail(username, newEmail);
             }
 
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -63,14 +67,14 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult ChangePassword(string username,
             string oldPassword, string newPassword)
         {
-            Response response = _sup01Service.ChangePasswordValidation(username, oldPassword);
+            _response = _sup01Service.ChangePasswordValidation(username, oldPassword);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
-                response = _sup01Service.ChangePassword(newPassword);
+                _response = _sup01Service.ChangePassword(newPassword);
             }
 
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -85,18 +89,20 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult CreateSuplier(DTOSUP01 objSUP01DTO)
         {
             _sup01Service.Operation = EnmOperation.A;
-            Response response = _sup01Service.PreValidation(objSUP01DTO);
+            _response = _sup01Service.PreValidation(objSUP01DTO);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
                 _sup01Service.PreSave(objSUP01DTO);
-                response = _sup01Service.Validation();
+                _response = _sup01Service.Validation();
 
-                if (!response.IsError)
-                    _sup01Service.Save();
+                if (!_response.IsError)
+                {
+                    _response = _sup01Service.Save();
+                }
             }
 
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -109,14 +115,14 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteSuplier(int id)
         {
-            Response response = _sup01Service.DeleteValidation(id);
+            _response = _sup01Service.DeleteValidation(id);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
-                response = _sup01Service.Delete(id);
+                _response = _sup01Service.Delete(id);
             }
 
-            return Ok(response);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -128,8 +134,7 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetSupliers()
         {
-            Response response = _sup01Service.GetAll();
-            return Ok(response);
+            return Ok(_sup01Service.GetAll());
         }
 
         /// <summary>
@@ -142,14 +147,8 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult GetSuplierById(int id)
         {
-            Response response = _sup01Service.GetById(id);
-
-            if (!response.IsError)
-            {
-                response = _sup01Service.Delete(id);
-            }
-
-            return Ok(response);
+            _response = _sup01Service.GetById(id);
+            return Ok(_response);
         }
 
         /// <summary>
@@ -164,18 +163,20 @@ namespace OnlineShoppingAPI.Controllers
         public IHttpActionResult UpdateCustomer(DTOSUP01 objDTOSUP01)
         {
             _sup01Service.Operation = EnmOperation.E;
-            Response response = _sup01Service.PreValidation(objDTOSUP01);
+            _response = _sup01Service.PreValidation(objDTOSUP01);
 
-            if (!response.IsError)
+            if (!_response.IsError)
             {
                 _sup01Service.PreSave(objDTOSUP01);
-                response = _sup01Service.Validation();
+                _response = _sup01Service.Validation();
 
-                if (!response.IsError)
-                    _sup01Service.Save();
+                if (!_response.IsError)
+                {
+                    _response = _sup01Service.Save();
+                }
             }
 
-            return Ok(response);
+            return Ok(_response);
         }
     }
 }

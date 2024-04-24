@@ -8,8 +8,8 @@ using OnlineShoppingAPI.Models.POCO;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Web;
 using static OnlineShoppingAPI.BL.Common.BLHelper;
 
@@ -82,20 +82,26 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmail(string username, string newEmail)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            string newR01F02 = newEmail.Split('@')[0];
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                ADM01 objAdmin = db.Single(db.From<ADM01>()
-                    .Where(a => a.M01F03.StartsWith(username)));
-
-                objAdmin.M01F03 = newEmail;
-                _objUSR01.R01F02 = newEmail.Split('@')[0];
-
                 using (IDbTransaction transaction = db.BeginTransaction())
                 {
                     try
                     {
-                        db.Update(objAdmin);
-                        db.Update(_objUSR01);
+                        db.UpdateOnly<ADM01>(
+                            updateFields: new Dictionary<string, object>
+                                {
+                                    { "M01F03", newEmail}
+                                },
+                            obj: m => m.M01F03.StartsWith(username));
+
+                        db.UpdateOnly<USR01>(
+                          updateFields: new Dictionary<string, object>
+                            {
+                                {"R01F02", newR01F02 }
+                            },
+                          obj: u => u.R01F02 == username);
 
                         transaction.Commit();
                     }
@@ -124,8 +130,8 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 return PreConditionFailedResponse("New email is already exists, use another email.");
             }
 
-            _objUSR01 = _usr01Service.GetUser(username, password);
-            if (_objUSR01 == null)
+            bool isUSR01Exist = _usr01Service.IsExist(username, password);
+            if (!isUSR01Exist)
             {
                 return NotFoundResponse("User not found.");
             }
@@ -136,11 +142,33 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <summary>
         /// Changes the password of the admin.
         /// </summary>
-        /// <param name="username">Username of the admin.</param>
-        /// <param name="oldPassword">Old password of the admin.</param>
         /// <param name="newPassword">New password to be set for the admin.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response ChangePassword(string username, string oldPassword, string newPassword)
+        public Response ChangePassword(string newPassword)
+        {
+            string encryptedPassword = BLEncryption.GetEncryptPassword(newPassword);
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                db.UpdateOnly<USR01>(
+                    updateFields: new Dictionary<string, object>
+                    {
+                        { "R01F03", newPassword },
+                        { "R01F05", encryptedPassword }
+                    },
+                    obj: u => u.R01F02 == _objUSR01.R01F02);
+            }
+
+            return OkResponse("Password changed successfully.");
+        }
+
+        /// <summary>
+        /// Valiation before the change password
+        /// </summary>
+        /// <param name="username">Username of the admin.</param>
+        /// <param name="oldPassword">Current password of admin.</param>
+        /// <returns>Success response if validation succesful else error response.</returns>
+        public Response ChangePasswordValidation(string username, string oldPassword)
         {
             _objUSR01 = _usr01Service.GetUser(username, oldPassword);
 
@@ -149,15 +177,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 return NotFoundResponse("User not found.");
             }
 
-            _objUSR01.R01F03 = newPassword;
-            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
-
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
-            {
-                db.Update(_objUSR01);
-            }
-
-            return OkResponse("Password changed successfully.");
+            return OkResponse();
         }
 
         /// <summary>
@@ -175,7 +195,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Delete(_objADM01);
+                        db.DeleteById<ADM01>(_objADM01.M01F01);
                         db.Delete<USR01>(u => u.R01F02 == r01F02);
 
                         transaction.Commit();
@@ -260,8 +280,21 @@ namespace OnlineShoppingAPI.BL.Master.Service
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                db.Insert(_objADM01);
-                db.Insert(_objUSR01);
+                using (IDbTransaction transaction = db.BeginTransaction())
+                {
+                    try
+                    {
+                        db.Save(_objADM01);
+                        db.Save(_objUSR01);
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
 
             return OkResponse("Customer created successfully.");
@@ -273,13 +306,16 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response according to error.</returns>
         public Response Validation()
         {
+            bool isUSR01Exist;
+
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                // Check if the email already exists in the database
-                if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
-                {
-                    return PreConditionFailedResponse("Username already exists");
-                }
+                isUSR01Exist = db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02);
+            }
+
+            if (isUSR01Exist)
+            {
+                return PreConditionFailedResponse("Username already exists");
             }
 
             return OkResponse();

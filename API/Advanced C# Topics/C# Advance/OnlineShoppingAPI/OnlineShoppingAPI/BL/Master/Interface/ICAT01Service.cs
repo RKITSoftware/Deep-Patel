@@ -20,6 +20,13 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         Response Delete(int id);
 
         /// <summary>
+        /// Validate the id before the delete process.
+        /// </summary>
+        /// <param name="id">The ID of the category to be deleted.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response DeleteValidation(int id);
+
+        /// <summary>
         /// Retrieves all categories.
         /// </summary>
         /// <returns>Success response if no error occur else response with error message.</returns>

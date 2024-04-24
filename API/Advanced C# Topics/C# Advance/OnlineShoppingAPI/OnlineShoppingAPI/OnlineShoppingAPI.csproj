@@ -244,12 +244,10 @@
     <Compile Include="BL\Master\Interface\IPRO02Service.cs" />
     <Compile Include="BL\Master\Interface\IRCD01Service.cs" />
     <Compile Include="BL\Master\Interface\ICRT01Service.cs" />
-    <Compile Include="BL\Common\BLAuthentication.cs" />
     <Compile Include="BL\Common\BLHelper.cs" />
     <Compile Include="BL\Common\BLToken.cs" />
     <Compile Include="BL\Master\Service\BLUSR01Handler.cs" />
     <Compile Include="BL\Master\Interface\IUSR01Service.cs" />
-    <Compile Include="Controllers\Attribute\ValidationIdAttribute.cs" />
     <Compile Include="Controllers\CLADM01Controller.cs" />
     <Compile Include="Controllers\CLAuthenticationController.cs" />
     <Compile Include="Controllers\CLCRT01Controller.cs" />

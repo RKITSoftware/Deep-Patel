@@ -75,11 +75,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmail(string username, string newEmail)
         {
-            _objUSR01 = _usr01Service.GetUser(username);
-
-            // Update email and username
-            _objSUP01.P01F03 = newEmail;
-            _objUSR01.R01F02 = newEmail.Split('@')[0];
+            string newUsername = newEmail.Split('@')[0];
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
@@ -87,12 +83,12 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Update(_objSUP01);
-                        db.Update(_objUSR01);
+                        db.Update<SUP01>(new { P01F03 = newEmail }, where: sup => sup.P01F03.StartsWith(username));
+                        db.Update<USR01>(new { R01F02 = newUsername }, where: usr => usr.R01F02 == username);
 
                         transaction.Commit();
                     }
-                    catch (Exception)
+                    catch
                     {
                         transaction.Rollback();
                         throw;
@@ -117,14 +113,13 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 return PreConditionFailedResponse("Email already exists.");
             }
 
-            using (var db = _dbFactory.OpenDbConnection())
+            bool isSUP01Exist;
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objSUP01 = db.Single(db.From<SUP01>()
-                    .Where(s => s.P01F03.StartsWith(username) &&
-                                s.P01F04.Equals(password)));
+                isSUP01Exist = db.Exists<SUP01>(sup => sup.P01F03.StartsWith(username) && sup.P01F04.Equals(password));
             }
 
-            if (_objSUP01 == null)
+            if (!isSUP01Exist)
             {
                 return NotFoundResponse("Supplier not found.");
             }
@@ -154,7 +149,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
                         transaction.Commit();
                     }
-                    catch (Exception)
+                    catch
                     {
                         transaction.Rollback();
                         throw;
@@ -231,12 +226,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response DeleteValidation(int id)
         {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
-            {
-                _objSUP01 = db.SingleById<SUP01>(id);
-            }
-
-            if (_objSUP01 == null)
+            if (!IsSUP01Exist(id))
             {
                 return NotFoundResponse("Supplier not found.");
             }
@@ -272,11 +262,17 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetById(int id)
         {
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            if (IsSUP01Exist(id))
             {
-                SUP01 objSUP01 = db.SingleById<SUP01>(id);
-                return objSUP01 != null ? OkResponse("", objSUP01) : NotFoundResponse("Supplier not found.");
+                using (IDbConnection db = _dbFactory.OpenDbConnection())
+                {
+                    _objSUP01 = db.SingleById<SUP01>(id);
+                }
+
+                return OkResponse("", _objSUP01);
             }
+
+            return NotFoundResponse("suplier not found.");
         }
 
         /// <summary>
@@ -313,10 +309,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
             if (Operation == EnmOperation.E)
             {
-                using (IDbConnection db = _dbFactory.OpenDbConnection())
+                if (!IsSUP01Exist(objDTOSUP01.P01F01))
                 {
-                    if (db.SingleById<SUP01>(objDTOSUP01.P01F01) == null)
-                        return NotFoundResponse("Supplier not found.");
+                    return NotFoundResponse("Suplier not found.");
                 }
             }
 
@@ -342,7 +337,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
                             transaction.Commit();
                         }
-                        catch (Exception)
+                        catch
                         {
                             transaction.Rollback();
                             throw;
@@ -375,5 +370,25 @@ namespace OnlineShoppingAPI.BL.Master.Service
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        /// <summary>
+        /// Chesks if Suplier exists or not.
+        /// </summary>
+        /// <param name="id">Suplier id</param>
+        /// <returns>True if exists else false.</returns>
+        private bool IsSUP01Exist(int id)
+        {
+            bool isExist = false;
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                isExist = db.Exists<SUP01>(s => s.P01F01 == id);
+            }
+
+            return isExist;
+        }
+
+        #endregion
     }
 }

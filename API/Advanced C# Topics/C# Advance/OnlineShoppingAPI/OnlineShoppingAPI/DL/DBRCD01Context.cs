@@ -20,7 +20,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// <see cref="MySqlConnection"/> for execute MySql Queries.
         /// </summary>
-        private readonly MySqlConnection _connection;
+        private MySqlConnection _connection;
 
         #endregion
 
@@ -32,7 +32,6 @@ namespace OnlineShoppingAPI.DL
         public DBRCD01Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            _connection = new MySqlConnection(_connectionString);
         }
 
         #endregion
@@ -65,15 +64,13 @@ namespace OnlineShoppingAPI.DL
                                                 WHERE
                                                     s01.S01F01 = {0};", id);
 
-            MySqlCommand command = new MySqlCommand(query, _connection);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-            try
+            using (_connection = new MySqlConnection(_connectionString))
             {
-                _connection.Open();
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
                 adapter.Fill(dtResult);
             }
-            finally { _connection.Close(); }
 
             return dtResult;
         }

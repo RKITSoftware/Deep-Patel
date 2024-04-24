@@ -1,4 +1,5 @@
 ﻿using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -29,6 +30,7 @@ namespace WebService.Controllers
         /// <returns></returns>
         public HttpResponseMessage Post()
         {
+            var temp = HttpContext.Current.Request.Headers.ToString();
             // Return a response with a message for HTTP POST requests
             return new HttpResponseMessage()
             {

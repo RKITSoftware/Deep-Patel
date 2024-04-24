@@ -62,7 +62,11 @@ namespace OnlineShoppingAPI.Controllers
         [Route("Delete/{id}")]
         public IHttpActionResult DeleteCategory(int id)
         {
-            Response response = _cat01Service.Delete(id);
+            Response response = _cat01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+                response = _cat01Service.Delete(id);
+
             return Ok(response);
         }
 

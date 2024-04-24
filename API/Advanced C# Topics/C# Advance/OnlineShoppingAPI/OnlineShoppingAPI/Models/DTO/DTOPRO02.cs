@@ -19,7 +19,7 @@ namespace OnlineShoppingAPI.Models.DTO
         /// <summary>
         /// Product Name
         /// </summary>
-        [Required(ErrorMessage = "Enter the product name.")]
+        [Required(ErrorMessage = "Name is required.")]
         [JsonProperty("O02102")]
         public string O02F02 { get; set; }
 

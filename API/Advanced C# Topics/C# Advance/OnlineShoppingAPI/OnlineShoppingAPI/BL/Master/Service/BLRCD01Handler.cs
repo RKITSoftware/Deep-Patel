@@ -30,11 +30,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
         #region Private Fields
 
         /// <summary>
-        /// Backup database connection using ormlite.
-        /// </summary>
-        private readonly IDbConnectionFactory _backupDbFactory;
-
-        /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
@@ -83,7 +78,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
         public BLRCD01Handler()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-            _backupDbFactory = HttpContext.Current.Application["BackupDBFactory"] as IDbConnectionFactory;
 
             _pft01Service = new BLPFT01Handler();
             _emailService = new BLEmail();
@@ -105,53 +99,68 @@ namespace OnlineShoppingAPI.BL.Master.Service
             int id = 1;
             dynamic lstPurchasedItem = new List<dynamic>();
 
-            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            foreach (CRT01 item in lstItems)
             {
-                foreach (CRT01 item in lstItems)
+                using (IDbConnection db = _dbFactory.OpenDbConnection())
                 {
-                    // Check if the product is in stock
-                    PRO02 sourceProduct = db.SingleById<PRO02>(item.T01F03);
-
-                    if (sourceProduct != null && sourceProduct.O02F05 >= item.T01F04)
-                    {
-                        RCD01 objRecord = new RCD01()
-                        {
-                            D01F02 = item.T01F02,
-                            D01F03 = item.T01F03,
-                            D01F04 = item.T01F04,
-                            D01F05 = item.T01F05,
-                            D01F06 = Guid.NewGuid(),
-                            D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
-                        };
-
-                        lstPurchasedItem.Add(new
-                        {
-                            OrderId = id++,
-                            ProductName = sourceProduct.O02F02,
-                            Quantity = objRecord.D01F04,
-                            Price = objRecord.D01F05,
-                            InvoiceId = objRecord.D01F06,
-                            PurchaseTime = objRecord.D01F07
-                        });
-
-                        // Create a new order record
-                        db.Insert(objRecord);
-
-                        // Update the product stock
-                        sourceProduct.O02F05 -= item.T01F04;
-                        if (sourceProduct.O02F05 == 0)
-                            sourceProduct.O02F07 = (int)EnmProductStatus.OutOfStock;
-
-                        db.Update(sourceProduct);
-                        _pft01Service.UpdateProfit(sourceProduct, objRecord.D01F04);
-
-                        db.DeleteById<CRT01>(item.T01F01);
-                    }
+                    _objPRO02 = db.SingleById<PRO02>(item.T01F03);
                 }
 
-                _emailService.SendAsync(s01F03, lstPurchasedItem);
+                if (_objPRO02 != null && _objPRO02.O02F05 >= item.T01F04)
+                {
+                    _objRCD01 = new RCD01()
+                    {
+                        D01F02 = item.T01F02,
+                        D01F03 = item.T01F03,
+                        D01F04 = item.T01F04,
+                        D01F05 = item.T01F05,
+                        D01F06 = Guid.NewGuid(),
+                        D01F07 = DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss")
+                    };
+
+                    lstPurchasedItem.Add(new
+                    {
+                        OrderId = id++,
+                        ProductName = _objPRO02.O02F02,
+                        Quantity = _objRCD01.D01F04,
+                        Price = _objRCD01.D01F05,
+                        InvoiceId = _objRCD01.D01F06,
+                        PurchaseTime = _objRCD01.D01F07
+                    });
+
+                    // Update the product stock
+                    _objPRO02.O02F05 -= item.T01F04;
+                    if (_objPRO02.O02F05 == 0)
+                    {
+                        _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
+                    }
+
+                    // Save Process
+                    using (IDbConnection db = _dbFactory.OpenDbConnection())
+                    {
+                        using (IDbTransaction transaction = db.BeginTransaction())
+                        {
+                            try
+                            {
+                                db.Insert(_objRCD01);
+                                db.Update(_objPRO02);
+                                db.DeleteById<CRT01>(item.T01F01);
+
+                                transaction.Commit();
+                            }
+                            catch
+                            {
+                                transaction.Rollback();
+                                throw;
+                            }
+                        }
+                    }
+
+                    _pft01Service.UpdateProfit(_objPRO02, _objRCD01.D01F04);
+                }
             }
 
+            _emailService.SendAsync(s01F03, lstPurchasedItem);
             return OkResponse("Items bought successfully.");
         }
 
@@ -163,25 +172,24 @@ namespace OnlineShoppingAPI.BL.Master.Service
         public Response Delete(int id)
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
-            using (IDbTransaction transaction = db.BeginTransaction())
-            using (IDbConnection backupDb = _backupDbFactory.OpenDbConnection())
-            using (IDbTransaction backupTransaction = backupDb.BeginTransaction())
             {
-                try
-                {
-                    RCD01 objRCD01 = db.SingleById<RCD01>(id);
+                _objRCD01 = db.SingleById<RCD01>(id);
 
-                    backupDb.Insert(objRCD01);
-                    db.Delete(objRCD01);
-
-                    backupTransaction.Commit();
-                    transaction.Commit();
-                }
-                catch (Exception)
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    backupTransaction.Rollback();
-                    transaction.Rollback();
-                    throw;
+                    try
+                    {
+                        db.DeleteById<RCD01>(id);
+                        db.ChangeDatabase("backup_online_shopping");
+                        db.Insert(_objRCD01);
+
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
@@ -195,12 +203,15 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if record exists else not found.</returns>
         public Response DeleteValidation(int id)
         {
+            bool isRCD01Exist;
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                if (db.SingleById<RCD01>(id) == null)
-                {
-                    return NotFoundResponse("Record not exits.");
-                }
+                isRCD01Exist = db.Exists<RCD01>(r => r.D01F01 == id);
+            }
+
+            if (!isRCD01Exist)
+            {
+                return NotFoundResponse("Record not exits.");
             }
 
             return OkResponse();
@@ -232,7 +243,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
             List<RCD01> lstRCD01;
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
                 lstRCD01 = db.Select<RCD01>();
+            }
 
             if (lstRCD01 == null || lstRCD01.Count == 0)
             {
@@ -265,21 +278,22 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTORCD01 objDTORCD01)
         {
+            bool isCUS01Exist;
+
             using (var db = _dbFactory.OpenDbConnection())
             {
-                // Checks customer exists or not.
-                if (db.SingleById<CUS01>(objDTORCD01.D01F02) == null)
-                {
-                    return NotFoundResponse("Customer doesn't exist.");
-                }
-
-                // Checks product exists or not.
+                isCUS01Exist = db.Exists<CUS01>(c => c.S01F01 == objDTORCD01.D01F02);
                 _objPRO02 = db.SingleById<PRO02>(objDTORCD01.D01F03);
+            }
 
-                if (_objPRO02 == null)
-                {
-                    return NotFoundResponse("Product doesn't exist.");
-                }
+            if (!isCUS01Exist)
+            {
+                return NotFoundResponse("Customer doesn't exist.");
+            }
+
+            if (_objPRO02 == null)
+            {
+                return NotFoundResponse("Product doesn't exist.");
             }
 
             return OkResponse();
@@ -299,19 +313,22 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 _objPRO02.O02F07 = (int)EnmProductStatus.OutOfStock;
             }
 
-            List<dynamic> lstItems = new List<dynamic>();
-            lstItems.Add(new
+            List<dynamic> lstItems = new List<dynamic>
             {
-                ProductName = _objPRO02.O02F02,
-                Quantity = _objRCD01.D01F04,
-                Price = _objRCD01.D01F05,
-                InvoiceId = _objRCD01.D01F06,
-                PurchaseTime = _objRCD01.D01F07
-            });
+                new
+                {
+                    ProductName = _objPRO02.O02F02,
+                    Quantity = _objRCD01.D01F04,
+                    Price = _objRCD01.D01F05,
+                    InvoiceId = _objRCD01.D01F06,
+                    PurchaseTime = _objRCD01.D01F07
+                }
+            };
 
+            string s01F03;
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                string customerEmail = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
+                s01F03 = db.SingleById<CUS01>(_objRCD01.D01F02).S01F03;
 
                 using (IDbTransaction transaction = db.BeginTransaction())
                 {
@@ -321,9 +338,8 @@ namespace OnlineShoppingAPI.BL.Master.Service
                         db.Update(_objPRO02);
 
                         transaction.Commit();
-                        _emailService.SendAsync(customerEmail, lstItems);
                     }
-                    catch (Exception)
+                    catch
                     {
                         transaction.Rollback();
                         throw;
@@ -331,7 +347,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 }
             }
 
+            _emailService.SendAsync(s01F03, lstItems);
             _pft01Service.UpdateProfit(_objPRO02, _objRCD01.D01F04);
+
             return OkResponse("Record successfully created.");
         }
 
@@ -342,7 +360,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
         public Response Validation()
         {
             if (_objRCD01.D01F04 > _objPRO02.O02F05)
+            {
                 return PreConditionFailedResponse("Quality can't be satisfied.");
+            }
 
             return OkResponse();
         }
@@ -449,9 +469,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// </summary>
         /// <param name="id">Customer id</param>
         /// <returns>A dynamic result containing the customer records.</returns>
-        private dynamic JoinOfRcdProCus(int id)
+        private object JoinOfRcdProCus(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 // Define SQL expression for joining tables (RCD01, PRO02, CUS01)
                 SqlExpression<RCD01> joinSql = db.From<RCD01>()
@@ -486,15 +506,14 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
             // Check if any data is found for the specified criteria
             if (dtCUS01RCD01Data.Rows.Count == 0)
+            {
                 return ResponseMessage(HttpStatusCode.NotFound,
                     "No data found for the specified criteria.");
+            }
 
             string jsonData = JsonConvert.SerializeObject(dtCUS01RCD01Data, Formatting.Indented);
 
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(jsonData)
-            };
+            HttpResponseMessage response = ResponseMessage(HttpStatusCode.OK, jsonData);
 
             response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")

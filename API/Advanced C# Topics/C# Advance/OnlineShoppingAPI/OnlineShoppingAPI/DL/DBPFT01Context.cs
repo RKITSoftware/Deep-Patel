@@ -16,7 +16,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// <see cref="MySqlConnection"/> for execute MySql Queries.
         /// </summary>
-        private readonly MySqlConnection _connection;
+        private MySqlConnection _connection;
 
         /// <summary>
         /// Connection string for the database connection.
@@ -33,7 +33,6 @@ namespace OnlineShoppingAPI.DL
         public DBPFT01Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            _connection = new MySqlConnection(_connectionString);
         }
 
         #endregion Constructor
@@ -46,35 +45,34 @@ namespace OnlineShoppingAPI.DL
         /// <returns>List of last 10 years profit data.</returns>
         public List<decimal> GetYearData()
         {
-            List<decimal> lstData = new List<decimal>();
+            object result;
             int currentYear = DateTime.Now.Year;
+            List<decimal> lstData = new List<decimal>();
 
-            try
+            for (int year = currentYear - 9; year <= currentYear; year++)
             {
-                _connection.Open();
-
-                for (int year = currentYear - 9; year <= currentYear; year++)
-                {
-                    string query = string.Format(@"SELECT
+                string query = string.Format(@"SELECT
                                                        SUM(T01F03) AS 'Profit'
                                                    FROM
                                                        pft01
                                                    WHERE T01F02 LIKE '__-__-{0}'",
                                                    year.ToString("0000"));
 
+                using (_connection = new MySqlConnection(_connectionString))
+                {
                     MySqlCommand command = new MySqlCommand(query, _connection);
-                    object result = command.ExecuteScalar();
+                    result = command.ExecuteScalar();
+                }
 
-                    if (result != DBNull.Value && result != null)
-                    {
-                        decimal profit = Convert.ToDecimal(result);
-                        lstData.Add(profit);
-                    }
-                    else
-                        lstData.Add(0);
+                if (result != DBNull.Value && result != null)
+                {
+                    lstData.Add(Convert.ToDecimal(result));
+                }
+                else
+                {
+                    lstData.Add(0);
                 }
             }
-            finally { _connection.Close(); }
 
             return lstData;
         }
@@ -86,34 +84,34 @@ namespace OnlineShoppingAPI.DL
         /// <returns>List of this year's months profit data.</returns>
         public List<decimal> GetMonthData(int year)
         {
+            object result;
             List<decimal> lstData = new List<decimal>();
 
-            try
+            for (int month = 1; month <= 12; month++)
             {
-                _connection.Open();
-                for (int month = 1; month <= 12; month++)
+                string query = string.Format(@"SELECT
+                                                    SUM(T01F03) AS 'Profit'
+                                                FROM
+                                                    pft01
+                                                WHERE T01F02 LIKE '__-{0}-{1}'",
+                                                month.ToString("00"),
+                                                year.ToString("0000"));
+
+                using (_connection = new MySqlConnection(_connectionString))
                 {
-                    string query = string.Format(@"SELECT
-                                                       SUM(T01F03) AS 'Profit'
-                                                   FROM
-                                                       pft01
-                                                   WHERE T01F02 LIKE '__-{0}-{1}'",
-                                                       month.ToString("00"),
-                                                       year.ToString("0000"));
-
                     MySqlCommand command = new MySqlCommand(query, _connection);
-                    object result = command.ExecuteScalar();
+                    result = command.ExecuteScalar();
+                }
 
-                    if (result != DBNull.Value && result != null)
-                    {
-                        decimal profit = Convert.ToDecimal(result);
-                        lstData.Add(profit);
-                    }
-                    else
-                        lstData.Add(0);
+                if (result != DBNull.Value && result != null)
+                {
+                    lstData.Add(Convert.ToDecimal(result));
+                }
+                else
+                {
+                    lstData.Add(0);
                 }
             }
-            finally { _connection.Close(); }
 
             return lstData;
         }
@@ -126,37 +124,36 @@ namespace OnlineShoppingAPI.DL
         /// <returns>List of this month's daywise profit.</returns>
         public List<decimal> GetDayWiseData(int month, int year)
         {
+            object result;
             int days = DateTime.DaysInMonth(year, month);
             List<decimal> lstData = new List<decimal>();
 
-            try
+            for (int day = 1; day <= days; day++)
             {
-                _connection.Open();
+                string query = string.Format(@"SELECT
+                                                    SUM(T01F03) AS 'Profit'
+                                                FROM
+                                                    pft01
+                                                WHERE T01F02 LIKE '{0}-{1}-{2}'",
+                                                day.ToString("00"),
+                                                month.ToString("00"),
+                                                year.ToString("0000"));
 
-                for (int day = 1; day <= days; day++)
+                using (_connection = new MySqlConnection(_connectionString))
                 {
-                    string query = string.Format(@"SELECT
-                                                       SUM(T01F03) AS 'Profit'
-                                                   FROM
-                                                       pft01
-                                                   WHERE T01F02 LIKE '{0}-{1}-{2}'",
-                                                       day.ToString("00"),
-                                                       month.ToString("00"),
-                                                       year.ToString("0000"));
-
                     MySqlCommand command = new MySqlCommand(query, _connection);
-                    object result = command.ExecuteScalar();
+                    result = command.ExecuteScalar();
+                }
 
-                    if (result != DBNull.Value && result != null)
-                    {
-                        decimal profit = Convert.ToDecimal(result);
-                        lstData.Add(profit);
-                    }
-                    else
-                        lstData.Add(0);
+                if (result != DBNull.Value && result != null)
+                {
+                    lstData.Add(Convert.ToDecimal(result));
+                }
+                else
+                {
+                    lstData.Add(0);
                 }
             }
-            finally { _connection.Close(); }
 
             return lstData;
         }

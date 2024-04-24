@@ -74,7 +74,7 @@ namespace OnlineShoppingAPI.BL.Common
             string payload = jwtHeader + "." + jwtPayload;
 
             // Calculating HMAC-SHA-256 for the header and payload
-            var hash = new HMACSHA256(Encoding.UTF8.GetBytes(secretKey));
+            HMACSHA256 hash = new HMACSHA256(Encoding.UTF8.GetBytes(secretKey));
             byte[] digest = hash.ComputeHash(Encoding.UTF8.GetBytes(payload));
 
             string digestBase64 = Convert.ToBase64String(digest)
@@ -98,7 +98,7 @@ namespace OnlineShoppingAPI.BL.Common
                 string decodedData = Encoding.UTF8.GetString(encodedData);
 
                 // Deserializing the jwtPayload decoded string
-                var jwtPayloadObj = JwtPayload.Deserialize(decodedData);
+                JwtPayload jwtPayloadObj = JwtPayload.Deserialize(decodedData);
 
                 // Getting exp (expiry) claim
                 jwtPayloadObj.TryGetValue("exp", out object expiryTotalSecond);

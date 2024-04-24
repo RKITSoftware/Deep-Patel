@@ -15,7 +15,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// <see cref="MySqlConnection"/> for execute MySql Queries.
         /// </summary>
-        private readonly MySqlConnection _connection;
+        private MySqlConnection _connection;
 
         /// <summary>
         /// Connection string for the database connection.
@@ -32,7 +32,6 @@ namespace OnlineShoppingAPI.DL
         public DBPRO02Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
-            _connection = new MySqlConnection(_connectionString);
         }
 
         #endregion Constructor
@@ -63,16 +62,13 @@ namespace OnlineShoppingAPI.DL
                                                        INNER JOIN
                                                    sup01 ON pro02.O02F10 = sup01.P01F01;");
 
-
-            MySqlCommand command = new MySqlCommand(query, _connection);
-            MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-            try
+            using (_connection = new MySqlConnection(_connectionString))
             {
-                _connection.Open();
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
+
                 adapter.Fill(dtResult);
             }
-            finally { _connection.Close(); }
 
             return dtResult;
         }

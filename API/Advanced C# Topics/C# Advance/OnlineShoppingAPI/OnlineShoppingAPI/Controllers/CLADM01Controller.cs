@@ -37,8 +37,7 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPatch]
         [Route("Change/Email")]
-        public IHttpActionResult ChangeEmail(string username,
-            string password, string newEmail)
+        public IHttpActionResult ChangeEmail(string username, string password, string newEmail)
         {
             Response response = _adm01Service.ChangeEmailValidation(username, password, newEmail);
 
@@ -59,10 +58,15 @@ namespace OnlineShoppingAPI.Controllers
         /// <returns>Response indicating the outcome of the operation.</returns>
         [HttpPatch]
         [Route("Change/Password")]
-        public IHttpActionResult ChangePassword(string username,
-            string oldPassword, string newPassword)
+        public IHttpActionResult ChangePassword(string username, string oldPassword, string newPassword)
         {
-            Response response = _adm01Service.ChangePassword(username, oldPassword, newPassword);
+            Response response = _adm01Service.ChangePasswordValidation(username, oldPassword);
+
+            if (!response.IsError)
+            {
+                response = _adm01Service.ChangePassword(newPassword);
+            }
+
             return Ok(response);
         }
 
@@ -76,14 +80,15 @@ namespace OnlineShoppingAPI.Controllers
         [ValidateModel]
         public IHttpActionResult CreateAdmin(DTOADM01 objDTOADM01)
         {
-            Response response;
             _adm01Service.Operation = EnmOperation.A;
-
             _adm01Service.PreSave(objDTOADM01);
-            response = _adm01Service.Validation();
+
+            Response response = _adm01Service.Validation();
 
             if (!response.IsError)
+            {
                 response = _adm01Service.Save();
+            }
 
             return Ok(response);
         }

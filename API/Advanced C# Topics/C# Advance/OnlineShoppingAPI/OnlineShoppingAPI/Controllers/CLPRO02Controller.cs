@@ -47,7 +47,9 @@ namespace OnlineShoppingAPI.Controllers
                 response = _pro02Service.Validation();
 
                 if (!response.IsError)
-                    _pro02Service.Save();
+                {
+                    response = _pro02Service.Save();
+                }
             }
 
             return Ok(response);
@@ -63,7 +65,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult DeleteProductV2(int id)
         {
-            Response response = _pro02Service.Delete(id);
+            Response response = _pro02Service.DeleteValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _pro02Service.Delete(id);
+            }
+
             return Ok(response);
         }
 
@@ -90,7 +98,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Admin")]
         public IHttpActionResult UpdateSellPrice(int id, int sellPrice)
         {
-            Response response = _pro02Service.UpdateSellPrice(id, sellPrice);
+            Response response = _pro02Service.UpdateSellPriceValidation(id, sellPrice);
+
+            if (!response.IsError)
+            {
+                response = _pro02Service.UpdateSellPrice(id, sellPrice);
+            }
+
             return Ok(response);
         }
 

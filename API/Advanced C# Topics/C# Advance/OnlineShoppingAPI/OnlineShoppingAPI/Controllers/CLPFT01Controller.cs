@@ -34,8 +34,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("dayWiseProfit")]
         public IHttpActionResult GetDayWiseProfit()
         {
-            Response response = _pft01Service.GetDayWiseData();
-            return Ok(response);
+            return Ok(_pft01Service.GetDayWiseData());
         }
 
         /// <summary>
@@ -46,8 +45,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("monthChartData")]
         public IHttpActionResult GetMonthChartData()
         {
-            Response response = _pft01Service.GetMonthData();
-            return Ok(response);
+            return Ok(_pft01Service.GetMonthData());
         }
 
         /// <summary>
@@ -58,8 +56,7 @@ namespace OnlineShoppingAPI.Controllers
         [Route("yearChartData")]
         public IHttpActionResult GetPrevious10YearData()
         {
-            Response response = _pft01Service.GetYearData();
-            return Ok(response);
+            return Ok(_pft01Service.GetYearData());
         }
     }
 }

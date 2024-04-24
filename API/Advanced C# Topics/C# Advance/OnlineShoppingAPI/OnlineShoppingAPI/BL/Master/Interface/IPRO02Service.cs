@@ -20,6 +20,13 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         Response Delete(int id);
 
         /// <summary>
+        /// Validation checks before the delete operation.
+        /// </summary>
+        /// <param name="id">Product id.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response DeleteValidation(int id);
+
+        /// <summary>
         /// Retrieves all products information from the database.
         /// </summary>
         /// <returns>Success response if no error occur else response with error message.</returns>
@@ -38,6 +45,14 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <param name="sellPrice">Updates sell price.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response UpdateSellPrice(int id, int sellPrice);
+
+        /// <summary>
+        /// Validation checks the product before updating the sell price.
+        /// </summary>
+        /// <param name="id">Product Id</param>
+        /// <param name="sellPrice">Updates sell price.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        Response UpdateSellPriceValidation(int id, int sellPrice);
 
         #endregion Public Methods
     }

@@ -1,7 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using OnlineShoppingAPI.Models.POCO;
 using System.Configuration;
-using System.Data;
 
 namespace OnlineShoppingAPI.DL
 {
@@ -15,7 +14,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// <see cref="MySqlConnection"/> for execute MySql Queries.
         /// </summary>
-        private MySqlConnection _connection;
+        private readonly MySqlConnection _connection;
 
         /// <summary>
         /// Connection string for the database connection.
@@ -32,40 +31,9 @@ namespace OnlineShoppingAPI.DL
         public DBADM01Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            _connection = new MySqlConnection(_connectionString);
         }
 
         #endregion Constructor
-
-        #region Public Methods
-
-        /// <summary>
-        /// Retrieves profit data from the database for a specified date.
-        /// </summary>
-        /// <param name="date">The date for which profit data is retrieved.</param>
-        /// <returns>Datatable containing the profit data.</returns>
-        public DataTable GetProfit(string date)
-        {
-            DataTable dtProfit = new DataTable();
-
-            // SQL query to retrieve profit data for the specified date
-            string query = string.Format(@"SELECT
-                                                IFNULL(T01F03, 0) AS 'Profit'
-                                            FROM
-                                                pft01
-                                            WHERE
-                                                t01f02 = '{0}';", date);
-
-            using (_connection = new MySqlConnection(_connectionString))
-            {
-                MySqlCommand command = new MySqlCommand(query, _connection);
-                MySqlDataAdapter adapter = new MySqlDataAdapter(command);
-
-                adapter.Fill(dtProfit);
-            }
-
-            return dtProfit;
-        }
-
-        #endregion Public Methods
     }
 }

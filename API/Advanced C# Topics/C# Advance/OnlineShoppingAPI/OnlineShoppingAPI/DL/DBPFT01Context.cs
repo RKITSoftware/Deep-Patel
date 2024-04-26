@@ -16,7 +16,7 @@ namespace OnlineShoppingAPI.DL
         /// <summary>
         /// <see cref="MySqlConnection"/> for execute MySql Queries.
         /// </summary>
-        private MySqlConnection _connection;
+        private readonly MySqlConnection _connection;
 
         /// <summary>
         /// Connection string for the database connection.
@@ -33,6 +33,7 @@ namespace OnlineShoppingAPI.DL
         public DBPFT01Context()
         {
             _connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
+            _connection = new MySqlConnection(_connectionString);
         }
 
         #endregion Constructor
@@ -58,11 +59,13 @@ namespace OnlineShoppingAPI.DL
                                                    WHERE T01F02 LIKE '__-__-{0}'",
                                                    year.ToString("0000"));
 
-                using (_connection = new MySqlConnection(_connectionString))
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                try
                 {
-                    MySqlCommand command = new MySqlCommand(query, _connection);
+                    _connection.Open();
                     result = command.ExecuteScalar();
                 }
+                finally { _connection.Close(); }
 
                 if (result != DBNull.Value && result != null)
                 {
@@ -97,11 +100,13 @@ namespace OnlineShoppingAPI.DL
                                                 month.ToString("00"),
                                                 year.ToString("0000"));
 
-                using (_connection = new MySqlConnection(_connectionString))
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                try
                 {
-                    MySqlCommand command = new MySqlCommand(query, _connection);
+                    _connection.Open();
                     result = command.ExecuteScalar();
                 }
+                finally { _connection.Close(); }
 
                 if (result != DBNull.Value && result != null)
                 {
@@ -139,11 +144,13 @@ namespace OnlineShoppingAPI.DL
                                                 month.ToString("00"),
                                                 year.ToString("0000"));
 
-                using (_connection = new MySqlConnection(_connectionString))
+                MySqlCommand command = new MySqlCommand(query, _connection);
+                try
                 {
-                    MySqlCommand command = new MySqlCommand(query, _connection);
+                    _connection.Open();
                     result = command.ExecuteScalar();
                 }
+                finally { _connection.Close(); }
 
                 if (result != DBNull.Value && result != null)
                 {

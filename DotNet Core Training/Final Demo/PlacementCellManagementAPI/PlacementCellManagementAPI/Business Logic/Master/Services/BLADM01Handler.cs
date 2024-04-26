@@ -57,8 +57,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         public BLADM01Handler(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("Default");
-            _dbFactory = new OrmLiteConnectionFactory(_connectionString,
-                                                      MySqlDialect.Provider);
+            _dbFactory = new OrmLiteConnectionFactory(_connectionString);
         }
 
         #endregion Constructor
@@ -74,18 +73,20 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                using IDbTransaction transaction = db.BeginTransaction();
-                try
+                using (IDbTransaction transaction = db.BeginTransaction())
                 {
-                    db.Delete(_objADM01);
-                    db.DeleteById<USR01>(_objADM01?.M01F06);
+                    try
+                    {
+                        db.Delete(_objADM01);
+                        db.DeleteById<USR01>(_objADM01?.M01F06);
 
-                    transaction.Commit();
-                }
-                catch (Exception)
-                {
-                    transaction.Rollback();
-                    throw;
+                        transaction.Commit();
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
                 }
             }
 
@@ -161,12 +162,6 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
                     {
                         int userId = (int)db.Insert(_objUSR01, selectIdentity: true);
 
-                        if (_objADM01 == null)
-                        {
-                            transaction.Rollback();
-                            return NotFoundResponse();
-                        }
-
                         _objADM01.M01F06 = userId;
                         db.Insert(_objADM01);
                         transaction.Commit();
@@ -188,6 +183,18 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// <returns>A response indicating the validation result.</returns>
         public Response Validation()
         {
+            bool isR01F02Duplicate;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                isR01F02Duplicate = db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02);
+            }
+
+            if (isR01F02Duplicate)
+            {
+                return PreConditionFailedResponse("Username is duplicate.");
+            }
+
             return OkResponse();
         }
 

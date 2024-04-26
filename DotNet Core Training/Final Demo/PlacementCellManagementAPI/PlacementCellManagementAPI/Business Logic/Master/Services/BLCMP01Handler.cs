@@ -52,7 +52,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         public BLCMP01Handler(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("Default");
-            _dbFactory = new OrmLiteConnectionFactory(_connectionString, MySqlDialect.Provider);
+            _dbFactory = new OrmLiteConnectionFactory(_connectionString);
         }
 
         #endregion

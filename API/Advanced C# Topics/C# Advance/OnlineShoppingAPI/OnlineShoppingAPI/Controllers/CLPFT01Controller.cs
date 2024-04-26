@@ -39,7 +39,7 @@ namespace OnlineShoppingAPI.Controllers
 
         /// <summary>
         /// Retrieves profit data for each month of current year.
-        /// </summary>        
+        /// </summary>
         /// <returns><see cref="Response"/> containing the output of the HTTP request.</returns>
         [HttpGet]
         [Route("monthChartData")]

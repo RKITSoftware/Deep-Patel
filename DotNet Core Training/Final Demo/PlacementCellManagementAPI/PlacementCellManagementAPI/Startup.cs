@@ -5,6 +5,7 @@ using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Middleware;
+using ServiceStack.OrmLite;
 
 namespace PlacementCellManagementAPI
 {
@@ -32,6 +33,8 @@ namespace PlacementCellManagementAPI
         /// <param name="services">The service collection.</param>
         public void ConfigureServices(IServiceCollection services)
         {
+            OrmLiteConfig.DialectProvider = MySqlDialect.Provider;
+
             services.AddControllers(configure =>
             {
                 configure.Filters.Add(typeof(ExceptionFilter));

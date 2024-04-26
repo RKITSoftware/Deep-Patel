@@ -62,7 +62,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public IHttpActionResult BuyItem(int id)
         {
-            Response response = _crt01Service.BuySingleItem(id);
+            Response response = _crt01Service.BuySingleItemValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _crt01Service.BuySingleItem(id);
+            }
+
             return Ok(response);
         }
 
@@ -76,7 +82,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public IHttpActionResult DeleteItemFromCart(int id)
         {
-            Response response = _crt01Service.Delete(id);
+            Response response = _crt01Service.DeleteValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _crt01Service.Delete(id);
+            }
+
             return Ok(response);
         }
 
@@ -90,7 +102,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public IHttpActionResult GenerateOtpForBuying(int id)
         {
-            Response response = _crt01Service.Generate(id);
+            Response response = _crt01Service.GenerateOTPValidation(id);
+
+            if (!response.IsError)
+            {
+                response = _crt01Service.GenerateOTP(id);
+            }
+
             return Ok(response);
         }
 
@@ -121,6 +139,7 @@ namespace OnlineShoppingAPI.Controllers
             Response response = _crt01Service.GetCUS01CRT01Details(id);
             return Ok(response);
         }
+
         /// <summary>
         /// Verify the OTP that sent over the mail and bought the items if OTP Verified.
         /// </summary>
@@ -132,7 +151,13 @@ namespace OnlineShoppingAPI.Controllers
         [Authorize(Roles = "Customer")]
         public IHttpActionResult VerifyAndBuyItems(int id, string otp)
         {
-            Response response = _crt01Service.VerifyAndBuy(id, otp);
+            Response response = _crt01Service.VerifyOTP(id, otp);
+
+            if (!response.IsError)
+            {
+                response = _crt01Service.BuyAllItems(id);
+            }
+
             return Ok(response);
         }
     }

@@ -83,6 +83,23 @@ namespace OnlineShoppingAPI.BL.Master.Service
         }
 
         /// <summary>
+        /// Retrieves the profit for the specified date.
+        /// </summary>
+        /// <param name="date">Date for which profit is to be retrieved.</param>
+        /// <returns>Success response if no error occur else response with error message.</returns>
+        public Response GetProfit(string date)
+        {
+            decimal profit;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                profit = db.Single<PFT01>(p => p.T01F02 == date).T01F03;
+            }
+
+            return OkResponse("", profit);
+        }
+
+        /// <summary>
         /// Retrieves aggregated profit data for last 10 year.
         /// </summary>
         /// <returns>Success response if no error occur else response with error message.</returns>
@@ -125,6 +142,32 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 objProfit.T01F03 += profitChange;
                 db.Update(objProfit);
             }
+        }
+
+        /// <summary>
+        /// Validates whether profit data is available for the specified date.
+        /// </summary>
+        /// <param name="date">The date for which to check the availability of profit data.</param>
+        /// <returns>
+        /// A response indicating whether profit data is available for the specified date.
+        /// </returns>
+        public Response ValidationForGetProfit(string date)
+        {
+            bool isExist;
+
+            // Check if profit data exists for the specified date
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                isExist = db.Exists<PFT01>(p => p.T01F02 == date);
+            }
+
+            // Return appropriate response based on data availability
+            if (isExist)
+            {
+                return OkResponse();
+            }
+
+            return NotFoundResponse($"Profit data not available for this date: {date}");
         }
 
         #endregion Public Methods

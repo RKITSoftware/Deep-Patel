@@ -56,7 +56,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         {
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _connectionString = configuration.GetConnectionString("Default");
-            _dbFactory = new OrmLiteConnectionFactory(_connectionString, MySqlDialect.Provider);
+            _dbFactory = new OrmLiteConnectionFactory(_connectionString);
         }
 
         #endregion

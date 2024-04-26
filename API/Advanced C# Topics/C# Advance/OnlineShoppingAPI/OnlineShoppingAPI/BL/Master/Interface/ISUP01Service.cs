@@ -32,9 +32,10 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <summary>
         /// Changes the password of a suplier.
         /// </summary>
+        /// <param name="username">User name of the supplier.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        Response ChangePassword(string newPassword);
+        Response ChangePassword(string username, string newPassword);
 
         /// <summary>
         /// Validation before the change password.

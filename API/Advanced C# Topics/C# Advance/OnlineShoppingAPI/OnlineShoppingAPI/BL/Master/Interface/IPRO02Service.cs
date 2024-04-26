@@ -54,6 +54,34 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response UpdateSellPriceValidation(int id, int sellPrice);
 
+        /// <summary>
+        /// Validate the id before getting the product data of that category.
+        /// </summary>
+        /// <param name="id">Category Id</param>
+        /// <returns>Success response if category exists else notfound response.</returns>
+        Response ValidationForGetPRO02ByCAT01(int id);
+
+        /// <summary>
+        /// Gets the product of category specified by id.
+        /// </summary>
+        /// <param name="id">Category Id.</param>
+        /// <returns>Ok response containing the data if data exists else no content response.</returns>
+        Response GetProductByCategory(int id);
+
+        /// <summary>
+        /// Validate the id before getting the product data of that supplier.
+        /// </summary>
+        /// <param name="id">Supplier Id</param>
+        /// <returns>Success response if category exists else notfound response.</returns>
+        Response ValidationForGetPRO02BySUP01(int id);
+
+        /// <summary>
+        /// Gets the product of supplier specified by id.
+        /// </summary>
+        /// <param name="id">Supplier Id.</param>
+        /// <returns>Ok response containing the data if data exists else no content response.</returns>
+        Response GetProductBySupplier(int id);
+
         #endregion Public Methods
     }
 }

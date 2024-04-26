@@ -83,8 +83,19 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Update<SUP01>(new { P01F03 = newEmail }, where: sup => sup.P01F03.StartsWith(username));
-                        db.Update<USR01>(new { R01F02 = newUsername }, where: usr => usr.R01F02 == username);
+                        db.UpdateOnly<SUP01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "P01F03", newEmail }
+                            },
+                            obj: sup => sup.P01F03.StartsWith(username));
+
+                        db.UpdateOnly<USR01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "R01F02", newUsername }
+                            },
+                            obj: usr => usr.R01F02 == username);
 
                         transaction.Commit();
                     }
@@ -130,13 +141,12 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <summary>
         /// Changes the password of a suplier.
         /// </summary>
+        /// <param name="username">Username of the supplier.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response ChangePassword(string newPassword)
+        public Response ChangePassword(string username, string newPassword)
         {
-            _objSUP01.P01F04 = newPassword;
-            _objUSR01.R01F03 = newPassword;
-            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
+            string encryptedPassword = BLEncryption.GetEncryptPassword(newPassword);
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
@@ -144,8 +154,20 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Update(_objSUP01);
-                        db.Update(_objUSR01);
+                        db.UpdateOnly<SUP01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "P01F04", newPassword }
+                            },
+                            obj: s => s.P01F03.StartsWith(username));
+
+                        db.UpdateOnly<USR01>(
+                             updateFields: new Dictionary<string, object>
+                             {
+                                { "R01F03", newPassword },
+                                { "R01F04", encryptedPassword}
+                             },
+                             obj: u => u.R01F02 == username);
 
                         transaction.Commit();
                     }
@@ -389,6 +411,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
             return isExist;
         }
 
-        #endregion
+        #endregion Private Methods
     }
 }

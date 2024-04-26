@@ -119,5 +119,44 @@ namespace OnlineShoppingAPI.Controllers
             Response response = _pro02Service.GetInformation();
             return Ok(response);
         }
+
+        /// <summary>
+        /// Gets the product data of that category.
+        /// </summary>
+        /// <param name="id">Category Id</param>
+        /// <returns>Response containing the data.</returns>
+        [HttpGet]
+        [Route("ProductByCategory/{id}")]
+        [Authorize(Roles = "Admin")]
+        public IHttpActionResult GetProductByCategory(int id)
+        {
+            Response response = _pro02Service.ValidationForGetPRO02ByCAT01(id);
+
+            if (!response.IsError)
+            {
+                response = _pro02Service.GetProductByCategory(id);
+            }
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Gets the product which are supplied by that supplier.
+        /// </summary>
+        /// <param name="id">Supplier id.</param>
+        /// <returns>Response containing the product data of thqat supplier.</returns>
+        [HttpGet]
+        [Route("ProductsBySupplier/{id}")]
+        public IHttpActionResult GetProductsBySupplier(int id)
+        {
+            Response response = _pro02Service.ValidationForGetPRO02BySUP01(id);
+
+            if (!response.IsError)
+            {
+                response = _pro02Service.GetProductBySupplier(id);
+            }
+
+            return Ok(response);
+        }
     }
 }

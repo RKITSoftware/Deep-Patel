@@ -71,7 +71,7 @@ namespace OnlineShoppingAPI.Controllers
 
             if (!_response.IsError)
             {
-                _response = _sup01Service.ChangePassword(newPassword);
+                _response = _sup01Service.ChangePassword(username, newPassword);
             }
 
             return Ok(_response);

@@ -21,11 +21,17 @@ namespace OnlineShoppingAPI.Controllers
         private readonly IADM01Service _adm01Service;
 
         /// <summary>
+        /// Services of <see cref="IPFT01Service"/>.
+        /// </summary>
+        private readonly IPFT01Service _pft01Service;
+
+        /// <summary>
         /// Initializes a new instance of the CLADM01Controller class.
         /// </summary>
         public CLADM01Controller()
         {
             _adm01Service = new BLADM01Handler();
+            _pft01Service = new BLPFT01Handler();
         }
 
         /// <summary>
@@ -92,6 +98,7 @@ namespace OnlineShoppingAPI.Controllers
 
             return Ok(response);
         }
+
         /// <summary>
         /// Deletes an admin by ID.
         /// </summary>
@@ -120,7 +127,14 @@ namespace OnlineShoppingAPI.Controllers
         [Route("ShowProfit")]
         public IHttpActionResult GetProfit(string date)
         {
-            return Ok(_adm01Service.GetProfit(date));
+            Response response = _pft01Service.ValidationForGetProfit(date);
+
+            if (!response.IsError)
+            {
+                response = _pft01Service.GetProfit(date);
+            }
+
+            return Ok(response);
         }
     }
 }

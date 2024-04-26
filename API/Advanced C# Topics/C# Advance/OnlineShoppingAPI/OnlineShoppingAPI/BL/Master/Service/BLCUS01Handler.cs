@@ -75,23 +75,29 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmail(string username, string newEmail)
         {
-            USR01 objUser = _usr01Service.GetUser(username);
-
-            _objCUS01.S01F03 = newEmail;
-            objUser.R01F02 = newEmail.Split('@')[0];
-
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
                 using (IDbTransaction transaction = db.BeginTransaction())
                 {
                     try
                     {
-                        db.Update(_objCUS01);
-                        db.Update(objUser);
+                        db.UpdateOnly<CUS01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "S01F03", newEmail }
+                            },
+                            obj: c => c.S01F03.StartsWith(username));
+
+                        db.UpdateOnly<USR01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "R01F02", newEmail.Split('@')[0] }
+                            },
+                            obj: u => u.R01F02 == username);
 
                         transaction.Commit();
                     }
-                    catch (Exception)
+                    catch
                     {
                         transaction.Rollback();
                         throw;
@@ -112,16 +118,20 @@ namespace OnlineShoppingAPI.BL.Master.Service
         public Response ChangeEmailValidation(string username, string password, string newEmail)
         {
             if (_usr01Service.GetUser(newEmail) != null)
-                return NotFoundResponse("Use another email, this email is already exists.");
-
-            using (var db = _dbFactory.OpenDbConnection())
             {
-                _objCUS01 = db.Single(db.From<CUS01>()
-                    .Where(c => c.S01F03.StartsWith(username) && c.S01F04.Equals(password)));
+                return NotFoundResponse("Use another email, this email is already exists.");
             }
 
-            if (_objCUS01 == null)
+            bool isCUS01Exist;
+            using (var db = _dbFactory.OpenDbConnection())
+            {
+                isCUS01Exist = db.Exists<CUS01>(c => c.S01F03.StartsWith(username) && c.S01F04.Equals(password));
+            }
+
+            if (!isCUS01Exist)
+            {
                 return NotFoundResponse("Customer doesn't exist");
+            }
 
             return OkResponse();
         }
@@ -133,9 +143,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangePassword(string newPassword)
         {
-            _objCUS01.S01F04 = newPassword;
-            _objUSR01.R01F03 = newPassword;
-            _objUSR01.R01F05 = BLEncryption.GetEncryptPassword(newPassword);
+            string encryptedPassword = BLEncryption.GetEncryptPassword(newPassword);
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
@@ -143,8 +151,20 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Update(_objCUS01);
-                        db.Update(_objUSR01);
+                        db.UpdateOnly<CUS01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "S01F04", newPassword }
+                            },
+                            obj: c => c.S01F03 == _objCUS01.S01F03);
+
+                        db.UpdateOnly<USR01>(
+                            updateFields: new Dictionary<string, object>
+                            {
+                                { "R01F03", newPassword },
+                                { "R01F05", encryptedPassword }
+                            },
+                            obj: u => u.R01F02 == _objUSR01.R01F02);
 
                         transaction.Commit();
                     }
@@ -340,7 +360,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
                             transaction.Commit();
                         }
-                        catch (Exception)
+                        catch
                         {
                             transaction.Rollback();
                             throw;
@@ -350,15 +370,16 @@ namespace OnlineShoppingAPI.BL.Master.Service
                     return OkResponse("Customer created successfully.");
                 }
 
-                CUS01 existingCUS01 = db.SingleById<CUS01>(_objCUS01.S01F01);
-
-                // Update customer properties with the provided data.
-                existingCUS01.S01F02 = _objCUS01.S01F02;
-                existingCUS01.S01F05 = _objCUS01.S01F05;
-                existingCUS01.S01F06 = _objCUS01.S01F06;
-
                 // Perform the database update.
-                db.Update(existingCUS01);
+                db.UpdateOnly<CUS01>(
+                    updateFields: new Dictionary<string, object>
+                    {
+                        { "S01F02", _objCUS01.S01F02 },
+                        { "S01F05", _objCUS01.S01F05 },
+                        { "S01F06", _objCUS01.S01F06 }
+                    },
+                    obj: c => c.S01F01 == _objCUS01.S01F01);
+
                 return OkResponse("Data updated successfully.");
             }
         }
@@ -375,7 +396,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     // Check if the email already exists in the database
                     if (db.Exists<USR01>(u => u.R01F02 == _objUSR01.R01F02))
+                    {
                         return PreConditionFailedResponse("Email already exists.");
+                    }
                 }
             }
 

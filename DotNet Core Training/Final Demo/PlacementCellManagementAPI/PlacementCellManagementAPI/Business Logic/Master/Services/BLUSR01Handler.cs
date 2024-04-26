@@ -86,11 +86,11 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
             using MySqlConnection connection = new(_connectionString);
             try
             {
-                connection.Open();
                 string query = "SELECT R01F02, R01F03, R01F04, R01F05 FROM USR01;";
 
                 MySqlCommand command = new(query, connection);
 
+                connection.Open();
                 using MySqlDataReader reader = command.ExecuteReader();
 
                 DataTable dataTable = new();

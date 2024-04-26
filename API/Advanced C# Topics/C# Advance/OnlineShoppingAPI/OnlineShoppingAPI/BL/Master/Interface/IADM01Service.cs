@@ -58,13 +58,6 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <returns>Success response if no error occur else response with error message.</returns>
         Response DeleteValidation(int id);
 
-        /// <summary>
-        /// Retrieves the profit for a specific date.
-        /// </summary>
-        /// <param name="date">Date for which profit is to be retrieved.</param>
-        /// <returns>Success response if no error occur else response with error message.</returns>
-        Response GetProfit(string date);
-
         #endregion Public Methods
     }
 }

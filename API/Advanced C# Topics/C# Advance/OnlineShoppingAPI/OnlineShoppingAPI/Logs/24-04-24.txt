@@ -108,3 +108,104 @@ Error Stack Trace:    at System.Data.Common.DbDataAdapter.GetConnection3(DbDataA
    at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
    at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
 
+Time: 13:21:52
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at OnlineShoppingAPI.BL.Master.Service.BLPFT01Handler.UpdateProfit(PRO02 objPRO02, Int32 quantity) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\BL\Master\Service\BLPFT01Handler.cs:line 113
+   at OnlineShoppingAPI.BL.Master.Service.BLRCD01Handler.BuyCartItems(List`1 lstItems, String s01F03) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\BL\Master\Service\BLRCD01Handler.cs:line 159
+   at OnlineShoppingAPI.BL.Master.Service.BLCRT01Handler.BuySingleItem(Int32 id) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\BL\Master\Service\BLCRT01Handler.cs:line 106
+   at OnlineShoppingAPI.Controllers.CLCRT01Controller.BuyItem(Int32 id) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Controllers\CLCRT01Controller.cs:line 65
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass6_0.<GetExecutor>b__2(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+
+Time: 15:18:49
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at MySql.Data.MySqlClient.MySqlCommand.<ExecuteScalarAsync>d__116.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteScalar()
+   at OnlineShoppingAPI.DL.DBPFT01Context.GetYearData() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\DL\DBPFT01Context.cs:line 64
+   at OnlineShoppingAPI.BL.Master.Service.BLPFT01Handler.GetYearData() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\BL\Master\Service\BLPFT01Handler.cs:line 91
+   at OnlineShoppingAPI.Controllers.CLPFT01Controller.GetPrevious10YearData() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Controllers\CLPFT01Controller.cs:line 59
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass6_0.<GetExecutor>b__2(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+
+Time: 15:22:55
+Error Message: NullReferenceException
+Exception Type: System.NullReferenceException
+Error Stack Trace:    at MySql.Data.MySqlClient.MySqlCommand.<ExecuteScalarAsync>d__116.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at MySql.Data.MySqlClient.MySqlCommand.ExecuteScalar()
+   at OnlineShoppingAPI.DL.DBPFT01Context.GetDayWiseData(Int32 month, Int32 year) in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\DL\DBPFT01Context.cs:line 144
+   at OnlineShoppingAPI.BL.Master.Service.BLPFT01Handler.GetDayWiseData() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\BL\Master\Service\BLPFT01Handler.cs:line 58
+   at OnlineShoppingAPI.Controllers.CLPFT01Controller.GetDayWiseProfit() in F:\Deep - 380\Training\API\Advanced C# Topics\C# Advance\OnlineShoppingAPI\OnlineShoppingAPI\Controllers\CLPFT01Controller.cs:line 37
+   at lambda_method(Closure , Object , Object[] )
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ActionExecutor.<>c__DisplayClass6_0.<GetExecutor>b__2(Object instance, Object[] methodParameters)
+   at System.Web.Http.Controllers.ReflectedHttpActionDescriptor.ExecuteAsync(HttpControllerContext controllerContext, IDictionary`2 arguments, CancellationToken cancellationToken)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ApiControllerActionInvoker.<InvokeActionAsyncCore>d__1.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ActionFilterResult.<ExecuteAsync>d__5.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Filters.AuthorizationFilterAttribute.<ExecuteAuthorizationFilterAsyncCore>d__3.MoveNext()
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+   at System.Web.Http.Controllers.ExceptionFilterResult.<ExecuteAsync>d__6.MoveNext()
+

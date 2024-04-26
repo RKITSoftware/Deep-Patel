@@ -53,20 +53,10 @@ namespace PlacementCellManagementAPI.DL
                                     INNER JOIN
                                 cmp01 ON JOB01.B01F06 = cmp01.p01f01;";
 
-            MySqlCommand command = new(query, _connection);
-
             DataTable dataTable = new();
-            MySqlDataAdapter adapter = new(command);
+            MySqlDataAdapter adapter = new(query, _connection);
 
-            try
-            {
-                _connection.Open();
-                adapter.Fill(dataTable);
-            }
-            finally
-            {
-                _connection.Close();
-            }
+            adapter.Fill(dataTable);
 
             return dataTable;
         }

@@ -26,7 +26,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
         /// </summary>
         private readonly IUSR01Service _usr01Service;
 
-        #endregion
+        #endregion Private Fields
 
         #region Constructor
 
@@ -38,7 +38,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
             _usr01Service = new BLUSR01Handler();
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Methods
 

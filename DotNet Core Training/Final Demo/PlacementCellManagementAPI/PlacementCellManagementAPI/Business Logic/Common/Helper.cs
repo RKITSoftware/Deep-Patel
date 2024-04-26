@@ -104,6 +104,18 @@ namespace PlacementCellManagementAPI.Business_Logic.Common
             Message = message
         };
 
+        /// <summary>
+        /// Generates a PreConditionFailedResponse
+        /// </summary>
+        /// <param name="message">The message to include in the response.</param>
+        /// <returns>A PreConditionFailedResponse with the specified message.</returns>
+        public static Response PreConditionFailedResponse(string message = "Pre Condition Failed") => new()
+        {
+            IsError = true,
+            StatusCode = HttpStatusCode.PreconditionFailed,
+            Message = message
+        };
+
         #endregion
     }
 }

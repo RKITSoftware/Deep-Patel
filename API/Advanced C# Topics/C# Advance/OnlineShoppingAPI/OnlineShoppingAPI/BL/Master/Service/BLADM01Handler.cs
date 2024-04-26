@@ -1,6 +1,5 @@
 ﻿using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.BL.Master.Interface;
-using OnlineShoppingAPI.DL;
 using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
@@ -23,11 +22,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
         #region Private Fields
 
         /// <summary>
-        /// DB context for <see cref="BLADM01Handler"/>.
-        /// </summary>
-        private readonly DBADM01Context _dbADM01Context;
-
-        /// <summary>
         /// Orm Lite Connection.
         /// </summary>
         private readonly IDbConnectionFactory _dbFactory;
@@ -35,7 +29,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <summary>
         /// USR01 model services.
         /// </summary>
-        private readonly IUSR01Service _usr01Service;
+        private IUSR01Service _usr01Service;
 
         /// <summary>
         /// Instance of <see cref="ADM01"/>.
@@ -66,8 +60,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
         public BLADM01Handler()
         {
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
-            _dbADM01Context = new DBADM01Context();
-            _usr01Service = new BLUSR01Handler();
         }
 
         #endregion Constructor
@@ -125,6 +117,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response ChangeEmailValidation(string username, string password, string newEmail)
         {
+            _usr01Service = new BLUSR01Handler();
             if (_usr01Service.GetUser(newEmail) != null)
             {
                 return PreConditionFailedResponse("New email is already exists, use another email.");
@@ -170,6 +163,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if validation succesful else error response.</returns>
         public Response ChangePasswordValidation(string username, string oldPassword)
         {
+            _usr01Service = new BLUSR01Handler();
             _objUSR01 = _usr01Service.GetUser(username, oldPassword);
 
             if (_objUSR01 == null)
@@ -229,23 +223,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
             }
 
             return OkResponse();
-        }
-
-        /// <summary>
-        /// Retrieves the profit for the specified date.
-        /// </summary>
-        /// <param name="date">Date for which profit is to be retrieved.</param>
-        /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response GetProfit(string date)
-        {
-            DataTable dtProfit = _dbADM01Context.GetProfit(date);
-
-            if (dtProfit.Rows.Count == 0)
-            {
-                return NoContentResponse();
-            }
-
-            return OkResponse("", dtProfit);
         }
 
         /// <summary>

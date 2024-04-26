@@ -36,6 +36,11 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// </summary>
         private PRO02 _objPRO02;
 
+        /// <summary>
+        /// List containing the product version 2 model data.
+        /// </summary>
+        private List<PRO02> _lstPRO02;
+
         #endregion Private Fields
 
         #region Public Properties
@@ -90,12 +95,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 isPRO02Exist = db.Exists<PRO02>(p => p.O02F01 == id);
             }
 
-            if (!isPRO02Exist)
-            {
-                return NotFoundResponse("Product not found.");
-            }
-
-            return OkResponse("Product deleted successfully.");
+            return !isPRO02Exist ? NotFoundResponse("Product not found.") : OkResponse("Product deleted successfully.");
         }
 
         /// <summary>
@@ -104,19 +104,12 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occur else response with error message.</returns>
         public Response GetAll()
         {
-            List<PRO02> lstPRO02;
-
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                lstPRO02 = db.Select<PRO02>();
+                _lstPRO02 = db.Select<PRO02>();
             }
 
-            if (lstPRO02 == null)
-            {
-                return NoContentResponse();
-            }
-
-            return OkResponse("", lstPRO02);
+            return _lstPRO02 == null ? NoContentResponse() : OkResponse("", _lstPRO02);
         }
 
         /// <summary>
@@ -127,12 +120,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         {
             DataTable dtInfo = _dbPRO02Context.GetInformation();
 
-            if (dtInfo.Rows.Count == 0)
-            {
-                return NoContentResponse();
-            }
-
-            return OkResponse("", dtInfo);
+            return dtInfo.Rows.Count != 0 ? OkResponse("", dtInfo) : NoContentResponse();
         }
 
         /// <summary>
@@ -158,25 +146,17 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOPRO02 objDTOPRO02)
         {
-            bool isCAT01Exist, isSUP01Exist;
-
-            using (var db = _dbFactory.OpenDbConnection())
+            if (IsCAT01Exist(objDTOPRO02.O02F09))
             {
-                isCAT01Exist = db.Exists<CAT01>(c => c.T01F01 == objDTOPRO02.O02F09);
-                isSUP01Exist = db.Exists<SUP01>(s => s.P01F01 == objDTOPRO02.O02F10);
+                if (!IsSUP01Exist(objDTOPRO02.O02F10))
+                {
+                    return NotFoundResponse("Supplier doesn't exist.");
+                }
+
+                return OkResponse();
             }
 
-            if (!isCAT01Exist)
-            {
-                return NotFoundResponse("Category doesn't exist.");
-            }
-
-            if (!isSUP01Exist)
-            {
-                return NotFoundResponse("Supplier doesn't exist.");
-            }
-
-            return OkResponse();
+            return NotFoundResponse("Category doesn't exist.");
         }
 
         /// <summary>
@@ -223,12 +203,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 _objPRO02 = db.SingleById<PRO02>(id);
             }
 
-            if (_objPRO02 == null)
-            {
-                return NotFoundResponse("Product not found.");
-            }
-
-            return OkResponse();
+            return _objPRO02 != null ? OkResponse() : NotFoundResponse("Product not found.");
         }
 
         /// <summary>
@@ -245,14 +220,90 @@ namespace OnlineShoppingAPI.BL.Master.Service
                     && p.O02F09 == _objPRO02.O02F09 && p.O02F10 == _objPRO02.O02F10);
             }
 
-            if (isDuplicate)
+            return isDuplicate ? PreConditionFailedResponse("Product can't be created because it already exists.") : OkResponse();
+        }
+
+        /// <summary>
+        /// Validate the id before getting the product data of that category.
+        /// </summary>
+        /// <param name="id">Category Id</param>
+        /// <returns>Success response if category exists else notfound response.</returns>
+        public Response ValidationForGetPRO02ByCAT01(int id)
+        {
+            return IsCAT01Exist(id) ? OkResponse() : NotFoundResponse("Category not found.");
+        }
+
+        /// <summary>
+        /// Gets the product of category specified by id.
+        /// </summary>
+        /// <param name="id">Category Id.</param>
+        /// <returns>Ok response containing the data if data exists else no content response.</returns>
+        public Response GetProductByCategory(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                return PreConditionFailedResponse("Product can't be created because it already exists.");
+                _lstPRO02 = db.Select<PRO02>(p => p.O02F09 == id);
             }
 
-            return OkResponse();
+            return _lstPRO02 == null || _lstPRO02.Count == 0 ? NoContentResponse() : OkResponse("Success", _lstPRO02);
+        }
+
+        /// <summary>
+        /// Validate the id before getting the product data of that supplier.
+        /// </summary>
+        /// <param name="id">Supplier Id</param>
+        /// <returns>Success response if category exists else notfound response.</returns>
+        public Response ValidationForGetPRO02BySUP01(int id)
+        {
+            return IsSUP01Exist(id) ? OkResponse() : NotFoundResponse("Supplier doesn't exist.");
+        }
+
+        /// <summary>
+        /// Gets the product of supplier specified by id.
+        /// </summary>
+        /// <param name="id">Supplier Id.</param>
+        /// <returns>Ok response containing the data if data exists else no content response.</returns>
+        public Response GetProductBySupplier(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                _lstPRO02 = db.Select<PRO02>(p => p.O02F10 == id);
+            }
+
+            return _lstPRO02 != null && _lstPRO02.Count != 0 ? OkResponse("", _lstPRO02) : NoContentResponse();
         }
 
         #endregion Public Methods
+
+        #region Private Methods
+
+        /// <summary>
+        /// Checks the supplier is exists or not.
+        /// </summary>
+        /// <param name="id">Supplier id.</param>
+        /// <returns>True is exists else False.</returns>
+        private bool IsSUP01Exist(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                return db.Exists<SUP01>(s => s.P01F01 == id);
+            }
+        }
+
+        /// <summary>
+        /// Checks the category is exists or not.
+        /// </summary>
+        /// <param name="id">Category id.</param>
+        /// <returns>True is exists else False.</returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool IsCAT01Exist(int id)
+        {
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                return db.Exists<CAT01>(c => c.T01F01 == id);
+            }
+        }
+
+        #endregion
     }
 }

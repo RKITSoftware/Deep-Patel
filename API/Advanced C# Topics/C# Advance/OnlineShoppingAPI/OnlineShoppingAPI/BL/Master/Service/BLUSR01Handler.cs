@@ -32,7 +32,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
             _dbFactory = HttpContext.Current.Application["DbFactory"] as IDbConnectionFactory;
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Public Methods
 
@@ -80,7 +80,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
             }
         }
 
-
         /// <summary>
         /// Checks if a user exists using username and password.
         /// </summary>
@@ -98,6 +97,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
             }
         }
 
-        #endregion
+        #endregion Public Methods
     }
 }

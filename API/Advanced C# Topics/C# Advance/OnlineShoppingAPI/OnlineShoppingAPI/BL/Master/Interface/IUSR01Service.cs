@@ -39,6 +39,6 @@ namespace OnlineShoppingAPI.BL.Master.Interface
         /// <returns>True if the user exists, false otherwise.</returns>
         bool IsExist(string username, string password);
 
-        #endregion
+        #endregion Publie Methods
     }
 }

@@ -93,17 +93,25 @@ namespace OnlineShoppingAPI.BL.Master.Service
 
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objCRT01 = db.SingleById<CRT01>(id);
-
-                if (_objCRT01 == null)
-                {
-                    return NotFoundResponse("Item not found.");
-                }
-
                 s01F03 = db.SingleById<CUS01>(_objCRT01.T01F02).S01F03;
             }
 
             return _rcd01Service.BuyCartItems(new List<CRT01>() { _objCRT01 }, s01F03);
+        }
+
+        /// <summary>
+        /// Checks the cart item if exists or not.
+        /// </summary>
+        /// <param name="id">Cart item id.</param>
+        /// <returns>Ok Response if item exists else NotFound Response</returns>
+        public Response BuySingleItemValidation(int id)
+        {
+            if (IsCRT01Exist(id))
+            {
+                return OkResponse();
+            }
+
+            return NotFoundResponse("Item not found.");
         }
 
         /// <summary>
@@ -115,13 +123,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                _objCRT01 = db.SingleById<CRT01>(id);
-
-                if (_objCRT01 == null)
-                {
-                    return NotFoundResponse("Item not found.");
-                }
-
                 db.Delete(_objCRT01);
             }
 
@@ -129,26 +130,36 @@ namespace OnlineShoppingAPI.BL.Master.Service
         }
 
         /// <summary>
+        /// Checks the item exists or not for delete operation.
+        /// </summary>
+        /// <param name="id">Cart id</param>
+        /// <returns>Ok Response if item exists else NotFound Response.</returns>
+        public Response DeleteValidation(int id)
+        {
+            if (IsCRT01Exist(id))
+            {
+                return OkResponse();
+            }
+
+            return NotFoundResponse("Cart item not found.");
+        }
+
+        /// <summary>
         /// Generates a OTP for the 2-Factor Authentication process of buying all items.
         /// </summary>
         /// <param name="id">Customer ID.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response Generate(int id)
+        public Response GenerateOTP(int id)
         {
-            string s01F03;
-
             // Generate a random OTP.
             Random random = new Random();
             string otp = random.Next(0, 999999).ToString("000000");
 
+            string s01F03;
+
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                s01F03 = db.SingleById<CUS01>(id)?.S01F03;
-            }
-
-            if (string.IsNullOrEmpty(s01F03))
-            {
-                return NotFoundResponse("Customer not found");
+                s01F03 = db.SingleById<CUS01>(id).S01F03;
             }
 
             _emailService.Send(s01F03, otp);
@@ -163,6 +174,28 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 onRemoveCallback: null);
 
             return OkResponse("OTP sent successfully.");
+        }
+
+        /// <summary>
+        /// Validation checks before the generating otp for the customer.
+        /// </summary>
+        /// <param name="id">Customer id.</param>
+        /// <returns>Ok response if customer exist else notfound response.</returns>
+        public Response GenerateOTPValidation(int id)
+        {
+            bool isCUS01Exist;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                isCUS01Exist = db.Exists<CUS01>(c => c.S01F01 == id);
+            }
+
+            if (isCUS01Exist)
+            {
+                return OkResponse();
+            }
+
+            return NotFoundResponse("Customer not found.");
         }
 
         /// <summary>
@@ -221,17 +254,22 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <returns>Success response if no error occurs else response with specific statuscode with message.</returns>
         public Response PreValidation(DTOCRT01 objDTOCRT01)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            bool isCUS01Exist;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                // Customer exists or not.
-                if (db.SingleById<CUS01>(objDTOCRT01.T01F02) == null)
-                    return NotFoundResponse("Customer doesn't exist.");
-
-                // Product exists or not.
+                isCUS01Exist = db.Exists<CUS01>(c => c.S01F01 == objDTOCRT01.T01F02);
                 _objPRO02 = db.SingleById<PRO02>(_objCRT01.T01F03);
+            }
 
-                if (_objPRO02 == null)
-                    return NotFoundResponse("Product doesn't exist.");
+            if (!isCUS01Exist)
+            {
+                return NotFoundResponse("Customer doesn't exist.");
+            }
+
+            if (_objPRO02 == null)
+            {
+                return NotFoundResponse("Product not found.");
             }
 
             return OkResponse();
@@ -268,12 +306,12 @@ namespace OnlineShoppingAPI.BL.Master.Service
         }
 
         /// <summary>
-        /// Verifies the OTP and Buy items from the cart of customer's.
+        /// Verifies the OTP.
         /// </summary>
         /// <param name="id">Customer Id.</param>
         /// <param name="otp">OTP (One Time Password) for the verification of buying process.</param>
         /// <returns>Success response if no error occur else response with error message.</returns>
-        public Response VerifyAndBuy(int id, string otp)
+        public Response VerifyOTP(int id, string otp)
         {
             string email;
 
@@ -287,7 +325,6 @@ namespace OnlineShoppingAPI.BL.Master.Service
             if (existingOTP == null)
             {
                 return PreConditionFailedResponse("No OTP is generated for buying or OTP expired.");
-
             }
 
             if (!existingOTP.Equals(otp))
@@ -296,7 +333,31 @@ namespace OnlineShoppingAPI.BL.Master.Service
             }
 
             ServerCache.Remove(email);
-            return BuyAllItems(id);
+            return OkResponse();
+        }
+
+        /// <summary>
+        /// Buys all items from the customer's cart.
+        /// </summary>
+        /// <param name="id">Customer id</param>
+        /// <returns>Success response.</returns>
+        public Response BuyAllItems(int id)
+        {
+            string s01F03;
+            List<CRT01> lstItems;
+
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
+            {
+                lstItems = db.Where<CRT01>("T01F02", id);
+                s01F03 = db.SingleById<CUS01>(id).S01F03;
+            }
+
+            if (lstItems == null)
+            {
+                return PreConditionFailedResponse("No cart items for customer.");
+            }
+
+            return _rcd01Service.BuyCartItems(lstItems, s01F03);
         }
 
         #endregion Public Methods
@@ -304,23 +365,15 @@ namespace OnlineShoppingAPI.BL.Master.Service
         #region Private Methods
 
         /// <summary>
-        /// Buy all items of the customer after successful completion 2-Factor Authentication process.
+        /// Checks the cart item exists or not.
         /// </summary>
-        /// <param name="id">Customer Id</param>
-        /// <returns>Success response if no error occur else response with error message.</returns>
-        private Response BuyAllItems(int id)
+        /// <param name="id">Cart id.</param>
+        /// <returns>True if exists else false.</returns>
+        private bool IsCRT01Exist(int id)
         {
-            using (var db = _dbFactory.OpenDbConnection())
+            using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                List<CRT01> lstItems = db.Where<CRT01>("T01F02", id);
-
-                if (lstItems == null)
-                {
-                    return PreConditionFailedResponse("No cart items for customer.");
-                }
-
-                CUS01 objCustomer = db.SingleById<CUS01>(id);
-                return _rcd01Service.BuyCartItems(lstItems, objCustomer.S01F03);
+                return db.Exists<CRT01>(c => c.T01F01 == id);
             }
         }
 

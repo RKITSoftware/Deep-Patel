@@ -1,10 +1,10 @@
 ﻿using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.BL.Master.Service;
+using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.POCO;
 using System;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 
 namespace OnlineShoppingAPI.Controllers
@@ -41,18 +41,29 @@ namespace OnlineShoppingAPI.Controllers
         /// <param name="username">The username for generating token.</param>
         /// <param name="password">The password for generating token.</param>
         /// <returns>
-        /// HTTP response message indicating the success or failure of generating token process.
+        /// Response indicating the success or failure of generating token process.
         /// </returns>
         [HttpGet]
         [Route("Generate")]
-        public HttpResponseMessage GenerateToken(string username, string password)
+        public IHttpActionResult GenerateToken(string username, string password)
         {
+            Response response = new Response();
+
             USR01 objUser = _usr01Service.GetUser(username, password);
 
-            if (objUser == null)
-                return BLHelper.ResponseMessage(HttpStatusCode.NotFound, "Credentials are invalid.");
+            if (objUser != null)
+            {
+                response.StatusCode = HttpStatusCode.OK;
+                response.Data = _blToken.GenerateToken(Guid.NewGuid(), objUser);
+            }
+            else
+            {
+                response.IsError = true;
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.Message = "Credentials are invalid.";
+            }
 
-            return _blToken.GenerateToken(Guid.NewGuid(), objUser);
+            return Ok(response);
         }
     }
 }

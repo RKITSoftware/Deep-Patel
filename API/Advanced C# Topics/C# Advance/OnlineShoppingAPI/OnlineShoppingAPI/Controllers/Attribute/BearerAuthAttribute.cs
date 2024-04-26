@@ -1,8 +1,10 @@
-﻿using OnlineShoppingAPI.BL.Common;
+﻿using Microsoft.IdentityModel.Tokens;
+using OnlineShoppingAPI.BL.Common;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
-using System.Security.Principal;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -32,30 +34,28 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                     // Checking if Token is provided
                     if (string.IsNullOrEmpty(token))
                     {
-                        actionContext.Response = BLHelper.ResponseMessage(
-                            HttpStatusCode.Unauthorized, "Please provide a token.");
+                        actionContext.Response = BLHelper.ResponseMessage(HttpStatusCode.Unauthorized, "Please provide a token.");
                         return;
                     }
 
-                    // Validating JWT Token
-                    if (!BLToken.IsJwtValid(token))
+                    string seceretKey = "thisissecuritykeyofcustomjwttokenaut";
+                    string issuer = "CustomJWTBearerTokenAPI";
+
+                    SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(seceretKey));
+                    JwtSecurityTokenHandler _objHandler = new JwtSecurityTokenHandler();
+
+                    TokenValidationParameters objTokenValidationParameters = new TokenValidationParameters()
                     {
-                        actionContext.Response = BLHelper.ResponseMessage(
-                            HttpStatusCode.Unauthorized, "Token has been altered.");
-                        return;
-                    }
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidAudience = issuer,
+                        ValidIssuer = issuer,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = securityKey,
+                        LifetimeValidator = LifetimeValidator
+                    };
 
-                    // Setting the authenticated user in HttpContext
-                    IPrincipal principal = BLToken.GetPrincipal(token);
-
-                    if (principal == null)
-                    {
-                        actionContext.Response = BLHelper.ResponseMessage(
-                            HttpStatusCode.Unauthorized, "Unauthorized user.");
-                        return;
-                    }
-
-                    HttpContext.Current.User = principal;
+                    HttpContext.Current.User = _objHandler.ValidateToken(token, objTokenValidationParameters, out SecurityToken _objSecurityToken);
                 }
             }
             catch (Exception ex)
@@ -78,6 +78,27 @@ namespace OnlineShoppingAPI.Controllers.Attribute
             return actionContext.ActionDescriptor
                 .GetCustomAttributes<AllowAnonymousAttribute>().Any() || actionContext.ControllerContext
                 .ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+        }
+
+        /// <summary>
+        /// validate wether token expiers or not
+        /// </summary>
+        /// <param name="notBefore"></param>
+        /// <param name="expires"></param>
+        /// <param name="securityToken"></param>
+        /// <param name="tokenValidationParameters"></param>
+        /// <returns>
+        /// if : expiers then true
+        /// else : false
+        /// </returns>
+        private bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters tokenValidationParameters)
+        {
+            if (expires != null)
+            {
+                if (DateTime.UtcNow < expires)
+                    return true;
+            }
+            return false;
         }
 
         #endregion Private Methods

@@ -74,5 +74,25 @@ namespace AJAXPracticeAPI.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            Order? order = _lstOrder.FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            Response response = new()
+            {
+                Data = order,
+                StatusCode = HttpStatusCode.OK,
+                Message = "Success"
+            };
+
+            return Ok(response);
+        }
     }
 }

@@ -14,7 +14,9 @@ $(function () {
         "</td><td>" +
         "<button data-id='" +
         order.id +
-        "' class='deleteOrder'>Delete</button></td></tr>"
+        "' class='deleteOrder'>Delete</button></td><td><button data-id='" +
+        order.id +
+        "' class='editOrder'>Edit</button></td></tr>"
     );
   }
 
@@ -60,7 +62,41 @@ $(function () {
         $tr.remove();
       },
     });
+  });
 
-    console.log($DeleteId);
+  $("#orderData").delegate(".editOrder", "click", function () {
+    var $self = $(this);
+    var $EditId = $self.attr("data-id");
+
+    $.ajax({
+      type: "GET",
+      url: "https://localhost:7233/api/Order/" + $EditId,
+      success: function (response) {
+        $("#editOrderId").val(response.data.id);
+        $("#editName").val(response.data.name);
+        $("#editDrink").val(response.data.drink);
+      },
+      error: function (error) {
+        alert(error.statuscode);
+      },
+    });
+  });
+
+  $("#editSave").on("click", function () {
+    var order = {
+      Id: $("#editOrderId").val(),
+      Name: $("#editName").val(),
+      Drink: $("#editDrink").val(),
+    };
+
+    $.ajax({
+      type: "PUT",
+      url: "https://localhost:7233/api/Order",
+      contentType: "application/json",
+      data: JSON.stringify(order),
+      success: function () {
+        alert("Success");
+      },
+    });
   });
 });

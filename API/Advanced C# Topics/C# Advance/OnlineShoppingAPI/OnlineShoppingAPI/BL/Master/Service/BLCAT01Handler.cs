@@ -1,9 +1,9 @@
 ﻿using OnlineShoppingAPI.BL.Master.Interface;
 using OnlineShoppingAPI.DL;
-using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System.Data;
@@ -128,7 +128,7 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <param name="objDTOCAT01">Data Transfer Object representing the category.</param>
         public void PreSave(DTOCAT01 objDTOCAT01)
         {
-            _objCAT01 = objDTOCAT01.Convert<CAT01>();
+            _objCAT01 = objDTOCAT01.ConvertTo<CAT01>();
         }
 
         /// <summary>
@@ -141,7 +141,9 @@ namespace OnlineShoppingAPI.BL.Master.Service
             if (Operation == EnmOperation.E)
             {
                 if (!IsCAT01Exist(objDTOCAT01.T01F01))
+                {
                     return NotFoundResponse("Category not found.");
+                }
             }
 
             return OkResponse();
@@ -155,10 +157,15 @@ namespace OnlineShoppingAPI.BL.Master.Service
         {
             using (IDbConnection db = _dbFactory.OpenDbConnection())
             {
-                db.Save(_objCAT01);
-            }
+                if (Operation == EnmOperation.A)
+                {
+                    db.Insert(_objCAT01);
+                    return OkResponse("Category created successfully.");
+                }
 
-            return OkResponse();
+                db.Update(_objCAT01);
+                return OkResponse("Category updated successfully.");
+            }
         }
 
         /// <summary>

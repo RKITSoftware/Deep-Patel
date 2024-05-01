@@ -4,6 +4,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Web.Http;
@@ -55,7 +56,12 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                         LifetimeValidator = LifetimeValidator
                     };
 
-                    HttpContext.Current.User = _objHandler.ValidateToken(token, objTokenValidationParameters, out SecurityToken _objSecurityToken);
+                    ClaimsPrincipal principal = _objHandler.ValidateToken(token, objTokenValidationParameters, out SecurityToken _objSecurityToken);
+
+                    if (principal != null)
+                    {
+                        HttpContext.Current.User = principal;
+                    }
                 }
             }
             catch (Exception ex)
@@ -75,9 +81,7 @@ namespace OnlineShoppingAPI.Controllers.Attribute
         /// <returns>True if exists else false.</returns>
         private bool CheckAllowAnonymousAttribute(HttpActionContext actionContext)
         {
-            return actionContext.ActionDescriptor
-                .GetCustomAttributes<AllowAnonymousAttribute>().Any() || actionContext.ControllerContext
-                .ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any() || actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
         }
 
         /// <summary>

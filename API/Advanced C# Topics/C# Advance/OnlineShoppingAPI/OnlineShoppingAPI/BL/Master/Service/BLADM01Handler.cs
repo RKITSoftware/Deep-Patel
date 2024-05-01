@@ -1,9 +1,9 @@
 ﻿using OnlineShoppingAPI.BL.Common;
 using OnlineShoppingAPI.BL.Master.Interface;
-using OnlineShoppingAPI.Extension;
 using OnlineShoppingAPI.Models;
 using OnlineShoppingAPI.Models.DTO;
 using OnlineShoppingAPI.Models.POCO;
+using ServiceStack;
 using ServiceStack.Data;
 using ServiceStack.OrmLite;
 using System;
@@ -231,8 +231,8 @@ namespace OnlineShoppingAPI.BL.Master.Service
         /// <param name="objDTOADM01">DTO containing admin data.</param>
         public void PreSave(DTOADM01 objDTOADM01)
         {
-            _objADM01 = objDTOADM01.Convert<ADM01>();
-            _objUSR01 = objDTOADM01.Convert<USR01>();
+            _objADM01 = objDTOADM01.ConvertTo<ADM01>();
+            _objUSR01 = objDTOADM01.ConvertTo<USR01>();
 
             _objUSR01.R01F02 = _objADM01.M01F03.Split('@')[0];
             _objUSR01.R01F04 = Roles.Admin;
@@ -261,8 +261,8 @@ namespace OnlineShoppingAPI.BL.Master.Service
                 {
                     try
                     {
-                        db.Save(_objADM01);
-                        db.Save(_objUSR01);
+                        db.Insert(_objADM01);
+                        db.Insert(_objUSR01);
 
                         transaction.Commit();
                     }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.3/themes/base/jquery-ui.min.css"
+      integrity="sha512-8PjjnSP8Bw/WNPxF6wkklW6qlQJdWJc/3w/ZQPvZ/1bjVDkrrSqLe9mfPYrMxtnzsXFPc434+u4FHLnLjXTSsg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="jtable.2.4.0/jtable.2.4.0/themes/jqueryui/jtable_jqueryui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="jtable.2.4.0/jtable.2.4.0/themes/metro/green/jtable.css"
+    />
+  </head>
+  <body>
+    <div id="JtableDemo"></div>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script src="jtable.2.4.0/jtable.2.4.0/jquery.jtable.js"></script>
+    <script src="jtable.2.4.0/jtable.2.4.0/external/json2.js"></script>
+    <script src="jtable.2.4.0/jtable.2.4.0/extensions/jquery.jtable.aspnetpagemethods.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        // Creates the form object for the create and edit operation.
+        function createFormData(postData) {
+          // Splitting postdata which are join using & operator.
+          var pairs = postData.split("&");
+
+          // Create an empty object to store key-value pairs
+          var obj = {};
+
+          // Iterate through the key-value pairs
+          pairs.forEach(function (pair) {
+            // Split the pair into key and value
+            var keyValue = pair.split("=");
+
+            // Extract key and value
+            var key = decodeURIComponent(keyValue[0]); // Decoding URI component to handle special characters
+            var value = decodeURIComponent(keyValue[1]); // Decoding URI component to handle special characters
+
+            // Store key-value pair in the object
+            obj[key] = value;
+          });
+
+          return obj;
+        }
+
+        $("#JtableDemo").jtable({
+          title: "JTable Demo", // Gives the title of the jtable.
+          paging: true, // Enables the paging of the table
+          pageSize: 5, // Default Page size is 5
+          sorting: true, // Enables the sorting
+          defaultSorting: "R01F01 ASC", // Default sortig is by Id
+          deleteConfirmation: false, // Disable the delete confirmation box
+          actions: {
+            listAction: "https://localhost:7004/api/Person",
+            createAction: function (postData) {
+              var obj = createFormData(postData);
+
+              $.ajax({
+                type: "POST",
+                url: "https://localhost:7004/api/Person/Create",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function () {
+                  console.log("Created successfully.");
+                  $("#JtableDemo").jtable("load");
+                  $(".ui-dialog-content").dialog("close");
+                },
+                error: function () {
+                  console.log("Error");
+                },
+              });
+            },
+            updateAction: function (postData) {
+              var obj = createFormData(postData);
+
+              $.ajax({
+                type: "POST",
+                url: "https://localhost:7004/api/Person/Update",
+                data: JSON.stringify(obj),
+                contentType: "application/json",
+                success: function () {
+                  console.log("Updated successfully.");
+                  $("#JtableDemo").jtable("load");
+                  $(".ui-dialog-content").dialog("close");
+                },
+                error: function () {
+                  console.log("Error");
+                },
+              });
+            },
+            deleteAction: function (postData) {
+              var personId = postData.R01F01; // Assuming R01F01 is the person ID field
+              return $.Deferred(function ($dfd) {
+                $.ajax({
+                  type: "DELETE",
+                  url: "https://localhost:7004/api/Person/" + personId,
+                  success: function () {
+                    console.log("Deleted successfully.");
+                    $("#JtableDemo").jtable("load");
+                    $dfd.resolve();
+                  },
+                  error: function () {
+                    console.log("Error");
+                    $dfd.reject();
+                  },
+                });
+              }).promise();
+            },
+          },
+          fields: {
+            R01F01: {
+              title: "Id",
+              width: "10%",
+              key: true, // Specifies the primary key.
+              create: true, // Add the id field in the create box.
+              edit: false, // Disable the id in the edit box.
+              sorting: true, // Id wise sorting the data.
+            },
+
+            // Name of the Person
+            R01F02: {
+              title: "Name",
+              width: "90%",
+              sorting: true, // Name wise sorting
+            },
+          },
+        });
+
+        // Loads the jtable for the first ttime.
+        $("#JtableDemo").jtable("load");
+      });
+    </script>
+  </body>
+</html>

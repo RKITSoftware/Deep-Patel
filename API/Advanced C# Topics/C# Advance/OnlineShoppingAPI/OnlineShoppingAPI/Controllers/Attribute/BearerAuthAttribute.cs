@@ -39,13 +39,13 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                         return;
                     }
 
-                    string seceretKey = "thisissecuritykeyofcustomjwttokenaut";
                     string issuer = "CustomJWTBearerTokenAPI";
+                    string seceretKey = "thisissecuritykeyofcustomjwttokenaut";
 
                     SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(seceretKey));
-                    JwtSecurityTokenHandler _objHandler = new JwtSecurityTokenHandler();
+                    JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-                    TokenValidationParameters objTokenValidationParameters = new TokenValidationParameters()
+                    TokenValidationParameters tokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
@@ -56,7 +56,8 @@ namespace OnlineShoppingAPI.Controllers.Attribute
                         LifetimeValidator = LifetimeValidator
                     };
 
-                    ClaimsPrincipal principal = _objHandler.ValidateToken(token, objTokenValidationParameters, out SecurityToken _objSecurityToken);
+                    ClaimsPrincipal principal = tokenHandler.ValidateToken(token,
+                        tokenValidationParameters, out SecurityToken _objSecurityToken);
 
                     if (principal != null)
                     {
@@ -88,13 +89,10 @@ namespace OnlineShoppingAPI.Controllers.Attribute
         /// validate wether token expiers or not
         /// </summary>
         /// <param name="notBefore"></param>
-        /// <param name="expires"></param>
+        /// <param name="expires">Token expire time</param>
         /// <param name="securityToken"></param>
         /// <param name="tokenValidationParameters"></param>
-        /// <returns>
-        /// if : expiers then true
-        /// else : false
-        /// </returns>
+        /// <returns> if : expiers then true else : false </returns>
         private bool LifetimeValidator(DateTime? notBefore, DateTime? expires, SecurityToken securityToken, TokenValidationParameters tokenValidationParameters)
         {
             if (expires != null)

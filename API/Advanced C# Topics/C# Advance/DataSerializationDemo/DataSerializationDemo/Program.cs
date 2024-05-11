@@ -25,7 +25,7 @@ namespace DataSerializationDemo
             Console.WriteLine(jsonData);
 
             // Deserialize json data to object
-            STU01 objstudent2 = JsonConvert.DeserializeObject<STU01>(jsonData);
+            STU01? objstudent2 = JsonConvert.DeserializeObject<STU01>(jsonData);
             Console.WriteLine($"{objstudent2.Id} {objstudent2.Name} {objstudent2.Age}");
         }
 
@@ -68,8 +68,8 @@ namespace DataSerializationDemo
                 Age = 20
             };
 
-            XmlSerializer x = new XmlSerializer(objStudent.GetType());
-            using (var xs = xNav.AppendChild())
+            XmlSerializer x = new(objStudent.GetType());
+            using (XmlWriter xs = xNav.AppendChild())
             {
                 x.Serialize(xs, objStudent);
             }
@@ -109,9 +109,9 @@ namespace DataSerializationDemo
         {
             Program objProgram = new Program();
 
-            // objProgram.JsonConvertDemoOfClass();
-            // objProgram.JsonConvertDemoOfList();
-            // objProgram.XmlConvertDemoOfClass();
+            objProgram.JsonConvertDemoOfClass();
+            objProgram.JsonConvertDemoOfList();
+            objProgram.XmlConvertDemoOfClass();
             objProgram.BinaryConvertDemo();
         }
     }

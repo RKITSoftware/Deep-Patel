@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevExpress jQuery Dropdown Demo</title>
+    <!-- Include necessary CSS and JavaScript libraries -->
+    <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/21.1.5/css/dx.light.css" />
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn3.devexpress.com/jslib/21.1.5/js/dx.all.js"></script>
+</head>
+<body>
+    <div id="myDropdown"></div>
+
+    <script>
+        $(function () {
+            // Create CustomStore
+            var customStore = new DevExpress.data.CustomStore({
+                load: function(loadOptions) {
+                    return $.ajax({
+                        url: 'your-api-endpoint-url',
+                        dataType: 'json',
+                        method: 'GET',
+                        cache: false
+                    });
+                },
+                key: "id"
+            });
+
+            // Create DropdownBox
+            $("#myDropdown").dxDropDownBox({
+                placeholder: 'Select...',
+                dataSource: customStore,
+                displayExpr: "name",
+                valueExpr: "id",
+                showClearButton: true,
+                width: '300px',
+                onOpened: function (e) {
+                    // Optionally, you can show a loading indicator
+                    e.component.option('showLoadIndicator', true);
+
+                    // Trigger the data load
+                    e.component.getDataSource().load().done(function() {
+                        // Hide the loading indicator after data is loaded
+                        e.component.option('showLoadIndicator', false);
+                    });
+                },
+                onValueChanged: function (e) {
+                    console.log("Selected value: ", e.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

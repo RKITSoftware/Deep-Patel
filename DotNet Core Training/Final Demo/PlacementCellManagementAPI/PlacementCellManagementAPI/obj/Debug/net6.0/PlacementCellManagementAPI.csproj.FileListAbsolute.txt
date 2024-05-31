@@ -75,3 +75,7 @@ F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAP
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
 F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+F:\Deep - 380\Training\DotNet Core Training\Final Demo\PlacementCellManagementAPI\PlacementCellManagementAPI\bin\Debug\net6.0\Swashbuckle.AspNetCore.Newtonsoft.dll

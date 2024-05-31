@@ -38,7 +38,9 @@ namespace PlacementCellManagementAPI
             services.AddControllers(configure =>
             {
                 configure.Filters.Add(typeof(ExceptionFilter));
-            });
+            }).AddNewtonsoftJson();
+
+            services.AddSwaggerGenNewtonsoftSupport();
 
             // Disable ApiController ModelState Validation Behaviour
             services.Configure<ApiBehaviorOptions>(options =>

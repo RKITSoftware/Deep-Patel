@@ -49,11 +49,11 @@ namespace ExceptionHandlingDemo
                 app.UseSwagger();
                 app.UseSwaggerUI();
 
-                // app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
 
             // app.UseExceptionHandler("/api/CLHome/Error");
-            // app.UseCustomExceptionHandler();
+            app.UseCustomExceptionHandler();
             // app.UseMiddleware<ExceptionHandlerMiddleware>();
 
             // Redirect HTTP requests to HTTPS.

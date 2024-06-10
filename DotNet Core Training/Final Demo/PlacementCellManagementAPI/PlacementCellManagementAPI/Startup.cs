@@ -54,6 +54,8 @@ namespace PlacementCellManagementAPI
                 config.JwtConfiguration();
             });
 
+            services.AddHttpContextAccessor();
+
             string developerCorsPolicy = "DevCorsPolicy";
             services.AddCors(options =>
             {

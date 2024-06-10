@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PlacementCellManagementAPI.Business_Logic.Common.Interface;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Filters;
 using PlacementCellManagementAPI.Models;
@@ -22,12 +23,18 @@ namespace PlacementCellManagementAPI.Controllers
         private readonly IADM01Service _adm01Service;
 
         /// <summary>
+        /// Logger instance for log the admin related information.
+        /// </summary>
+        private readonly IUserLoggerService _userLoggerService;
+
+        /// <summary>
         /// Initializes a new instance of the CLAdminController class.
         /// </summary>
         /// <param name="adminService">The admin service instance to handle admin-related operations.</param>
-        public CLADM01Controller(IADM01Service adminService)
+        public CLADM01Controller(IADM01Service adminService, IUserLoggerService userLoggerService)
         {
             _adm01Service = adminService;
+            _userLoggerService = userLoggerService;
         }
 
         /// <summary>
@@ -80,6 +87,7 @@ namespace PlacementCellManagementAPI.Controllers
         [HttpGet("")]
         public ActionResult<IEnumerable<ADM01>> GetAll()
         {
+            _userLoggerService.Log("Data is successfully get.");
             return Ok(_adm01Service.GetAll());
         }
     }

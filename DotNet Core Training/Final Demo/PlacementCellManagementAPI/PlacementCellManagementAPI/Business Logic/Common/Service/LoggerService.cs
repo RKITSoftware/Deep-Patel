@@ -11,7 +11,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// <summary>
         /// Gets the current class logger information.
         /// </summary>
-        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        private static Logger _logger = LogManager.GetLogger("logger1");
 
         /// <summary>
         /// Logs an error message.

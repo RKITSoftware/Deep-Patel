@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using PlacementCellManagementAPI.Business_Logic.Common.Interface;
+using PlacementCellManagementAPI.Business_Logic.Common.Service;
 using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
 using System.Text;
@@ -27,6 +29,8 @@ namespace PlacementCellManagementAPI.Extensions
 
             services.AddTransient<IJOB01Service, BLJOB01Handler>();
             services.AddTransient<ITokenService, BLTokenHandler>();
+
+            services.AddScoped<IUserLoggerService, UserLoggerService>();
         }
 
         /// <summary>

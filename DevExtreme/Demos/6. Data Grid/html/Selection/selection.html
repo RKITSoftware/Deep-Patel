@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selection</title>
+
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+    ></script>
+
+    <!-- DevExtreme theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn3.devexpress.com/jslib/21.1.11/css/dx.light.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/devextreme/21.1.11/css/dx.material.blue.light.compact.min.css"
+    />
+
+    <!-- DevExtreme library -->
+    <script
+      type="text/javascript"
+      src="https://cdn3.devexpress.com/jslib/21.1.11/js/dx.all.js"
+    ></script>
+
+    <!-- My Script -->
+    <script type="module" src="/script/Selection/selection.js"></script>
+  </head>
+  <body class="dx-viewport">
+    <div class="dx-field">
+      <div class="dx-field-label">Choose Select All Mode</div>
+      <div class="dx-field-value">
+        <div id="sbSelectAllMode"></div>
+      </div>
+    </div>
+    <div class="dx-field">
+      <div class="dx-field-label">Choose CheckBox Mode</div>
+      <div class="dx-field-value">
+        <div id="sbShowCheckBox"></div>
+      </div>
+    </div>
+    <div class="dx-field">
+        <div class="dx-field-label">Deffered</div>
+        <div class="dx-field-value">
+          <div id="tbDeferred"></div>
+        </div>
+      </div>
+    <div id="selectionDataGrid"></div>
+  </body>
+</html>

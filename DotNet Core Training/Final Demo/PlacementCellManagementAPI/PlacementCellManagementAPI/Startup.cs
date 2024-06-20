@@ -4,7 +4,6 @@ using PlacementCellManagementAPI.Business_Logic.Interface;
 using PlacementCellManagementAPI.Business_Logic.Services;
 using PlacementCellManagementAPI.Extensions;
 using PlacementCellManagementAPI.Filters;
-using PlacementCellManagementAPI.Middleware;
 using ServiceStack.OrmLite;
 
 namespace PlacementCellManagementAPI
@@ -14,7 +13,16 @@ namespace PlacementCellManagementAPI
     /// </summary>
     public class Startup
     {
+        #region Public Properties
+
+        /// <summary>
+        /// App Setting Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Initializes a new instance of the Startup class.
@@ -26,6 +34,10 @@ namespace PlacementCellManagementAPI
                 .LoadConfigurationFromFile(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Configures services for the application.
@@ -70,7 +82,7 @@ namespace PlacementCellManagementAPI
             });
 
             services.AddSingleton<ILoggerService, LoggerService>();
-            services.AddScoped<AuthenticationMiddleware>();
+            // services.AddScoped<AuthenticationMiddleware>();
 
             services.AddInterfaceServices();
             services.AddJwtAuthentication(Configuration);
@@ -110,5 +122,7 @@ namespace PlacementCellManagementAPI
                 configure.MapControllers();
             });
         }
+
+        #endregion
     }
 }

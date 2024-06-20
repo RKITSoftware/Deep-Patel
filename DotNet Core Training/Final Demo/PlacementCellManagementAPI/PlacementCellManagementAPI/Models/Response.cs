@@ -7,6 +7,8 @@ namespace PlacementCellManagementAPI.Models
     /// </summary>
     public class Response
     {
+        #region Public Properties
+
         /// <summary>
         /// Gets or sets the data returned in the response.
         /// </summary>
@@ -26,5 +28,7 @@ namespace PlacementCellManagementAPI.Models
         /// Gets or sets the HTTP status code of the response.
         /// </summary>
         public HttpStatusCode StatusCode { get; set; }
+
+        #endregion
     }
 }

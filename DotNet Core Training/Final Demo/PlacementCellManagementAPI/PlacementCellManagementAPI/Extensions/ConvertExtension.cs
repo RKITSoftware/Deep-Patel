@@ -14,30 +14,30 @@ namespace PlacementCellManagementAPI.Extensions
         /// <summary>
         /// Converts the DTO model to POCO Model.
         /// </summary>
-        /// <typeparam name="POCO">POCO model.</typeparam>
-        /// <param name="dto">DTO model reference</param>
+        /// <typeparam name="to">POCO model.</typeparam>
+        /// <param name="from">DTO model reference</param>
         /// <returns>Poco model.</returns>
-        public static POCO Convert<POCO>(this object dto)
+        public static to Convert<to>(this object from)
         {
-            Type? pocoType = typeof(POCO) ?? throw new Exception();
-            POCO? pocoInstance = (POCO)Activator.CreateInstance(type: pocoType);
+            Type? toType = typeof(to) ?? throw new Exception();
+            to? toInstance = (to)Activator.CreateInstance(type: toType);
 
             // Get properties
-            PropertyInfo[] dtoProperties = dto.GetType().GetProperties();
-            PropertyInfo[] pocoProperties = pocoType.GetProperties();
+            PropertyInfo[] fromProperties = from.GetType().GetProperties();
+            PropertyInfo[] toProperties = toType.GetProperties();
 
-            foreach (PropertyInfo dtoProperty in dtoProperties)
+            foreach (PropertyInfo fromProperty in fromProperties)
             {
-                PropertyInfo? pocoProperty = Array.Find(array: pocoProperties, p => p.Name == dtoProperty.Name);
+                PropertyInfo? toProperty = Array.Find(array: toProperties, p => p.Name == fromProperty.Name);
 
-                if (pocoProperty != null && dtoProperty.PropertyType == pocoProperty.PropertyType)
+                if (toProperty != null && fromProperty.PropertyType == toProperty.PropertyType)
                 {
-                    object? value = dtoProperty.GetValue(dto);
-                    pocoProperty.SetValue(pocoInstance, value);
+                    object? value = fromProperty.GetValue(from);
+                    toProperty.SetValue(toInstance, value);
                 }
             }
 
-            return pocoInstance != null ? pocoInstance : throw new Exception();
+            return toInstance != null ? toInstance : throw new Exception();
         }
 
         /// <summary>

@@ -80,10 +80,10 @@ namespace PlacementCellManagementAPI.Middleware
                         // If valid, create claims for the user
                         Claim[] claims = new[]
                         {
-                        new Claim(ClaimTypes.Name, objUser.R01F02 ?? string.Empty),
-                        new Claim(ClaimTypes.Email, objUser.R01F03 ?? string.Empty),
-                        new Claim(ClaimTypes.Role, objUser.R01F05 ?? string.Empty)
-                    };
+                            new Claim(ClaimTypes.Name, objUser.R01F02 ?? string.Empty),
+                            new Claim(ClaimTypes.Email, objUser.R01F03 ?? string.Empty),
+                            new Claim(ClaimTypes.Role, objUser.R01F05 ?? string.Empty)
+                        };
 
                         // Create identity and principal for the user
                         ClaimsIdentity claimsIdentity = new(claims, "Basic");

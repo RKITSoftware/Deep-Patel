@@ -1,5 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using PlacementCellManagementAPI.Business_Logic.Interface;
+﻿using PlacementCellManagementAPI.Business_Logic.Interface;
+using PlacementCellManagementAPI.DL;
 using PlacementCellManagementAPI.Models.POCO;
 using System.Data;
 
@@ -22,6 +22,11 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// </summary>
         private readonly ILoggerService _exceptionLogger;
 
+        /// <summary>
+        /// SQL Query Context for USR01.
+        /// </summary>
+        private readonly DBUSR01Context _dbUSR01Context;
+
         #endregion
 
         #region Constructor
@@ -35,6 +40,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         {
             _connectionString = configuration.GetConnectionString("Default");
             _exceptionLogger = exceptionLogger;
+            _dbUSR01Context = new DBUSR01Context(_connectionString);
         }
 
         #endregion
@@ -50,7 +56,7 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
         /// <returns>True if user is found and data is retrieved, false otherwise.</returns>
         public bool CheckUser(string username, string password, out USR01 objUser)
         {
-            DataTable dtUser = GetUserData();
+            DataTable dtUser = _dbUSR01Context.GetUserData();
 
             if (dtUser.Rows.Count > 0)
             {
@@ -71,39 +77,6 @@ namespace PlacementCellManagementAPI.Business_Logic.Services
 
             objUser = new USR01();
             return false;
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Retrieves user data from the database.
-        /// </summary>
-        /// <returns>DataTable containing user data.</returns>
-        private DataTable GetUserData()
-        {
-            using MySqlConnection connection = new(_connectionString);
-            try
-            {
-                string query = "SELECT R01F02, R01F03, R01F04, R01F05 FROM USR01;";
-
-                MySqlCommand command = new(query, connection);
-
-                connection.Open();
-                using MySqlDataReader reader = command.ExecuteReader();
-
-                DataTable dataTable = new();
-                dataTable.Load(reader);
-
-                return dataTable;
-            }
-            catch (Exception exception)
-            {
-                // Log exception and return empty DataTable
-                _exceptionLogger.Error(exception);
-                return new DataTable();
-            }
         }
 
         #endregion

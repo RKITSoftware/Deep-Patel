@@ -1,0 +1,70 @@
+import {
+  onChangeEventHandler,
+  onContentReadyEH,
+  onCopyEH,
+  onCutEH,
+  onDisposingEH,
+  onEnterKeyEH,
+  onFocusInEH,
+  onFocusOutEH,
+  onInitializedHandler,
+  onInputEH,
+  onKeyDownEH,
+  onKeyUpEH,
+  onOptionChangedEH,
+  onPasteEH,
+  onValueChangedEH,
+} from "../script/handler.js";
+
+$(function () {
+  const taSimpleInst = $("#taSimple")
+    .dxTextArea({
+      accessKey: "s",
+      activeStateEnabled: true,
+      autoResizeEnabled: true, // If false then size is already set of height and width otherwise if expand when new line added.
+      disabled: false,
+      elementAttr: {
+        class: "custom-class",
+      },
+      focusStateEnabled: true,
+      // height: 10,
+      hint: "Enter the address.",
+      hoverStateEnabled: true,
+      inputAttr: {
+        id: "address",
+        name: "address",
+      },
+      isValid: true,
+      maxHeight: "200px",
+      maxLength: 10000,
+      minHeight: "100px",
+      name: "address",
+      //   onChange: onChangeEventHandler,
+      //   onContentReady: onContentReadyEH,
+      //   onCopy: onCopyEH,
+      //   onCut: onCutEH,
+      //   onDisposing: onDisposingEH,
+      //   onEnterKey: onEnterKeyEH,
+      //   onFocusIn: onFocusInEH,
+      //   onFocusOut: onFocusOutEH,
+      //   onInitialized: onInitializedHandler,
+      //   onInput: onInputEH,
+      //   onKeyUp: (e) => onKeyUpEH(e),
+      //   onKeyDown: (e) => onKeyDownEH(e),
+      //   onOptionChanged: onOptionChangedEH,
+      //   onPaste: onPasteEH,
+      //   onValueChanged: (e) => onValueChangedEH(e),
+      placeholder: "Enter address",
+      readOnly: false,
+      rtlEnabled: false,
+      spellcheck: true,
+      stylingMode: "outlined",
+      tabIndex: 3,
+      text: "Home Address",
+      value: "My home address is limbdi, Surendranagar",
+      valueChangeEvent: "blur",
+      visible: true,
+      // width: 100
+    })
+    .dxTextArea("instance");
+});

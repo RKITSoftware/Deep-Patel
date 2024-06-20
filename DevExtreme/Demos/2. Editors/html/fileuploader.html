@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Uploader</title>
+
+    <!-- My Styles -->
+    <link rel="stylesheet" href="../styles/style.css" />
+
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+    ></script>
+
+    <!-- DevExtreme theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn3.devexpress.com/jslib/21.1.11/css/dx.light.css"
+    />
+
+    <!-- DevExtreme library -->
+    <script
+      type="text/javascript"
+      src="https://cdn3.devexpress.com/jslib/21.1.11/js/dx.all.js"
+    ></script>
+
+    <!-- My Script -->
+    <script type="module" src="../script/fileuploader.js"></script>
+  </head>
+  <body class="dx-viewport">
+    <div class="container">
+      <div class="dx-fieldset">
+        <div class="dx-field">
+          <div class="dx-field-label" id="dialogTrigger">dialog trigger</div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label" id="dropzone">dropZone</div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">Instantly FP</div>
+          <div class="dx-field-value">
+            <div id="fuInstant"></div>
+          </div>
+        </div>
+        <div class="dx-field">
+          <div class="dx-field-label">useButton FP</div>
+          <div class="dx-field-value">
+            <div id="fuButton"></div>
+          </div>
+        </div>
+        <div class="dx-form">
+          <form
+            id="form"
+            method="post"
+            action="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+            enctype="multipart/form-data"
+          >
+            <div class="dx-field">
+              <div class="dx-field-label">useForm FP</div>
+              <div class="dx-field-value">
+                <div id="fuForm"></div>
+              </div>
+            </div>
+            <div class="dx-field">
+              <div class="dx-field-label">Submit</div>
+              <div class="dx-field-value">
+                <div id="btnSubmit"></div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

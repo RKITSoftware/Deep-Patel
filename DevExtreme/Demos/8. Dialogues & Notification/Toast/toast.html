@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Toast</title>
+
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+    ></script>
+
+    <!-- DevExtreme theme -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn3.devexpress.com/jslib/21.1.11/css/dx.material.blue.light.css"
+    />
+
+    <style>
+      .notificationContainer {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        height: 50px;
+        width: 600px; /* Adjust the width as needed */
+      }
+    </style>
+
+    <!-- DevExtreme library -->
+    <script
+      type="text/javascript"
+      src="https://cdn3.devexpress.com/jslib/21.1.11/js/dx.all.js"
+    ></script>
+
+    <!-- My Script -->
+    <script type="module" src="./toast.js"></script>
+  </head>
+  <body class="dx-viewport">
+    <div id="cbSubscribe"></div>
+    <div class="notificationContainer"></div>
+    <div id="toast"></div>
+  </body>
+</html>

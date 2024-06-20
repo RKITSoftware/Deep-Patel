@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Layer</title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="./styles/style.css" />
+
+    <!-- jQuery -->
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+    ></script>
+
+    <!-- DevExtreme theme -->
+    <link
+      rel="stylesheet"
+      href="https://cdn3.devexpress.com/jslib/21.1.11/css/dx.light.css"
+    />
+
+    <!-- DevExtreme library -->
+    <script
+      type="text/javascript"
+      src="https://cdn3.devexpress.com/jslib/21.1.11/js/dx.all.js"
+    ></script>
+
+    <!-- My Script -->
+    <script type="module" src="./script/arrayStore.js"></script>
+    <script type="module" src="./script/customStore.js"></script>
+    <script type="module" src="./script/dataStore.js"></script>
+    <script type="module" src="./script/query.js"></script>
+  </head>
+  <body class="dx-viewport">
+    <h1>Data Layer</h1>
+    <div class="container">
+      <form>
+        <div class="dx-fieldset">
+          <div class="dx-field">
+            <div class="dx-field-label">Array Store</div>
+            <div class="dx-field-value">
+              <div id="sbArrayStore"></div>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Custom Store</div>
+            <div class="dx-field-value">
+              <div id="sbCustomStore"></div>
+            </div>
+          </div>
+          <div class="dx-field">
+            <div class="dx-field-label">Data Store</div>
+            <div class="dx-field-value">
+              <div id="sbDataStore"></div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
